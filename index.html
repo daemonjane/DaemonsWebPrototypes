@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./dist/output.css" rel="stylesheet">
+    <title>TechStore | Spacestation Deploy</title>
+    <style>
+        /* Enhanced scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #0891b2; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+        html { scrollbar-color: #0891b2 #0f172a; scrollbar-width: thin; }
+
+        /* Subtle grid background texture */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glow orb decoration */
+        .hero-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(80px);
+            animation: floatGlow 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatGlow {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-15px); }
+        }
+
+        /* Glass-morphism nav */
+        #main-header {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans antialiased selection:bg-cyan-500 selection:text-black relative">
+
+    <!-- Header (updated navigation links to work with multi-page structure) -->
+    <header id="main-header" class="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/75 backdrop-blur-md">
+        <div class="grid grid-cols-1 lg:grid-cols-3 items-center gap-4 px-4 sm:px-6 py-4 max-w-7xl mx-auto">
+            <div class="flex items-center justify-between">
+                <a href="index.html" id="brand-logo" class="text-cyan-400 font-bold text-xl sm:text-2xl tracking-widest select-none">TECHSTORE</a>
+                <button id="mobile-menu-toggle" class="lg:hidden text-slate-400 hover:text-cyan-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 rounded p-1" aria-label="Open menu" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <div id="header-search" class="flex items-center justify-start lg:justify-center gap-2 w-full">
+                <label for="catalog-search" class="text-sm text-slate-400 hidden sm:inline shrink-0">Find Gear:</label>
+                <input type="text" id="catalog-search" list="hardware-suggestions" placeholder="Search components..."
+                       class="w-full max-w-md mx-auto lg:max-w-xs bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 focus-visible:border-cyan-400 transition-colors">
+                <datalist id="hardware-suggestions">
+                    <option value="Vanguard Prebuilt Rig">
+                    <option value="RTX 5070 Graphics Card">
+                    <option value="Cyber-Pro Keyboard">
+                    <option value="QD-OLED Ultrawide Panel">
+                    <option value="Thermal Matrix Compound">
+                </datalist>
+            </div>
+
+            <nav id="main-nav" class="hidden lg:flex flex-wrap lg:justify-end gap-5 text-sm font-medium w-full">
+                <a href="index.html" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Home</a>
+                <a href="index.html#features" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Features</a>
+                <a href="index.html#products" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Hardware</a>
+                <a href="index.html#bundles" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Bundles</a>
+                <a href="index.html#micro-upgrades" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Optimize</a>
+                <a href="index.html#insights-preview" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Insights</a>
+                <a href="shop.html" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Shop</a>
+                <!-- Cart trigger -->
+                <button id="cart-trigger" class="text-cyan-400 font-semibold relative pr-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded" aria-label="Shopping Cart, 0 items" aria-expanded="false">
+                    Cart
+                    <span id="cart-count-badge" aria-hidden="true" class="absolute -top-1 -right-2 bg-cyan-500 text-black text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">0</span>
+                </button>
+                <a href="login.html" id="auth-link" class="text-slate-400 hover:text-cyan-400 transition-colors">Login</a>
+            </nav>
+        </div>
+
+        <!-- Cart dropdown panel -->
+        <div id="cart-dropdown" class="hidden absolute right-0 top-full mt-1 w-80 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl p-4 z-50 space-y-3">
+            <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Your Cart</h3>
+            <ul id="cart-items-list" class="space-y-2 max-h-48 overflow-y-auto text-sm"></ul>
+            <div class="flex items-center justify-between border-t border-slate-700 pt-2">
+                <span class="text-slate-400 text-xs">Total:</span>
+                <span id="cart-total-display" class="text-cyan-400 font-bold text-lg">$0.00</span>
+            </div>
+            <button id="checkout-btn" class="w-full bg-cyan-600 text-white py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 transition-colors">Checkout</button>
+        </div>
+    </header>
+
+    <main id="main-content" class="max-w-7xl mx-auto px-4 py-8 space-y-20 sm:space-y-28">
+
+        <!-- Hero with glowing orb background -->
+        <section id="hero" class="relative flex flex-col items-center text-center py-16 sm:py-20 lg:py-24 overflow-hidden">
+            <div class="hero-glow"></div>
+            <div id="hero-core-container" class="relative max-w-3xl space-y-5 sm:space-y-7">
+                <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">SYSTEM_READY</span>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">Your Command Station Awaits</h1>
+                <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto">Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.</p>
+                <div id="hero-actions" class="flex flex-wrap justify-center gap-4 pt-4">
+                    <a href="shop.html" class="bg-cyan-600 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Start Building</a>
+                    <a href="insights.html#membership" class="border border-slate-600 text-slate-300 px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Explore Membership</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features (unchanged) -->
+        <section id="features" class="space-y-10 sm:space-y-12">
+            <h2 class="text-2xl sm:text-3xl font-bold text-white text-center">Why TechStore?</h2>
+            <div id="features-grid-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+                <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+                    <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl" aria-hidden="true">⚡</div>
+                    <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Verified Performance</h3>
+                    <p class="text-slate-400 text-sm">Every component undergoes a 12‑hour stress test before it leaves the lab.</p>
+                </article>
+                <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+                    <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl" aria-hidden="true">📦</div>
+                    <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Direct Vendor Sourcing</h3>
+                    <p class="text-slate-400 text-sm">No middlemen. Authentic parts straight from the production line to your door.</p>
+                </article>
+                <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+                    <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl" aria-hidden="true">📊</div>
+                    <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Optimal Price-to-Quality</h3>
+                    <p class="text-slate-400 text-sm">Real‑time market analysis ensures you always get the best value per dollar.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Products (unchanged) -->
+        <section id="products" class="space-y-10 sm:space-y-12">
+            <div class="text-center space-y-3">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white">Core Systems & Gear</h2>
+                <p class="text-slate-400 text-sm sm:text-base flex items-center justify-center gap-2">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                    </span>
+                    <strong>Next Verified Allocation Drop:</strong>
+                    <span id="countdown-timer-slot" class="text-cyan-300 font-mono">05:00</span>
+                </p>
+            </div>
+            <div id="products-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Vanguard Desktop -->
+                <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col md:col-span-2 md:flex-row group transition-all duration-300 hover:border-slate-700 hover:shadow-xl hover:shadow-cyan-950/30 hover:-translate-y-1 transform">
+                    <div class="w-full md:w-1/2 shrink-0 bg-slate-800 aspect-[16/10] md:aspect-auto md:h-full relative overflow-hidden">
+                        <img src="assets/vanguard-desktop-fallback.png" alt="Vanguard Gaming Desktop with RGB lighting and liquid cooling" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="p-5 sm:p-6 flex flex-col flex-1 justify-between space-y-4">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-lg sm:text-xl font-bold text-white">Vanguard Series Core i7 / <mark class="bg-cyan-900/40 text-cyan-300 px-1.5 py-0.5 rounded text-sm">RTX 5070</mark></h3>
+                                <span class="bg-cyan-500/10 text-cyan-400 text-xs font-mono px-2 py-0.5 rounded border border-cyan-500/20 uppercase tracking-wider hidden sm:inline">Flagship Rig</span>
+                            </div>
+                            <p class="text-slate-400 text-sm leading-relaxed">Extreme workload desktop. Liquid‑cooled silence engineered for absolute dominance.</p>
+                            <div class="space-y-2">
+                                <label for="p1-efficiency" class="text-xs text-slate-500 font-medium block">Price-to-Quality Metric:</label>
+                                <meter id="p1-efficiency" min="0" max="10" low="4" high="7" optimum="9" value="9.4" class="w-full max-w-xs h-2 block">9.4/10</meter>
+                            </div>
+                            <details class="text-sm text-slate-400">
+                                <summary class="font-medium text-slate-300 hover:text-cyan-400 cursor-pointer transition-colors">Technical Blueprint</summary>
+                                <ul class="mt-2 space-y-1.5 list-disc list-inside bg-slate-950/40 p-3 rounded-lg border border-slate-800/60 font-mono text-xs">
+                                    <li><strong class="text-slate-300">GPU:</strong> 12GB Next‑Gen</li>
+                                    <li><strong class="text-slate-300">CPU:</strong> Intel i7‑14th, 20‑Core</li>
+                                    <li><strong class="text-slate-300">Cooling:</strong> 360mm AIO</li>
+                                </ul>
+                            </details>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                            <span class="text-xl sm:text-2xl font-mono font-bold text-white">$2,499</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="vanguard-desktop" 
+                                    data-product-name="Vanguard Series Core i7 / RTX 5070" 
+                                    data-price="2499"
+                                    class="bg-cyan-600 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-md text-sm font-semibold hover:bg-cyan-500 shadow-md hover:shadow-lg hover:shadow-cyan-500/20 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Keyboard -->
+                <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-950/20">
+                    <div class="h-48 w-full bg-slate-800 overflow-hidden">
+                        <img src="assets/cyberpro-keyboard-fallback.png" alt="Cyber-Pro Mechanical Keyboard with hot‑swappable switches" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="p-5 flex flex-col flex-1 space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Cyber-Pro Mechanical Keyboard</h3>
+                        <p class="text-slate-400 text-sm">Hot‑swappable brown switches, dampening sheets, RGB mapping.</p>
+                        <label for="p2-efficiency" class="text-xs text-slate-500">Price-to-Quality Metric:</label>
+                        <meter id="p2-efficiency" min="0" max="10" value="8.1" class="w-full max-w-[200px] h-2">8.1/10</meter>
+                        <details class="text-sm text-slate-400">
+                            <summary class="font-medium text-slate-300 hover:text-cyan-400 cursor-pointer transition-colors">Technical Blueprint</summary>
+                            <ul class="mt-2 space-y-1 list-disc list-inside">
+                                <li><strong class="text-slate-200">Switches:</strong> Tactile Brown</li>
+                                <li><strong class="text-slate-200">Frame:</strong> Aerospace Aluminum</li>
+                                <li><strong class="text-slate-200">Connect:</strong> USB‑C / 2.4GHz</li>
+                            </ul>
+                        </details>
+                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
+                            <span class="text-lg sm:text-xl font-bold text-white">$129</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="cyberpro-keyboard" 
+                                    data-product-name="Cyber-Pro Mechanical Keyboard" 
+                                    data-price="129"
+                                    class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Monitor -->
+                <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-950/20">
+                    <div class="h-48 w-full bg-slate-800 overflow-hidden">
+                        <img src="assets/ultrawide-monitor-fallback.png" alt="34 inch QD-OLED ultrawide monitor with ultra‑thin bezels" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="p-5 flex flex-col flex-1 space-y-4">
+                        <h3 class="text-lg font-semibold text-white">34" <mark class="bg-cyan-900/40 text-cyan-300 px-1 rounded">QD-OLED</mark> Ultrawide</h3>
+                        <p class="text-slate-400 text-sm">240Hz, 0.03ms, deep blacks. Your eyes deserve this.</p>
+                        <label for="p3-efficiency" class="text-xs text-slate-500">Price-to-Quality Metric:</label>
+                        <meter id="p3-efficiency" min="0" max="10" value="8.9" class="w-full max-w-[200px] h-2">8.9/10</meter>
+                        <details class="text-sm text-slate-400">
+                            <summary class="font-medium text-slate-300 hover:text-cyan-400 cursor-pointer transition-colors">Technical Blueprint</summary>
+                            <ul class="mt-2 space-y-1 list-disc list-inside">
+                                <li><strong class="text-slate-200">Panel:</strong> QD‑OLED</li>
+                                <li><strong class="text-slate-200">Refresh:</strong> 240Hz</li>
+                                <li><strong class="text-slate-200">Response:</strong> 0.03ms GtG</li>
+                            </ul>
+                        </details>
+                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
+                            <span class="text-lg sm:text-xl font-bold text-white">$899</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="ultrawide-monitor" 
+                                    data-product-name='34" QD-OLED Ultrawide' 
+                                    data-price="899"
+                                    class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Bundles (unchanged) -->
+        <section id="bundles" class="space-y-10 sm:space-y-12">
+            <div class="text-center space-y-3">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white">Complete Your Spacestation</h2>
+                <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Hand‑picked combos that save you money. Bundle pricing adjusts with demand.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 border border-slate-700 flex flex-col space-y-5 hover:border-cyan-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-900/20 transition-all duration-300">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-cyan-600 text-black text-xs px-3 py-1 rounded-full font-bold">SAVE $152</span>
+                        <span class="text-slate-400 text-sm line-through">$2,748</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Silent Operator Bundle</h3>
+                    <p class="text-slate-400 text-sm">Vanguard Desktop + Cyber‑Pro Keyboard + Desk Mat</p>
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$2,596</span>
+                        <small class="text-slate-500">One‑time purchase</small>
+                    </div>
+                    <button type="button" 
+                            data-action="add-to-cart" 
+                            data-product-id="bundle-silent" 
+                            data-product-name="Silent Operator Bundle" 
+                            data-price="2596"
+                            class="mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
+                </div>
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 border border-slate-700 flex flex-col space-y-5 hover:border-cyan-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-900/20 transition-all duration-300">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-cyan-600 text-black text-xs px-3 py-1 rounded-full font-bold">SAVE $93</span>
+                        <span class="text-slate-400 text-sm line-through">$1,392</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Immersive Vision Bundle</h3>
+                    <p class="text-slate-400 text-sm">34" QD‑OLED Monitor + VESA Arm + Bias Lighting Kit</p>
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$1,299</span>
+                        <small class="text-slate-500">Free shipping</small>
+                    </div>
+                    <button type="button" 
+                            data-action="add-to-cart" 
+                            data-product-id="bundle-immersive" 
+                            data-product-name="Immersive Vision Bundle" 
+                            data-price="1299"
+                            class="mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Micro-upgrades (unchanged) -->
+        <section id="micro-upgrades" class="space-y-10 sm:space-y-12">
+            <div class="text-center space-y-3">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white">Personalize & Protect</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Small add‑ons that make your rig truly yours. They're so affordable you'll want them all.</p>
+            </div>
+
+            <form id="upgrades-form">
+                <fieldset class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" id="upgrades-container">
+                    <legend class="sr-only">Optional hardware upgrades and services</legend>
+
+                    <!-- VIP Build -->
+                    <div class="relative bg-slate-900 rounded-xl p-5 border border-slate-800 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
+                        <input type="checkbox" id="vip-build" name="premium-services" value="vip-build" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500">
+                        <label for="vip-build" class="space-y-2 cursor-pointer flex-1 select-none">
+                            <strong class="text-white block transition-colors peer-checked:text-cyan-400">Priority VIP Assembly & Test</strong>
+                            <p class="text-slate-400 text-sm">Skip the queue. 24‑hour build + stress test.</p>
+                            <span class="text-cyan-400 font-semibold text-sm">+$19.99</span>
+                        </label>
+                    </div>
+
+                    <!-- Laser Engraving -->
+                    <div class="relative bg-slate-900 rounded-xl p-5 border border-slate-800 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
+                        <input type="checkbox" id="laser-engraving" name="premium-services" value="laser-engraving" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500">
+                        <label for="laser-engraving" class="space-y-2 cursor-pointer flex-1 select-none">
+                            <strong class="text-white block transition-colors peer-checked:text-cyan-400">Bespoke Laser Engraving</strong>
+                            <p class="text-slate-400 text-sm">Your handle etched into the chassis.</p>
+                            <span class="text-cyan-400 font-semibold text-sm">+$14.99</span>
+                            <div class="max-h-0 overflow-hidden transition-all duration-300 peer-checked:max-h-24 peer-checked:mt-3">
+                                <label for="custom-engraving-text" class="text-xs text-slate-500 font-bold block">Engraving Text:</label>
+                                <input type="text" id="custom-engraving-text" name="engraving-text" value="jxne" placeholder=" " required minlength="3"
+                                       class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-slate-200 font-mono
+                                              focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950
+                                              [&:not(:placeholder-shown):invalid]:border-pink-500 [&:not(:placeholder-shown):invalid]:ring-pink-500/30
+                                              [&:not(:placeholder-shown):valid]:border-emerald-500 [&:not(:placeholder-shown):valid]:ring-emerald-500/30
+                                              transition-colors">
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Insurance -->
+                    <div class="relative bg-slate-900 rounded-xl p-5 border border-slate-800 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
+                        <input type="checkbox" id="hardware-insurance" name="premium-services" value="insurance" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500">
+                        <label for="hardware-insurance" class="space-y-2 cursor-pointer flex-1 select-none">
+                            <strong class="text-white block transition-colors peer-checked:text-cyan-400">Overvoltage Protection Plan</strong>
+                            <p class="text-slate-400 text-sm">12‑month accidental damage coverage.</p>
+                            <span class="text-cyan-400 font-semibold text-sm">+$2.99/mo</span>
+                        </label>
+                    </div>
+                </fieldset>
+            </form>
+
+            <!-- Trending items -->
+            <div id="impulse-checkout-counter" class="bg-slate-900 rounded-xl p-5 sm:p-6 border border-slate-800" role="group" aria-labelledby="trending-heading">
+                <h3 id="trending-heading" class="text-lg sm:text-xl font-semibold text-white mb-5 flex items-center gap-2">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                    </span>
+                    ⚡ Trending Now!!!
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Thermal Paste -->
+                    <div class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 overflow-hidden rounded bg-slate-700 shrink-0">
+                                <img src="assets/ThermalCompound2.jpg" alt="Thermal Matrix Pro Paste 4g syringe" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
+                            </div>
+                            <div>
+                                <span class="text-slate-200 text-sm block">Thermal Matrix Pro Paste</span>
+                                <span class="text-cyan-400 text-xs">4g syringe</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-300 text-sm font-bold">$6.99</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="thermal-paste" 
+                                    data-product-name="Thermal Matrix Pro Paste" 
+                                    data-price="6.99"
+                                    class="bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
+                        </div>
+                    </div>
+                    <!-- Cable Ties -->
+                    <div class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 overflow-hidden rounded bg-slate-700 shrink-0">
+                                <img src="assets/BraidedCableTies.jpg" alt="10‑pack braided magnetic cable ties" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
+                            </div>
+                            <div>
+                                <span class="text-slate-200 text-sm block">Braided Cable Ties (10pk)</span>
+                                <span class="text-cyan-400 text-xs">Magnetic</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-300 text-sm font-bold">$4.50</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="cable-ties" 
+                                    data-product-name="Braided Cable Ties (10pk)" 
+                                    data-price="4.50"
+                                    class="bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
+                        </div>
+                    </div>
+                    <!-- Cleaning Kit -->
+                    <div class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 overflow-hidden rounded bg-slate-700 shrink-0">
+                                <img src="assets/CleaningKit.jpg" alt="Anti‑static microfiber cleaning kit with solution" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
+                            </div>
+                            <div>
+                                <span class="text-slate-200 text-sm block">Anti‑Static Cleaning Kit</span>
+                                <span class="text-cyan-400 text-xs">Microfiber + solution</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-300 text-sm font-bold">$8.99</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="cleaning-kit" 
+                                    data-product-name="Anti‑Static Cleaning Kit" 
+                                    data-price="8.99"
+                                    class="bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
+                        </div>
+                    </div>
+                    <!-- GPU Bracket -->
+                    <div class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 overflow-hidden rounded bg-slate-700 shrink-0">
+                                <img src="assets/GPU_support_bracket.jpg" alt="Adjustable GPU support bracket" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
+                            </div>
+                            <div>
+                                <span class="text-slate-200 text-sm block">GPU Support Bracket</span>
+                                <span class="text-cyan-400 text-xs">Adjustable</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-300 text-sm font-bold">$12.99</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="gpu-bracket" 
+                                    data-product-name="GPU Support Bracket" 
+                                    data-price="12.99"
+                                    class="bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
+                        </div>
+                    </div>
+                    <!-- DisplayPort Cable -->
+                    <div class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 overflow-hidden rounded bg-slate-700 shrink-0">
+                                <img src="assets/DisplayPortCable.jpg" alt="DisplayPort 2.1 cable, 2 meters braided" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
+                            </div>
+                            <div>
+                                <span class="text-slate-200 text-sm block">DisplayPort 2.1 Cable</span>
+                                <span class="text-cyan-400 text-xs">2m braided</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-300 text-sm font-bold">$19.99</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="displayport-cable" 
+                                    data-product-name="DisplayPort 2.1 Cable" 
+                                    data-price="19.99"
+                                    class="bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
+                        </div>
+                    </div>
+                    <!-- Mouse Bungee -->
+                    <div class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 overflow-hidden rounded bg-slate-700 shrink-0">
+                                <img src="assets/MouseBungee.webp" alt="Spring‑arm mouse bungee" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
+                            </div>
+                            <div>
+                                <span class="text-slate-200 text-sm block">Mouse Bungee</span>
+                                <span class="text-cyan-400 text-xs">Spring‑arm</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-300 text-sm font-bold">$9.49</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="mouse-bungee" 
+                                    data-product-name="Mouse Bungee" 
+                                    data-price="9.49"
+                                    class="bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insights Preview -->
+        <section id="insights-preview" class="space-y-10 sm:space-y-12">
+            <div class="text-center space-y-3">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white flex items-center justify-center gap-2">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                    </span>
+                    Market Pulse Preview
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+                    Live component pricing, demand trends, and allocation forecasts — locked for members only.
+                    <br class="hidden sm:block">Subscribe to see the full data stream.
+                </p>
+            </div>
+            <div class="relative group max-w-3xl mx-auto">
+                <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-[2px] rounded-xl border border-dashed border-cyan-800/50 transition-all duration-300 group-hover:bg-slate-950/70">
+                    <span class="text-4xl mb-2">🔒</span>
+                    <p class="text-white font-semibold text-sm sm:text-base mb-4">Unlock Real‑Time Market Data</p>
+                    <a href="insights.html#membership" class="bg-cyan-600 text-white px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-cyan-500 active:scale-95 transition-all duration-150 shadow-lg shadow-cyan-900/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+                        Subscribe to Unlock →
+                    </a>
+                </div>
+                <div class="bg-slate-900 rounded-xl p-6 border border-slate-800 opacity-40 blur-sm select-none pointer-events-none">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                        <div class="space-y-1">
+                            <span class="text-xs text-slate-500 uppercase tracking-wider">RTX 5070 Stock</span>
+                            <div class="text-2xl font-mono font-bold text-cyan-400">142 <span class="text-sm text-cyan-500">▲ +12%</span></div>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-xs text-slate-500 uppercase tracking-wider">Avg Price Trend</span>
+                            <div class="text-2xl font-mono font-bold text-emerald-400">$1,249 <span class="text-sm text-emerald-500">▼ -2.4%</span></div>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-xs text-slate-500 uppercase tracking-wider">Demand Score</span>
+                            <div class="text-2xl font-mono font-bold text-fuchsia-400">87/100 <span class="text-sm text-fuchsia-500">HIGH</span></div>
+                        </div>
+                    </div>
+                    <div class="mt-6 h-16 bg-slate-800 rounded-lg flex items-center justify-center">
+                        <span class="text-xs text-slate-600 font-mono tracking-widest">▲ ■ ▲ ■ ▼ ▲ ■ ▼ ▼ ■ ▲ ▼ ■ ▲ ■ ▼ ▲</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insights Membership -->
+        <section id="insights-membership" class="space-y-10 sm:space-y-12">
+            <div class="text-center space-y-3">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white">Insights Membership</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Know when to buy. Live market data, price alerts, and benchmarking tools.</p>
+            </div>
+            <div id="insights-tiers-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
+                <div class="bg-slate-900 rounded-xl p-6 border border-slate-800 flex flex-col space-y-4 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                    <h3 class="text-lg sm:text-xl font-semibold text-white">Monthly Pass</h3>
+                    <p class="text-slate-400 text-sm">Perfect for a one‑time build optimization.</p>
+                    <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$9.99<span class="text-lg font-normal text-slate-500">/mo</span></span>
+                    <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
+                        <li>Real‑time price tracking</li>
+                        <li>Efficiency score tools</li>
+                        <li>Stock alerts</li>
+                    </ul>
+                    <button type="button" 
+                            data-subscription="monthly"
+                            class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Subscribe Monthly</button>
+                </div>
+                <div class="relative p-[2px] rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-fuchsia-500 md:scale-105 shadow-xl shadow-cyan-950/40 z-10 hover:shadow-2xl hover:shadow-cyan-900/50 transition-all duration-300">
+                    <div class="h-full w-full bg-slate-900 rounded-[10px] p-6 flex flex-col space-y-4 relative">
+                        <span class="absolute -top-3 right-4 bg-cyan-600 text-black text-xs px-3 py-1 rounded-full font-bold">BEST VALUE</span>
+                        <h3 class="text-lg sm:text-xl font-semibold text-white">Annual Pro</h3>
+                        <p class="text-slate-400 text-sm">For enthusiasts who upgrade continuously.</p>
+                        <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$79.99<span class="text-lg font-normal text-slate-500">/yr</span></span>
+                        <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
+                            <li>Everything in Monthly</li>
+                            <li>Historical price charts</li>
+                            <li>Priority drop alerts</li>
+                            <li>Save 30% vs. monthly</li>
+                        </ul>
+                        <button type="button" 
+                                data-subscription="annual"
+                                class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Subscribe Annually</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Show More Items Section -->
+        <section id="more-products" class="space-y-10 sm:space-y-12">
+            <div class="text-center space-y-3">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white">Explore More Gear</h2>
+                <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Extra essentials that didn't fit the main deck. Still 100% verified.</p>
+            </div>
+            <div id="more-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Initially visible items -->
+                <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg">
+                    <div class="h-48 w-full bg-slate-800 overflow-hidden">
+                        <img src="assets/gamingmouse.jpg" alt="High DPI gaming mouse" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="p-5 flex flex-col flex-1 space-y-3">
+                        <h3 class="text-lg font-semibold text-white">Precision Gaming Mouse</h3>
+                        <p class="text-slate-400 text-sm">16,000 DPI optical sensor, 6 programmable buttons.</p>
+                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
+                            <span class="text-lg font-bold text-white">$79.99</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="gaming-mouse" 
+                                    data-product-name="Precision Gaming Mouse" 
+                                    data-price="79.99"
+                                    class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg">
+                    <div class="h-48 w-full bg-slate-800 overflow-hidden">
+                        <img src="assets/mousepad.jpg" alt="Extended mouse mat with RGB edge lighting" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="p-5 flex flex-col flex-1 space-y-3">
+                        <h3 class="text-lg font-semibold text-white">RGB Extended Mouse Mat</h3>
+                        <p class="text-slate-400 text-sm">900x400mm spill-proof surface with 12 lighting zones.</p>
+                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
+                            <span class="text-lg font-bold text-white">$34.99</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="mousepad" 
+                                    data-product-name="RGB Extended Mouse Mat" 
+                                    data-price="34.99"
+                                    class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg">
+                    <div class="h-48 w-full bg-slate-800 overflow-hidden">
+                        <img src="assets/USBhub.jpg" alt="7-port powered USB hub" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="p-5 flex flex-col flex-1 space-y-3">
+                        <h3 class="text-lg font-semibold text-white">Powered USB‑C Hub (7‑Port)</h3>
+                        <p class="text-slate-400 text-sm">10Gbps transfer, individual on/off switches, 60W PD pass-through.</p>
+                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
+                            <span class="text-lg font-bold text-white">$59.99</span>
+                            <button type="button" 
+                                    data-action="add-to-cart" 
+                                    data-product-id="usb-hub" 
+                                    data-product-name="Powered USB‑C Hub (7‑Port)" 
+                                    data-price="59.99"
+                                    class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Hidden extra items (revealed by JS) -->
+                <div id="extra-items-container" class="contents hidden">
+                    <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg">
+                        <div class="h-48 w-full bg-slate-800 overflow-hidden">
+                            <img src="assets/headset.jpg" alt="Wireless gaming headset" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                        </div>
+                        <div class="p-5 flex flex-col flex-1 space-y-3">
+                            <h3 class="text-lg font-semibold text-white">Wireless ANC Headset</h3>
+                            <p class="text-slate-400 text-sm">Low-latency 2.4GHz + Bluetooth 5.3, 40h battery.</p>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
+                                <span class="text-lg font-bold text-white">$149.99</span>
+                                <button type="button" 
+                                        data-action="add-to-cart" 
+                                        data-product-id="headset" 
+                                        data-product-name="Wireless ANC Headset" 
+                                        data-price="149.99"
+                                        class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all">Add to Cart</button>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg">
+                        <div class="h-48 w-full bg-slate-800 overflow-hidden">
+                            <img src="assets/webcam.webp" alt="4K webcam with ring light" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                        </div>
+                        <div class="p-5 flex flex-col flex-1 space-y-3">
+                            <h3 class="text-lg font-semibold text-white">4K Streaming Webcam</h3>
+                            <p class="text-slate-400 text-sm">Auto‑framing, built‑in ring light, privacy shutter.</p>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
+                                <span class="text-lg font-bold text-white">$99.99</span>
+                                <button type="button" 
+                                        data-action="add-to-cart" 
+                                        data-product-id="webcam" 
+                                        data-product-name="4K Streaming Webcam" 
+                                        data-price="99.99"
+                                        class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all">Add to Cart</button>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg">
+                        <div class="h-48 w-full bg-slate-800 overflow-hidden">
+                            <img src="assets/speakers.jpg" alt="Desktop speakers with subwoofer" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+                        </div>
+                        <div class="p-5 flex flex-col flex-1 space-y-3">
+                            <h3 class="text-lg font-semibold text-white">2.1 Desktop Speaker System</h3>
+                            <p class="text-slate-400 text-sm">80W RMS, Bluetooth 5.0, wooden subwoofer.</p>
+                            <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
+                                <span class="text-lg font-bold text-white">$129.99</span>
+                                <button type="button" 
+                                        data-action="add-to-cart" 
+                                        data-product-id="speakers" 
+                                        data-product-name="2.1 Desktop Speaker System" 
+                                        data-price="129.99"
+                                        class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all">Add to Cart</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="flex justify-center gap-4">
+                <button id="show-more-btn" class="bg-cyan-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">Show More Items</button>
+                <button id="show-less-btn" class="hidden bg-slate-800 text-slate-300 px-6 py-3 rounded-md font-semibold hover:bg-slate-700 active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">Show Less</button>
+            </div>
+        </section>
+    </main>
+
+    <footer id="main-footer" class="bg-slate-900 border-t border-slate-800 py-6 mt-16 sm:mt-20">
+        <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-between items-center text-xs sm:text-sm text-slate-500">
+            <div>&copy; 2026 TechStore Engine. Global Supply Hub.</div>
+            <div>Environment: Local Host // Online</div>
+        </div>
+    </footer>
+
+    <!-- Centralized state engine & all interactive logic (fixed checkout redirect) -->
+    <script>
+        (function() {
+            // ---------- 1. Global Immutable State ----------
+            const AppState = {
+                cart: [],
+                activeSubscription: 'monthly',
+                selectedUpgrades: new Set(),
+                countdownSeconds: 300,
+                upgradePrices: {
+                    'vip-build': 19.99,
+                    'laser-engraving': 14.99,
+                    'hardware-insurance': 2.99
+                },
+                pricingMatrix: {
+                    monthly: 9.99,
+                    annual: 79.99
+                }
+            };
+
+            const DOM = {
+                mobileToggle: document.getElementById('mobile-menu-toggle'),
+                mainNav: document.getElementById('main-nav'),
+                cartTrigger: document.getElementById('cart-trigger'),
+                cartDropdown: document.getElementById('cart-dropdown'),
+                cartItemsList: document.getElementById('cart-items-list'),
+                cartCountBadge: document.getElementById('cart-count-badge'),
+                cartTotalDisplay: document.getElementById('cart-total-display'),
+                countdownSlot: document.getElementById('countdown-timer-slot'),
+                showMoreBtn: document.getElementById('show-more-btn'),
+                showLessBtn: document.getElementById('show-less-btn'),
+                extraItemsContainer: document.getElementById('extra-items-container'),
+                upgradesContainer: document.getElementById('upgrades-container'),
+                subscriptionButtons: document.querySelectorAll('[data-subscription]'),
+                checkoutBtn: document.getElementById('checkout-btn'),
+                productsGrid: document.getElementById('products-grid-container'),
+                bundlesGrid: document.querySelector('#bundles .grid'),
+                impulseGrid: document.getElementById('impulse-checkout-counter'),
+                moreProductsGrid: document.getElementById('more-products-grid')
+            };
+
+            function addToCart(product) {
+                AppState.cart.push(product);
+                renderCart();
+            }
+
+            function renderCart() {
+                const list = DOM.cartItemsList;
+                const badge = DOM.cartCountBadge;
+                const totalDisplay = DOM.cartTotalDisplay;
+                list.innerHTML = '';
+                let total = 0;
+                AppState.cart.forEach((item, index) => {
+                    total += item.price;
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center bg-slate-800 rounded p-2 text-sm';
+                    li.innerHTML = `<span class="text-slate-200">${item.name}</span><div><span class="text-slate-300 text-xs">$${item.price.toFixed(2)}</span><button data-remove-index="${index}" class="text-slate-500 hover:text-pink-400">&times;</button></div>`;
+                    list.appendChild(li);
+                });
+                badge.textContent = AppState.cart.length;
+                totalDisplay.textContent = `$${total.toFixed(2)}`;
+                if (AppState.cart.length === 0) {
+                    DOM.cartDropdown.classList.add('hidden');
+                    DOM.cartTrigger.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            function removeCartItem(index) {
+                AppState.cart.splice(index, 1);
+                renderCart();
+            }
+
+            DOM.cartItemsList.addEventListener('click', (e) => {
+                const removeBtn = e.target.closest('[data-remove-index]');
+                if (removeBtn) {
+                    const idx = parseInt(removeBtn.getAttribute('data-remove-index'), 10);
+                    if (!isNaN(idx)) removeCartItem(idx);
+                }
+            });
+
+            function calculateCheckoutTotal() {
+                let total = AppState.cart.reduce((sum, item) => sum + item.price, 0);
+                AppState.selectedUpgrades.forEach(upgradeId => total += AppState.upgradePrices[upgradeId] || 0);
+                total += AppState.pricingMatrix[AppState.activeSubscription] || 0;
+                return total;
+            }
+
+            function updateSubscription(type) {
+                AppState.activeSubscription = type;
+                renderCart();
+            }
+
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            function startCountdown() {
+                if (DOM.countdownSlot) DOM.countdownSlot.textContent = formatTime(AppState.countdownSeconds);
+                const interval = setInterval(() => {
+                    AppState.countdownSeconds -= 1;
+                    if (AppState.countdownSeconds <= 0) {
+                        clearInterval(interval);
+                        if (DOM.countdownSlot) {
+                            DOM.countdownSlot.textContent = 'ALLOCATION EXPIRED';
+                            DOM.countdownSlot.classList.add('text-pink-400');
+                        }
+                    } else if (DOM.countdownSlot) {
+                        DOM.countdownSlot.textContent = formatTime(AppState.countdownSeconds);
+                    }
+                }, 1000);
+            }
+
+            function initMobileMenu() {
+                DOM.mobileToggle.addEventListener('click', () => {
+                    const expanded = DOM.mobileToggle.getAttribute('aria-expanded') === 'true';
+                    DOM.mobileToggle.setAttribute('aria-expanded', !expanded);
+                    DOM.mainNav.classList.toggle('hidden');
+                    DOM.mainNav.classList.toggle('flex');
+                    DOM.mainNav.classList.toggle('flex-col');
+                });
+            }
+
+            function addGlobalCartListener() {
+                const containers = [DOM.productsGrid, DOM.bundlesGrid, DOM.impulseGrid, DOM.moreProductsGrid];
+                containers.forEach(container => {
+                    if (!container) return;
+                    container.addEventListener('click', (e) => {
+                        const btn = e.target.closest('[data-action="add-to-cart"]');
+                        if (!btn) return;
+                        const id = btn.getAttribute('data-product-id');
+                        const name = btn.getAttribute('data-product-name');
+                        const price = parseFloat(btn.getAttribute('data-price'));
+                        if (id && name && !isNaN(price)) addToCart({ id, name, price });
+                    });
+                });
+            }
+
+            function initUpgradesListener() {
+                DOM.upgradesContainer.addEventListener('change', (e) => {
+                    if (e.target.type === 'checkbox' && e.target.name === 'premium-services') {
+                        if (e.target.checked) AppState.selectedUpgrades.add(e.target.id);
+                        else AppState.selectedUpgrades.delete(e.target.id);
+                        renderCart();
+                    }
+                });
+            }
+
+            function initSubscriptionButtons() {
+                DOM.subscriptionButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const type = btn.getAttribute('data-subscription');
+                        if (type) updateSubscription(type);
+                    });
+                });
+            }
+
+            function initShowMoreToggle() {
+                DOM.showMoreBtn.addEventListener('click', () => {
+                    DOM.extraItemsContainer.classList.remove('hidden');
+                    DOM.showMoreBtn.classList.add('hidden');
+                    DOM.showLessBtn.classList.remove('hidden');
+                });
+                DOM.showLessBtn.addEventListener('click', () => {
+                    DOM.extraItemsContainer.classList.add('hidden');
+                    DOM.showMoreBtn.classList.remove('hidden');
+                    DOM.showLessBtn.classList.add('hidden');
+                });
+            }
+
+            function initCartDropdown() {
+                DOM.cartTrigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    DOM.cartDropdown.classList.toggle('hidden');
+                    DOM.cartTrigger.setAttribute('aria-expanded', !DOM.cartDropdown.classList.contains('hidden'));
+                });
+                document.addEventListener('click', (event) => {
+                    if (!DOM.cartTrigger.contains(event.target) && !DOM.cartDropdown.contains(event.target)) {
+                        DOM.cartDropdown.classList.add('hidden');
+                        DOM.cartTrigger.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            // ** FIX: Checkout button redirects to checkout.html **
+            DOM.checkoutBtn.addEventListener('click', () => {
+                window.location.href = 'checkout.html';
+            });
+
+            initMobileMenu();
+            addGlobalCartListener();
+            initUpgradesListener();
+            initSubscriptionButtons();
+            initShowMoreToggle();
+            initCartDropdown();
+            startCountdown();
+            renderCart();
+        })();
+    </script>
+</body>
+</html>
