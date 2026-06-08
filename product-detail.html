@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./dist/output.css" rel="stylesheet">
+    <title>TechStore | Product Details</title>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased relative">
+
+    <!-- same header as shop.html (copy the exact header code) -->
+    <header id="main-header" class="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/75 backdrop-blur-md">
+        <!-- ... paste the same header from index.html ... -->
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <div class="mb-4"><a href="shop.html" class="text-cyan-400 hover:underline">&larr; Back to Shop</a></div>
+        <div id="product-detail-container" class="bg-slate-900/50 rounded-xl border border-slate-800 p-6">
+            <div class="animate-pulse flex space-x-4"><div class="rounded-full bg-slate-700 h-12 w-12"></div><div class="flex-1 space-y-4 py-1"><div class="h-4 bg-slate-700 rounded w-3/4"></div></div></div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 mt-16 text-center text-slate-500 text-sm">&copy; 2026 TechStore</footer>
+
+    <script>
+        const products = [ /* same product array as shop.html */ ];
+        function getCart() { return JSON.parse(localStorage.getItem('techstore_cart') || '[]'); }
+        function saveCart(c) { localStorage.setItem('techstore_cart', JSON.stringify(c)); updateCartUI(); }
+        function addToCart(product) { const c = getCart(); c.push(product); saveCart(c); }
+        function updateCartUI() { /* same as shop.html */ }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        const product = products.find(p => p.id === productId);
+        const container = document.getElementById('product-detail-container');
+        if (!product) {
+            container.innerHTML = `<div class="text-center py-12"><h2 class="text-2xl font-bold text-red-400">Product not found</h2><a href="shop.html" class="text-cyan-400 underline mt-4 inline-block">Return to Shop</a></div>`;
+        } else {
+            const specsHtml = Object.entries(product.specs).map(([k,v]) => `<li class="flex justify-between border-b border-slate-700 py-2"><span class="font-medium text-slate-300">${k}:</span><span class="text-slate-400">${v}</span></li>`).join('');
+            container.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-slate-800 rounded-xl overflow-hidden"><img src="${product.image}" alt="${product.name}" class="w-full h-auto object-cover"></div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-white">${product.name}</h1>
+                        <p class="text-slate-400 mt-2">${product.description}</p>
+                        <div class="mt-4 text-3xl font-bold text-cyan-400">$${product.price.toFixed(2)}</div>
+                        <button id="detail-add-cart" data-id="${product.id}" data-name="${product.name.replace(/"/g, '&quot;')}" data-price="${product.price}" class="mt-6 bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-3 rounded-md font-semibold">Add to Cart</button>
+                        <div class="mt-8"><h2 class="text-xl font-semibold text-white mb-3">Technical Specifications</h2><ul class="space-y-1">${specsHtml}</ul></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detail-add-cart')?.addEventListener('click', (e) => {
+                addToCart({ id: product.id, name: product.name, price: product.price });
+                e.target.textContent = 'Added!';
+                setTimeout(() => e.target.textContent = 'Add to Cart', 1000);
+            });
+        }
+        // cart dropdown toggle + updateCartUI
+    </script>
+</body>
+</html>
