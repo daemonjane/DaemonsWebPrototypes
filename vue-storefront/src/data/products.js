@@ -89,7 +89,6 @@ export const products = [
     rating: 4.4,
     specs: ["80W RMS", "Bluetooth 5.0", "Wooden Sub", "Wired & Wireless"]
   },
-  // Additional trending / extras
   {
     id: "thermal-paste",
     name: "Thermal Matrix Pro Paste",

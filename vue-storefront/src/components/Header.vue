@@ -43,11 +43,11 @@ function closeCartDropdown() {
         <input type="text" id="catalog-search" list="hardware-suggestions" placeholder="Search components..."
                class="w-full max-w-md mx-auto lg:max-w-xs bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 focus-visible:border-cyan-400 transition-colors">
         <datalist id="hardware-suggestions">
-          <option value="Vanguard Prebuilt Rig">
-          <option value="RTX 5070 Graphics Card">
-          <option value="Cyber-Pro Keyboard">
-          <option value="QD-OLED Ultrawide Panel">
-          <option value="Thermal Matrix Compound">
+            <option value="Vanguard Prebuilt Rig"></option>
+            <option value="RTX 5070 Graphics Card"></option>
+            <option value="Cyber-Pro Keyboard"></option>
+            <option value="QD-OLED Ultrawide Panel"></option>
+            <option value="Thermal Matrix Compound"></option>
         </datalist>
       </div>
 
