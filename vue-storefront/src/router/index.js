@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-// Lazy imports (pages load only when visited)
 const Home = () => import('../views/Home.vue')
 const Shop = () => import('../views/Shop.vue')
 const ProductDetail = () => import('../views/ProductDetail.vue')
