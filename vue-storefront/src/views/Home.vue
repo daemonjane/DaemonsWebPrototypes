@@ -11,13 +11,6 @@ const countdownSeconds = ref(300)
 const countdownText = ref('05:00')
 let intervalId = null
 
-const membershipPrices = { monthly: 9.99, annual: 79.99 }
-
-function selectMembership(type) {
-  const name = type === 'monthly' ? 'Monthly Membership' : 'Annual Membership'
-  setMembership(type, name, membershipPrices[type])
-}
-
 const upgradePrices = {
   'vip-build': 19.99,
   'laser-engraving': 14.99,
@@ -34,6 +27,12 @@ function onUpgradeChange(event) {
   }
 }
 
+const membershipPrices = { monthly: 9.99, annual: 79.99 }
+
+function selectMembership(type) {
+  const name = type === 'monthly' ? 'Monthly Membership' : 'Annual Membership'
+  setMembership(type, name, membershipPrices[type])
+}
 
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60)
@@ -58,33 +57,17 @@ onUnmounted(() => {
   if (intervalId) clearInterval(intervalId)
 })
 
-// Membership subscription selection
-const activeSubscription = ref('monthly')
-const pricingMatrix = { monthly: 9.99, annual: 79.99 }
-
-function selectSubscription(type) {
-  activeSubscription.value = type
-}
-
-// Upgrades
-const selectedUpgrades = ref(new Set())
-const upgradePrices = {
-  'vip-build': 19.99,
-  'laser-engraving': 14.99,
-  'hardware-insurance': 2.99
-}
-
 // Show more / less
 const showMoreItems = ref(false)
 
-// Trending items (subset of products)
+// Trending items
 const trendingIds = ['thermal-paste', 'cable-ties', 'cleaning-kit', 'gpu-bracket', 'displayport-cable', 'mouse-bungee']
 const trendingProducts = products.filter(p => trendingIds.includes(p.id))
 
-// Featured products for home (first 3)
+// Featured products
 const featuredProducts = products.filter(p => ['gaming-mouse', 'mousepad', 'usb-hub'].includes(p.id))
 
-// Bundles data (static)
+// Bundles
 const bundles = [
   { id: 'bundle-silent', name: 'Silent Operator Bundle', description: 'Vanguard Desktop + Cyber‑Pro Keyboard + Desk Mat', price: 2596, saved: 152, oldPrice: 2748 },
   { id: 'bundle-immersive', name: 'Immersive Vision Bundle', description: '34" QD‑OLED Monitor + VESA Arm + Bias Lighting Kit', price: 1299, saved: 93, oldPrice: 1392 }
@@ -242,7 +225,7 @@ function quickAdd(product) {
           <legend class="sr-only">Optional hardware upgrades and services</legend>
           <!-- VIP Build -->
           <div class="relative bg-slate-900 rounded-xl p-5 border border-slate-800 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
-            <input type="checkbox" id="vip-build" value="vip-build" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500">
+            <input type="checkbox" id="vip-build" value="vip-build" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500" @change="onUpgradeChange">
             <label for="vip-build" class="space-y-2 cursor-pointer flex-1 select-none">
               <strong class="text-white block transition-colors peer-checked:text-cyan-400">Priority VIP Assembly & Test</strong>
               <p class="text-slate-400 text-sm">Skip the queue. 24‑hour build + stress test.</p>
@@ -251,7 +234,7 @@ function quickAdd(product) {
           </div>
           <!-- Laser Engraving -->
           <div class="relative bg-slate-900 rounded-xl p-5 border border-slate-800 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
-            <input type="checkbox" id="laser-engraving" value="laser-engraving" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500">
+            <input type="checkbox" id="laser-engraving" value="laser-engraving" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500" @change="onUpgradeChange">
             <label for="laser-engraving" class="space-y-2 cursor-pointer flex-1 select-none">
               <strong class="text-white block transition-colors peer-checked:text-cyan-400">Bespoke Laser Engraving</strong>
               <p class="text-slate-400 text-sm">Your handle etched into the chassis.</p>
@@ -269,7 +252,7 @@ function quickAdd(product) {
           </div>
           <!-- Insurance -->
           <div class="relative bg-slate-900 rounded-xl p-5 border border-slate-800 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
-            <input type="checkbox" id="hardware-insurance" value="insurance" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500">
+            <input type="checkbox" id="hardware-insurance" value="insurance" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500" @change="onUpgradeChange">
             <label for="hardware-insurance" class="space-y-2 cursor-pointer flex-1 select-none">
               <strong class="text-white block transition-colors peer-checked:text-cyan-400">Overvoltage Protection Plan</strong>
               <p class="text-slate-400 text-sm">12‑month accidental damage coverage.</p>
@@ -370,7 +353,7 @@ function quickAdd(product) {
             <li>Efficiency score tools</li>
             <li>Stock alerts</li>
           </ul>
-          <button @click="selectSubscription('monthly')" class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Monthly</button>
+          <button @click="selectMembership('monthly')" class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Monthly</button>
         </div>
         <!-- Annual (highlighted) -->
         <div class="relative p-[2px] rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-fuchsia-500 md:scale-105 shadow-xl shadow-cyan-950/40 z-10 hover:shadow-2xl hover:shadow-cyan-900/50 transition-all duration-300">
@@ -385,7 +368,7 @@ function quickAdd(product) {
               <li>Priority drop alerts</li>
               <li>Save 30% vs. monthly</li>
             </ul>
-            <button @click="selectSubscription('annual')" class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Annually</button>
+            <button @click="selectMembership('annual')" class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Annually</button>
           </div>
         </div>
       </div>
