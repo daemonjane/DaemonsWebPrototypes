@@ -52,24 +52,25 @@ export function useCart() {
   }
 
   function addUpgrade(id, name, price) {
-  // Remove any existing upgrade with the same id
-  cart.value = cart.value.filter(item => item.id !== id)
-  cart.value.push({ id, name, price, quantity: 1, type: 'upgrade' })
-  addToast(`Added ${name}`)
-}
-
-function removeUpgrade(id, name) {
-  cart.value = cart.value.filter(item => item.id !== id)
-  addToast(`Removed ${name}`)
-}
-
-function setMembership(type, name, price) {
-  // Remove any existing membership
-  cart.value = cart.value.filter(item => item.type !== 'membership')
-  if (type) {
-    cart.value.push({ id: `membership-${type}`, name, price, quantity: 1, type: 'membership' })
-    addToast(`Selected ${name}`)
+    // Remove any existing upgrade with the same id
+    cart.value = cart.value.filter(item => item.id !== id)
+    cart.value.push({ id, name, price, quantity: 1, type: 'upgrade' })
+    addToast(`Added ${name}`)
   }
-}
+
+  function removeUpgrade(id, name) {
+    cart.value = cart.value.filter(item => item.id !== id)
+    addToast(`Removed ${name}`)
+  }
+
+  function setMembership(type, name, price) {
+    // Remove any existing membership
+    cart.value = cart.value.filter(item => item.type !== 'membership')
+    if (type) {
+      cart.value.push({ id: `membership-${type}`, name, price, quantity: 1, type: 'membership' })
+      addToast(`Selected ${name}`)
+    }
+  }
 
   return { cart, totalItems, totalPrice, addItem, updateQuantity, removeItem, clearCart, addUpgrade, removeUpgrade, setMembership }
+}
