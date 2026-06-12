@@ -23,7 +23,7 @@ function handleAddToCart() {
 <template>
   <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-950/20">
     <router-link :to="`/product/${product.id}`" class="block h-48 w-full bg-slate-800 overflow-hidden">
-      <ImageWithFallback :src="product.image" :alt="product.name" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy" />
+      <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy" />
     </router-link>
     <div class="p-5 flex flex-col flex-1">
       <div class="flex justify-between items-start">
