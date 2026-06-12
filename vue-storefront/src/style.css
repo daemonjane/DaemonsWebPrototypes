@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Enhanced scrollbar */
+/* ===== Scrollbar ===== */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -16,13 +16,12 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #06b6d4;
 }
-
 html {
   scrollbar-color: #0891b2 #0f172a;
   scrollbar-width: thin;
 }
 
-/* Subtle grid background texture */
+/* ===== Grid Background Texture ===== */
 body::before {
   content: '';
   position: fixed;
@@ -35,7 +34,7 @@ body::before {
   z-index: 0;
 }
 
-/* Glow orb decoration */
+/* ===== Hero Glow ===== */
 .hero-glow {
   position: absolute;
   width: 400px;
@@ -49,14 +48,65 @@ body::before {
   animation: floatGlow 6s ease-in-out infinite;
   pointer-events: none;
 }
-
 @keyframes floatGlow {
   0%, 100% { transform: translateX(-50%) translateY(0px); }
   50% { transform: translateX(-50%) translateY(-15px); }
 }
 
-/* Glass-morphism nav */
+/* ===== Glass Header ===== */
 #main-header {
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* ===== Form Inputs Global ===== */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Error state (used in validation) */
+input.border-pink-500,
+textarea.border-pink-500 {
+  border-color: #f472b6 !important; /* tailwind pink-400 */
+  box-shadow: 0 0 0 2px rgba(244, 114, 182, 0.2);
+  animation: shake 0.3s ease-in-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* Error text */
+.text-pink-400 {
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Focus Visible (Accessibility) ===== */
+*:focus-visible {
+  outline: 2px solid #06b6d4; /* cyan-500 */
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ===== Smooth Transitions for Interactive Elements ===== */
+a, button {
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+/* ===== Toast Notification Fade In ===== */
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(1rem);
 }
