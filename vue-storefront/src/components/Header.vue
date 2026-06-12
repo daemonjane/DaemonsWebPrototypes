@@ -30,7 +30,7 @@ function closeCartDropdown() {
       <div class="flex items-center justify-between">
         <router-link to="/" id="brand-logo" class="text-cyan-400 font-bold text-xl sm:text-2xl tracking-widest select-none">TECHSTORE</router-link>
         <button @click="toggleMobileMenu" class="lg:hidden text-slate-400 hover:text-cyan-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 rounded p-1"
-                aria-label="Open menu" :aria-expanded="mobileMenuOpen">
+                aria-label="Toggle navigation menu" :aria-expanded="mobileMenuOpen">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -62,7 +62,7 @@ function closeCartDropdown() {
         <!-- Cart trigger -->
         <div class="relative inline-flex items-center">
           <button @click.stop="toggleCartDropdown" class="text-cyan-400 font-semibold relative pr-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded"
-                  :aria-expanded="cartDropdownOpen" aria-label="Shopping Cart">
+                  :aria-expanded="cartDropdownOpen" aria-label="Shopping cart" aria-haspopup="true">
             Cart
             <span v-if="totalItems > 0" class="absolute -top-1 -right-2 bg-cyan-500 text-black text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
               {{ totalItems }}
