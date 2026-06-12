@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useCart } from '../composables/useCart'
 
 const { cart, totalItems, totalPrice, updateQuantity, removeItem } = useCart()
@@ -20,7 +20,35 @@ function toggleCartDropdown() {
 
 function closeCartDropdown() {
   cartDropdownOpen.value = false
+  document.getElementById('cart-trigger')?.focus()
 }
+
+function trapFocus(event) {
+  if (!cartDropdownOpen.value) return
+  if (event.key === 'Escape') {
+    closeCartDropdown()
+    return
+  }
+  if (event.key !== 'Tab') return
+  const dropdown = document.querySelector('#cart-dropdown')
+  if (!dropdown) return
+  const focusable = dropdown.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  )
+  if (focusable.length === 0) return
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault()
+    last.focus()
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault()
+    first.focus()
+  }
+}
+
+onMounted(() => document.addEventListener('keydown', trapFocus))
+onUnmounted(() => document.removeEventListener('keydown', trapFocus))
 </script>
 
 <template>
@@ -62,7 +90,7 @@ function closeCartDropdown() {
 
         <!-- Cart trigger -->
         <div class="relative inline-flex items-center">
-          <button @click.stop="toggleCartDropdown" class="text-cyan-400 font-semibold relative pr-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded"
+          <button id="cart-trigger" @click.stop="toggleCartDropdown" class="text-cyan-400 font-semibold relative pr-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded"
                   :aria-expanded="cartDropdownOpen" aria-label="Shopping cart" aria-haspopup="true">
             Cart
             <span v-if="totalItems > 0" class="absolute -top-1 -right-2 bg-cyan-500 text-black text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
@@ -71,7 +99,7 @@ function closeCartDropdown() {
           </button>
 
           <!-- Cart dropdown -->
-          <div v-if="cartDropdownOpen" class="absolute right-0 top-full mt-1 w-80 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl p-4 z-50 space-y-3">
+          <div id="cart-dropdown" v-if="cartDropdownOpen" class="absolute right-0 top-full mt-1 w-80 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl p-4 z-50 space-y-3">
             <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Your Cart</h3>
             <ul v-if="cart.length > 0" class="space-y-2 max-h-48 overflow-y-auto text-sm">
               <li v-for="item in cart" :key="item.id" class="flex flex-col gap-1 border-b border-slate-700 pb-2">
