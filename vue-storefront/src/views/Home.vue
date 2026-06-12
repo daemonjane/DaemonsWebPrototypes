@@ -4,12 +4,29 @@ import ProductCard from '../components/ProductCard.vue'
 import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
 
-const { addItem } = useCart()
+const { addItem, addUpgrade, removeUpgrade } = useCart()
 
 // Countdown timer
 const countdownSeconds = ref(300)
 const countdownText = ref('05:00')
 let intervalId = null
+
+const upgradePrices = {
+  'vip-build': 19.99,
+  'laser-engraving': 14.99,
+  'hardware-insurance': 2.99
+}
+
+function onUpgradeChange(event) {
+  const id = event.target.id
+  const name = event.target.labels?.[0]?.innerText || id
+  if (event.target.checked) {
+    addUpgrade(id, name, upgradePrices[id])
+  } else {
+    removeUpgrade(id, name)
+  }
+}
+
 
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60)
