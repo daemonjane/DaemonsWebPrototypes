@@ -5,6 +5,7 @@ const { toasts } = useToast()
 
 <template>
   <div class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none">
+      <!-- Accessibility: live region so screen readers announce new toasts -->
     <div
       v-for="toast in toasts"
       :key="toast.id"
