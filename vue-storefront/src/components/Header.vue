@@ -52,7 +52,8 @@ function closeCartDropdown() {
       </div>
 
       <!-- Desktop nav -->
-      <nav :class="['lg:flex flex-wrap lg:justify-end gap-5 text-sm font-medium w-full', mobileMenuOpen ? 'flex flex-col absolute top-full left-0 w-full bg-slate-900 p-4 border-t border-slate-800 space-y-3 z-40' : 'hidden']">
+      <nav :class="['lg:flex flex-wrap lg:justify-end gap-5 text-sm font-medium w-full', mobileMenuOpen ? 'flex flex-col absolute top-full left-0 w-full bg-slate-900 p-4 border-t border-slate-800 space-y-3 z-40' : 'hidden']"
+           role="navigation" aria-label="Main navigation">
         <router-link to="/" @click="closeMobileMenu" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Home</router-link>
         <router-link to="/shop" @click="closeMobileMenu" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Shop</router-link>
         <router-link to="/contact" @click="closeMobileMenu" class="text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">Contact</router-link>
