@@ -58,7 +58,7 @@ const trendingIds = ['thermal-paste', 'cable-ties', 'cleaning-kit', 'gpu-bracket
 const trendingProducts = products.filter(p => trendingIds.includes(p.id))
 
 // Featured products for home (first 3)
-const featuredProducts = products.filter(p => ['gaming-mouse', 'mousepad', 'usb-hub'].includes(p.id))  // adjust based on original home page grid
+const featuredProducts = products.filter(p => ['gaming-mouse', 'mousepad', 'usb-hub'].includes(p.id))
 
 // Bundles data (static)
 const bundles = [
@@ -67,25 +67,51 @@ const bundles = [
 ]
 
 function addBundleToCart(bundle) {
-  // For bundles, we add them as a single cart item with the bundle ID and price
   addItem({ id: bundle.id, name: bundle.name, price: bundle.price })
 }
 
-// Add trending quick add
 function quickAdd(product) {
   addItem({ id: product.id, name: product.name, price: product.price })
 }
-
-// Add upgrade to cart? Not yet, but we can track selections
 </script>
 
 <template>
   <div class="space-y-20 sm:space-y-28">
     <!-- Hero -->
-    import HeroSection from '../components/Home/HeroSection.vue'
+    <section id="hero" class="relative flex flex-col items-center text-center py-16 sm:py-20 lg:py-24 overflow-hidden">
+      <div class="hero-glow"></div>
+      <div id="hero-core-container" class="relative max-w-3xl space-y-5 sm:space-y-7">
+        <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">SYSTEM_READY</span>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">Your Command Station Awaits</h1>
+        <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto">Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.</p>
+        <div id="hero-actions" class="flex flex-wrap justify-center gap-4 pt-4">
+          <router-link to="/shop" class="bg-cyan-600 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Start Building</router-link>
+          <router-link to="/insights" class="border border-slate-600 text-slate-300 px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Explore Membership</router-link>
+        </div>
+      </div>
+    </section>
 
     <!-- Features -->
-    import FeaturesSection from '../components/Home/FeaturesSection.vue
+    <section id="features" class="space-y-10 sm:space-y-12">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white text-center">Why TechStore?</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+        <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">⚡</div>
+          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Verified Performance</h3>
+          <p class="text-slate-400 text-sm">Every component undergoes a 12‑hour stress test before it leaves the lab.</p>
+        </article>
+        <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📦</div>
+          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Direct Vendor Sourcing</h3>
+          <p class="text-slate-400 text-sm">No middlemen. Authentic parts straight from the production line to your door.</p>
+        </article>
+        <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📊</div>
+          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Optimal Price-to-Quality</h3>
+          <p class="text-slate-400 text-sm">Real‑time market analysis ensures you always get the best value per dollar.</p>
+        </article>
+      </div>
+    </section>
 
     <!-- Products (featured) -->
     <section id="products" class="space-y-10 sm:space-y-12">
