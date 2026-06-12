@@ -4,12 +4,19 @@ import ProductCard from '../components/ProductCard.vue'
 import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
 
-const { addItem, addUpgrade, removeUpgrade } = useCart()
+const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 
 // Countdown timer
 const countdownSeconds = ref(300)
 const countdownText = ref('05:00')
 let intervalId = null
+
+const membershipPrices = { monthly: 9.99, annual: 79.99 }
+
+function selectMembership(type) {
+  const name = type === 'monthly' ? 'Monthly Membership' : 'Annual Membership'
+  setMembership(type, name, membershipPrices[type])
+}
 
 const upgradePrices = {
   'vip-build': 19.99,
