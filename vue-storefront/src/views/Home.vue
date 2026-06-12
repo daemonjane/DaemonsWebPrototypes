@@ -85,11 +85,12 @@ function quickAdd(product) {
 <template>
   <div class="space-y-20 sm:space-y-28">
     <!-- Hero -->
-    <section id="hero" class="relative flex flex-col items-center text-center py-16 sm:py-20 lg:py-24 overflow-hidden">
+    <section id="hero" class="relative flex flex-col items-center text-center py-16 sm:py-20 lg:py-24 overflow-hidden"
+             role="region" aria-labelledby="hero-heading">
       <div class="hero-glow"></div>
       <div id="hero-core-container" class="relative max-w-3xl space-y-5 sm:space-y-7">
         <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">SYSTEM_READY</span>
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">Your Command Station Awaits</h1>
+        <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">Your Command Station Awaits</h1>
         <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto">Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.</p>
         <div id="hero-actions" class="flex flex-wrap justify-center gap-4 pt-4">
           <router-link to="/shop" class="bg-cyan-600 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Start Building</router-link>
@@ -99,8 +100,8 @@ function quickAdd(product) {
     </section>
 
     <!-- Features -->
-    <section id="features" class="space-y-10 sm:space-y-12">
-      <h2 class="text-2xl sm:text-3xl font-bold text-white text-center">Why TechStore?</h2>
+    <section id="features" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="features-heading">
+      <h2 id="features-heading" class="text-2xl sm:text-3xl font-bold text-white text-center">Why TechStore?</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
         <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
           <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">⚡</div>
@@ -121,16 +122,16 @@ function quickAdd(product) {
     </section>
 
     <!-- Products (featured) -->
-    <section id="products" class="space-y-10 sm:space-y-12">
+    <section id="products" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="products-heading">
       <div class="text-center space-y-3">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Core Systems & Gear</h2>
+        <h2 id="products-heading" class="text-2xl sm:text-3xl font-bold text-white">Core Systems & Gear</h2>
         <p class="text-slate-400 text-sm sm:text-base flex items-center justify-center gap-2">
           <span class="flex h-2 w-2 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
           </span>
           <strong>Next Verified Allocation Drop:</strong>
-          <span class="text-cyan-300 font-mono">{{ countdownText }}</span>
+          <span class="text-cyan-300 font-mono" aria-live="polite">{{ countdownText }}</span>
         </p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -176,9 +177,9 @@ function quickAdd(product) {
     </section>
 
     <!-- Bundles -->
-    <section id="bundles" class="space-y-10 sm:space-y-12">
+    <section id="bundles" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="bundles-heading">
       <div class="text-center space-y-3">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Complete Your Spacestation</h2>
+        <h2 id="bundles-heading" class="text-2xl sm:text-3xl font-bold text-white">Complete Your Spacestation</h2>
         <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Hand‑picked combos that save you money. Bundle pricing adjusts with demand.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
@@ -214,9 +215,9 @@ function quickAdd(product) {
     </section>
 
     <!-- Micro-upgrades -->
-    <section id="micro-upgrades" class="space-y-10 sm:space-y-12">
+    <section id="micro-upgrades" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="upgrades-heading">
       <div class="text-center space-y-3">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Personalize & Protect</h2>
+        <h2 id="upgrades-heading" class="text-2xl sm:text-3xl font-bold text-white">Personalize & Protect</h2>
         <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Small add‑ons that make your rig truly yours. They're so affordable you'll want them all.</p>
       </div>
 
@@ -263,8 +264,8 @@ function quickAdd(product) {
       </form>
 
       <!-- Trending items -->
-      <div id="impulse-checkout-counter" class="bg-slate-900 rounded-xl p-5 sm:p-6 border border-slate-800" role="group">
-        <h3 class="text-lg sm:text-xl font-semibold text-white mb-5 flex items-center gap-2">
+      <div id="impulse-checkout-counter" class="bg-slate-900 rounded-xl p-5 sm:p-6 border border-slate-800" role="group" aria-labelledby="trending-heading">
+        <h3 id="trending-heading" class="text-lg sm:text-xl font-semibold text-white mb-5 flex items-center gap-2">
           <span class="flex h-2 w-2 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
@@ -292,9 +293,9 @@ function quickAdd(product) {
     </section>
 
     <!-- Insights Preview (locked) -->
-    <section id="insights-preview" class="space-y-10 sm:space-y-12">
+    <section id="insights-preview" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="insights-preview-heading">
       <div class="text-center space-y-3">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white flex items-center justify-center gap-2">
+        <h2 id="insights-preview-heading" class="text-2xl sm:text-3xl font-bold text-white flex items-center justify-center gap-2">
           <span class="flex h-2 w-2 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
@@ -337,9 +338,9 @@ function quickAdd(product) {
     </section>
 
     <!-- Insights Membership Tiers -->
-    <section id="insights-membership" class="space-y-10 sm:space-y-12">
+    <section id="insights-membership" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="membership-heading">
       <div class="text-center space-y-3">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Insights Membership</h2>
+        <h2 id="membership-heading" class="text-2xl sm:text-3xl font-bold text-white">Insights Membership</h2>
         <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Know when to buy. Live market data, price alerts, and benchmarking tools.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
@@ -375,9 +376,9 @@ function quickAdd(product) {
     </section>
 
     <!-- Show More Items (extra products) -->
-    <section id="more-products" class="space-y-10 sm:space-y-12">
+    <section id="more-products" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="more-products-heading">
       <div class="text-center space-y-3">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Explore More Gear</h2>
+        <h2 id="more-products-heading" class="text-2xl sm:text-3xl font-bold text-white">Explore More Gear</h2>
         <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Extra essentials that didn't fit the main deck. Still 100% verified.</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
