@@ -7,7 +7,7 @@
  * @prop {Object} product - The product data object from products.js
  * @prop {boolean} [showFull=false] - If true, shows specs + quantity selector on hover
  */
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useFavorites } from '../composables/useFavorites'
@@ -19,6 +19,15 @@ const props = defineProps({
 })
 
 const { addItem } = useCart()
+
+const badge = computed(() => {
+  const newIds = ['stream-deck', 'gaming-chair', 'cpu-cooler', 'nvme-ssd', 'sleeved-cables', 'microphone']
+  const bestSellerIds = ['vanguard-desktop', 'ultrawide-monitor', 'gaming-mouse', 'wireless-headset']
+  if (newIds.includes(props.product.id)) return { label: 'NEW', class: 'bg-emerald-600 text-white' }
+  if (bestSellerIds.includes(props.product.id)) return { label: 'BEST SELLER', class: 'bg-amber-600 text-white' }
+  if (props.product.price > 1000) return { label: 'PREMIUM', class: 'bg-fuchsia-600 text-white' }
+  return null
+})
 const { toggle: toggleFavorite, isFavorite } = useFavorites()
 const router = useRouter()
 const quantity = ref(1)
@@ -55,13 +64,18 @@ function closeQuickView() {
     @keydown.enter.prevent="navigateToProduct"
   >
     <!-- Product image (clickable area inside the card) -->
-    <router-link :to="`/product/${product.id}`" class="block h-48 w-full bg-slate-800 overflow-hidden" @click.stop>
+    <router-link :to="`/product/${product.id}`" class="block h-48 w-full bg-slate-800 overflow-hidden relative" @click.stop>
       <img
         :src="product.image"
         :alt="product.name"
         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
         loading="lazy"
       />
+      <span
+        v-if="badge"
+        class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-lg"
+        :class="badge.class"
+      >{{ badge.label }}</span>
     </router-link>
 
     <div class="p-5 flex flex-col flex-1">
