@@ -87,6 +87,17 @@ function quickAdd(product) {
 <template>
   <div class="space-y-20 sm:space-y-28">
     <!-- Hero -->
+    <!-- Quick Section Nav -->
+    <nav class="flex flex-wrap justify-center gap-2 sm:gap-3 py-4 -mb-8" aria-label="Section quick links">
+      <a href="#features" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Features</a>
+      <a href="#testimonials" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Reviews</a>
+      <a href="#products" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Gear</a>
+      <a href="#bundles" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Bundles</a>
+      <a href="#micro-upgrades" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Upgrades</a>
+      <a href="#insights-membership" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Membership</a>
+    </nav>
+
+    <!-- Hero -->
     <section id="hero" class="relative flex flex-col items-center text-center py-12 sm:py-20 lg:py-24 overflow-hidden"
              role="region" aria-labelledby="hero-heading">
       <div class="hero-glow"></div>
