@@ -17,29 +17,31 @@ useSalesNotifications()
 
 <template>
   <div class="min-h-screen bg-slate-950 text-slate-200 font-sans antialiased selection:bg-cyan-500 selection:text-black relative">
-    <!-- Skip link for keyboard users -->
-    <a
-      href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-cyan-600 focus:text-white focus:px-4 focus:py-2 focus:rounded"
-    >
-      Skip to main content
-    </a>
-
-    <Header />
-
-    <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
-      <SkeletonLoader v-if="showSkeleton" />
-      <router-view v-else v-slot="{ Component }">
-        <transition name="page" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
-    </main>
-
     <BackgroundEffects />
-    <Footer />
-    <ScrollToTop />
-    <ToastContainer />
-    <KeyboardShortcuts />
+    <div class="relative z-10">
+      <!-- Skip link for keyboard users -->
+      <a
+        href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-cyan-600 focus:text-white focus:px-4 focus:py-2 focus:rounded"
+      >
+        Skip to main content
+      </a>
+
+      <Header />
+
+      <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
+        <SkeletonLoader v-if="showSkeleton" />
+        <router-view v-else v-slot="{ Component }">
+          <transition name="page" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </main>
+
+      <Footer />
+      <ScrollToTop />
+      <ToastContainer />
+      <KeyboardShortcuts />
+    </div>
   </div>
 </template>

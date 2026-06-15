@@ -45,26 +45,10 @@
   </div>
 </template>
 
-<style scoped>
+<style>
 .particle {
   position: absolute;
   border-radius: 50%;
   opacity: 0.6;
-}
-@keyframes particleFloat {
-  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-  10% { opacity: 0.6; }
-  45% { opacity: 0.8; }
-  90% { opacity: 0.3; }
-  100% { transform: translateY(-100vh) translateX(50px) scale(0.5); opacity: 0; }
-}
-@keyframes orbFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -20px) scale(1.05); }
-  66% { transform: translate(-20px, 15px) scale(0.95); }
-}
-@keyframes gridPulse {
-  0%, 100% { opacity: 0.015; }
-  50% { opacity: 0.03; }
 }
 </style>
