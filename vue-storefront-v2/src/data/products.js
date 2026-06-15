@@ -158,5 +158,15 @@ export const products = [
     image: "/assets/stream-deck.svg",
     rating: 4.7,
     specs: ["32 LCD Keys", "Customizable Profiles", "USB-C", "Plugin SDK Support"]
+  },
+  {
+    id: "gaming-chair",
+    name: "Apex Racing Chair",
+    price: 449.99,
+    category: "peripherals",
+    description: "Ergonomic racing-style chair with lumbar support and 4D armrests.",
+    image: "/assets/gaming-chair.svg",
+    rating: 4.5,
+    specs: ["PU Leather", "Lumbar Cushion", "4D Armrests", "180° Recline"]
   }
 ]
