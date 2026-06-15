@@ -1,146 +1,184 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import ProductCard from '../components/ProductCard.vue'
-import { products } from '../data/products'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useCart } from '../composables/useCart'
+import { products } from '../data/products'
 
-const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
+const route = useRoute()
+const { totalItems } = useCart()
 
-const countdownSeconds = ref(300)
-const countdownText = ref('05:00')
-let intervalId = null
+const mobileMenuOpen = ref(false)
+const searchQuery = ref('')
+const searchFocused = ref(false)
 
-const upgradePrices = {
-  'vip-build': 19.99,
-  'laser-engraving': 14.99,
-  'hardware-insurance': 2.99
-}
-
-function onUpgradeChange(event) {
-  const id = event.target.id
-  const name = event.target.labels?.[0]?.innerText || id
-  if (event.target.checked) addUpgrade(id, name, upgradePrices[id])
-  else removeUpgrade(id, name)
-}
-
-const membershipPrices = { monthly: 9.99, annual: 79.99 }
-
-function selectMembership(type) {
-  const name = type === 'monthly' ? 'Monthly Membership' : 'Annual Membership'
-  setMembership(type, name, membershipPrices[type])
-}
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60)
-  const secs = seconds % 60
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-}
-
-onMounted(() => {
-  countdownText.value = formatTime(countdownSeconds.value)
-  intervalId = setInterval(() => {
-    countdownSeconds.value--
-    if (countdownSeconds.value <= 0) {
-      countdownText.value = 'ALLOCATION EXPIRED'
-      clearInterval(intervalId)
-    } else {
-      countdownText.value = formatTime(countdownSeconds.value)
-    }
-  }, 1000)
+const searchResults = computed(() => {
+  if (!searchQuery.value.trim()) return []
+  const q = searchQuery.value.toLowerCase()
+  return products
+    .filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
+    .slice(0, 5)
 })
 
-onUnmounted(() => { if (intervalId) clearInterval(intervalId) })
-
-const showMoreItems = ref(false)
-const trendingIds = ['thermal-paste', 'cable-ties', 'cleaning-kit', 'gpu-bracket', 'displayport-cable', 'mouse-bungee']
-const trendingProducts = products.filter(p => trendingIds.includes(p.id))
-const featuredProducts = products.filter(p => ['gaming-mouse', 'mousepad', 'usb-hub'].includes(p.id))
-const bundles = [
-  { id: 'bundle-silent', name: 'Silent Operator Bundle', description: 'Vanguard Desktop + Cyber‑Pro Keyboard + Desk Mat', price: 2596, saved: 152, oldPrice: 2748 },
-  { id: 'bundle-immersive', name: 'Immersive Vision Bundle', description: '34" QD‑OLED Monitor + VESA Arm + Bias Lighting Kit', price: 1299, saved: 93, oldPrice: 1392 }
+const navLinks = [
+  { path: '/', label: 'Home' },
+  { path: '/shop', label: 'Shop' },
+  { path: '/favorites', label: 'Favorites' },
+  { path: '/insights', label: 'Insights' },
+  { path: '/about', label: 'About' },
+  { path: '/contact', label: 'Contact' },
 ]
 
-function addBundleToCart(bundle) { addItem({ id: bundle.id, name: bundle.name, price: bundle.price }) }
-function quickAdd(product) { addItem({ id: product.id, name: product.name, price: product.price }) }
+function closeSearch() {
+  setTimeout(() => { searchFocused.value = false }, 200)
+}
 </script>
 
 <template>
-  <div class="space-y-20 sm:space-y-28">
-    <!-- Hero -->
-    <section id="hero" class="relative flex flex-col items-center text-center py-16 sm:py-20 lg:py-24 overflow-hidden">
-      <div class="hero-glow"></div>
-      <div id="hero-core-container" class="relative max-w-3xl space-y-5 sm:space-y-7">
-        <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">SYSTEM_READY</span>
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">Your Command Station Awaits</h1>
-        <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto">Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.</p>
-        <div id="hero-actions" class="flex flex-wrap justify-center gap-4 pt-4">
-          <router-link to="/shop" class="bg-cyan-600 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Start Building</router-link>
-          <router-link to="/insights" class="border border-slate-600 text-slate-300 px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Explore Membership</router-link>
+  <header
+    id="main-header"
+    class="sticky top-0 z-40 bg-slate-950/80 border-b border-slate-800"
+    role="banner"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16 gap-4">
+
+        <!-- Logo -->
+        <router-link
+          to="/"
+          class="text-lg sm:text-xl font-bold text-white tracking-tight hover:text-cyan-400 transition-colors shrink-0"
+          aria-label="TechStore Home"
+        >
+          <span class="text-cyan-400">&lt;</span>TECH<span class="text-cyan-400">/</span>STORE<span class="text-cyan-400">&gt;</span>
+        </router-link>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-1" aria-label="Main navigation">
+          <router-link
+            v-for="link in navLinks"
+            :key="link.path"
+            :to="link.path"
+            :class="[
+              'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              route.path === link.path
+                ? 'text-cyan-400 bg-cyan-950/30'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+            ]"
+          >
+            {{ link.label }}
+          </router-link>
+        </nav>
+
+        <!-- Search + Cart + Mobile Toggle -->
+        <div class="flex items-center gap-3">
+
+          <!-- Search (desktop) -->
+          <div class="hidden sm:relative sm:block">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search products..."
+              class="w-40 lg:w-56 bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
+              @focus="searchFocused = true"
+              @blur="closeSearch"
+              aria-label="Search products"
+              autocomplete="off"
+            >
+            <div
+              v-if="searchFocused && searchResults.length > 0"
+              class="absolute top-full mt-1 left-0 right-0 bg-slate-900 border border-slate-700 rounded-md shadow-xl overflow-hidden z-50"
+            >
+              <router-link
+                v-for="result in searchResults"
+                :key="result.id"
+                :to="`/product/${result.id}`"
+                class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 transition-colors text-sm"
+                @click="searchQuery = ''; searchFocused = false"
+              >
+                <div class="w-8 h-8 rounded bg-slate-700 shrink-0 overflow-hidden">
+                  <img :src="result.image" :alt="result.name" class="w-full h-full object-cover">
+                </div>
+                <div class="min-w-0">
+                  <p class="text-slate-200 truncate">{{ result.name }}</p>
+                  <p class="text-cyan-400 text-xs">${{ result.price.toFixed(2) }}</p>
+                </div>
+              </router-link>
+            </div>
+          </div>
+
+          <!-- Cart -->
+          <router-link
+            to="/checkout"
+            class="relative p-2 text-slate-400 hover:text-cyan-400 transition-colors"
+            aria-label="View cart"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+            </svg>
+            <span
+              v-if="totalItems > 0"
+              class="absolute -top-0.5 -right-0.5 bg-cyan-500 text-black text-[10px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1"
+              aria-live="polite"
+            >
+              {{ totalItems }}
+            </span>
+          </router-link>
+
+          <!-- Mobile menu toggle -->
+          <button
+            class="md:hidden p-2 text-slate-400 hover:text-white transition-colors"
+            @click="mobileMenuOpen = !mobileMenuOpen"
+            :aria-label="mobileMenuOpen ? 'Close menu' : 'Open menu'"
+            :aria-expanded="mobileMenuOpen"
+          >
+            <svg v-if="!mobileMenuOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Features -->
-    <section id="features" class="space-y-10 sm:space-y-12">
-      <h2 class="text-2xl sm:text-3xl font-bold text-white text-center">Why TechStore?</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-        <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
-          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">⚡</div>
-          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Verified Performance</h3>
-          <p class="text-slate-400 text-sm">Every component undergoes a 12‑hour stress test before it leaves the lab.</p>
-        </article>
-        <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
-          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📦</div>
-          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Direct Vendor Sourcing</h3>
-          <p class="text-slate-400 text-sm">No middlemen. Authentic parts straight from the production line to your door.</p>
-        </article>
-        <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
-          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📊</div>
-          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Optimal Price-to-Quality</h3>
-          <p class="text-slate-400 text-sm">Real‑time market analysis ensures you always get the best value per dollar.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Products (featured) -->
-    <section id="products" class="space-y-10 sm:space-y-12">
-      <div class="text-center space-y-3">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Core Systems & Gear</h2>
-        <p class="text-slate-400 text-sm sm:text-base flex items-center justify-center gap-2">
-          <span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span>
-          <strong>Next Verified Allocation Drop:</strong>
-          <span class="text-cyan-300 font-mono" aria-live="polite">{{ countdownText }}</span>
-        </p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        <!-- Vanguard Desktop large card -->
-        <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col md:col-span-2 md:flex-row group transition-all duration-300 hover:border-slate-700 hover:shadow-xl hover:shadow-cyan-950/30 hover:-translate-y-1 transform">
-          <div class="w-full md:w-1/2 shrink-0 bg-slate-800 aspect-[16/10] md:aspect-auto md:h-full relative overflow-hidden">
-            <img src="/assets/vanguard-desktop-fallback.png" alt="Vanguard Gaming Desktop" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+    <!-- Mobile Menu -->
+    <transition
+      enter-active-class="transition-all duration-200 ease-out"
+      leave-active-class="transition-all duration-150 ease-in"
+      enter-from-class="opacity-0 max-h-0"
+      enter-to-class="opacity-100 max-h-96"
+      leave-from-class="opacity-100 max-h-96"
+      leave-to-class="opacity-0 max-h-0"
+    >
+      <nav v-if="mobileMenuOpen" class="md:hidden border-t border-slate-800 bg-slate-950 overflow-hidden" aria-label="Mobile navigation">
+        <div class="px-4 py-3 space-y-1">
+          <!-- Mobile search -->
+          <div class="sm:hidden mb-2">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search products..."
+              class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              aria-label="Search products"
+              autocomplete="off"
+            >
           </div>
-          <div class="p-5 sm:p-6 flex flex-col flex-1 justify-between space-y-4">
-            <div class="space-y-4">
-              <div class="flex justify-between items-start">
-                <h3 class="text-lg sm:text-xl font-bold text-white">Vanguard Series Core i7 / <mark class="bg-cyan-900/40 text-cyan-300 px-1.5 py-0.5 rounded text-sm">RTX 5070</mark></h3>
-                <span class="bg-cyan-500/10 text-cyan-400 text-xs font-mono px-2 py-0.5 rounded border border-cyan-500/20 uppercase tracking-wider hidden sm:inline">Flagship Rig</span>
-              </div>
-              <p class="text-slate-400 text-sm leading-relaxed">Extreme workload desktop. Liquid‑cooled silence engineered for absolute dominance.</p>
-              <div class="space-y-2"><label class="text-xs text-slate-500 font-medium block">Price-to-Quality Metric:</label><meter min="0" max="10" low="4" high="7" optimum="9" value="9.4" class="w-full max-w-xs h-2 block">9.4/10</meter></div>
-              <details class="text-sm text-slate-400"><summary class="font-medium text-slate-300 hover:text-cyan-400 cursor-pointer transition-colors">Technical Blueprint</summary><ul class="mt-2 space-y-1.5 list-disc list-inside bg-slate-950/40 p-3 rounded-lg border border-slate-800/60 font-mono text-xs"><li><strong class="text-slate-300">GPU:</strong> 12GB Next‑Gen</li><li><strong class="text-slate-300">CPU:</strong> Intel i7‑14th, 20‑Core</li><li><strong class="text-slate-300">Cooling:</strong> 360mm AIO</li></ul></details>
-            </div>
-            <div class="flex items-center justify-between pt-4 border-t border-slate-800">
-              <span class="text-xl sm:text-2xl font-mono font-bold text-white">$2,499</span>
-              <button @click="addItem({ id: 'vanguard-desktop', name: 'Vanguard Series Core i7 / RTX 5070', price: 2499 })" class="bg-cyan-600 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-md text-sm font-semibold hover:bg-cyan-500 shadow-md hover:shadow-lg hover:shadow-cyan-500/20 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add to Cart</button>
-            </div>
-          </div>
-        </article>
-        <ProductCard :product="products.find(p => p.id === 'cyberpro-keyboard')" />
-        <ProductCard :product="products.find(p => p.id === 'ultrawide-monitor')" />
-      </div>
-    </section>
-
-    <!-- Bundles, Micro-upgrades, Insights Preview, Membership, More Products sections remain the same as in previous full Home.vue -->
-    <!-- (I'm omitting the repetitive sections here for brevity, but the full file is the exact same as the last Home.vue we provided in Task 3, with the aria-live addition on the countdown span.) -->
-    <!-- Please use the Home.vue from the final commit of Task 3 and add `aria-live="polite"` to that one span. -->
-  </div>
+          <router-link
+            v-for="link in navLinks"
+            :key="link.path"
+            :to="link.path"
+            :class="[
+              'block px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              route.path === link.path
+                ? 'text-cyan-400 bg-cyan-950/30'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+            ]"
+            @click="mobileMenuOpen = false"
+          >
+            {{ link.label }}
+          </router-link>
+        </div>
+      </nav>
+    </transition>
+  </header>
 </template>
