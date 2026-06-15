@@ -6,9 +6,11 @@ import ScrollToTop from './components/ScrollToTop.vue'
 import ToastContainer from './components/ToastContainer.vue'
 import SkeletonLoader from './components/SkeletonLoader.vue'
 import { useRouteLoading } from './composables/useRouteLoading'
+import { useSalesNotifications } from './composables/useSalesNotifications'
 
 const route = useRoute()
 const { showSkeleton } = useRouteLoading()
+useSalesNotifications()
 </script>
 
 <template>
