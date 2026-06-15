@@ -7,6 +7,7 @@ import ToastContainer from './components/ToastContainer.vue'
 import SkeletonLoader from './components/SkeletonLoader.vue'
 import { useRouteLoading } from './composables/useRouteLoading'
 import { useSalesNotifications } from './composables/useSalesNotifications'
+import KeyboardShortcuts from './components/KeyboardShortcuts.vue'
 
 const route = useRoute()
 const { showSkeleton } = useRouteLoading()
@@ -37,5 +38,6 @@ useSalesNotifications()
     <Footer />
     <ScrollToTop />
     <ToastContainer />
+    <KeyboardShortcuts />
   </div>
 </template>
