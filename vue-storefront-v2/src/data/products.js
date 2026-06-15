@@ -178,5 +178,15 @@ export const products = [
     image: "/assets/cpu-cooler.svg",
     rating: 4.9,
     specs: ["Dual Tower", "NF-A15 Fans", "6 Heatpipes", "LGA1851 Compatible"]
+  },
+  {
+    id: "nvme-ssd",
+    name: "Samsung 990 Pro 2TB",
+    price: 189.99,
+    category: "peripherals",
+    description: "PCIe 4.0 NVMe M.2 SSD with blazing 7450MB/s read speeds.",
+    image: "/assets/nvme-ssd.svg",
+    rating: 4.8,
+    specs: ["2TB Capacity", "7450 MB/s Read", "PCIe 4.0", "Samsung V-NAND"]
   }
 ]
