@@ -95,7 +95,7 @@ function placeOrder() {
   addToast('Order placed successfully!', 'success')
   setTimeout(() => {
     clearCart()
-    router.push('/')
+    router.push('/confirmation')
   }, 1500)
 }
 </script>
