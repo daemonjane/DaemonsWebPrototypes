@@ -168,5 +168,15 @@ export const products = [
     image: "/assets/gaming-chair.svg",
     rating: 4.5,
     specs: ["PU Leather", "Lumbar Cushion", "4D Armrests", "180° Recline"]
+  },
+  {
+    id: "cpu-cooler",
+    name: "Noctua NH-D15 Chromax",
+    price: 109.99,
+    category: "peripherals",
+    description: "Dual-tower air cooler with premium NF-A15 fans, silent operation.",
+    image: "/assets/cpu-cooler.svg",
+    rating: 4.9,
+    specs: ["Dual Tower", "NF-A15 Fans", "6 Heatpipes", "LGA1851 Compatible"]
   }
 ]
