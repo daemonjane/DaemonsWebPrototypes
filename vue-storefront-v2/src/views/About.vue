@@ -124,20 +124,20 @@ const milestones = [
     <div class="bg-slate-900 p-6 sm:p-8 rounded-xl border border-slate-800">
       <h2 class="text-xl font-semibold text-white mb-4">Team</h2>
       <div class="grid sm:grid-cols-2 gap-4 text-sm">
-        <div class="flex items-center gap-3 bg-slate-800/50 rounded-lg p-3 hover:bg-slate-800 hover:border-cyan-800/50 border border-transparent transition-all duration-200 group">
+        <a href="https://github.com/daemonjane" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-slate-800/50 rounded-lg p-3 hover:bg-slate-800 hover:border-cyan-800/50 border border-transparent transition-all duration-200 group">
           <div class="w-10 h-10 rounded-full bg-cyan-900/40 flex items-center justify-center text-cyan-400 font-mono font-bold group-hover:scale-110 transition-transform">JD</div>
           <div>
-            <p class="text-white font-medium">Jane Daemon</p>
-            <p class="text-slate-500 group-hover:text-cyan-400 transition-colors">Founder & Lead Engineer</p>
+            <p class="text-white font-medium group-hover:text-cyan-400 transition-colors">Jane Daemon</p>
+            <p class="text-slate-500 group-hover:text-cyan-400 transition-colors flex items-center gap-1">Founder & Lead Engineer <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></p>
           </div>
-        </div>
-        <div class="flex items-center gap-3 bg-slate-800/50 rounded-lg p-3 hover:bg-slate-800 hover:border-cyan-800/50 border border-transparent transition-all duration-200 group">
+        </a>
+        <a href="https://git.osinode.com/Ositcom/charbel_elias" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-slate-800/50 rounded-lg p-3 hover:bg-slate-800 hover:border-cyan-800/50 border border-transparent transition-all duration-200 group">
           <div class="w-10 h-10 rounded-full bg-fuchsia-900/40 flex items-center justify-center text-fuchsia-400 font-mono font-bold group-hover:scale-110 transition-transform">CE</div>
           <div>
-            <p class="text-white font-medium">Charbel Elias</p>
-            <p class="text-slate-500 group-hover:text-cyan-400 transition-colors">Systems Architect</p>
+            <p class="text-white font-medium group-hover:text-cyan-400 transition-colors">Charbel Elias</p>
+            <p class="text-slate-500 group-hover:text-cyan-400 transition-colors flex items-center gap-1">Systems Architect <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>
