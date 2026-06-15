@@ -17,7 +17,11 @@ import ToastContainer from './components/ToastContainer.vue'
     <Header />
 
     <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </main>
 
     <Footer />
