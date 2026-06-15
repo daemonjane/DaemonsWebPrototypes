@@ -10,6 +10,7 @@ const Register = () => import('../views/Register.vue')
 const Contact = () => import('../views/Contact.vue')
 const About = () => import('../views/About.vue')
 const Insights = () => import('../views/Insights.vue')
+const FAQ = () => import('../views/FAQ.vue')
 const NotFound = () => import('../views/NotFound.vue')
 
 const routes = [
@@ -23,6 +24,7 @@ const routes = [
   { path: '/contact', component: Contact },
   { path: '/about', component: About },
   { path: '/insights', component: Insights },
+  { path: '/faq', component: FAQ },
   { path: '/:pathMatch(.*)*', component: NotFound },
 ]
 

@@ -29,6 +29,7 @@ const navLinks = [
   { path: '/shop', label: 'Shop' },
   { path: '/favorites', label: 'Favorites' },
   { path: '/insights', label: 'Insights' },
+  { path: '/faq', label: 'FAQ' },
   { path: '/about', label: 'About' },
   { path: '/contact', label: 'Contact' },
 ]
