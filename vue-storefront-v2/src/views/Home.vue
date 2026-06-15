@@ -123,6 +123,37 @@ function quickAdd(product) {
       </div>
     </section>
 
+    <!-- Testimonials -->
+    <section id="testimonials" class="space-y-8 sm:space-y-10" role="region" aria-labelledby="testimonials-heading">
+      <h2 id="testimonials-heading" class="text-2xl sm:text-3xl font-bold text-white text-center">Trusted by Builders</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-slate-900 rounded-xl p-5 border border-slate-800 space-y-3 hover:border-slate-700 transition-all duration-300">
+          <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★★</div>
+          <p class="text-sm text-slate-400 leading-relaxed">"The Vanguard desktop is an absolute beast. Silent, cool, and rips through 4K rendering like nothing."</p>
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-800">
+            <div class="w-7 h-7 rounded-full bg-cyan-900/40 flex items-center justify-center text-cyan-400 text-xs font-mono font-bold">MK</div>
+            <div><p class="text-xs text-white font-medium">Marcus K.</p><p class="text-[10px] text-slate-500">Verified Buyer</p></div>
+          </div>
+        </div>
+        <div class="bg-slate-900 rounded-xl p-5 border border-slate-800 space-y-3 hover:border-slate-700 transition-all duration-300">
+          <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★★</div>
+          <p class="text-sm text-slate-400 leading-relaxed">"Quick shipping, well-packaged, and the QD-OLED monitor exceeded every expectation. Colors are unreal."</p>
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-800">
+            <div class="w-7 h-7 rounded-full bg-fuchsia-900/40 flex items-center justify-center text-fuchsia-400 text-xs font-mono font-bold">SL</div>
+            <div><p class="text-xs text-white font-medium">Sarah L.</p><p class="text-[10px] text-slate-500">Verified Buyer</p></div>
+          </div>
+        </div>
+        <div class="bg-slate-900 rounded-xl p-5 border border-slate-800 space-y-3 hover:border-slate-700 transition-all duration-300 sm:col-span-2 lg:col-span-1">
+          <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★☆</div>
+          <p class="text-sm text-slate-400 leading-relaxed">"Great selection of components. The market insights helped me time my GPU purchase perfectly. Saved $200."</p>
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-800">
+            <div class="w-7 h-7 rounded-full bg-emerald-900/40 flex items-center justify-center text-emerald-400 text-xs font-mono font-bold">DJ</div>
+            <div><p class="text-xs text-white font-medium">Daemon J.</p><p class="text-[10px] text-slate-500">Insights Member</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Recently Viewed -->
     <section v-if="recentlyViewed.length > 0" id="recently-viewed" class="space-y-6 sm:space-y-8" role="region" aria-labelledby="recently-viewed-heading">
       <h2 id="recently-viewed-heading" class="text-lg sm:text-xl font-semibold text-white flex items-center gap-2">
