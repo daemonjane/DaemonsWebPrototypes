@@ -148,5 +148,15 @@ export const products = [
     image: "/assets/MouseBungee.webp",
     rating: 4.1,
     specs: ["Spring‑arm", "Non‑slip Base", "Lightweight"]
+  },
+  {
+    id: "stream-deck",
+    name: "Stream Deck XL",
+    price: 199.99,
+    category: "peripherals",
+    description: "32 customizable LCD keys for streaming and productivity.",
+    image: "/assets/stream-deck.svg",
+    rating: 4.7,
+    specs: ["32 LCD Keys", "Customizable Profiles", "USB-C", "Plugin SDK Support"]
   }
 ]
