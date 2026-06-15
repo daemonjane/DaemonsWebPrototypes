@@ -6,6 +6,7 @@ import { validateForm } from '../utils/validation'
 import EmptyState from '../components/EmptyState.vue'
 import StepperIndicator from '../components/StepperIndicator.vue'
 import { useToast } from '../composables/useToast'
+import FreeShippingBar from '../components/FreeShippingBar.vue'
 
 const { cart, totalPrice, clearCart } = useCart()
 const router = useRouter()
@@ -105,6 +106,7 @@ function placeOrder() {
     <EmptyState v-if="!cart.length" icon="cart" title="Your cart is empty" message="Add some products before checking out." action-label="Browse Shop" action-to="/shop" />
 
     <template v-else>
+      <FreeShippingBar class="mb-4" />
       <StepperIndicator :steps="steps" :current="currentStep" />
       <div class="grid md:grid-cols-2 gap-8">
 
