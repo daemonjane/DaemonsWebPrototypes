@@ -39,6 +39,7 @@ const { count } = useLiveVisitorCount()
             <li><router-link to="/login" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Account</router-link></li>
             <li><router-link to="/register" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Register</router-link></li>
             <li><router-link to="/faq" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">FAQ</router-link></li>
+            <li><router-link to="/tracking" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Order Tracking</router-link></li>
           </ul>
         </div>
 
