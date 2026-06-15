@@ -3,9 +3,30 @@
 ## [Unreleased]
 
 ### Added
+- Immersive animated background (particles, glow orbs, gradient mesh, noise texture)
+- AI-generated abstract geometric SVG art on Home hero and About page
+- Animated tech stack bars on About page
+- Keyboard shortcut modal triggered by `?` key
+- Order confirmation page after checkout
+- Free shipping progress bar in checkout
+- Loading spinner button state for add-to-cart on ProductCard and ProductDetail
+- Floating form labels on checkout inputs
+- Grouped search suggestions by category
+- Category filter icons on Shop page
+- Price comparison tooltip on ProductCard
+- Scroll left/right arrows on recently viewed section
+- Smooth dark mode transition CSS
+- Stock-level dots indicator on ProductCard
+- Category hero banner with icons on Shop page
+- Image zoom effect on ProductDetail hover
+- Enhanced 404 page with animated radar SVG background
+- Enhanced hero glow with multi-color rotating aura
+- Gift card input on checkout review step
+- Team profile links to GitHub (daemonjane) and Ositcom (charbel_elias)
 - Project-root README with monorepo overview and remotes
 - Privacy Policy, Terms of Service, and Cookies Policy pages with interactive controls
 - Enhanced About page with animated counters, expandable value cards, collapsible timeline
+- CHANGELOG.md and CONTRIBUTING.md
 - Footer links to legal pages
 - Order tracking page with timeline visualization
 - Multi-step checkout (Shipping → Payment → Review) with stepper indicator
