@@ -13,8 +13,15 @@ const productId = route.params.id
 const product = computed(() => products.find(p => p.id === productId))
 
 const loading = ref(true)
+const addingToCart = ref(false)
 
 const { addItem } = useCart()
+
+function handleAddItem(product) {
+  addingToCart.value = true
+  addItem({ id: product.id, name: product.name, price: product.price })
+  setTimeout(() => { addingToCart.value = false }, 600)
+}
 const { visit } = useRecentlyViewed()
 const { toggle: toggleFavorite, isFavorite } = useFavorites()
 
@@ -156,12 +163,13 @@ onMounted(() => {
             </li>
           </ul>
         </div>
-        <button v-if="product.stock !== 0" @click="addItem({ id: product.id, name: product.name, price: product.price })" 
+        <button v-if="product.stock !== 0" @click="handleAddItem(product)" 
                 class="mt-8 w-full sm:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg v-if="addingToCart" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+          <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
           </svg>
-          Add to Cart
+          {{ addingToCart ? 'Adding...' : 'Add to Cart' }}
         </button>
         <button v-else disabled
                 class="mt-8 w-full sm:w-auto bg-slate-700 text-slate-500 font-semibold py-3 px-10 rounded-lg cursor-not-allowed flex items-center justify-center gap-2">

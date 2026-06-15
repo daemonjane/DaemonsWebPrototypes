@@ -40,12 +40,15 @@ const { toggle: toggleFavorite, isFavorite } = useFavorites()
 const router = useRouter()
 const quantity = ref(1)
 const quickViewProduct = ref(null)
+const addingToCart = ref(false)
 
 function increment() { quantity.value++ }
 function decrement() { if (quantity.value > 1) quantity.value-- }
 
 function handleAddToCart() {
+  addingToCart.value = true
   addItem({ id: props.product.id, name: props.product.name, price: props.product.price }, quantity.value)
+  setTimeout(() => { addingToCart.value = false }, 600)
   quantity.value = 1
 }
 
@@ -158,9 +161,11 @@ function closeQuickView() {
             </button>
             <button
               @click.stop="handleAddToCart"
-              class="bg-cyan-600 text-white px-4 py-1.5 rounded-md text-sm font-semibold hover:bg-cyan-500 transition-colors"
+              class="bg-cyan-600 text-white px-4 py-1.5 rounded-md text-sm font-semibold hover:bg-cyan-500 transition-colors flex items-center gap-1.5"
             >
-              Add to Cart
+              <svg v-if="addingToCart" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+              <span v-else class="w-3.5 h-3.5"></span>
+              {{ addingToCart ? 'Adding...' : 'Add to Cart' }}
             </button>
           </div>
         </div>
@@ -183,9 +188,11 @@ function closeQuickView() {
           </button>
           <button
             @click.stop="handleAddToCart"
-            class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all"
+            class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all flex items-center gap-1.5"
           >
-            Add to Cart
+            <svg v-if="addingToCart" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+            <span v-else class="w-3.5 h-3.5"></span>
+            {{ addingToCart ? 'Adding...' : 'Add to Cart' }}
           </button>
         </div>
       </div>
