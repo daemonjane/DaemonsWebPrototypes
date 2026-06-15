@@ -9,6 +9,14 @@ import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 const { items: recentlyViewed } = useRecentlyViewed()
 
+const recentlyScrollRef = ref(null)
+
+function scrollRecently(dir) {
+  if (!recentlyScrollRef.value) return
+  const amount = dir === 'left' ? -300 : 300
+  recentlyScrollRef.value.scrollBy({ left: amount, behavior: 'smooth' })
+}
+
 // Countdown timer
 const countdownSeconds = ref(300)
 const countdownText = ref('05:00')
@@ -195,7 +203,14 @@ function quickAdd(product) {
         </svg>
         Recently Viewed
       </h2>
-      <div class="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-cyan-800 scrollbar-track-slate-900">
+      <div class="relative group/scroll">
+        <button @click="scrollRecently('left')" aria-label="Scroll left" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-slate-900/90 border border-slate-700 rounded-full flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-700 transition-all opacity-0 group-hover/scroll:opacity-100 -ml-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button @click="scrollRecently('right')" aria-label="Scroll right" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-slate-900/90 border border-slate-700 rounded-full flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-700 transition-all opacity-0 group-hover/scroll:opacity-100 -mr-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div ref="recentlyScrollRef" class="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-cyan-800 scrollbar-track-slate-900">
         <router-link
           v-for="item in recentlyViewed"
           :key="item.id"
@@ -211,6 +226,7 @@ function quickAdd(product) {
             <p class="text-cyan-400 text-xs font-mono">${{ item.price.toFixed(2) }}</p>
           </div>
         </router-link>
+      </div>
       </div>
     </section>
 
