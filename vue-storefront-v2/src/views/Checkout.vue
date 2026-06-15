@@ -273,6 +273,22 @@ function placeOrder() {
                 </div>
               </div>
             </div>
+            <!-- Gift Card on review step -->
+            <div class="mt-4 border-t border-slate-700 pt-4">
+              <h3 class="text-sm font-semibold text-slate-300 mb-2">Gift Card</h3>
+              <div class="flex gap-2">
+                <input v-model="giftCardCode" type="text" placeholder="Enter code"
+                  class="flex-1 bg-slate-800 border border-slate-700 rounded p-2 text-sm"
+                  :disabled="giftCardApplied">
+                <button v-if="!giftCardApplied" @click.prevent="applyGiftCard"
+                  class="bg-emerald-700 hover:bg-emerald-600 text-white text-sm px-4 rounded-md transition active:scale-95">
+                  Apply
+                </button>
+              </div>
+              <p v-if="giftCardError" class="text-pink-400 text-xs mt-1">{{ giftCardError }}</p>
+              <p v-if="giftCardApplied" class="text-emerald-400 text-xs mt-1">10% discount applied!</p>
+              <p v-if="!giftCardApplied && !giftCardError" class="text-slate-500 text-xs mt-1">Try code: SAVE10</p>
+            </div>
             <div class="flex gap-3 mt-6">
               <button @click="prevStep"
                 class="flex-1 border border-slate-700 py-3 rounded-md font-semibold hover:bg-slate-800 transition">
