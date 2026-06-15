@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
@@ -14,6 +14,21 @@ const product = computed(() => products.find(p => p.id === productId))
 const { addItem } = useCart()
 const { visit } = useRecentlyViewed()
 const { toggle: toggleFavorite, isFavorite } = useFavorites()
+
+const notifyEmail = ref('')
+const notifySubmitted = ref(false)
+
+const BACK_IN_STOCK_KEY = 'back_in_stock_requests'
+const existingRequests = JSON.parse(localStorage.getItem(BACK_IN_STOCK_KEY) || '[]')
+
+function submitNotifyRequest() {
+  if (!notifyEmail.value.trim() || !product.value) return
+  const requests = JSON.parse(localStorage.getItem(BACK_IN_STOCK_KEY) || '[]')
+  requests.push({ productId: product.value.id, email: notifyEmail.value.trim(), timestamp: Date.now() })
+  localStorage.setItem(BACK_IN_STOCK_KEY, JSON.stringify(requests))
+  notifySubmitted.value = true
+  notifyEmail.value = ''
+}
 
 onMounted(() => {
   if (product.value) visit(product.value.id)
@@ -37,7 +52,47 @@ onMounted(() => {
         <span class="text-xs font-mono text-cyan-500 uppercase tracking-wider bg-cyan-950/30 px-2 py-1 rounded">{{ product.category }}</span>
         <h1 class="text-3xl sm:text-4xl font-bold text-white mt-2">{{ product.name }}</h1>
         <p class="text-2xl text-cyan-400 mt-4 font-mono">${{ product.price.toFixed(2) }}</p>
-        <div class="flex items-center gap-3 mt-2">
+
+        <!-- Stock status -->
+        <div v-if="product.stock !== undefined" class="mt-3">
+          <span v-if="product.stock === 0"
+                class="inline-flex items-center gap-1.5 bg-red-950/30 text-red-400 text-xs font-mono px-3 py-1.5 rounded-full border border-red-800/50">
+            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+            Out of Stock
+          </span>
+          <span v-else-if="product.stock <= 5"
+                class="inline-flex items-center gap-1.5 bg-amber-950/30 text-amber-400 text-xs font-mono px-3 py-1.5 rounded-full border border-amber-800/50">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            Only {{ product.stock }} left in stock
+          </span>
+          <span v-else
+                class="inline-flex items-center gap-1.5 bg-emerald-950/30 text-emerald-400 text-xs font-mono px-3 py-1.5 rounded-full border border-emerald-800/50">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            In Stock
+          </span>
+        </div>
+
+        <!-- Back-in-stock notification -->
+        <div v-if="product.stock === 0 && !notifySubmitted" class="mt-4 p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
+          <p class="text-sm text-slate-300 font-medium mb-2">Notify me when back in stock</p>
+          <div class="flex gap-2">
+            <input
+              v-model="notifyEmail"
+              type="email"
+              placeholder="your@email.com"
+              class="flex-1 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            >
+            <button @click="submitNotifyRequest"
+                    class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold px-4 py-2 rounded-md transition-all active:scale-95">
+              Notify
+            </button>
+          </div>
+        </div>
+        <div v-else-if="notifySubmitted" class="mt-4 text-sm text-emerald-400 font-medium">
+          ✓ We'll email you when this product is back in stock.
+        </div>
+
+        <div class="flex items-center gap-3 mt-4">
           <button
             @click="toggleFavorite(product.id)"
             class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors"
@@ -72,12 +127,19 @@ onMounted(() => {
             </li>
           </ul>
         </div>
-        <button @click="addItem({ id: product.id, name: product.name, price: product.price })" 
+        <button v-if="product.stock !== 0" @click="addItem({ id: product.id, name: product.name, price: product.price })" 
                 class="mt-8 w-full sm:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
           </svg>
           Add to Cart
+        </button>
+        <button v-else disabled
+                class="mt-8 w-full sm:w-auto bg-slate-700 text-slate-500 font-semibold py-3 px-10 rounded-lg cursor-not-allowed flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+          </svg>
+          Out of Stock
         </button>
       </div>
     </div>
@@ -90,6 +152,7 @@ onMounted(() => {
           <p class="text-cyan-400 font-mono font-bold">${{ product.price.toFixed(2) }}</p>
         </div>
         <button
+          v-if="product.stock !== 0"
           @click="addItem({ id: product.id, name: product.name, price: product.price })"
           class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 px-6 rounded-lg transition-all active:scale-95 shrink-0 flex items-center gap-2"
         >
@@ -97,6 +160,10 @@ onMounted(() => {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
           </svg>
           Add to Cart
+        </button>
+        <button v-else disabled
+                class="bg-slate-700 text-slate-500 font-semibold py-2.5 px-6 rounded-lg cursor-not-allowed shrink-0 flex items-center gap-2">
+          Out of Stock
         </button>
       </div>
     </div>
