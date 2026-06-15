@@ -1,9 +1,21 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import AnimatedCounter from '../components/AnimatedCounter.vue'
 
 const timelineOpen = ref(false)
 const expandedValue = ref(null)
+const stackVisible = ref(false)
+
+onMounted(() => { setTimeout(() => { stackVisible.value = true }, 200) })
+
+const techStack = [
+  { name: 'Vue 3 + Vite', level: 95, color: 'bg-emerald-500' },
+  { name: 'Python / Django', level: 88, color: 'bg-cyan-500' },
+  { name: 'Go (CLI tooling)', level: 82, color: 'bg-sky-500' },
+  { name: 'Rust (experimental)', level: 65, color: 'bg-fuchsia-500' },
+  { name: 'PostgreSQL / Redis', level: 90, color: 'bg-amber-500' },
+  { name: 'Docker / K8s', level: 78, color: 'bg-blue-500' },
+]
 
 const values = [
   { id: 'quality', title: 'Relentless Quality', icon: '⚙️', detail: 'Every component undergoes a 12-hour stress test in our lab. If it doesn\'t pass, it doesn\'t ship.' },
@@ -65,6 +77,22 @@ const milestones = [
         </div>
         <p v-else class="text-xs text-slate-500 mt-1">Click to expand →</p>
       </button>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 mb-8">
+      <h2 class="text-xl font-semibold text-white mb-4">Tech Stack</h2>
+      <div class="space-y-3">
+        <div v-for="tech in techStack" :key="tech.name">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-300">{{ tech.name }}</span>
+            <span class="text-cyan-400 font-mono text-xs">{{ tech.level }}%</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-1000 ease-out" :style="{ width: stackVisible ? tech.level + '%' : '0%' }" :class="tech.color"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Timeline (interactive toggle) -->
