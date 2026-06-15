@@ -64,6 +64,14 @@ This repo uses [Conventional Commits](https://www.conventionalcommits.org/):
 - `refactor:` — code restructuring
 - `chore:` — tooling / config
 
+## Branch
+
+The current v2 storefront lives on `frontend-vue-final-version`. This branch contains all features, fixes, and documentation for the latest build.
+
+```bash
+git checkout frontend-vue-final-version
+```
+
 ## Remotes
 
 | Remote | URL |
