@@ -6,10 +6,13 @@ import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 import { useFavorites } from '../composables/useFavorites'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
+import SkeletonLoader from '../components/SkeletonLoader.vue'
 
 const route = useRoute()
 const productId = route.params.id
 const product = computed(() => products.find(p => p.id === productId))
+
+const loading = ref(true)
 
 const { addItem } = useCart()
 const { visit } = useRecentlyViewed()
@@ -44,11 +47,13 @@ function shareProduct() {
 
 onMounted(() => {
   if (product.value) visit(product.value.id)
+  setTimeout(() => { loading.value = false }, 600)
 })
 </script>
 
 <template>
-  <div v-if="product" class="max-w-7xl mx-auto px-4 py-12 pb-24 sm:pb-12">
+  <SkeletonLoader v-if="loading" type="detail" />
+  <div v-else-if="product" class="max-w-7xl mx-auto px-4 py-12 pb-24 sm:pb-12">
     <Breadcrumbs :crumbs="[{ label: 'Shop', to: '/shop' }, { label: product.name }]" />
     <div class="grid md:grid-cols-2 gap-8">
       <div class="relative">
