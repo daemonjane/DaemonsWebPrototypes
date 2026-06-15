@@ -11,6 +11,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useFavorites } from '../composables/useFavorites'
+import { products } from '../data/products'
 import QuickViewModal from './QuickViewModal.vue'
 
 const props = defineProps({
@@ -27,6 +28,20 @@ const badge = computed(() => {
   if (bestSellerIds.includes(props.product.id)) return { label: 'BEST SELLER', class: 'bg-amber-600 text-white' }
   if (props.product.price > 1000) return { label: 'PREMIUM', class: 'bg-fuchsia-600 text-white' }
   return null
+})
+
+const categoryAvgPrices = {
+  desktop: products.filter(p => p.category === 'desktop').reduce((s, p) => s + p.price, 0) / Math.max(1, products.filter(p => p.category === 'desktop').length),
+  monitors: products.filter(p => p.category === 'monitors').reduce((s, p) => s + p.price, 0) / Math.max(1, products.filter(p => p.category === 'monitors').length),
+  peripherals: products.filter(p => p.category === 'peripherals').reduce((s, p) => s + p.price, 0) / Math.max(1, products.filter(p => p.category === 'peripherals').length),
+}
+const priceCompare = computed(() => {
+  const avg = categoryAvgPrices[props.product.category]
+  if (!avg) return null
+  const diff = ((props.product.price - avg) / avg) * 100
+  if (diff < -10) return { label: 'Below avg', icon: '↓', class: 'text-emerald-400' }
+  if (diff > 10) return { label: 'Above avg', icon: '↑', class: 'text-pink-400' }
+  return { label: 'Avg price', icon: '~', class: 'text-slate-400' }
 })
 
 const stockLevel = computed(() => {
@@ -120,7 +135,13 @@ function closeQuickView() {
         </div>
       </div>
       <p class="text-slate-400 text-sm mt-1 line-clamp-2">{{ product.description }}</p>
-      <div class="mt-2 text-2xl font-bold text-cyan-400">${{ product.price.toFixed(2) }}</div>
+      <div class="mt-2 flex items-center gap-2">
+        <span class="text-2xl font-bold text-cyan-400">${{ product.price.toFixed(2) }}</span>
+        <span v-if="priceCompare" class="group relative text-xs font-mono" :class="priceCompare.class">
+          {{ priceCompare.icon }}
+          <span class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-slate-800 text-slate-300 text-[10px] px-2 py-1 rounded border border-slate-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">{{ priceCompare.label }}</span>
+        </span>
+      </div>
 
       <!-- Expandable section (shop page) -->
       <div
