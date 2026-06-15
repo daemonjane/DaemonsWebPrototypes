@@ -1,4 +1,12 @@
 <script setup>
+/**
+ * Reusable product card with image, rating, price, specs (expandable on hover),
+ * quick-view modal trigger, favorites toggle, and add-to-cart.
+ *
+ * @component
+ * @prop {Object} product - The product data object from products.js
+ * @prop {boolean} [showFull=false] - If true, shows specs + quantity selector on hover
+ */
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'

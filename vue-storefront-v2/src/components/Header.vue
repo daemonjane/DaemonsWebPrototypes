@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * Site-wide navigation header.
+ * Includes: logo, desktop + mobile nav, global search with dropdown, cart badge with count.
+ * @component
+ */
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCart } from '../composables/useCart'

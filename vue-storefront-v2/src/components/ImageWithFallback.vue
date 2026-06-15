@@ -1,4 +1,12 @@
 <script setup>
+/**
+ * Image component that falls back to showing alt text on load error.
+ *
+ * @component
+ * @prop {string} src - Image source URL
+ * @prop {string} alt - Alt text (shown on error)
+ * @prop {string} [class] - Additional CSS classes
+ */
 import { ref } from 'vue'
 const props = defineProps({
   src: String,

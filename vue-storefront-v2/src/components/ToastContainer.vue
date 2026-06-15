@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * Renders global toast notifications in a fixed bottom-right container.
+ * Uses `role="status"` and `aria-live="polite"` for screen reader announcements.
+ * @component
+ */
 import { useToast } from '../composables/useToast'
 const { toasts } = useToast()
 </script>

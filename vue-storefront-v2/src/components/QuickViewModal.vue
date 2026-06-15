@@ -1,4 +1,12 @@
 <script setup>
+/**
+ * Quick View modal that shows product details, specs, and add-to-cart.
+ * Uses Teleport to body, includes keyboard focus trap and Escape-to-close.
+ *
+ * @component
+ * @prop {Object|null} product - The product to display (null = hidden)
+ * @emit {void} close - Emitted when modal is dismissed
+ */
 import { ref, watch, nextTick } from 'vue'
 import { useCart } from '../composables/useCart'
 
