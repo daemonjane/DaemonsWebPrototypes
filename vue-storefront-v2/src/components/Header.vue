@@ -25,11 +25,16 @@ const searchQuery = ref('')
 const searchFocused = ref(false)
 
 const searchResults = computed(() => {
-  if (!searchQuery.value.trim()) return []
+  if (!searchQuery.value.trim()) return { grouped: {}, total: 0 }
   const q = searchQuery.value.toLowerCase()
-  return products
-    .filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
-    .slice(0, 5)
+  const matched = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
+  const grouped = {}
+  matched.forEach(p => {
+    const cat = p.category || 'other'
+    if (!grouped[cat]) grouped[cat] = []
+    if (grouped[cat].length < 4) grouped[cat].push(p)
+  })
+  return { grouped, total: matched.length }
 })
 
 const navLinks = [
@@ -98,24 +103,28 @@ function closeSearch() {
               autocomplete="off"
             >
             <div
-              v-if="searchFocused && searchResults.length > 0"
+              v-if="searchFocused && searchResults.total > 0"
               class="absolute top-full mt-1 left-0 right-0 bg-slate-900 border border-slate-700 rounded-md shadow-xl overflow-hidden z-50"
             >
-              <router-link
-                v-for="result in searchResults"
-                :key="result.id"
-                :to="`/product/${result.id}`"
-                class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 transition-colors text-sm"
-                @click="searchQuery = ''; searchFocused = false"
-              >
-                <div class="w-8 h-8 rounded bg-slate-700 shrink-0 overflow-hidden">
-                  <img :src="result.image" :alt="result.name" loading="lazy" class="w-full h-full object-cover">
-                </div>
-                <div class="min-w-0">
-                  <p class="text-slate-200 truncate">{{ result.name }}</p>
-                  <p class="text-cyan-400 text-xs">${{ result.price.toFixed(2) }}</p>
-                </div>
-              </router-link>
+              <div v-for="(items, category) in searchResults.grouped" :key="category">
+                <p class="px-3 pt-2 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ category }}</p>
+                <router-link
+                  v-for="result in items"
+                  :key="result.id"
+                  :to="`/product/${result.id}`"
+                  class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 transition-colors text-sm"
+                  @click="searchQuery = ''; searchFocused = false"
+                >
+                  <div class="w-8 h-8 rounded bg-slate-700 shrink-0 overflow-hidden">
+                    <img :src="result.image" :alt="result.name" loading="lazy" class="w-full h-full object-cover">
+                  </div>
+                  <div class="min-w-0">
+                    <p class="text-slate-200 truncate">{{ result.name }}</p>
+                    <p class="text-cyan-400 text-xs">${{ result.price.toFixed(2) }}</p>
+                  </div>
+                </router-link>
+              </div>
+              <p class="px-3 py-2 text-xs text-slate-500 border-t border-slate-800">{{ searchResults.total }} result{{ searchResults.total !== 1 ? 's' : '' }} — press Enter to search all</p>
             </div>
           </div>
 
