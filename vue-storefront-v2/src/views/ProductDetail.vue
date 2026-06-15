@@ -21,18 +21,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="product" class="max-w-7xl mx-auto px-4 py-12">
+  <div v-if="product" class="max-w-7xl mx-auto px-4 py-12 pb-24 sm:pb-12">
     <Breadcrumbs :crumbs="[{ label: 'Shop', to: '/shop' }, { label: product.name }]" />
     <div class="grid md:grid-cols-2 gap-8">
       <div class="relative">
-        <img :src="product.image" :alt="product.name" class="w-full rounded-xl object-cover h-96" />
-        <div class="absolute top-3 right-3">
-          <span class="inline-flex items-center gap-1 bg-slate-900/80 text-yellow-400 text-xs px-2 py-1 rounded-md font-mono">
-            {{ '★'.repeat(Math.floor(product.rating)) }}{{ '☆'.repeat(5 - Math.floor(product.rating)) }}
-            <span class="text-slate-400 ml-1">{{ product.rating }}</span>
-          </span>
-        </div>
-      </div>
+        <img :src="product.image" :alt="product.name" class="w-full rounded-xl object-cover h-72 sm:h-96" />
       <div>
         <span class="text-xs font-mono text-cyan-500 uppercase tracking-wider bg-cyan-950/30 px-2 py-1 rounded">{{ product.category }}</span>
         <h1 class="text-3xl sm:text-4xl font-bold text-white mt-2">{{ product.name }}</h1>
@@ -75,6 +68,25 @@ onMounted(() => {
         <button @click="addItem({ id: product.id, name: product.name, price: product.price })" 
                 class="mt-8 w-full sm:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+          </svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Sticky mobile add-to-cart bar -->
+    <div class="fixed bottom-0 left-0 right-0 z-30 bg-slate-900/95 backdrop-blur border-t border-slate-800 p-3 sm:hidden">
+      <div class="flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm text-white truncate font-medium">{{ product.name }}</p>
+          <p class="text-cyan-400 font-mono font-bold">${{ product.price.toFixed(2) }}</p>
+        </div>
+        <button
+          @click="addItem({ id: product.id, name: product.name, price: product.price })"
+          class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 px-6 rounded-lg transition-all active:scale-95 shrink-0 flex items-center gap-2"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
           </svg>
           Add to Cart
