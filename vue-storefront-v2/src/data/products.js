@@ -188,5 +188,15 @@ export const products = [
     image: "/assets/nvme-ssd.svg",
     rating: 4.8,
     specs: ["2TB Capacity", "7450 MB/s Read", "PCIe 4.0", "Samsung V-NAND"]
+  },
+  {
+    id: "sleeved-cables",
+    name: "CableMod Pro Sleeved Kit",
+    price: 79.99,
+    category: "peripherals",
+    description: "Premium paracord sleeved PSU cables with combs, full set.",
+    image: "/assets/sleeved-cables.svg",
+    rating: 4.3,
+    specs: ["Paracord Sleeving", "Cable Combs Included", "ATX 3.0 Compatible", "24-pin + 2x 8-pin"]
   }
 ]
