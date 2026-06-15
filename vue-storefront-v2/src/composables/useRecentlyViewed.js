@@ -10,6 +10,14 @@ function persist() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(ids.value))
 }
 
+/**
+ * Composable that tracks the last 6 visited product IDs in localStorage.
+ *
+ * @returns {{
+ *   items: import('vue').Ref<Object[]>,
+ *   visit: (productId: string) => void
+ * }}
+ */
 export function useRecentlyViewed() {
   const items = ref(
     ids.value

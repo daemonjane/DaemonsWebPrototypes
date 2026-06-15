@@ -9,6 +9,19 @@ function persist() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(ids.value))
 }
 
+/**
+ * Composable for managing a wishlist of favorite products.
+ * Persists to localStorage automatically.
+ *
+ * @returns {{
+ *   favoriteIds: import('vue').Ref<string[]>,
+ *   items: import('vue').ComputedRef<Object[]>,
+ *   count: import('vue').ComputedRef<number>,
+ *   toggle: (productId: string) => void,
+ *   isFavorite: (productId: string) => boolean,
+ *   clear: () => void
+ * }}
+ */
 export function useFavorites() {
   const favoriteIds = ids
 

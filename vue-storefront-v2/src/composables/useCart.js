@@ -2,12 +2,39 @@ import { ref, computed, watch } from 'vue'
 import { useToast } from './useToast'
 
 const STORAGE_KEY = 'techstore_cart'
+
 const cart = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
 
 watch(cart, (newVal) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(newVal))
 }, { deep: true })
 
+/**
+ * @typedef {Object} CartItem
+ * @property {string} id
+ * @property {string} name
+ * @property {number} price
+ * @property {number} quantity
+ * @property {'product'|'upgrade'|'membership'} [type]
+ */
+
+/**
+ * Composable for managing the shopping cart.
+ * Persists cart state to localStorage automatically.
+ *
+ * @returns {{
+ *   cart: import('vue').Ref<CartItem[]>,
+ *   totalItems: import('vue').ComputedRef<number>,
+ *   totalPrice: import('vue').ComputedRef<number>,
+ *   addItem: (product: { id: string, name: string, price: number }, quantity?: number) => void,
+ *   updateQuantity: (productId: string, delta: number) => void,
+ *   removeItem: (productId: string) => void,
+ *   clearCart: () => void,
+ *   addUpgrade: (id: string, name: string, price: number) => void,
+ *   removeUpgrade: (id: string, name: string) => void,
+ *   setMembership: (type: string|null, name: string, price: number) => void
+ * }}
+ */
 export function useCart() {
   const { addToast } = useToast()
 
