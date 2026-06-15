@@ -74,9 +74,9 @@ const { count } = useLiveVisitorCount()
             <span class="font-mono text-emerald-400/80">{{ count }}</span>
             <span>browsing now</span>
           </span>
-          <span class="hover:text-slate-400 transition-colors cursor-pointer">Privacy</span>
-          <span class="hover:text-slate-400 transition-colors cursor-pointer">Terms</span>
-          <span class="hover:text-slate-400 transition-colors cursor-pointer">Cookies</span>
+          <router-link to="/privacy" class="hover:text-slate-400 transition-colors">Privacy</router-link>
+          <router-link to="/terms" class="hover:text-slate-400 transition-colors">Terms</router-link>
+          <router-link to="/cookies" class="hover:text-slate-400 transition-colors">Cookies</router-link>
         </div>
       </div>
     </div>
