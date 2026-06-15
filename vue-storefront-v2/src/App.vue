@@ -1,8 +1,14 @@
 <script setup>
+import { useRoute } from 'vue-router'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import ScrollToTop from './components/ScrollToTop.vue'
 import ToastContainer from './components/ToastContainer.vue'
+import SkeletonLoader from './components/SkeletonLoader.vue'
+import { useRouteLoading } from './composables/useRouteLoading'
+
+const route = useRoute()
+const { showSkeleton } = useRouteLoading()
 </script>
 
 <template>
@@ -18,7 +24,8 @@ import ToastContainer from './components/ToastContainer.vue'
     <Header />
 
     <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
-      <router-view v-slot="{ Component }">
+      <SkeletonLoader v-if="showSkeleton" />
+      <router-view v-else v-slot="{ Component }">
         <transition name="page" mode="out-in">
           <component :is="Component" />
         </transition>
