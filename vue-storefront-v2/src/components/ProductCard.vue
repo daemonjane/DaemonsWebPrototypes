@@ -28,6 +28,14 @@ const badge = computed(() => {
   if (props.product.price > 1000) return { label: 'PREMIUM', class: 'bg-fuchsia-600 text-white' }
   return null
 })
+
+const stockLevel = computed(() => {
+  const s = props.product.stock
+  if (s === 0) return { level: 'out', label: 'Out of Stock', dot: 'bg-red-500', bar: 'w-0 bg-red-500' }
+  if (s <= 5) return { level: 'low', label: 'Low Stock', dot: 'bg-amber-400', bar: 'w-1/3 bg-amber-400' }
+  if (s <= 20) return { level: 'medium', label: `${s} in stock`, dot: 'bg-yellow-500', bar: 'w-2/3 bg-yellow-500' }
+  return { level: 'full', label: 'In Stock', dot: 'bg-emerald-400', bar: 'w-full bg-emerald-400' }
+})
 const { toggle: toggleFavorite, isFavorite } = useFavorites()
 const router = useRouter()
 const quantity = ref(1)
@@ -76,6 +84,11 @@ function closeQuickView() {
         class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-lg"
         :class="badge.class"
       >{{ badge.label }}</span>
+      <!-- Stock level dots -->
+      <div class="absolute bottom-2 left-2 flex items-center gap-1.5 bg-slate-900/80 rounded-full px-2 py-1 backdrop-blur-sm">
+        <span class="w-2 h-2 rounded-full" :class="stockLevel.dot"></span>
+        <span class="text-[10px] text-slate-300 font-medium">{{ stockLevel.label }}</span>
+      </div>
     </router-link>
 
     <div class="p-5 flex flex-col flex-1">
