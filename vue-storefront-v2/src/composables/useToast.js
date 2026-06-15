@@ -4,6 +4,7 @@ import { ref } from 'vue'
  * @typedef {Object} Toast
  * @property {number} id
  * @property {string} message
+ * @property {'default'|'success'|'error'} [type]
  */
 
 const toasts = ref([])
@@ -15,13 +16,13 @@ let nextId = 0
  *
  * @returns {{
  *   toasts: import('vue').Ref<Toast[]>,
- *   addToast: (message: string, duration?: number) => void
+ *   addToast: (message: string, duration?: number, type?: 'default'|'success'|'error') => void
  * }}
  */
 export function useToast() {
-  function addToast(message, duration = 3000) {
+  function addToast(message, duration = 3000, type = 'default') {
     const id = nextId++
-    toasts.value.push({ id, message })
+    toasts.value.push({ id, message, type })
     setTimeout(() => {
       toasts.value = toasts.value.filter(t => t.id !== id)
     }, duration)

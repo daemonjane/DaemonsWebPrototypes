@@ -45,10 +45,10 @@ export function useCart() {
     const existing = cart.value.find(p => p.id === product.id)
     if (existing) {
       existing.quantity += quantity
-      addToast(`Updated quantity of ${product.name} (${existing.quantity})`)
+      addToast(`Updated quantity of ${product.name} (${existing.quantity})`, 3000, 'success')
     } else {
       cart.value.push({ ...product, quantity })
-      addToast(`Added ${product.name} to cart`)
+      addToast(`Added ${product.name} to cart`, 3000, 'success')
     }
   }
 
@@ -59,9 +59,9 @@ export function useCart() {
     item.quantity += delta
     if (item.quantity <= 0) {
       cart.value = cart.value.filter(p => p.id !== productId)
-      addToast(`Removed ${item.name} from cart`)
+      addToast(`Removed ${item.name} from cart`, 3000, 'error')
     } else {
-      addToast(`Updated ${item.name} (${oldQuantity} → ${item.quantity})`)
+      addToast(`Updated ${item.name} (${oldQuantity} → ${item.quantity})`, 3000, 'success')
     }
   }
 
@@ -69,33 +69,32 @@ export function useCart() {
     const item = cart.value.find(p => p.id === productId)
     if (item) {
       cart.value = cart.value.filter(p => p.id !== productId)
-      addToast(`Removed ${item.name} from cart`)
+      addToast(`Removed ${item.name} from cart`, 3000, 'error')
     }
   }
 
   function clearCart() {
     cart.value = []
-    addToast('Cart cleared')
+    addToast('Cart cleared', 2000, 'error')
   }
 
   function addUpgrade(id, name, price) {
     // Remove any existing upgrade with the same id
     cart.value = cart.value.filter(item => item.id !== id)
     cart.value.push({ id, name, price, quantity: 1, type: 'upgrade' })
-    addToast(`Added ${name}`)
+    addToast(`Added ${name}`, 3000, 'success')
   }
 
   function removeUpgrade(id, name) {
     cart.value = cart.value.filter(item => item.id !== id)
-    addToast(`Removed ${name}`)
+    addToast(`Removed ${name}`, 3000, 'error')
   }
 
   function setMembership(type, name, price) {
-    // Remove any existing membership
     cart.value = cart.value.filter(item => item.type !== 'membership')
     if (type) {
       cart.value.push({ id: `membership-${type}`, name, price, quantity: 1, type: 'membership' })
-      addToast(`Selected ${name}`)
+      addToast(`Selected ${name}`, 3000, 'success')
     }
   }
 
