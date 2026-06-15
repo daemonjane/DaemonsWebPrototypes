@@ -8,6 +8,7 @@ import SkeletonLoader from './components/SkeletonLoader.vue'
 import { useRouteLoading } from './composables/useRouteLoading'
 import { useSalesNotifications } from './composables/useSalesNotifications'
 import KeyboardShortcuts from './components/KeyboardShortcuts.vue'
+import BackgroundEffects from './components/BackgroundEffects.vue'
 
 const route = useRoute()
 const { showSkeleton } = useRouteLoading()
@@ -35,6 +36,7 @@ useSalesNotifications()
       </router-view>
     </main>
 
+    <BackgroundEffects />
     <Footer />
     <ScrollToTop />
     <ToastContainer />

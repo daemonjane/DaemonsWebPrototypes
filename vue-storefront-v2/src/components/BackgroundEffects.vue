@@ -1,0 +1,70 @@
+<script setup>
+/**
+ * Immersive animated background with floating particles, gradient mesh, and noise.
+ * Minimal performance impact — uses pure CSS transforms and opacity.
+ * @component
+ */
+</script>
+
+<template>
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <!-- Gradient Mesh -->
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"></div>
+    <div class="absolute inset-0 opacity-30 dark:opacity-30" style="background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(6, 182, 212, 0.15), transparent);"></div>
+    <div class="absolute inset-0 opacity-20 dark:opacity-20" style="background: radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.1), transparent);"></div>
+    <div class="absolute inset-0 opacity-15 dark:opacity-15" style="background: radial-gradient(ellipse 50% 60% at 20% 60%, rgba(6, 182, 212, 0.08), transparent);"></div>
+
+    <!-- Animated Glow Orbs -->
+    <div class="absolute w-96 h-96 rounded-full" style="top: 10%; left: 5%; background: radial-gradient(circle, rgba(6, 182, 212, 0.06), transparent 70%); animation: orbFloat 12s ease-in-out infinite;"></div>
+    <div class="absolute w-80 h-80 rounded-full" style="top: 50%; right: 10%; background: radial-gradient(circle, rgba(139, 92, 246, 0.05), transparent 70%); animation: orbFloat 15s ease-in-out infinite reverse;"></div>
+    <div class="absolute w-64 h-64 rounded-full" style="bottom: 15%; left: 40%; background: radial-gradient(circle, rgba(6, 182, 212, 0.04), transparent 70%); animation: orbFloat 10s ease-in-out infinite 2s;"></div>
+
+    <!-- Pulsing Grid Overlay -->
+    <div class="absolute inset-0 opacity-[0.015] dark:opacity-[0.02]" style="background-image: linear-gradient(rgba(6, 182, 212, 1) 1px, transparent 1px), linear-gradient(90deg, rgba(6, 182, 212, 1) 1px, transparent 1px); background-size: 40px 40px; animation: gridPulse 8s ease-in-out infinite;"></div>
+
+    <!-- Floating Particles -->
+    <div class="particle" style="top: 20%; left: 15%; width: 2px; height: 2px; background: #06b6d4; animation: particleFloat 20s linear infinite;"></div>
+    <div class="particle" style="top: 30%; left: 75%; width: 3px; height: 3px; background: #06b6d4; animation: particleFloat 25s linear infinite 3s;"></div>
+    <div class="particle" style="top: 60%; left: 25%; width: 2px; height: 2px; background: #a78bfa; animation: particleFloat 18s linear infinite 6s;"></div>
+    <div class="particle" style="top: 80%; left: 85%; width: 4px; height: 4px; background: #06b6d4; animation: particleFloat 22s linear infinite 2s;"></div>
+    <div class="particle" style="top: 45%; left: 50%; width: 2px; height: 2px; background: #a78bfa; animation: particleFloat 28s linear infinite 8s;"></div>
+    <div class="particle" style="top: 15%; left: 90%; width: 3px; height: 3px; background: #06b6d4; animation: particleFloat 16s linear infinite 5s;"></div>
+    <div class="particle" style="top: 70%; left: 10%; width: 2px; height: 2px; background: #a78bfa; animation: particleFloat 24s linear infinite 1s;"></div>
+    <div class="particle" style="top: 90%; left: 55%; width: 3px; height: 3px; background: #06b6d4; animation: particleFloat 19s linear infinite 7s;"></div>
+    <div class="particle" style="top: 35%; left: 35%; width: 2px; height: 2px; background: #a78bfa; animation: particleFloat 21s linear infinite 4s;"></div>
+    <div class="particle" style="top: 5%; left: 45%; width: 3px; height: 3px; background: #06b6d4; animation: particleFloat 26s linear infinite 9s;"></div>
+
+    <!-- Noise Texture (SVG filter) -->
+    <svg class="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
+      <filter id="noise">
+        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+        <feColorMatrix type="saturate" values="0"/>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#noise)"/>
+    </svg>
+  </div>
+</template>
+
+<style scoped>
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+@keyframes particleFloat {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  10% { opacity: 0.6; }
+  45% { opacity: 0.8; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100vh) translateX(50px) scale(0.5); opacity: 0; }
+}
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 15px) scale(0.95); }
+}
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.015; }
+  50% { opacity: 0.03; }
+}
+</style>
