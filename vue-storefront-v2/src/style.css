@@ -38,20 +38,33 @@ body::before {
 /* ===== Hero Glow ===== */
 .hero-glow {
   position: absolute;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(139, 92, 246, 0.08) 40%, transparent 70%);
   border-radius: 50%;
-  top: -10%;
+  top: -20%;
   left: 50%;
   transform: translateX(-50%);
-  filter: blur(80px);
-  animation: floatGlow 6s ease-in-out infinite;
+  filter: blur(100px);
+  animation: floatGlow 8s ease-in-out infinite;
   pointer-events: none;
 }
+.hero-glow::after {
+  content: '';
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.06) 0%, transparent 60%);
+  border-radius: 50%;
+  animation: rotateGlow 12s linear infinite;
+}
 @keyframes floatGlow {
-  0%, 100% { transform: translateX(-50%) translateY(0px); }
-  50% { transform: translateX(-50%) translateY(-15px); }
+  0%, 100% { transform: translateX(-50%) translateY(0px) scale(1); }
+  33% { transform: translateX(-50%) translateY(-20px) scale(1.05); }
+  66% { transform: translateX(-50%) translateY(10px) scale(0.95); }
+}
+@keyframes rotateGlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* ===== Glass Header ===== */
