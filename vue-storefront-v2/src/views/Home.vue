@@ -3,8 +3,10 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
+import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
+const { items: recentlyViewed } = useRecentlyViewed()
 
 // Countdown timer
 const countdownSeconds = ref(300)
@@ -118,6 +120,32 @@ function quickAdd(product) {
           <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Optimal Price-to-Quality</h3>
           <p class="text-slate-400 text-sm">Real‑time market analysis ensures you always get the best value per dollar.</p>
         </article>
+      </div>
+    </section>
+
+    <!-- Recently Viewed -->
+    <section v-if="recentlyViewed.length > 0" id="recently-viewed" class="space-y-6 sm:space-y-8" role="region" aria-labelledby="recently-viewed-heading">
+      <h2 id="recently-viewed-heading" class="text-lg sm:text-xl font-semibold text-white flex items-center gap-2">
+        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Recently Viewed
+      </h2>
+      <div class="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-cyan-800 scrollbar-track-slate-900">
+        <router-link
+          v-for="item in recentlyViewed"
+          :key="item.id"
+          :to="`/product/${item.id}`"
+          class="flex-shrink-0 w-40 sm:w-44 bg-slate-900 rounded-lg border border-slate-800 overflow-hidden hover:border-cyan-700 hover:-translate-y-0.5 transition-all duration-200 snap-start group"
+        >
+          <div class="h-24 bg-slate-800 overflow-hidden">
+            <img :src="item.image" :alt="item.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-2.5 space-y-1">
+            <p class="text-xs text-slate-200 truncate font-medium">{{ item.name }}</p>
+            <p class="text-cyan-400 text-xs font-mono">${{ item.price.toFixed(2) }}</p>
+          </div>
+        </router-link>
       </div>
     </section>
 
