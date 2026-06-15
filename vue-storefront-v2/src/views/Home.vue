@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import AnimatedCounter from '../components/AnimatedCounter.vue'
+import AbstractArt from '../components/AbstractArt.vue'
 import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
@@ -121,8 +122,9 @@ function quickAdd(product) {
 
     <!-- Hero -->
     <section id="hero" class="relative flex flex-col items-center text-center py-12 sm:py-20 lg:py-24 overflow-hidden"
-             role="region" aria-labelledby="hero-heading">
+              role="region" aria-labelledby="hero-heading">
       <div class="hero-glow"></div>
+      <AbstractArt variant="hero" class="absolute inset-0 w-full h-full" />
       <div id="hero-core-container" class="relative max-w-3xl space-y-5 sm:space-y-7">
         <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">SYSTEM_READY</span>
         <h1 id="hero-heading" class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">Your Command Station Awaits</h1>
