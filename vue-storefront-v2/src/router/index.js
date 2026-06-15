@@ -13,6 +13,9 @@ const Insights = () => import('../views/Insights.vue')
 const FAQ = () => import('../views/FAQ.vue')
 const NotFound = () => import('../views/NotFound.vue')
 const OrderTracking = () => import('../views/OrderTracking.vue')
+const PrivacyPolicy = () => import('../views/PrivacyPolicy.vue')
+const TermsOfService = () => import('../views/TermsOfService.vue')
+const CookiesPolicy = () => import('../views/CookiesPolicy.vue')
 
 const routes = [
   { path: '/', component: Home },
@@ -27,6 +30,9 @@ const routes = [
   { path: '/insights', component: Insights },
   { path: '/faq', component: FAQ },
   { path: '/tracking', component: OrderTracking },
+  { path: '/privacy', component: PrivacyPolicy },
+  { path: '/terms', component: TermsOfService },
+  { path: '/cookies', component: CookiesPolicy },
   { path: '/:pathMatch(.*)*', component: NotFound },
 ]
 
