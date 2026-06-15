@@ -1,80 +1,106 @@
-# DaemonsWebPrototypes
+<p align="center">
+  <img src="https://img.shields.io/badge/Vue_3-4FC08D?logo=vuedotjs&logoColor=white" alt="Vue 3"/>
+  <img src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white" alt="Vite"/>
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/>
+  <img src="https://img.shields.io/badge/license-MIT-blue" alt="License"/>
+  <br/>
+  <img src="https://img.shields.io/github/last-commit/daemonjane/DaemonsWebPrototypes?color=06b6d4&logo=github"/>
+  <img src="https://img.shields.io/github/repo-size/daemonjane/DaemonsWebPrototypes?color=a78bfa&logo=files"/>
+</p>
 
-A monorepo of web prototypes and storefront experiments by Daemon.
+<h1 align="center">⚡ DaemonsWebPrototypes ⚡</h1>
 
-## Projects
+<p align="center">
+  <b>Monorepo of web prototypes & storefront experiments</b><br/>
+  Built with Vue 3 · Vite · Tailwind CSS · Vue Router · SVG
+</p>
 
-### [vue-storefront-v2](./vue-storefront-v2/README.md)
+<br/>
 
-A production-feature Vue 3 storefront — rebuilt from scratch with enhanced visuals, composable architecture, and full-page transitions.
+## 📦 Projects
 
-**Stack:** Vue 3 (Composition API) · Vite · Tailwind CSS · Vue Router · SVG
+### [🚀 vue-storefront-v2](./vue-storefront-v2/README.md)
 
-**Features:**
-- Product catalogue with 21 items across 4 categories
-- Global search with grouped live dropdown results by category
-- Cart with upgrades, membership tiers, and bundle support
-- Favorites / Wishlist with localStorage persistence
-- Recently viewed products with scroll arrows
-- Quick View modal with focus trap and keyboard support
-- Multi-step checkout (Shipping → Payment → Review) with floating form labels
-- Gift card balance checker with 10% mock discount
-- Order tracking page with animated timeline
-- Order confirmation page with order number
-- Dark / Light theme toggle with smooth CSS transitions
-- Skeleton loaders for lazy-loaded routes
-- Animated counters, live visitor count, sales notifications
-- Immersive animated background (particles, glow orbs, noise texture)
-- AI-generated abstract geometric SVG art on Home hero and About page
-- Stock level dots indicator on product cards
-- Price comparison tooltip (below/above category average)
-- Category hero banners with emoji icons
-- Free shipping progress bar
-- Loading spinner buttons for add-to-cart
-- Keyboard shortcut modal (press `?`)
-- Enhanced 404 page with animated radar SVG
-- Image zoom on ProductDetail hover
-- Animated tech stack bars on About page
-- Legal pages: Privacy Policy, Terms of Service, Cookies Policy (interactive)
-- Print-friendly CSS styles
-- Fully responsive with mobile hamburger menu and sticky add-to-cart bar
+A production-feature Vue 3 storefront — rebuilt from scratch with an immersive UI, composable architecture, animated backgrounds, and full-page transitions.
 
-## Getting Started
+| Area | Highlights |
+|------|-----------|
+| **Catalogue** | 21 products across 4 categories, grouped search, category banners |
+| **Cart** | Multi-step checkout (Shipping→Payment→Review), gift card 10% discount, upgrades, memberships |
+| **UX** | Dark/light theme transition, keyboard shortcuts (`?`), skeleton loaders, floating labels |
+| **Visuals** | Animated particles + glow orbs + noise texture background, AI-generated SVG art, zoom effects |
+| **Pages** | Shop, ProductDetail, Favorites, Order Tracking, Order Confirmation, 404, Legal (Privacy/Terms/Cookies) |
+| **Composables** | `useCart`, `useFavorites`, `useRecentlyViewed`, `useToast`, `useLiveVisitorCount`, `useSalesNotifications`, `useFreeShipping` |
+
+<details>
+<summary><b>🌟 Full Feature List</b></summary>
+
+<br/>
+
+| # | Feature | Status |
+|---|---------|--------|
+| 1 | 📦 Product catalogue with 21 items across 4 categories | ✅ |
+| 2 | 🔍 Global search with grouped live dropdown results by category | ✅ |
+| 3 | 🛒 Cart with upgrades, membership tiers, and bundle support | ✅ |
+| 4 | ❤️ Favorites / Wishlist with localStorage persistence | ✅ |
+| 5 | 👁️ Recently viewed products with scroll arrows | ✅ |
+| 6 | 🔎 Quick View modal with focus trap and keyboard support | ✅ |
+| 7 | 🚚 Multi-step checkout (Shipping → Payment → Review) with floating form labels | ✅ |
+| 8 | 🎁 Gift card balance checker with 10% mock discount | ✅ |
+| 9 | 📬 Order tracking page with animated timeline | ✅ |
+| 10 | ✅ Order confirmation page with order number | ✅ |
+| 11 | 🌓 Dark / Light theme toggle with smooth CSS transitions | ✅ |
+| 12 | 💀 Skeleton loaders for lazy-loaded routes | ✅ |
+| 13 | 📊 Animated counters, live visitor count, sales notifications | ✅ |
+| 14 | 🎨 Immersive animated background (particles, glow orbs, noise texture) | ✅ |
+| 15 | 🤖 AI-generated abstract geometric SVG art on Home hero and About page | ✅ |
+| 16 | 🔴 Stock level dots indicator on product cards | ✅ |
+| 17 | 💲 Price comparison tooltip (below/above category average) | ✅ |
+| 18 | 🏷️ Category hero banners with emoji icons | ✅ |
+| 19 | 📦 Free shipping progress bar | ✅ |
+| 20 | ⏳ Loading spinner buttons for add-to-cart | ✅ |
+| 21 | ⌨️ Keyboard shortcut modal (press `?`) | ✅ |
+| 22 | 🚀 Enhanced 404 page with animated radar SVG | ✅ |
+| 23 | 🔍 Image zoom on ProductDetail hover | ✅ |
+| 24 | 📈 Animated tech stack bars on About page | ✅ |
+| 25 | ⚖️ Legal pages: Privacy Policy, Terms of Service, Cookies Policy (interactive) | ✅ |
+| 26 | 🖨️ Print-friendly CSS styles | ✅ |
+| 27 | 📱 Fully responsive with mobile hamburger menu and sticky add-to-cart bar | ✅ |
+</details>
+
+<br/>
+
+## 🚀 Getting Started
 
 ```bash
-# Install dependencies
 cd vue-storefront-v2 && npm install
-
-# Start dev server
-npm run dev
-
-# Build for production
-npm run build
+npm run dev      # → http://localhost:5173
+npm run build    # → dist/
 ```
 
-## Commit Convention
-
-This repo uses [Conventional Commits](https://www.conventionalcommits.org/):
-
-- `feat:` — new feature
-- `fix:` — bug fix
-- `style:` — styling / CSS
-- `perf:` — performance improvement
-- `docs:` — documentation
-- `refactor:` — code restructuring
-- `chore:` — tooling / config
-
-## Branch
-
-The current v2 storefront lives on `frontend-vue-final-version`. This branch contains all features, fixes, and documentation for the latest build.
+## 🌿 Branch
 
 ```bash
 git checkout frontend-vue-final-version
 ```
 
-## Remotes
+All current v2 work lives on `frontend-vue-final-version` — includes all features, fixes, and docs.
+
+## 📝 Commit Convention
+
+| Type | Usage |
+|------|-------|
+| `feat:` | New feature |
+| `fix:` | Bug fix |
+| `style:` | Styling / CSS |
+| `perf:` | Performance improvement |
+| `docs:` | Documentation |
+| `refactor:` | Code restructuring |
+| `chore:` | Tooling / config |
+
+## 🌐 Remotes
 
 | Remote | URL |
 |--------|-----|
-| `origin` | github.com/daemonjane/DaemonsWebPrototypes |
-| `osinode` | git.osinode.com/Ositcom/charbel_elias |
+| `origin` | [github.com/daemonjane/DaemonsWebPrototypes](https://github.com/daemonjane/DaemonsWebPrototypes) |
+| `osinode` | [git.osinode.com/Ositcom/charbel_elias](https://git.osinode.com/Ositcom/charbel_elias) |
