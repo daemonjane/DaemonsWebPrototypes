@@ -5,6 +5,7 @@ import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 import { useFavorites } from '../composables/useFavorites'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const route = useRoute()
 const productId = route.params.id
@@ -21,12 +22,7 @@ onMounted(() => {
 
 <template>
   <div v-if="product" class="max-w-7xl mx-auto px-4 py-12">
-    <router-link to="/shop" class="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-cyan-400 mb-6 transition-colors">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-      Back to Shop
-    </router-link>
+    <Breadcrumbs :crumbs="[{ label: 'Shop', to: '/shop' }, { label: product.name }]" />
     <div class="grid md:grid-cols-2 gap-8">
       <div class="relative">
         <img :src="product.image" :alt="product.name" class="w-full rounded-xl object-cover h-96" />

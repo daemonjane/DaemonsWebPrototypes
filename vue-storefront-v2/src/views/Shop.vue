@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { products } from '../data/products'
 import ProductCard from '../components/ProductCard.vue'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const currentFilter = ref('all')
 const currentSort = ref('default')
@@ -22,16 +23,34 @@ const filteredProducts = computed(() => {
 
 <template>
   <div>
-    <h1 class="text-3xl font-bold text-white mb-2">All Hardware</h1>
-    <p class="text-slate-400 mb-6">High‑performance components, pre‑built systems, and peripherals.</p>
+    <Breadcrumbs :crumbs="[{ label: 'Shop' }]" />
+
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-3xl font-bold text-white">All Hardware</h1>
+        <p class="text-slate-400 mt-1 text-sm">{{ filteredProducts.length }} of {{ products.length }} products</p>
+      </div>
+    </div>
 
     <!-- Filter / search / sort -->
     <div class="flex flex-wrap gap-4 mb-8 items-center justify-between">
       <div class="flex gap-2 flex-wrap">
-        <button @click="currentFilter = 'all'" :class="['filter-btn px-4 py-1 rounded-full text-sm', currentFilter === 'all' ? 'bg-cyan-600 text-white' : 'bg-slate-800 hover:bg-cyan-700']">All</button>
-        <button @click="currentFilter = 'desktop'" :class="['filter-btn px-4 py-1 rounded-full text-sm', currentFilter === 'desktop' ? 'bg-cyan-600 text-white' : 'bg-slate-800 hover:bg-cyan-700']">Desktops</button>
-        <button @click="currentFilter = 'monitors'" :class="['filter-btn px-4 py-1 rounded-full text-sm', currentFilter === 'monitors' ? 'bg-cyan-600 text-white' : 'bg-slate-800 hover:bg-cyan-700']">Monitors</button>
-        <button @click="currentFilter = 'peripherals'" :class="['filter-btn px-4 py-1 rounded-full text-sm', currentFilter === 'peripherals' ? 'bg-cyan-600 text-white' : 'bg-slate-800 hover:bg-cyan-700']">Peripherals</button>
+        <button @click="currentFilter = 'all'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all', currentFilter === 'all' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+          All
+          <span class="ml-1.5 text-[10px] opacity-60">({{ products.length }})</span>
+        </button>
+        <button @click="currentFilter = 'desktop'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all', currentFilter === 'desktop' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+          Desktops
+          <span class="ml-1.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'desktop').length }})</span>
+        </button>
+        <button @click="currentFilter = 'monitors'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all', currentFilter === 'monitors' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+          Monitors
+          <span class="ml-1.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'monitors').length }})</span>
+        </button>
+        <button @click="currentFilter = 'peripherals'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all', currentFilter === 'peripherals' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+          Peripherals
+          <span class="ml-1.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'peripherals').length }})</span>
+        </button>
       </div>
       <div class="flex gap-2">
         <input v-model="searchQuery" type="text" placeholder="Search by name..." class="bg-slate-800 border border-slate-700 rounded-md px-3 py-1 text-sm focus:ring-2 focus:ring-cyan-400">
