@@ -14,6 +14,12 @@ const route = useRoute()
 const { totalItems } = useCart()
 const { isDark, toggle: toggleTheme } = useTheme()
 
+function themedToggle() {
+  document.documentElement.classList.add('theme-transitioning')
+  setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 400)
+  toggleTheme()
+}
+
 const mobileMenuOpen = ref(false)
 const searchQuery = ref('')
 const searchFocused = ref(false)
@@ -115,7 +121,7 @@ function closeSearch() {
 
           <!-- Theme toggle -->
           <button
-            @click="toggleTheme"
+            @click="themedToggle"
             class="p-2 text-slate-400 hover:text-cyan-400 transition-colors"
             :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
             :title="isDark ? 'Light mode' : 'Dark mode'"
