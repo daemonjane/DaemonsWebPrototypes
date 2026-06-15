@@ -102,6 +102,7 @@ function quickAdd(product) {
     <!-- Hero -->
     <!-- Quick Section Nav -->
     <nav class="flex flex-wrap justify-center gap-2 sm:gap-3 py-4 -mb-8" aria-label="Section quick links">
+      <a href="#metrics" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Metrics</a>
       <a href="#features" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Features</a>
       <a href="#testimonials" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Reviews</a>
       <a href="#products" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Gear</a>
@@ -126,7 +127,7 @@ function quickAdd(product) {
     </section>
 
     <!-- Metrics -->
-    <section class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 py-6" aria-label="Company metrics">
+    <section id="metrics" class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 py-6" aria-label="Company metrics">
       <AnimatedCounter :target="10" suffix="K+" label="Products Shipped" :duration="1800" />
       <AnimatedCounter :target="50" suffix="K+" label="Happy Customers" :duration="2000" />
       <AnimatedCounter :target="99.9" suffix="%" label="Uptime SLA" :decimals="1" :duration="2200" />
