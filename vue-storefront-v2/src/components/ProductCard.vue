@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
+import QuickViewModal from './QuickViewModal.vue'
 
 const props = defineProps({
   product: { type: Object, required: true },
@@ -11,6 +12,7 @@ const props = defineProps({
 const { addItem } = useCart()
 const router = useRouter()
 const quantity = ref(1)
+const quickViewProduct = ref(null)
 
 function increment() { quantity.value++ }
 function decrement() { if (quantity.value > 1) quantity.value-- }
@@ -22,6 +24,14 @@ function handleAddToCart() {
 
 function navigateToProduct() {
   router.push(`/product/${props.product.id}`)
+}
+
+function openQuickView() {
+  quickViewProduct.value = props.product
+}
+
+function closeQuickView() {
+  quickViewProduct.value = null
 }
 </script>
 
@@ -79,27 +89,55 @@ function navigateToProduct() {
               aria-label="Increase quantity"
             >+</button>
           </div>
+          <div class="flex gap-1.5">
+            <button
+              @click.stop="openQuickView"
+              class="px-2 py-1 rounded text-xs bg-slate-700 text-slate-400 hover:bg-slate-600 hover:text-cyan-400 transition-colors"
+              aria-label="Quick view"
+              title="Quick view"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+            <button
+              @click.stop="handleAddToCart"
+              class="bg-cyan-600 text-white px-4 py-1.5 rounded-md text-sm font-semibold hover:bg-cyan-500 transition-colors"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compact add-to-cart (other pages) -->
+      <div v-else class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between gap-2">
+        <span class="text-lg font-bold text-white">${{ product.price.toFixed(2) }}</span>
+        <div class="flex gap-1.5">
+          <button
+            @click.stop="openQuickView"
+            class="px-2.5 py-2 rounded-md text-xs font-medium bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-cyan-400 transition-colors"
+            aria-label="Quick view"
+            title="Quick view"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          </button>
           <button
             @click.stop="handleAddToCart"
-            class="bg-cyan-600 text-white px-4 py-1.5 rounded-md text-sm font-semibold hover:bg-cyan-500 transition-colors"
+            class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all"
           >
             Add to Cart
           </button>
         </div>
       </div>
-
-      <!-- Compact add-to-cart (other pages) -->
-      <div v-else class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between">
-        <span class="text-lg font-bold text-white">${{ product.price.toFixed(2) }}</span>
-        <button
-          @click.stop="handleAddToCart"
-          class="bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-cyan-500 active:scale-95 transition-all"
-        >
-          Add to Cart
-        </button>
-      </div>
     </div>
   </div>
+
+  <QuickViewModal :product="quickViewProduct" @close="closeQuickView" />
 </template>
 
 <style scoped>
