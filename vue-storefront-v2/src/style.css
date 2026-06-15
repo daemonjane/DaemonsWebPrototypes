@@ -19,6 +19,7 @@
 html {
   scrollbar-color: #0891b2 #0f172a;
   scrollbar-width: thin;
+  scroll-behavior: smooth;
 }
 
 /* ===== Grid Background Texture ===== */
@@ -86,6 +87,19 @@ textarea.border-pink-500 {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Horizontal Scrollbar (Recently Viewed) ===== */
+.snap-x::-webkit-scrollbar {
+  height: 4px;
+}
+.snap-x::-webkit-scrollbar-track {
+  background: #0f172a;
+  border-radius: 2px;
+}
+.snap-x::-webkit-scrollbar-thumb {
+  background: #0891b2;
+  border-radius: 2px;
 }
 
 /* ===== Focus Visible (Accessibility) ===== */

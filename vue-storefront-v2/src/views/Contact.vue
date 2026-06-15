@@ -3,12 +3,12 @@
  * Contact page with validated form and info section.
  * @view
  */
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { validateForm } from '../utils/validation'
 
 const form = reactive({ name: '', email: '', message: '' })
 const errors = reactive({})
-const submitted = reactive({ value: false })
+const submitted = ref(false)
 
 function submitForm() {
   Object.keys(errors).forEach(k => delete errors[k])
@@ -39,7 +39,7 @@ function submitForm() {
         <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
           <h2 class="text-xl font-semibold text-white mb-4">Send a Message</h2>
 
-          <div v-if="submitted.value" class="bg-emerald-900/30 border border-emerald-800/50 rounded-lg p-4 mb-4 text-emerald-300 text-sm" role="alert">
+          <div v-if="submitted" class="bg-emerald-900/30 border border-emerald-800/50 rounded-lg p-4 mb-4 text-emerald-300 text-sm" role="alert">
             Thanks for reaching out! We'll get back to you within 24 hours.
           </div>
 
