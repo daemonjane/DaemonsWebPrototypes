@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { products } from '../data/products'
 import ProductCard from '../components/ProductCard.vue'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
+import EmptyState from '../components/EmptyState.vue'
 
 const currentFilter = ref('all')
 const currentSort = ref('default')
@@ -139,10 +140,6 @@ function resetFilters() {
     <div v-if="filteredProducts.length > 0" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
       <ProductCard v-for="product in filteredProducts" :key="product.id" :product="product" :show-full="true" v-memo="[product.id, product.price, product.rating, filteredProducts.length]" />
     </div>
-    <div v-else class="text-center py-16">
-      <p class="text-4xl mb-3">🔍</p>
-      <p class="text-slate-400">No products match your filters.</p>
-      <button @click="resetFilters" class="mt-3 text-sm text-cyan-400 hover:underline">Clear all filters</button>
-    </div>
+    <EmptyState v-else icon="search" title="No products found" message="Try adjusting your search or filters." action-label="Clear Filters" @action="resetFilters" />
   </div>
 </template>

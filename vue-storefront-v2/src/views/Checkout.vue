@@ -3,6 +3,7 @@ import { reactive, computed } from 'vue'
 import { useCart } from '../composables/useCart'
 import { useRouter } from 'vue-router'
 import { validateForm } from '../utils/validation'
+import EmptyState from '../components/EmptyState.vue'
 
 const { cart, totalPrice, clearCart } = useCart()
 const router = useRouter()
@@ -50,17 +51,17 @@ function placeOrder() {
 <template>
   <div class="max-w-4xl mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6">Checkout</h1>
-    <div class="grid md:grid-cols-2 gap-8">
+    <EmptyState v-if="!cart.length" icon="cart" title="Your cart is empty" message="Add some products before checking out." action-label="Browse Shop" action-to="/shop" />
+    <div v-else class="grid md:grid-cols-2 gap-8">
       <!-- Order Summary -->
       <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
         <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
-        <ul v-if="cart.length" class="space-y-2">
+        <ul class="space-y-2">
           <li v-for="item in cart" :key="item.id" class="flex justify-between">
             <span>{{ item.name }} (x{{ item.quantity }})</span>
             <span>${{ (item.price * item.quantity).toFixed(2) }}</span>
           </li>
         </ul>
-        <p v-else class="text-slate-400">Your cart is empty.</p>
 
         <div class="border-t border-slate-700 mt-4 pt-4 space-y-2 text-sm">
           <div class="flex justify-between text-slate-400">

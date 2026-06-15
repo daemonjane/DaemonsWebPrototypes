@@ -1,6 +1,7 @@
 <script setup>
 import { useFavorites } from '../composables/useFavorites'
 import ProductCard from '../components/ProductCard.vue'
+import EmptyState from '../components/EmptyState.vue'
 
 const { items, count, clear } = useFavorites()
 </script>
@@ -25,13 +26,6 @@ const { items, count, clear } = useFavorites()
       <ProductCard v-for="product in items" :key="product.id" :product="product" v-memo="[product.id, product.price, product.rating]" />
     </div>
 
-    <div v-else class="text-center py-20">
-      <p class="text-4xl mb-4">♡</p>
-      <p class="text-slate-400 text-lg">No favorites yet</p>
-      <p class="text-slate-500 text-sm mt-1">Click the heart icon on any product to save it here.</p>
-      <router-link to="/shop" class="mt-6 inline-block bg-cyan-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-cyan-500 transition-colors">
-        Browse Products
-      </router-link>
-    </div>
+    <EmptyState v-else icon="heart" title="No favorites yet" message="Click the heart icon on any product to save it here." action-label="Browse Products" action-to="/shop" />
   </div>
 </template>
