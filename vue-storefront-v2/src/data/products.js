@@ -198,5 +198,15 @@ export const products = [
     image: "/assets/sleeved-cables.svg",
     rating: 4.3,
     specs: ["Paracord Sleeving", "Cable Combs Included", "ATX 3.0 Compatible", "24-pin + 2x 8-pin"]
+  },
+  {
+    id: "microphone",
+    name: "Elgato Wave:3",
+    price: 149.99,
+    category: "peripherals",
+    description: "Studio-quality USB condenser mic with Clipguard anti-distortion.",
+    image: "/assets/microphone.svg",
+    rating: 4.6,
+    specs: ["Condenser Capsule", "Clipguard Tech", "USB-C", "Wave Link Mixer"]
   }
 ]
