@@ -7,7 +7,8 @@ export const products = [
     description: "Liquid‑cooled extreme desktop. Ultimate performance.",
     image: "/assets/vanguard-desktop-fallback.png",
     rating: 4.8,
-    specs: ["RTX 5070 12GB", "Intel i7-14th 20‑Core", "32GB DDR5", "360mm AIO"]
+    specs: ["RTX 5070 12GB", "Intel i7-14th 20‑Core", "32GB DDR5", "360mm AIO"],
+    stock: 5
   },
   {
     id: "ultrawide-monitor",
@@ -17,7 +18,8 @@ export const products = [
     description: "240Hz, 0.03ms, infinite contrast. Perfect for immersion.",
     image: "/assets/ultrawide-monitor-fallback.png",
     rating: 4.9,
-    specs: ["QD‑OLED Panel", "3440x1440", "240Hz Refresh", "0.03ms Response"]
+    specs: ["QD‑OLED Panel", "3440x1440", "240Hz Refresh", "0.03ms Response"],
+    stock: 0
   },
   {
     id: "cyberpro-keyboard",
@@ -147,7 +149,8 @@ export const products = [
     description: "Spring‑arm cable holder for smooth mouse movement.",
     image: "/assets/MouseBungee.webp",
     rating: 4.1,
-    specs: ["Spring‑arm", "Non‑slip Base", "Lightweight"]
+    specs: ["Spring‑arm", "Non‑slip Base", "Lightweight"],
+    stock: 2
   },
   {
     id: "stream-deck",
@@ -157,7 +160,8 @@ export const products = [
     description: "32 customizable LCD keys for streaming and productivity.",
     image: "/assets/stream-deck.svg",
     rating: 4.7,
-    specs: ["32 LCD Keys", "Customizable Profiles", "USB-C", "Plugin SDK Support"]
+    specs: ["32 LCD Keys", "Customizable Profiles", "USB-C", "Plugin SDK Support"],
+    stock: 3
   },
   {
     id: "gaming-chair",
@@ -177,7 +181,8 @@ export const products = [
     description: "Dual-tower air cooler with premium NF-A15 fans, silent operation.",
     image: "/assets/cpu-cooler.svg",
     rating: 4.9,
-    specs: ["Dual Tower", "NF-A15 Fans", "6 Heatpipes", "LGA1851 Compatible"]
+    specs: ["Dual Tower", "NF-A15 Fans", "6 Heatpipes", "LGA1851 Compatible"],
+    stock: 0
   },
   {
     id: "nvme-ssd",
