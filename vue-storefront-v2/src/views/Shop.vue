@@ -137,7 +137,7 @@ function resetFilters() {
 
     <!-- Products grid -->
     <div v-if="filteredProducts.length > 0" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-      <ProductCard v-for="product in filteredProducts" :key="product.id" :product="product" :show-full="true" />
+      <ProductCard v-for="product in filteredProducts" :key="product.id" :product="product" :show-full="true" v-memo="[product.id, product.price, product.rating, filteredProducts.length]" />
     </div>
     <div v-else class="text-center py-16">
       <p class="text-4xl mb-3">🔍</p>

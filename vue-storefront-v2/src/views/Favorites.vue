@@ -22,7 +22,7 @@ const { items, count, clear } = useFavorites()
     </div>
 
     <div v-if="items.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <ProductCard v-for="product in items" :key="product.id" :product="product" />
+      <ProductCard v-for="product in items" :key="product.id" :product="product" v-memo="[product.id, product.price, product.rating]" />
     </div>
 
     <div v-else class="text-center py-20">

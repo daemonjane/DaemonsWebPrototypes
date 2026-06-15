@@ -200,6 +200,7 @@ function quickAdd(product) {
           v-for="item in recentlyViewed"
           :key="item.id"
           :to="`/product/${item.id}`"
+          v-memo="[item.id, item.price]"
           class="flex-shrink-0 w-40 sm:w-44 bg-slate-900 rounded-lg border border-slate-800 overflow-hidden hover:border-cyan-700 hover:-translate-y-0.5 transition-all duration-200 snap-start group"
         >
           <div class="h-24 bg-slate-800 overflow-hidden">
@@ -475,7 +476,7 @@ function quickAdd(product) {
         <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Fresh gear added to the catalogue. Verified and ready to ship.</p>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <ProductCard v-for="product in newArrivals" :key="product.id" :product="product" />
+        <ProductCard v-for="product in newArrivals" :key="product.id" :product="product" v-memo="[product.id, product.price, product.rating]" />
       </div>
     </section>
 
@@ -498,7 +499,7 @@ function quickAdd(product) {
         </button>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <ProductCard v-for="product in (showAllOther ? otherProducts : otherProducts.slice(0, 3))" :key="product.id" :product="product" />
+        <ProductCard v-for="product in (showAllOther ? otherProducts : otherProducts.slice(0, 3))" :key="product.id" :product="product" v-memo="[product.id, product.price, product.rating, showAllOther]" />
       </div>
     </section>
   </div>
