@@ -12,6 +12,7 @@ const About = () => import('../views/About.vue')
 const Insights = () => import('../views/Insights.vue')
 const FAQ = () => import('../views/FAQ.vue')
 const NotFound = () => import('../views/NotFound.vue')
+const OrderTracking = () => import('../views/OrderTracking.vue')
 
 const routes = [
   { path: '/', component: Home },
@@ -25,6 +26,7 @@ const routes = [
   { path: '/about', component: About },
   { path: '/insights', component: Insights },
   { path: '/faq', component: FAQ },
+  { path: '/tracking', component: OrderTracking },
   { path: '/:pathMatch(.*)*', component: NotFound },
 ]
 
