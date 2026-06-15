@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
+import { useFavorites } from '../composables/useFavorites'
 import QuickViewModal from './QuickViewModal.vue'
 
 const props = defineProps({
@@ -10,6 +11,7 @@ const props = defineProps({
 })
 
 const { addItem } = useCart()
+const { toggle: toggleFavorite, isFavorite } = useFavorites()
 const router = useRouter()
 const quantity = ref(1)
 const quickViewProduct = ref(null)
@@ -55,10 +57,28 @@ function closeQuickView() {
     </router-link>
 
     <div class="p-5 flex flex-col flex-1">
-      <div class="flex justify-between items-start">
+      <div class="flex justify-between items-start gap-2">
         <h3 class="text-lg font-bold text-white leading-snug">{{ product.name }}</h3>
-        <div class="star-rating text-yellow-400 text-sm whitespace-nowrap ml-2" aria-hidden="true">
-          {{ '★'.repeat(Math.floor(product.rating)) }}{{ '☆'.repeat(5 - Math.floor(product.rating)) }}
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button
+            @click.stop="toggleFavorite(product.id)"
+            class="p-1 rounded-md hover:bg-slate-800 transition-colors"
+            :aria-label="isFavorite(product.id) ? 'Remove from favorites' : 'Add to favorites'"
+          >
+            <svg
+              class="w-4 h-4 transition-colors"
+              :class="isFavorite(product.id) ? 'text-pink-400 fill-pink-400' : 'text-slate-500 hover:text-pink-400'"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </button>
+          <div class="star-rating text-yellow-400 text-sm whitespace-nowrap" aria-hidden="true">
+            {{ '★'.repeat(Math.floor(product.rating)) }}{{ '☆'.repeat(5 - Math.floor(product.rating)) }}
+          </div>
         </div>
       </div>
       <p class="text-slate-400 text-sm mt-1 line-clamp-2">{{ product.description }}</p>

@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
+import { useFavorites } from '../composables/useFavorites'
 
 const route = useRoute()
 const productId = route.params.id
@@ -11,6 +12,7 @@ const product = computed(() => products.find(p => p.id === productId))
 
 const { addItem } = useCart()
 const { visit } = useRecentlyViewed()
+const { toggle: toggleFavorite, isFavorite } = useFavorites()
 
 onMounted(() => {
   if (product.value) visit(product.value.id)
@@ -39,6 +41,26 @@ onMounted(() => {
         <span class="text-xs font-mono text-cyan-500 uppercase tracking-wider bg-cyan-950/30 px-2 py-1 rounded">{{ product.category }}</span>
         <h1 class="text-3xl sm:text-4xl font-bold text-white mt-2">{{ product.name }}</h1>
         <p class="text-2xl text-cyan-400 mt-4 font-mono">${{ product.price.toFixed(2) }}</p>
+        <div class="flex items-center gap-3 mt-2">
+          <button
+            @click="toggleFavorite(product.id)"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors"
+            :class="isFavorite(product.id) ? 'bg-pink-950/30 text-pink-400 border border-pink-800/50' : 'bg-slate-800 text-slate-400 border border-slate-700 hover:border-pink-800/50 hover:text-pink-400'"
+            :aria-label="isFavorite(product.id) ? 'Remove from favorites' : 'Add to favorites'"
+          >
+            <svg
+              class="w-4 h-4"
+              :class="isFavorite(product.id) ? 'fill-pink-400' : ''"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+            {{ isFavorite(product.id) ? 'Favorited' : 'Favorite' }}
+          </button>
+        </div>
         <p class="text-slate-400 mt-4 leading-relaxed">{{ product.description }}</p>
         <div class="mt-6">
           <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
