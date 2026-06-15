@@ -5,6 +5,13 @@ import ProductCard from '../components/ProductCard.vue'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 import EmptyState from '../components/EmptyState.vue'
 
+const categoryMeta = {
+  all: { label: 'All Products', icon: '🔧', desc: 'Every component in our catalogue.' },
+  desktop: { label: 'Desktops', icon: '🖥️', desc: 'Custom-configured performance towers.' },
+  monitors: { label: 'Monitors', icon: '🖥️', desc: 'High-refresh QD-OLED and IPS panels.' },
+  peripherals: { label: 'Peripherals', icon: '⌨️', desc: 'Keyboards, mice, audio, and accessories.' },
+}
+
 const currentFilter = ref('all')
 const currentSort = ref('default')
 const searchQuery = ref('')
@@ -40,11 +47,18 @@ function resetFilters() {
   <div>
     <Breadcrumbs :crumbs="[{ label: 'Shop' }]" />
 
-    <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+    <!-- Category hero banner -->
+    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl border border-slate-800 p-6 sm:p-8 mb-8 flex items-center gap-5 sm:gap-6">
+      <span class="text-4xl sm:text-5xl">{{ categoryMeta[currentFilter]?.icon || '🔧' }}</span>
       <div>
-        <h1 class="text-3xl font-bold text-white">All Hardware</h1>
-        <p class="text-slate-400 mt-1 text-sm">{{ filteredProducts.length }} of {{ products.length }} products</p>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ categoryMeta[currentFilter]?.label || 'All Products' }}</h1>
+        <p class="text-slate-400 mt-1 text-sm">{{ categoryMeta[currentFilter]?.desc }}</p>
+        <p class="text-xs text-slate-500 mt-1 font-mono">{{ filteredProducts.length }} of {{ products.length }} products</p>
       </div>
+    </div>
+
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+      <div class="hidden sm:block"></div>
       <button
         @click="showFilters = !showFilters"
         class="text-xs text-slate-500 hover:text-cyan-400 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-800 hover:border-slate-700"
