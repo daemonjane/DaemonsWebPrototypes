@@ -1,6 +1,7 @@
 <script setup>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import ScrollToTop from './components/ScrollToTop.vue'
 import ToastContainer from './components/ToastContainer.vue'
 </script>
 
@@ -25,6 +26,7 @@ import ToastContainer from './components/ToastContainer.vue'
     </main>
 
     <Footer />
+    <ScrollToTop />
     <ToastContainer />
   </div>
 </template>
