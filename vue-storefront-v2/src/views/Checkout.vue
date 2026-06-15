@@ -152,24 +152,33 @@ function placeOrder() {
             <h2 class="text-xl font-semibold mb-4">Shipping Info</h2>
             <form @submit.prevent="nextStep" novalidate>
               <div class="mb-3">
-                <input v-model="form.name" type="text" placeholder="Full Name"
-                  class="w-full bg-slate-800 border border-slate-700 rounded p-2"
-                  :class="{ 'border-pink-500': errors.name }"
-                  :aria-describedby="errors.name ? 'name-error' : undefined" aria-required="true">
+                <div class="relative">
+                  <input v-model="form.name" type="text" placeholder=" " id="ship-name"
+                    class="peer w-full bg-slate-800 border border-slate-700 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-cyan-500 transition-colors"
+                    :class="{ 'border-pink-500': errors.name }"
+                    :aria-describedby="errors.name ? 'name-error' : undefined" aria-required="true">
+                  <label for="ship-name" class="absolute left-2 top-1 text-[10px] text-slate-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-cyan-400 transition-all duration-200 pointer-events-none">Full Name</label>
+                </div>
                 <p v-if="errors.name" id="name-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.name }}</p>
               </div>
               <div class="mb-3">
-                <input v-model="form.email" type="email" placeholder="Email"
-                  class="w-full bg-slate-800 border border-slate-700 rounded p-2"
-                  :class="{ 'border-pink-500': errors.email }"
-                  :aria-describedby="errors.email ? 'email-error' : undefined" aria-required="true">
+                <div class="relative">
+                  <input v-model="form.email" type="email" placeholder=" " id="ship-email"
+                    class="peer w-full bg-slate-800 border border-slate-700 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-cyan-500 transition-colors"
+                    :class="{ 'border-pink-500': errors.email }"
+                    :aria-describedby="errors.email ? 'email-error' : undefined" aria-required="true">
+                  <label for="ship-email" class="absolute left-2 top-1 text-[10px] text-slate-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-cyan-400 transition-all duration-200 pointer-events-none">Email</label>
+                </div>
                 <p v-if="errors.email" id="email-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
               </div>
               <div class="mb-3">
-                <input v-model="form.address" type="text" placeholder="Address"
-                  class="w-full bg-slate-800 border border-slate-700 rounded p-2"
-                  :class="{ 'border-pink-500': errors.address }"
-                  :aria-describedby="errors.address ? 'address-error' : undefined" aria-required="true">
+                <div class="relative">
+                  <input v-model="form.address" type="text" placeholder=" " id="ship-addr"
+                    class="peer w-full bg-slate-800 border border-slate-700 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-cyan-500 transition-colors"
+                    :class="{ 'border-pink-500': errors.address }"
+                    :aria-describedby="errors.address ? 'address-error' : undefined" aria-required="true">
+                  <label for="ship-addr" class="absolute left-2 top-1 text-[10px] text-slate-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-cyan-400 transition-all duration-200 pointer-events-none">Address</label>
+                </div>
                 <p v-if="errors.address" id="address-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.address }}</p>
               </div>
               <button type="submit" class="mt-4 w-full bg-cyan-600 py-3 rounded-md font-bold hover:bg-cyan-500 transition active:scale-95">
@@ -183,19 +192,28 @@ function placeOrder() {
             <h2 class="text-xl font-semibold mb-4">Payment</h2>
             <form @submit.prevent="nextStep" novalidate>
               <div class="mb-3">
-                <input v-model="form.cardNumber" type="text" placeholder="Card Number"
-                  class="w-full bg-slate-800 border border-slate-700 rounded p-2"
-                  :class="{ 'border-pink-500': errors.cardNumber }"
-                  :aria-describedby="errors.cardNumber ? 'card-error' : undefined" aria-required="true">
+                <div class="relative">
+                  <input v-model="form.cardNumber" type="text" placeholder=" " id="pay-card"
+                    class="peer w-full bg-slate-800 border border-slate-700 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-cyan-500 transition-colors"
+                    :class="{ 'border-pink-500': errors.cardNumber }"
+                    :aria-describedby="errors.cardNumber ? 'card-error' : undefined" aria-required="true">
+                  <label for="pay-card" class="absolute left-2 top-1 text-[10px] text-slate-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-cyan-400 transition-all duration-200 pointer-events-none">Card Number</label>
+                </div>
                 <p v-if="errors.cardNumber" id="card-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.cardNumber }}</p>
               </div>
               <div class="grid grid-cols-2 gap-3 mb-3">
-                <input v-model="form.expDate" type="text" placeholder="MM/YY"
-                  class="w-full bg-slate-800 border border-slate-700 rounded p-2"
-                  :class="{ 'border-pink-500': errors.expDate }" aria-required="true">
-                <input v-model="form.cvv" type="text" placeholder="CVV"
-                  class="w-full bg-slate-800 border border-slate-700 rounded p-2"
-                  :class="{ 'border-pink-500': errors.cvv }" aria-required="true">
+                <div class="relative">
+                  <input v-model="form.expDate" type="text" placeholder=" " id="pay-exp"
+                    class="peer w-full bg-slate-800 border border-slate-700 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-cyan-500 transition-colors"
+                    :class="{ 'border-pink-500': errors.expDate }" aria-required="true">
+                  <label for="pay-exp" class="absolute left-2 top-1 text-[10px] text-slate-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-cyan-400 transition-all duration-200 pointer-events-none">MM/YY</label>
+                </div>
+                <div class="relative">
+                  <input v-model="form.cvv" type="text" placeholder=" " id="pay-cvv"
+                    class="peer w-full bg-slate-800 border border-slate-700 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-cyan-500 transition-colors"
+                    :class="{ 'border-pink-500': errors.cvv }" aria-required="true">
+                  <label for="pay-cvv" class="absolute left-2 top-1 text-[10px] text-slate-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-cyan-400 transition-all duration-200 pointer-events-none">CVV</label>
+                </div>
               </div>
 
               <!-- Gift Card Checker -->
