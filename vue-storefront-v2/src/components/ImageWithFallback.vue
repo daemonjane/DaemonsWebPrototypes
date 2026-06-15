@@ -18,7 +18,7 @@ function onError() { error.value = true }
 </script>
 
 <template>
-  <img v-if="!error" :src="src" :alt="alt" :class="class" @error="onError" />
+  <img v-if="!error" :src="src" :alt="alt" :class="class" loading="lazy" @error="onError" />
   <div v-else :class="class" class="bg-slate-700 flex items-center justify-center text-slate-500 text-sm">
     {{ alt }}
   </div>

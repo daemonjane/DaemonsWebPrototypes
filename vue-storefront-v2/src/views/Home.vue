@@ -203,7 +203,7 @@ function quickAdd(product) {
           class="flex-shrink-0 w-40 sm:w-44 bg-slate-900 rounded-lg border border-slate-800 overflow-hidden hover:border-cyan-700 hover:-translate-y-0.5 transition-all duration-200 snap-start group"
         >
           <div class="h-24 bg-slate-800 overflow-hidden">
-            <img :src="item.image" :alt="item.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <img :src="item.image" :alt="item.name" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
           </div>
           <div class="p-2.5 space-y-1">
             <p class="text-xs text-slate-200 truncate font-medium">{{ item.name }}</p>
@@ -230,7 +230,7 @@ function quickAdd(product) {
         <!-- Vanguard Desktop large card -->
         <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col md:col-span-2 md:flex-row group transition-all duration-300 hover:border-slate-700 hover:shadow-xl hover:shadow-cyan-950/30 hover:-translate-y-1 transform">
           <div class="w-full md:w-1/2 shrink-0 bg-slate-800 aspect-[16/10] md:aspect-auto md:h-full relative overflow-hidden">
-            <img src="/assets/vanguard-desktop-fallback.png" alt="Vanguard Gaming Desktop" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+            <img src="/assets/vanguard-desktop-fallback.png" alt="Vanguard Gaming Desktop" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
           </div>
           <div class="p-5 sm:p-6 flex flex-col flex-1 justify-between space-y-4">
             <div class="space-y-4">
@@ -368,7 +368,7 @@ function quickAdd(product) {
           <div v-for="product in trendingProducts" :key="product.id" class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 overflow-hidden rounded bg-slate-700 shrink-0">
-                <img :src="product.image" :alt="product.name" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
+                <img :src="product.image" :alt="product.name" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
               </div>
               <div>
                 <span class="text-slate-200 text-sm block">{{ product.name }}</span>

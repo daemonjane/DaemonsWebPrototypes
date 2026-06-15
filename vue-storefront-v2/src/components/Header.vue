@@ -103,7 +103,7 @@ function closeSearch() {
                 @click="searchQuery = ''; searchFocused = false"
               >
                 <div class="w-8 h-8 rounded bg-slate-700 shrink-0 overflow-hidden">
-                  <img :src="result.image" :alt="result.name" class="w-full h-full object-cover">
+                  <img :src="result.image" :alt="result.name" loading="lazy" class="w-full h-full object-cover">
                 </div>
                 <div class="min-w-0">
                   <p class="text-slate-200 truncate">{{ result.name }}</p>

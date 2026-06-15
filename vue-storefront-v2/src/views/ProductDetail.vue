@@ -40,7 +40,7 @@ onMounted(() => {
     <Breadcrumbs :crumbs="[{ label: 'Shop', to: '/shop' }, { label: product.name }]" />
     <div class="grid md:grid-cols-2 gap-8">
       <div class="relative">
-        <img :src="product.image" :alt="product.name" class="w-full rounded-xl object-cover h-72 sm:h-96" />
+        <img :src="product.image" :alt="product.name" loading="lazy" class="w-full rounded-xl object-cover h-72 sm:h-96" />
         <div class="absolute top-3 right-3">
           <span class="inline-flex items-center gap-1 bg-slate-900/80 text-yellow-400 text-xs px-2 py-1 rounded-md font-mono">
             {{ '★'.repeat(Math.floor(product.rating)) }}{{ '☆'.repeat(5 - Math.floor(product.rating)) }}

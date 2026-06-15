@@ -111,7 +111,7 @@ function handleAddToCart() {
           <div class="grid md:grid-cols-2 gap-0">
             <!-- Image -->
             <div class="bg-slate-800 flex items-center justify-center p-6 min-h-[250px]">
-              <img :src="product.image" :alt="product.name" class="w-full h-full object-contain max-h-[300px]">
+              <img :src="product.image" :alt="product.name" loading="lazy" class="w-full h-full object-contain max-h-[300px]">
             </div>
 
             <!-- Details -->
