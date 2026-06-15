@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
+import AnimatedCounter from '../components/AnimatedCounter.vue'
 import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
@@ -69,6 +70,18 @@ const trendingProducts = products.filter(p => trendingIds.includes(p.id))
 // Featured products
 const featuredProducts = products.filter(p => ['gaming-mouse', 'mousepad', 'usb-hub'].includes(p.id))
 
+// New arrivals (our 6 new products)
+const newArrivals = products.filter(p =>
+  ['stream-deck', 'gaming-chair', 'cpu-cooler', 'nvme-ssd', 'sleeved-cables', 'microphone'].includes(p.id)
+)
+
+// Other products (everything not featured or new)
+const otherProducts = products.filter(p =>
+  !['gaming-mouse', 'mousepad', 'usb-hub', 'stream-deck', 'gaming-chair', 'cpu-cooler', 'nvme-ssd', 'sleeved-cables', 'microphone'].includes(p.id)
+)
+
+const showAllOther = ref(false)
+
 // Bundles
 const bundles = [
   { id: 'bundle-silent', name: 'Silent Operator Bundle', description: 'Vanguard Desktop + Cyber‑Pro Keyboard + Desk Mat', price: 2596, saved: 152, oldPrice: 2748 },
@@ -110,6 +123,14 @@ function quickAdd(product) {
           <router-link to="/insights" class="border border-slate-600 text-slate-300 px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Explore Membership</router-link>
         </div>
       </div>
+    </section>
+
+    <!-- Metrics -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 py-6" aria-label="Company metrics">
+      <AnimatedCounter :target="10" suffix="K+" label="Products Shipped" :duration="1800" />
+      <AnimatedCounter :target="50" suffix="K+" label="Happy Customers" :duration="2000" />
+      <AnimatedCounter :target="99.9" suffix="%" label="Uptime SLA" :decimals="1" :duration="2200" />
+      <AnimatedCounter :target="24" suffix="/7" label="Support Response" :duration="1500" />
     </section>
 
     <!-- Features -->
@@ -445,27 +466,38 @@ function quickAdd(product) {
       </div>
     </section>
 
-    <!-- Show More Items (extra products) -->
-    <section id="more-products" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="more-products-heading">
+    <!-- New Arrivals -->
+    <section id="new-arrivals" class="space-y-8 sm:space-y-10" role="region" aria-labelledby="new-arrivals-heading">
       <div class="text-center space-y-3">
-        <h2 id="more-products-heading" class="text-2xl sm:text-3xl font-bold text-white">Explore More Gear</h2>
-        <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Extra essentials that didn't fit the main deck. Still 100% verified.</p>
+        <span class="inline-block bg-emerald-900/40 text-emerald-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">Just Landed</span>
+        <h2 id="new-arrivals-heading" class="text-2xl sm:text-3xl font-bold text-white">New Arrivals</h2>
+        <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Fresh gear added to the catalogue. Verified and ready to ship.</p>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <!-- Always visible: first three -->
-        <ProductCard v-for="product in featuredProducts" :key="product.id" :product="product" />
-        <!-- Extra items (hidden by default) -->
-        <template v-if="showMoreItems">
-          <ProductCard v-for="product in products.filter(p => ['wireless-headset', 'webcam', 'speakers'].includes(p.id))" :key="product.id" :product="product" />
-        </template>
+        <ProductCard v-for="product in newArrivals" :key="product.id" :product="product" />
       </div>
-      <div class="flex justify-center gap-4">
-        <button v-if="!showMoreItems" @click="showMoreItems = true" class="bg-cyan-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">
-          Show More Items
+    </section>
+
+    <!-- All Other Products -->
+    <section id="all-products" class="space-y-8 sm:space-y-10" role="region" aria-labelledby="all-products-heading">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 id="all-products-heading" class="text-2xl sm:text-3xl font-bold text-white">Complete Catalogue</h2>
+          <p class="text-slate-400 text-sm sm:text-base mt-1">Every product we carry, from cables to complete systems.</p>
+        </div>
+        <button
+          v-if="otherProducts.length > 3"
+          @click="showAllOther = !showAllOther"
+          class="text-xs text-cyan-400 hover:text-cyan-300 transition-colors font-medium flex items-center gap-1"
+        >
+          {{ showAllOther ? 'Show less' : `Show all (${otherProducts.length})` }}
+          <svg class="w-3 h-3" :class="{ 'rotate-180': showAllOther }" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
         </button>
-        <button v-else @click="showMoreItems = false" class="bg-slate-800 text-slate-300 px-6 py-3 rounded-md font-semibold hover:bg-slate-700 active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">
-          Show Less
-        </button>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <ProductCard v-for="product in (showAllOther ? otherProducts : otherProducts.slice(0, 3))" :key="product.id" :product="product" />
       </div>
     </section>
   </div>
