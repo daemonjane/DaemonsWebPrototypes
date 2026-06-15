@@ -1,8 +1,11 @@
 <script setup>
 /**
- * Site footer with links, social icons, newsletter CTA, and meta info.
+ * Site footer with links, social icons, newsletter CTA, meta info, and live visitor count.
  * @component
  */
+import { useLiveVisitorCount } from '../composables/useLiveVisitorCount'
+
+const { count } = useLiveVisitorCount()
 </script>
 
 <template>
@@ -64,7 +67,12 @@
     <div class="border-t border-slate-800 py-4">
       <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-600">
         <div>&copy; 2026 TechStore Engine. Global Supply Hub.</div>
-        <div class="flex gap-4">
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5" title="Live visitors">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="font-mono text-emerald-400/80">{{ count }}</span>
+            <span>browsing now</span>
+          </span>
           <span class="hover:text-slate-400 transition-colors cursor-pointer">Privacy</span>
           <span class="hover:text-slate-400 transition-colors cursor-pointer">Terms</span>
           <span class="hover:text-slate-400 transition-colors cursor-pointer">Cookies</span>
