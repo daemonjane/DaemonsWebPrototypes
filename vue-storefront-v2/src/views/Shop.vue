@@ -73,21 +73,21 @@ function resetFilters() {
     <!-- Filter / search / sort -->
     <div class="flex flex-wrap gap-4 mb-6 items-center justify-between">
       <div class="flex gap-2 flex-wrap">
-        <button @click="currentFilter = 'all'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all', currentFilter === 'all' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
-          All
-          <span class="ml-1.5 text-[10px] opacity-60">({{ products.length }})</span>
+        <button @click="currentFilter = 'all'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5', currentFilter === 'all' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+          <span>{{ categoryMeta.all.icon }}</span> All
+          <span class="ml-0.5 text-[10px] opacity-60">({{ products.length }})</span>
         </button>
-        <button @click="currentFilter = 'desktop'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all', currentFilter === 'desktop' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
-          Desktops
-          <span class="ml-1.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'desktop').length }})</span>
+        <button @click="currentFilter = 'desktop'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5', currentFilter === 'desktop' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+          <span>{{ categoryMeta.desktop.icon }}</span> Desktops
+          <span class="ml-0.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'desktop').length }})</span>
         </button>
-        <button @click="currentFilter = 'monitors'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all', currentFilter === 'monitors' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
-          Monitors
-          <span class="ml-1.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'monitors').length }})</span>
+        <button @click="currentFilter = 'monitors'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5', currentFilter === 'monitors' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+          <span>{{ categoryMeta.monitors.icon }}</span> Monitors
+          <span class="ml-0.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'monitors').length }})</span>
         </button>
-        <button @click="currentFilter = 'peripherals'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all', currentFilter === 'peripherals' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
-          Peripherals
-          <span class="ml-1.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'peripherals').length }})</span>
+        <button @click="currentFilter = 'peripherals'" :class="['filter-btn px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5', currentFilter === 'peripherals' ? 'bg-cyan-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+          <span>{{ categoryMeta.peripherals.icon }}</span> Peripherals
+          <span class="ml-0.5 text-[10px] opacity-60">({{ products.filter(p => p.category === 'peripherals').length }})</span>
         </button>
       </div>
       <div class="flex gap-2">
