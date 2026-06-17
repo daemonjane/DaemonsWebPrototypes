@@ -45,6 +45,7 @@ const navLinks = [
   { path: '/faq', label: 'FAQ' },
   { path: '/about', label: 'About' },
   { path: '/contact', label: 'Contact' },
+  { path: '/counter', label: 'Counter' },
 ]
 
 function closeSearch() {

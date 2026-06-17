@@ -27,7 +27,7 @@
 ## 📂 Project Tree
 
 ```
-📁 vue-storefront-v2/
+📁 .
 ├── 📄 index.html                   # Entry HTML with font preloads
 ├── ⚙️ vite.config.js               # Vite + Vue plugin
 ├── 🎨 tailwind.config.js           # Custom cyan/slate theme, Inter + JetBrains Mono
@@ -41,7 +41,7 @@
     ├── 🏗️ App.vue                  # Root layout + animated background layer
     ├── 🎨 style.css                # Tailwind directives, keyframes, print styles
     ├── 📁 router/
-    │   └── 📄 index.js             # 16 lazy-loaded routes
+    │   └── 📄 index.js             # 17 lazy-loaded routes
     ├── 📁 data/
     │   └── 📄 products.js          # 21 products across 4 categories
     ├── 📁 composables/             # 🧩 Shared state & logic
@@ -53,7 +53,9 @@
     │   ├── 📢 useSalesNotifications.js
     │   ├── 🌓 useTheme.js
     │   ├── ⏳ useRouteLoading.js
-    │   └── 📦 useFreeShipping.js
+    │   ├── 📦 useFreeShipping.js
+    │   ├── ⏱️ useLoadingBar.js
+    │   └── 🔢 useCounter.js
     ├── 📁 utils/
     │   └── 📄 validation.js
     ├── 📁 components/              # 🧱 Reusable UI
@@ -64,6 +66,7 @@
     │   ├── 🪜 StepperIndicator.vue
     │   ├── 📦 FreeShippingBar.vue
     │   ├── 💀 SkeletonLoader.vue
+    │   ├── 🔢 AnimatedCounter.vue
     │   └── ... (Header, Footer, ProductCard, QuickViewModal, ToastContainer, etc.)
     └── 📁 views/                   # 🖥️ Route pages
         ├── 🏠 Home.vue
@@ -77,12 +80,13 @@
         ├── ℹ️ About.vue
         ├── 📊 Insights.vue
         ├── ❓ FAQ.vue
-        ├� 📬 OrderTracking.vue
+        ├── 📬 OrderTracking.vue
         ├── ✅ OrderConfirmation.vue
         ├── 🔒 PrivacyPolicy.vue
         ├── 📜 TermsOfService.vue
         ├── 🍪 CookiesPolicy.vue
-        └� 🚫 NotFound.vue
+        ├── 🔢 CounterFeature.vue
+        └── 🚫 NotFound.vue
 ```
 
 ## 🔀 Data Flow
@@ -109,6 +113,7 @@ products.js ──► ProductCard ──► QuickViewModal
 | `useTheme` | `techstore_theme` | `'dark'` or `'light'` |
 | `useLiveVisitorCount` | `techstore_visitor_count` | Fluctuating visitor counter |
 | `CookiesPolicy` | `cookie_preferences` | JSON with essential/analytics/marketing booleans |
+| `useCounter` | `techstore_counter` | Current counter value |
 
 ## 🧩 Composable API
 
@@ -123,6 +128,8 @@ products.js ──► ProductCard ──► QuickViewModal
 | `useLiveVisitorCount()` | `count` (ref) |
 | `useSalesNotifications()` | — (calls `useToast()` internally) |
 | `useFreeShipping()` | `remaining`, `progress`, `qualifies`, `threshold` |
+| `useLoadingBar()` | `start()`, `done()`, `configured` (ref) |
+| `useCounter()` | `count`, `increment()`, `decrement()`, `reset()` |
 
 ## 📦 Scripts
 

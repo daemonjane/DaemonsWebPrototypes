@@ -58,7 +58,9 @@ function resetFilters() {
     </div>
 
     <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
-      <div class="hidden sm:block"></div>
+      <router-link to="/counter" class="text-xs text-slate-500 hover:text-cyan-400 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-800 hover:border-slate-700">
+        <span>🔢</span> Counter
+      </router-link>
       <button
         @click="showFilters = !showFilters"
         class="text-xs text-slate-500 hover:text-cyan-400 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-800 hover:border-slate-700"

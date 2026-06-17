@@ -28,6 +28,7 @@ const { count } = useLiveVisitorCount()
             <li><router-link to="/favorites" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Favorites</router-link></li>
             <li><router-link to="/insights" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Market Pulse</router-link></li>
             <li><router-link to="/about" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">About</router-link></li>
+            <li><router-link to="/counter" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Counter</router-link></li>
           </ul>
         </div>
 

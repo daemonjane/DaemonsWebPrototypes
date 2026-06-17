@@ -12,6 +12,7 @@ const About = () => import('../views/About.vue')
 const Insights = () => import('../views/Insights.vue')
 const FAQ = () => import('../views/FAQ.vue')
 const NotFound = () => import('../views/NotFound.vue')
+const CounterFeature = () => import('../views/CounterFeature.vue')
 const OrderTracking = () => import('../views/OrderTracking.vue')
 const OrderConfirmation = () => import('../views/OrderConfirmation.vue')
 const PrivacyPolicy = () => import('../views/PrivacyPolicy.vue')
@@ -30,6 +31,7 @@ const routes = [
   { path: '/about', component: About },
   { path: '/insights', component: Insights },
   { path: '/faq', component: FAQ },
+  { path: '/counter', component: CounterFeature },
   { path: '/tracking', component: OrderTracking },
   { path: '/confirmation', component: OrderConfirmation },
   { path: '/privacy', component: PrivacyPolicy },
