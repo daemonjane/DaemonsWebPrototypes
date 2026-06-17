@@ -38,7 +38,7 @@ function register() {
             v-model="name"
             type="text"
             placeholder="Full Name"
-            class="w-full bg-slate-800 border border-slate-700 rounded p-3"
+            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
             :class="{ 'border-pink-500': errors.name }"
             :aria-describedby="errors.name ? 'name-error' : undefined"
             aria-required="true"
@@ -53,7 +53,7 @@ function register() {
             v-model="email"
             type="email"
             placeholder="Email"
-            class="w-full bg-slate-800 border border-slate-700 rounded p-3"
+            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
             :class="{ 'border-pink-500': errors.email }"
             :aria-describedby="errors.email ? 'email-error' : undefined"
             aria-required="true"
@@ -68,7 +68,7 @@ function register() {
             v-model="password"
             type="password"
             placeholder="Password"
-            class="w-full bg-slate-800 border border-slate-700 rounded p-3"
+            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
             :class="{ 'border-pink-500': errors.password }"
             :aria-describedby="errors.password ? 'password-error' : undefined"
             aria-required="true"
@@ -78,7 +78,7 @@ function register() {
           </p>
         </div>
 
-        <button type="submit" class="w-full bg-cyan-600 py-3 rounded-md font-semibold">
+        <button type="submit" class="w-full bg-cyan-600 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-cyan-400">
           Register
         </button>
       </form>

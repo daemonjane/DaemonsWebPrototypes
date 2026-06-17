@@ -108,11 +108,11 @@ function resetFilters() {
       enter-active-class="transition-all duration-200 ease-out"
       leave-active-class="transition-all duration-150 ease-in"
       enter-from-class="opacity-0 max-h-0"
-      enter-to-class="opacity-100 max-h-24"
-      leave-from-class="opacity-100 max-h-24"
+      enter-to-class="opacity-100 max-h-48"
+      leave-from-class="opacity-100 max-h-48"
       leave-to-class="opacity-0 max-h-0"
     >
-      <div v-if="showFilters" class="mb-6 bg-slate-900 rounded-xl border border-slate-800 p-4 overflow-hidden">
+      <div v-if="showFilters" class="mb-6 bg-slate-900 rounded-xl border border-slate-800 p-4">
         <div class="flex flex-wrap items-center gap-6">
           <div class="flex-1 min-w-[200px]">
             <label class="text-xs text-slate-500 font-medium mb-2 block">Price range</label>

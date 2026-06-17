@@ -81,16 +81,12 @@ function closeQuickView() {
 </script>
 
 <template>
-  <div
+  <router-link
+    :to="`/product/${product.id}`"
     class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-950/20"
-    role="button"
-    :aria-label="`View ${product.name}`"
-    tabindex="0"
-    @click="navigateToProduct"
-    @keydown.enter.prevent="navigateToProduct"
   >
-    <!-- Product image (clickable area inside the card) -->
-    <router-link :to="`/product/${product.id}`" class="block h-48 w-full bg-slate-800 overflow-hidden relative" @click.stop>
+    <!-- Product image -->
+    <div class="block h-48 w-full bg-slate-800 overflow-hidden relative">
       <img
         :src="product.image"
         :alt="product.name"
@@ -107,7 +103,7 @@ function closeQuickView() {
         <span class="w-2 h-2 rounded-full" :class="stockLevel.dot"></span>
         <span class="text-[10px] text-slate-300 font-medium">{{ stockLevel.label }}</span>
       </div>
-    </router-link>
+    </div>
 
     <div class="p-5 flex flex-col flex-1">
       <div class="flex justify-between items-start gap-2">
@@ -218,7 +214,7 @@ function closeQuickView() {
         </div>
       </div>
     </div>
-  </div>
+  </router-link>
 
   <QuickViewModal :product="quickViewProduct" @close="closeQuickView" />
 </template>

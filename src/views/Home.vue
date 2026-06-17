@@ -111,13 +111,13 @@ function quickAdd(product) {
     <!-- Hero -->
     <!-- Quick Section Nav -->
     <nav class="flex flex-wrap justify-center gap-2 sm:gap-3 py-4 -mb-8" aria-label="Section quick links">
-      <a href="#metrics" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Metrics</a>
-      <a href="#features" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Features</a>
-      <a href="#testimonials" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Reviews</a>
-      <a href="#products" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Gear</a>
-      <a href="#bundles" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Bundles</a>
-      <a href="#micro-upgrades" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Upgrades</a>
-      <a href="#insights-membership" class="text-[10px] sm:text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors px-2.5 py-1 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Membership</a>
+      <a href="#metrics" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Metrics</a>
+      <a href="#features" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Features</a>
+      <a href="#testimonials" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Reviews</a>
+      <a href="#products" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Gear</a>
+      <a href="#bundles" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Bundles</a>
+      <a href="#micro-upgrades" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Upgrades</a>
+      <a href="#insights-membership" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800">Membership</a>
     </nav>
 
     <!-- Hero -->
