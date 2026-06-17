@@ -1,1 +1,0 @@
-Semantic Structural Layout: Built a clean semantic HTML5 framework for the homepage, mapping out essential components including a navigation header, hero section, feature grid, and footer.
