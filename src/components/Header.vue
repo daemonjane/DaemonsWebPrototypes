@@ -78,7 +78,7 @@ function closeSearch() {
             :key="link.path"
             :to="link.path"
             :class="[
-              'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              'px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400',
               route.path === link.path
                 ? 'text-cyan-400 bg-cyan-950/30'
                 : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
@@ -105,7 +105,7 @@ function closeSearch() {
             >
             <div
               v-if="searchFocused && searchResults.total > 0"
-              class="absolute top-full mt-1 left-0 right-0 bg-slate-900 border border-slate-700 rounded-md shadow-xl overflow-hidden z-50"
+              class="absolute top-full mt-1 left-0 right-0 bg-slate-900 border border-slate-700 rounded-md shadow-xl overflow-y-auto max-h-96 z-50"
             >
               <div v-for="(items, category) in searchResults.grouped" :key="category">
                 <p class="px-3 pt-2 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ category }}</p>
@@ -207,7 +207,7 @@ function closeSearch() {
             :key="link.path"
             :to="link.path"
             :class="[
-              'block px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              'block px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400',
               route.path === link.path
                 ? 'text-cyan-400 bg-cyan-950/30'
                 : 'text-slate-400 hover:text-white hover:bg-slate-800/50'

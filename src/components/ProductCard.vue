@@ -154,13 +154,13 @@ function closeQuickView() {
           <div class="flex items-center gap-2">
             <button
               @click.stop="decrement"
-              class="bg-slate-700 px-2 py-1 rounded text-sm"
+              class="bg-slate-700 px-2 py-1 rounded text-sm hover:bg-slate-600 transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400"
               aria-label="Decrease quantity"
             >-</button>
             <span class="text-sm w-6 text-center">{{ quantity }}</span>
             <button
               @click.stop="increment"
-              class="bg-slate-700 px-2 py-1 rounded text-sm"
+              class="bg-slate-700 px-2 py-1 rounded text-sm hover:bg-slate-600 transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400"
               aria-label="Increase quantity"
             >+</button>
           </div>
