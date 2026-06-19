@@ -198,6 +198,7 @@ input.error, textarea.error {
 
 .alert {
   animation: fadeIn 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 /* Print
