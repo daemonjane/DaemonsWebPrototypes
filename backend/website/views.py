@@ -38,6 +38,23 @@ def contact(request):
     return render(request, "website/contact.html", {"form": form})
 
 
+def task_list(request):
+    tasks = Task.objects.all()
+    return render(request, "website/task_list.html", {"tasks": tasks})
+
+
+def task_create(request):
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Task created successfully.")
+            return redirect("task_list")
+    else:
+        form = TaskForm()
+    return render(request, "website/task_form.html", {"form": form, "title": "Create Task"})
+
+
 def custom_404(request, exception):
     return render(request, "website/404.html", status=404)
 
