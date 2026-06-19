@@ -2,6 +2,8 @@ from django.db import models
 
 
 class Task(models.Model):
+    """A to-do task with completion tracking."""
+
     title = models.CharField("title", max_length=200)
     description = models.TextField("description", blank=True)
     completed = models.BooleanField("completed", default=False)
@@ -18,6 +20,8 @@ class Task(models.Model):
 
 
 class ContactMessage(models.Model):
+    """User-submitted contact form message."""
+
     name = models.CharField("name", max_length=200)
     email = models.EmailField("email")
     message = models.TextField("message")
