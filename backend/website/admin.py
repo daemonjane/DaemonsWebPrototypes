@@ -2,6 +2,10 @@ from django.contrib import admin
 
 from .models import ContactMessage, Task
 
+admin.site.site_header = "TechStore Administration"
+admin.site.site_title = "TechStore Admin"
+admin.site.index_title = "Welcome to TechStore Admin"
+
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
