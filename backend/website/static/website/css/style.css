@@ -61,16 +61,25 @@ button {
   border-radius: 2px;
 }
 
+/* Header
+   ========================================================================== */
+
 #main-header {
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
 }
+
+/* Particles & Background
+   ========================================================================== */
 
 .particle {
   position: absolute;
   border-radius: 50%;
   opacity: 0.6;
 }
+
+/* Animations
+   ========================================================================== */
 
 @keyframes orbFloat {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -117,6 +126,9 @@ input.error, textarea.error {
   75% { transform: translateX(4px); }
 }
 
+/* Hero Glow
+   ========================================================================== */
+
 .hero-glow {
   position: absolute;
   width: 500px;
@@ -151,12 +163,8 @@ input.error, textarea.error {
   to { transform: rotate(360deg); }
 }
 
-@media print {
-  #main-header, #main-footer, .fixed, #scroll-to-top {
-    display: none !important;
-  }
-  body { background: white !important; color: black !important; }
-}
+/* Utilities
+   ========================================================================== */
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -164,4 +172,14 @@ input.error, textarea.error {
 
 .alert {
   animation: fadeIn 0.3s ease;
+}
+
+/* Print
+   ========================================================================== */
+
+@media print {
+  #main-header, #main-footer, .fixed, #scroll-to-top {
+    display: none !important;
+  }
+  body { background: white !important; color: black !important; }
 }
