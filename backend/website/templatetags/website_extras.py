@@ -41,6 +41,13 @@ def time_ago(value):
 
 
 @register.filter
+def trim(value):
+    if isinstance(value, str):
+        return value.strip()
+    return value
+
+
+@register.filter
 def field_errors(field):
     return field.errors
 
