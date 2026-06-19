@@ -1,0 +1,69 @@
+:root {
+  --primary: #06b6d4;
+  --secondary: #0891b2;
+  --accent: #06b6d4;
+  --body-bg: #020617;
+  --body-quiet-color: #94a3b8;
+  --body-loud-color: #e2e8f0;
+  --header-color: #06b6d4;
+  --header-branding-color: #06b6d4;
+  --header-bg: #0f172a;
+  --header-link-color: #94a3b8;
+  --breadcrumbs-bg: #0f172a;
+  --breadcrumbs-fg: #06b6d4;
+  --module-bg: #0f172a;
+  --module-header-bg: #1e293b;
+  --link-fg: #06b6d4;
+  --link-hover-color: #67e8f9;
+  --link-selected-fg: #06b6d4;
+  --button-bg: #0891b2;
+  --button-fg: #fff;
+  --button-hover-bg: #06b6d4;
+  --default-button-bg: #0891b2;
+  --default-button-hover-bg: #06b6d4;
+  --close-button-bg: #334155;
+  --close-button-hover-bg: #475569;
+  --delete-button-bg: #be123c;
+  --delete-button-hover-bg: #e11d48;
+  --object-tools-bg: #0891b2;
+  --object-tools-hover-bg: #06b6d4;
+  --darkened-bg: #1e293b;
+  --selected-bg: #164e63;
+  --selected-row: #0f172a;
+  --border-color: #334155;
+  --form-row-bg: #0f172a;
+  --form-row-border: #334155;
+  --body-min-height: 100vh;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+#header {
+  border-bottom: 1px solid #334155;
+}
+
+.module h2, .module caption {
+  background: #1e293b;
+  color: #06b6d4;
+}
+
+a.section:link, a.section:visited {
+  color: #06b6d4;
+}
+
+div.breadcrumbs a {
+  color: #67e8f9;
+}
+
+.paginator a {
+  background: #1e293b;
+  color: #06b6d4;
+  border: 1px solid #334155;
+}
+
+.paginator a:hover {
+  background: #0891b2;
+  color: white;
+}
