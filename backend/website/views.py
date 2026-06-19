@@ -31,7 +31,8 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("contact_thanks")
+            messages.success(request, "Thank you! Your message has been sent. We will get back to you within 24 hours.")
+            return redirect("contact")
     else:
         form = ContactForm()
     return render(request, "website/contact.html", {"form": form})
