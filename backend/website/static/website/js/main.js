@@ -50,10 +50,14 @@
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-      var mobileMenu = document.getElementById('mobile-menu');
       if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
         mobileMenu.classList.add('hidden');
       }
+    }
+  });
+  document.addEventListener('click', function (e) {
+    if (mobileMenu && !mobileMenu.classList.contains('hidden') && !e.target.closest('#mobile-menu') && !e.target.closest('#mobile-menu-toggle')) {
+      mobileMenu.classList.add('hidden');
     }
   });
 })();
