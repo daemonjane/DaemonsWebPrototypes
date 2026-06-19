@@ -137,6 +137,10 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_FAILURE_VIEW = "website.views.forbidden"
 
+INTERNAL_IPS = ["127.0.0.1", "localhost"]
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5_242_880
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MAINTENANCE_MODE = False
