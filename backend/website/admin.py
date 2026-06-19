@@ -42,3 +42,14 @@ class ContactMessageAdmin(admin.ModelAdmin):
     search_fields = ["name", "email", "message"]
     date_hierarchy = "created_at"
     readonly_fields = ["name", "email", "message", "created_at"]
+    actions = ["delete_old"]
+
+    @admin.action(description="Delete messages older than 30 days")
+    def delete_old(self, request, queryset):
+        from datetime import timedelta
+        from django.utils import timezone
+        cutoff = timezone.now() - timedelta(days=30)
+        old = queryset.filter(created_at__lt=cutoff)
+        count = old.count()
+        old.delete()
+        self.message_user(request, f"{count} old message(s) deleted.")
