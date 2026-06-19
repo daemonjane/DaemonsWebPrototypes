@@ -37,4 +37,13 @@
       setTimeout(function () { alert.remove(); }, 300);
     }, 5000);
   });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+    }
+  });
 })();
