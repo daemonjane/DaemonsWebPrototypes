@@ -15,6 +15,8 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ["title", "description"]
     date_hierarchy = "created_at"
     list_editable = ["completed"]
+    list_per_page = 25
+    save_on_top = True
     actions = ["mark_completed", "mark_pending", "export_csv"]
 
     @admin.action(description="Mark selected as completed")
