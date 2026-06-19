@@ -41,6 +41,44 @@ class TaskViewTests(TestCase):
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(Task.objects.count(), 1)
 
+    def test_update_view_get(self):
+        task = Task.objects.create(title="Test")
+        resp = self.client.get(reverse("task_update", kwargs={"pk": task.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Edit Task")
+
+    def test_update_view_post(self):
+        task = Task.objects.create(title="Old")
+        resp = self.client.post(reverse("task_update", kwargs={"pk": task.pk}), {"title": "New"})
+        self.assertEqual(resp.status_code, 302)
+        task.refresh_from_db()
+        self.assertEqual(task.title, "New")
+
+    def test_delete_view_get(self):
+        task = Task.objects.create(title="Test")
+        resp = self.client.get(reverse("task_delete", kwargs={"pk": task.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Delete Task")
+
+    def test_delete_view_post(self):
+        task = Task.objects.create(title="Test")
+        resp = self.client.post(reverse("task_delete", kwargs={"pk": task.pk}))
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(Task.objects.count(), 0)
+
+    def test_detail_view(self):
+        task = Task.objects.create(title="Test")
+        resp = self.client.get(reverse("task_detail", kwargs={"pk": task.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Test")
+
+    def test_toggle_view_post(self):
+        task = Task.objects.create(title="Test")
+        resp = self.client.post(reverse("task_toggle", kwargs={"pk": task.pk}))
+        self.assertEqual(resp.status_code, 302)
+        task.refresh_from_db()
+        self.assertTrue(task.completed)
+
 
 class ContactViewTests(TestCase):
     def test_contact_get(self):
