@@ -1,0 +1,56 @@
+<header id="main-header" class="sticky top-0 z-40 bg-slate-950/80 border-b border-slate-800" role="banner">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-16 gap-4">
+
+      <a href="/" class="text-lg sm:text-xl font-bold text-white tracking-tight hover:text-cyan-400 transition-colors shrink-0" aria-label="TechStore Home">
+        <span class="text-cyan-400">&lt;</span>TECH<span class="text-cyan-400">/</span>STORE<span class="text-cyan-400">&gt;</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-1" aria-label="Main navigation">
+        {% with request.path as current_path %}
+        <a href="/" class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Home</a>
+        <a href="/shop/" class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/shop/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Shop</a>
+        <a href="/favorites/" class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/favorites/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Favorites</a>
+        <a href="/insights/" class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/insights/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Insights</a>
+        <a href="/faq/" class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/faq/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">FAQ</a>
+        <a href="/about/" class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/about/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">About</a>
+        <a href="/contact/" class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/contact/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Contact</a>
+        {% endwith %}
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" class="p-2 text-slate-400 hover:text-cyan-400 transition-colors" aria-label="Toggle theme">
+          <svg id="theme-icon-dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+        </button>
+
+        <a href="/cart/" class="relative p-2 text-slate-400 hover:text-cyan-400 transition-colors" aria-label="View cart">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+          </svg>
+        </a>
+
+        <button id="mobile-menu-toggle" class="md:hidden p-2 text-slate-400 hover:text-white transition-colors" aria-label="Toggle menu">
+          <svg id="menu-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" class="md:hidden border-t border-slate-800 bg-slate-950 overflow-hidden hidden" aria-label="Mobile navigation">
+    <div class="px-4 py-3 space-y-1">
+      {% with request.path as current_path %}
+      <a href="/" class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Home</a>
+      <a href="/shop/" class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/shop/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Shop</a>
+      <a href="/favorites/" class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/favorites/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Favorites</a>
+      <a href="/insights/" class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/insights/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Insights</a>
+      <a href="/faq/" class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/faq/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">FAQ</a>
+      <a href="/about/" class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/about/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">About</a>
+      <a href="/contact/" class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/contact/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Contact</a>
+      {% endwith %}
+    </div>
+  </nav>
+</header>
