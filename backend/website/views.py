@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
-from .forms import ContactForm
+from .forms import ContactForm, TaskForm
 from .models import Task
 
 PAGES = {
