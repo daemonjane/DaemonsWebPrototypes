@@ -28,6 +28,11 @@ class TaskModelTests(TestCase):
 
 
 class TaskViewTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth.models import User
+        self.user = User.objects.create_user("testuser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+
     def test_list_view(self):
         resp = self.client.get(reverse("task_list"))
         self.assertEqual(resp.status_code, 200)

@@ -1,3 +1,4 @@
+from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
@@ -19,7 +20,11 @@ urlpatterns = [
     path("humans.txt", views.humans_txt, name="humans_txt"),
     path("sitemap.xml", views.sitemap_xml, name="sitemap_xml"),
     path("contact/", views.contact, name="contact"),
+    path("accounts/register/", views.register, name="register"),
+    path("login/", auth_views.LoginView.as_view(template_name="website/login.html"), name="login"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("tasks/", views.task_list, name="task_list"),
+    path("tasks/search/", views.task_search, name="task_search"),
     path("tasks/create/", views.task_create, name="task_create"),
     path("tasks/<int:pk>/", views.task_detail, name="task_detail"),
     path("tasks/<int:pk>/toggle/", views.task_toggle, name="task_toggle"),

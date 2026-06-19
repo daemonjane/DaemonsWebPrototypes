@@ -1,7 +1,10 @@
 from django.contrib import messages
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
+from django.views.decorators.http import require_POST
 
 from .forms import ContactForm, TaskForm
 from .models import Task
@@ -51,6 +54,19 @@ def page_placeholder(request, page_name):
     return render(request, "website/page_placeholder.html", {"title": title, "description": description})
 
 
+def register(request):
+    """User registration view."""
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Account created! You can now log in.")
+            return redirect("login")
+    else:
+        form = UserCreationForm()
+    return render(request, "website/register.html", {"form": form})
+
+
 def contact(request):
     """Handle contact form GET (display) and POST (validate + save + message)."""
     if request.method == "POST":
@@ -64,6 +80,7 @@ def contact(request):
     return render(request, "website/contact.html", {"form": form})
 
 
+@login_required
 def task_list(request):
     """Display all tasks in a table with status badges and action icons."""
     tasks = Task.objects.all()
@@ -77,6 +94,7 @@ def task_list(request):
     })
 
 
+@login_required
 def task_create(request):
     """Show blank form on GET; validate and save on POST."""
     if request.method == "POST":
@@ -90,6 +108,7 @@ def task_create(request):
     return render(request, "website/task_form.html", {"form": form, "title": "Create Task"})
 
 
+@login_required
 def task_update(request, pk):
     """Show prefilled form on GET; validate and save changes on POST."""
     task = get_object_or_404(Task, pk=pk)
@@ -104,6 +123,7 @@ def task_update(request, pk):
     return render(request, "website/task_form.html", {"form": form, "title": "Edit Task"})
 
 
+@login_required
 def task_toggle(request, pk):
     """Toggle a task's completed status via POST and redirect."""
     task = get_object_or_404(Task, pk=pk)
@@ -115,12 +135,14 @@ def task_toggle(request, pk):
     return redirect("task_list")
 
 
+@login_required
 def task_detail(request, pk):
     """Show a single task's full details."""
     task = get_object_or_404(Task, pk=pk)
     return render(request, "website/task_detail.html", {"task": task})
 
 
+@login_required
 def task_delete(request, pk):
     """Show confirmation on GET; delete task on POST."""
     task = get_object_or_404(Task, pk=pk)
@@ -129,6 +151,25 @@ def task_delete(request, pk):
         messages.success(request, f"Task '{task.title}' deleted.")
         return redirect("task_list")
     return render(request, "website/task_confirm_delete.html", {"task": task})
+
+
+@login_required
+def task_search(request):
+    """Return JSON of tasks filtered by search query."""
+    q = request.GET.get("q", "").strip()
+    tasks = Task.objects.filter(title__icontains=q) | Task.objects.filter(description__icontains=q)
+    tasks = tasks.distinct().order_by("-created_at")
+    data = [
+        {
+            "pk": t.pk,
+            "title": t.title,
+            "description": t.description[:80] if t.description else "",
+            "completed": t.completed,
+            "created": t.created_at.strftime("%b %d"),
+        }
+        for t in tasks
+    ]
+    return JsonResponse({"tasks": data, "count": len(data)})
 
 
 def robots_txt(request):
