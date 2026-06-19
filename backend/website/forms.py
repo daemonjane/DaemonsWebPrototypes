@@ -29,6 +29,12 @@ class ContactForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     """Form for creating and editing tasks."""
 
+    def clean_title(self):
+        title = self.cleaned_data.get("title")
+        if title and len(title.strip()) < 2:
+            raise forms.ValidationError("Title must be at least 2 characters.")
+        return title.strip()
+
     class Meta:
         model = Task
         fields = ["title", "description", "completed"]
