@@ -1,194 +1,197 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Vue_3-4FC08D?logo=vuedotjs&logoColor=white" alt="Vue 3"/>
+  <img src="https://img.shields.io/badge/Django_6-092E20?logo=django&logoColor=white" alt="Django 6"/>
   <img src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white" alt="Vite"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/>
-  <img src="https://img.shields.io/badge/Vue_Router-4FC08D?logo=vuedotjs&logoColor=white" alt="Vue Router"/>
   <br/>
   <img src="https://img.shields.io/badge/build-passing-22c55e?logo=checkmarx"/>
-  <img src="https://img.shields.io/badge/coverage-21_views-06b6d4"/>
+  <img src="https://img.shields.io/badge/coverage-15_tests-06b6d4"/>
+  <img src="https://img.shields.io/badge/commits-290+-blue"/>
   <img src="https://img.shields.io/badge/license-MIT-blue"/>
 </p>
 
-<h1 align="center">🖥️ TechStore — Vue Storefront v2</h1>
+<h1 align="center">🖥️ TechStore — Full Stack Storefront</h1>
 
 <p align="center">
-  <b>A production-feature SPA storefront for verified high-performance hardware</b><br/>
-  Vue 3 (Composition API) · Vue Router · Tailwind CSS · Vite · SVG
+  Vue 3 SPA storefront + Django 6 MVT dashboard &amp; REST API<br/>
+  Composition API · Vue Router · Tailwind CSS · Vite · Django REST Framework
 </p>
 
-<br/>
+---
 
-<p align="center">
-  <i>Animated particles · Immersive backgrounds · Live notifications · Multi-step checkout · Full legal pages</i>
-</p>
-
-<br/>
-
-## 📂 Project Tree
+## 📁 Project Structure
 
 ```
 📁 .
-├── 📄 index.html                   # Entry HTML with font preloads
-├── ⚙️ vite.config.js               # Vite + Vue plugin
-├── 🎨 tailwind.config.js           # Custom cyan/slate theme, Inter + JetBrains Mono
-├── 📦 package.json                 # Dependencies & scripts
-├── 📁 public/
-│   ├── 🖼️ favicon.svg
-│   ├── 🖼️ icons.svg
-│   └── 📁 assets/                  # Product images (SVG + original fallbacks)
-└── 📁 src/
-    ├── 🚀 main.js                  # App bootstrap
-    ├── 🏗️ App.vue                  # Root layout + animated background layer
-    ├── 🎨 style.css                # Tailwind directives, keyframes, print styles
-    ├── 📁 router/
-    │   └── 📄 index.js             # 17 lazy-loaded routes
-    ├── 📁 data/
-    │   └── 📄 products.js          # 21 products across 4 categories
-    ├── 📁 composables/             # 🧩 Shared state & logic
-    │   ├── 🛒 useCart.js
-    │   ├── 🔔 useToast.js
-    │   ├── 👁️ useRecentlyViewed.js
-    │   ├── ❤️ useFavorites.js
-    │   ├── 👥 useLiveVisitorCount.js
-    │   ├── 📢 useSalesNotifications.js
-    │   ├── 🌓 useTheme.js
-    │   ├── ⏳ useRouteLoading.js
-    │   ├── 📦 useFreeShipping.js
-    │   ├── ⏱️ useLoadingBar.js
-    │   └── 🔢 useCounter.js
-    ├── 📁 utils/
-    │   └── 📄 validation.js
-    ├── 📁 components/              # 🧱 Reusable UI
-    │   ├── 🎨 BackgroundEffects.vue
-    │   ├── 🤖 AbstractArt.vue
-    │   ├── ⌨️ KeyboardShortcuts.vue
-    │   ├── 📋 EmptyState.vue
-    │   ├── 🪜 StepperIndicator.vue
-    │   ├── 📦 FreeShippingBar.vue
-    │   ├── 💀 SkeletonLoader.vue
-    │   ├── 🔢 AnimatedCounter.vue
-    │   └── ... (Header, Footer, ProductCard, QuickViewModal, ToastContainer, etc.)
-    └── 📁 views/                   # 🖥️ Route pages
-        ├── 🏠 Home.vue
-        ├── 🛍️ Shop.vue
-        ├── 🔍 ProductDetail.vue
-        ├── ❤️ Favorites.vue
-        ├── 🛒 Checkout.vue
-        ├── 🔐 Login.vue
-        ├── 📝 Register.vue
-        ├── 📞 Contact.vue
-        ├── ℹ️ About.vue
-        ├── 📊 Insights.vue
-        ├── ❓ FAQ.vue
-        ├── 📬 OrderTracking.vue
-        ├── ✅ OrderConfirmation.vue
-        ├── 🔒 PrivacyPolicy.vue
-        ├── 📜 TermsOfService.vue
-        ├── 🍪 CookiesPolicy.vue
-        ├── 🔢 CounterFeature.vue
-        └── 🚫 NotFound.vue
+├── 📦 frontend/                    # Vue 3 + Vite SPA
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   ├── package.json
+│   ├── public/
+│   └── src/
+│       ├── main.js
+│       ├── App.vue
+│       ├── style.css
+│       ├── router/index.js
+│       ├── data/products.js
+│       ├── composables/            # 11 composables
+│       ├── components/             # 20+ components
+│       └── views/                  # 17 route pages
+│
+├── 📁 backend/                     # Django 6 project
+│   ├── manage.py
+│   ├── config/                     # Project settings, root URLconf
+│   ├── website/                    # MVT app (templates, forms, views)
+│   │   ├── models.py               # Task, ContactMessage
+│   │   ├── views.py                # 14 function views
+│   │   ├── forms.py                # ContactForm, TaskForm
+│   │   ├── admin.py                # Custom admin config + actions
+│   │   ├── middleware.py           # MaintenanceModeMiddleware
+│   │   ├── context_processors.py   # site_context
+│   │   ├── templatetags/           # status_badge, time_ago, etc.
+│   │   ├── management/commands/    # 5 custom commands
+│   │   ├── templates/website/      # 12 templates
+│   │   └── static/website/         # CSS, JS, favicon
+│   └── api/                        # REST API app
+│       ├── models.py               # Category, Product, Order, etc.
+│       ├── serializers.py
+│       ├── views.py
+│       └── admin.py
+│
+├── 📄 .gitignore
+├── 📄 AGENTS.md
+└── 📄 README.md
 ```
 
-## 🔀 Data Flow
+---
 
-```
-products.js ──► ProductCard ──► QuickViewModal
-     │                │
-     │                ├── useCart ──► localStorage ──► Checkout (multi-step)
-     │                ├── useFavorites ──► localStorage ──► Favorites.vue
-     │                └── useRecentlyViewed ──► localStorage ──► Home.vue (scroll arrows)
-     │
-     ├── Home.vue (featured, trends, bundles, testimonials)
-     ├── Shop.vue (category filter, search, price sort)
-     └── ProductDetail.vue (zoom, stock badges, share, back-in-stock)
-```
+## 🚀 Quick Start
 
-## 🗄️ State Persistence
-
-| Composable | localStorage Key | Stores |
-|-----------|-----------------|--------|
-| `useCart` | `techstore_cart` | Cart items, quantities, upgrades, membership |
-| `useFavorites` | `techstore_favorites` | Array of favorite product IDs |
-| `useRecentlyViewed` | `techstore_recently_viewed` | Last 6 visited product IDs |
-| `useTheme` | `techstore_theme` | `'dark'` or `'light'` |
-| `useLiveVisitorCount` | `techstore_visitor_count` | Fluctuating visitor counter |
-| `CookiesPolicy` | `cookie_preferences` | JSON with essential/analytics/marketing booleans |
-| `useCounter` | `techstore_counter` | Current counter value |
-
-## 🧩 Composable API
-
-| Composable | Returns |
-|-----------|---------|
-| `useCart()` | `cart`, `totalItems`, `totalPrice`, `addItem()`, `updateQuantity()`, `removeItem()`, `clearCart()`, `addUpgrade()`, `removeUpgrade()`, `setMembership()` |
-| `useToast()` | `toasts`, `addToast(message, type?)` |
-| `useRecentlyViewed()` | `items`, `visit(productId)` |
-| `useFavorites()` | `favoriteIds`, `items`, `count`, `toggle(id)`, `isFavorite(id)`, `clear()` |
-| `useTheme()` | `isDark`, `toggle()` |
-| `useRouteLoading()` | `showSkeleton`, `startLoading()` |
-| `useLiveVisitorCount()` | `count` (ref) |
-| `useSalesNotifications()` | — (calls `useToast()` internally) |
-| `useFreeShipping()` | `remaining`, `progress`, `qualifies`, `threshold` |
-| `useLoadingBar()` | `start()`, `done()`, `configured` (ref) |
-| `useCounter()` | `count`, `increment()`, `decrement()`, `reset()` |
-
-## 📦 Scripts
+### Vue Frontend
 
 ```bash
-npm run dev       # Start Vite dev server
+npm install
+npm run dev       # → http://localhost:5173
 npm run build     # Production build → dist/
-npm run preview   # Preview production build
 ```
+
+### Django Backend
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install django djangorestframework django-cors-headers
+
+cd backend
+python manage.py migrate
+python manage.py seed_tasks
+python manage.py createsuperuser
+python manage.py runserver 0.0.0.0:8000
+```
+
+---
+
+## 🌐 Django Routes
+
+| Path | View | Description |
+|------|------|-------------|
+| `/` | `home` | Homepage with task stats & recent tasks |
+| `/tasks/` | `task_list` | Full task table with status badges |
+| `/tasks/create/` | `task_create` | New task form |
+| `/tasks/<id>/` | `task_detail` | Task detail page |
+| `/tasks/<id>/edit/` | `task_update` | Edit task form |
+| `/tasks/<id>/delete/` | `task_delete` | Delete confirmation |
+| `/tasks/<id>/toggle/` | `task_toggle` | Toggle completed (POST) |
+| `/contact/` | `contact` | Contact form with messages |
+| `/shop/`, `/faq/`, `/about/` | `page_placeholder` | Placeholder pages |
+| `/robots.txt` | `robots_txt` | Robots exclusion |
+| `/humans.txt` | `humans_txt` | Credits |
+| `/sitemap.xml` | `sitemap_xml` | XML sitemap |
+| `/admin/` | Django Admin | Dark-themed admin |
+
+---
+
+## 🗄️ Data Models
+
+### website app
+- **Task** — title, description, completed, timestamps
+- **ContactMessage** — name, email, message, timestamp
+
+### api app
+- **Category** — name, slug
+- **Product** — slug (PK), name, price, category, image, rating, specs, stock
+- **Order** — email, name, address, status, gift card
+- **OrderItem** — product, name, price, quantity, item_type
+- **BackInStockRequest** — product, email
+- **ContactMessage** — name, email, message
+
+---
+
+## 🧩 Composables (Vue)
+
+| Composable | Purpose |
+|-----------|---------|
+| `useCart` | Cart with localStorage, upgrades, membership |
+| `useToast` | Toast notifications |
+| `useFavorites` | Wishlist with localStorage |
+| `useRecentlyViewed` | Last 6 products |
+| `useTheme` | Dark/light toggle |
+| `useLiveVisitorCount` | Fluctuating counter |
+| `useSalesNotifications` | Simulated live sales |
+| `useFreeShipping` | Progress bar |
+| `useCounter` | Counter feature |
+| `useRouteLoading` | Skeleton states |
+| `useLoadingBar` | Top progress bar |
+
+---
 
 ## 🎨 Styling
 
 - **Tailwind CSS** with custom cyan/slate theme
 - **Fonts:** Inter (sans), JetBrains Mono (mono)
-- **Global styles:** Scrollbar, grid background texture, hero glow, glass header, form validation animations, keyframes for particles/orbs, print styles, dark/light theme overrides
-- **Dark mode:** Class-based with smooth CSS transitions
+- **Dark mode:** Class-based with localStorage persistence
+- **Django templates:** Tailwind Play CDN (no build step)
+- **Custom CSS:** Scrollbar, hero glow, keyframes, print styles
+
+---
+
+## 📝 Management Commands
+
+```bash
+python manage.py seed_tasks      # Create 5 sample tasks
+python manage.py seed_data        # Create 21 products
+python manage.py create_admin     # Create admin user
+python manage.py count_models     # Show record counts
+python manage.py list_tasks       # Show all tasks in terminal
+python manage.py reset_tasks      # Delete & reseed tasks
+python manage.py health_check     # Database connectivity test
+```
+
+---
 
 ## ♿ Accessibility
 
 - Skip-to-content link
-- ARIA landmarks (`role="banner"`, `role="region"`, `aria-labelledby`)
-- Keyboard navigation with visible focus rings (`focus-visible`)
-- Focus trap in QuickViewModal
-- Toast notifications use `role="status"` + `aria-live="polite"`
+- ARIA landmarks & `aria-current="page"`
+- Keyboard navigation with visible focus rings
 - Semantic heading hierarchy
-- Form validation errors linked via `aria-describedby`
+- `focus-visible` outlines
+- Screen reader labels on icon buttons
 
-## 📝 How to Add a Page
+---
 
-1. Create `src/views/YourPage.vue`
-2. Add lazy import + route in `src/router/index.js`:
-   ```js
-   const YourPage = () => import('../views/YourPage.vue')
-   { path: '/your-path', component: YourPage }
-   ```
-3. Add nav link in `src/components/Header.vue` (optional)
+## 🧪 Running Tests
 
-## 📝 How to Add a Product
+```bash
+python backend/manage.py test website
+```
 
-1. Add to `src/data/products.js`:
-   ```js
-   {
-     id: 'my-product',
-     name: 'My Product Name',
-     price: 99.99,
-     category: 'peripherals',   // 'desktop' | 'monitors' | 'peripherals'
-     description: '...',
-     image: '/assets/my-product.svg',
-     rating: 4.5,
-     specs: ['Spec 1', 'Spec 2'],
-     stock: 15
-   }
-   ```
-2. Place image at `public/assets/my-product.*`
-3. Appears automatically on Shop + becomes searchable.
+---
 
-## 🤝 Contribution
+## 📦 Dependencies
 
-1. Use Composition API with `<script setup>`
-2. Views → page logic; Components → reusable UI; Composables → state
-3. Run `npm run build` before committing
-4. Match existing Tailwind theme — no new color palettes
-5. Product data in `src/data/products.js` — no external API calls
+**Frontend:** Vue 3, Vue Router, Vite, Tailwind CSS  
+**Backend:** Django 6.0.6, Django REST Framework 3.17.1, django-cors-headers 4.9.0  
+**Python:** 3.14.5  
+**Database:** SQLite
