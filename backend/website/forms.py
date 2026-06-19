@@ -4,6 +4,8 @@ from .models import ContactMessage, Task
 
 
 class ContactForm(forms.ModelForm):
+    """Form for website visitors to send a message."""
+
     class Meta:
         model = ContactMessage
         fields = ["name", "email", "message"]
@@ -25,6 +27,8 @@ class ContactForm(forms.ModelForm):
 
 
 class TaskForm(forms.ModelForm):
+    """Form for creating and editing tasks."""
+
     class Meta:
         model = Task
         fields = ["title", "description", "completed"]
@@ -41,4 +45,8 @@ class TaskForm(forms.ModelForm):
             "completed": forms.CheckboxInput(attrs={
                 "class": "w-4 h-4 rounded border-slate-700 bg-slate-800 text-cyan-600 focus:ring-cyan-400",
             }),
+        }
+        help_texts = {
+            "title": "Give your task a clear, concise title.",
+            "description": "Add any additional details or notes (optional).",
         }
