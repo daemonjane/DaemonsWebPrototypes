@@ -123,6 +123,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+ADMIN_SITE_HEADER = "TechStore Administration"
+ADMIN_SITE_TITLE = "TechStore Admin"
+ADMIN_INDEX_TITLE = "Welcome to TechStore Admin"
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
