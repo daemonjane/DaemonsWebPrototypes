@@ -4,6 +4,8 @@
 {% block title %}Tasks{% endblock %}
 
 {% block content %}
+{% csrf_token %}
+
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Tasks</h1>
   <a href="{% url 'task_create' %}" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold py-2.5 px-5 rounded-lg transition-colors inline-flex items-center gap-1.5">
@@ -14,7 +16,7 @@
 
 <div class="relative mb-6">
   <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-  <input type="text" id="task-search" placeholder="Search tasks..." class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-10 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+  <input type="text" id="task-search" data-search-url="{% url 'task_search' %}" placeholder="Search tasks..." class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-10 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400">
   <button id="search-clear" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 hidden" aria-label="Clear search">&times;</button>
 </div>
 
@@ -96,7 +98,8 @@
     if (controller) controller.abort();
     controller = new AbortController();
 
-    const url = q ? `/tasks/search/?q=${encodeURIComponent(q)}` : "";
+    const searchUrl = searchInput.getAttribute("data-search-url") || "/tasks/search/";
+    const url = q ? `${searchUrl}?q=${encodeURIComponent(q)}` : "";
 
     if (!url) {
       location.reload();
@@ -178,9 +181,7 @@
     location.reload();
   });
 
-  // grab csrf token for inline forms
-  var csrfToken = document.querySelector("[name=csrfmiddlewaretoken]");
-  if (csrfToken) csrfToken = csrfToken.value;
+  var csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
 })();
 </script>
 {% endblock %}

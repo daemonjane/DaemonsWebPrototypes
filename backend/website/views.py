@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
-from django.views.decorators.http import require_POST
+
 
 from .forms import ContactForm, TaskForm
 from .models import Task
