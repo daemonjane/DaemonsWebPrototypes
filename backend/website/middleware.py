@@ -14,3 +14,15 @@ class MaintenanceModeMiddleware:
                     status=503,
                 )
         return self.get_response(request)
+
+
+class CacheControlMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if not request.user.is_authenticated and request.method == "GET":
+            if not response.has_header("Cache-Control"):
+                response["Cache-Control"] = "public, max-age=60"
+        return response
