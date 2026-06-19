@@ -18,9 +18,18 @@ PAGES = {
 
 
 def home(request):
-    """Render the homepage with the 5 most recent tasks."""
-    recent_tasks = Task.objects.all()[:5]
-    return render(request, "website/home.html", {"recent_tasks": recent_tasks})
+    """Render the homepage with task stats and recent tasks."""
+    tasks = Task.objects.all()
+    recent_tasks = tasks[:5]
+    total_tasks = tasks.count()
+    completed_tasks = tasks.filter(completed=True).count()
+    pending_tasks = total_tasks - completed_tasks
+    return render(request, "website/home.html", {
+        "recent_tasks": recent_tasks,
+        "total_tasks": total_tasks,
+        "completed_tasks": completed_tasks,
+        "pending_tasks": pending_tasks,
+    })
 
 
 def sitemap_xml(request):
