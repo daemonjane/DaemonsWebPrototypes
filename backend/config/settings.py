@@ -135,6 +135,8 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_FAILURE_VIEW = "website.views.forbidden"
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MAINTENANCE_MODE = False
