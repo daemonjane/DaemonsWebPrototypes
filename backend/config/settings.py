@@ -135,7 +135,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_FAILURE_VIEW = "website.views.forbidden"
+CSRF_FAILURE_VIEW = "website.views.csrf_failure"
 
 INTERNAL_IPS = ["127.0.0.1", "localhost"]
 

@@ -144,6 +144,11 @@ def forbidden(request, exception):
     return render(request, "website/403.html", status=403)
 
 
+def csrf_failure(request, reason=""):
+    """Render a themed 403 page for CSRF failures."""
+    return render(request, "website/403_csrf.html", {"reason": reason}, status=403)
+
+
 def custom_404(request, exception):
     """Render a themed 404 error page."""
     return render(request, "website/404.html", status=404)
