@@ -1,8 +1,22 @@
 from datetime import datetime
 
 from django import template
+from django.utils.html import format_html
 
 register = template.Library()
+
+
+@register.simple_tag
+def status_badge(completed):
+    if completed:
+        return format_html(
+            '<span class="inline-flex items-center gap-1 text-emerald-400 text-xs font-medium">'
+            '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Done</span>'
+        )
+    return format_html(
+        '<span class="inline-flex items-center gap-1 text-slate-500 text-xs font-medium">'
+        '<span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>Pending</span>'
+    )
 
 
 @register.filter
@@ -24,3 +38,8 @@ def time_ago(value):
         minutes = diff.seconds // 60
         return f"{minutes}m ago"
     return "just now"
+
+
+@register.filter
+def field_errors(field):
+    return field.errors
