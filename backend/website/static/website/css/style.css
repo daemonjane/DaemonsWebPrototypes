@@ -67,6 +67,7 @@ button {
 #main-header {
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
 }
 
 /* Particles & Background
