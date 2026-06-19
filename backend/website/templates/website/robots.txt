@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /tasks/*/delete/
+Disallow: /tasks/*/edit/
+
+Allow: /tasks/
+Allow: /contact/
+
+Sitemap: https://techstore.example.com/sitemap.xml
+
+Host: https://techstore.example.com
+
