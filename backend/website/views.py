@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 
 from .forms import ContactForm, TaskForm
 from .models import Task
@@ -33,10 +34,13 @@ def home(request):
 
 
 def sitemap_xml(request):
-    urls = [
+    from website.models import Task
+    static_urls = [
         "/", "/tasks/", "/contact/", "/shop/", "/about/", "/faq/", "/privacy/", "/terms/", "/cookies/",
     ]
-    entries = "".join(f"<url><loc>https://techstore.example.com{url}</loc></url>" for url in urls)
+    task_urls = [f"/tasks/{t.pk}/" for t in Task.objects.all()]
+    all_urls = static_urls + task_urls
+    entries = "".join(f"<url><loc>https://techstore.example.com{url}</loc></url>" for url in all_urls)
     xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{entries}</urlset>'
     return HttpResponse(xml, content_type="application/xml")
 
@@ -128,11 +132,11 @@ def task_delete(request, pk):
 
 
 def robots_txt(request):
-    return HttpResponse("User-agent: *\nDisallow:\n", content_type="text/plain")
+    return HttpResponse(render_to_string("website/robots.txt"), content_type="text/plain")
 
 
 def humans_txt(request):
-    return HttpResponse("TechStore\nBuilt with Django 6.0\n", content_type="text/plain")
+    return HttpResponse(render_to_string("website/humans.txt"), content_type="text/plain")
 
 
 def forbidden(request, exception):

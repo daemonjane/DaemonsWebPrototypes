@@ -1,0 +1,12 @@
+/* TechStore */
+
+/* Team */
+Developer: DaemonJane
+Location: Earth
+
+/* Site */
+Built with: Django 6.0
+Language: en-US
+
+/* Thanks */
+Thanks to Django, Vue, and the open source community.
