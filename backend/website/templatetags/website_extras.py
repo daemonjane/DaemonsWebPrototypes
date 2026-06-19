@@ -1,0 +1,26 @@
+from datetime import datetime
+
+from django import template
+
+register = template.Library()
+
+
+@register.filter
+def time_ago(value):
+    now = datetime.now(value.tzinfo if value.tzinfo else None)
+    diff = now - value
+    if diff.days > 365:
+        years = diff.days // 365
+        return f"{years}y ago"
+    if diff.days > 30:
+        months = diff.days // 30
+        return f"{months}mo ago"
+    if diff.days > 0:
+        return f"{diff.days}d ago"
+    if diff.seconds > 3600:
+        hours = diff.seconds // 3600
+        return f"{hours}h ago"
+    if diff.seconds > 60:
+        minutes = diff.seconds // 60
+        return f"{minutes}m ago"
+    return "just now"
