@@ -120,7 +120,7 @@ Task management requires login. Use the admin credentials below or register at `
 
 **Admin credentials:**
 - **Username:** `admin`
-- **Password:** `admin`
+- **Password:** `admin123`
 
 ---
 
