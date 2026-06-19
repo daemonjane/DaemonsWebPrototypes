@@ -38,9 +38,19 @@
     }, 5000);
   });
 
+  document.querySelectorAll('.alert-close').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var alert = this.closest('.alert');
+      if (alert) {
+        alert.style.opacity = '0';
+        setTimeout(function () { alert.remove(); }, 300);
+      }
+    });
+  });
+
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-      const mobileMenu = document.getElementById('mobile-menu');
+      var mobileMenu = document.getElementById('mobile-menu');
       if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
         mobileMenu.classList.add('hidden');
       }
