@@ -68,6 +68,15 @@ def task_update(request, pk):
     return render(request, "website/task_form.html", {"form": form, "title": "Edit Task"})
 
 
+def task_delete(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    if request.method == "POST":
+        task.delete()
+        messages.success(request, f"Task '{task.title}' deleted.")
+        return redirect("task_list")
+    return render(request, "website/task_confirm_delete.html", {"task": task})
+
+
 def custom_404(request, exception):
     return render(request, "website/404.html", status=404)
 
