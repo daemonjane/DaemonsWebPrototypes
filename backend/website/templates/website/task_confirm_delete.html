@@ -1,4 +1,5 @@
 {% extends "website/base.html" %}
+{% load website_extras %}
 
 {% block title %}Delete Task{% endblock %}
 
@@ -23,7 +24,7 @@
       {% endif %}
       <p class="text-xs text-slate-600 mt-2">
         {% if task.completed %}<span class="text-emerald-400">Completed</span>{% else %}<span class="text-slate-500">Pending</span>{% endif %}
-        &middot; Created {{ task.created_at|date:"M j, Y" }}
+        &middot; Created {{ task.created_at|time_ago }}
       </p>
     </div>
 
