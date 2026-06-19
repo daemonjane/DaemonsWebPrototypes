@@ -4,12 +4,18 @@
 {% block title %}Tasks{% endblock %}
 
 {% block content %}
-<div class="flex items-center justify-between mb-8">
+<div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Tasks</h1>
   <a href="{% url 'task_create' %}" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold py-2.5 px-5 rounded-lg transition-colors inline-flex items-center gap-1.5">
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
     New Task
   </a>
+</div>
+
+<div class="relative mb-6">
+  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+  <input type="text" id="task-search" placeholder="Search tasks..." class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-10 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+  <button id="search-clear" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 hidden" aria-label="Clear search">&times;</button>
 </div>
 
 <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
@@ -24,9 +30,9 @@
         <th class="text-right px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider w-32">Actions</th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-slate-800">
+    <tbody id="task-tbody" class="divide-y divide-slate-800">
       {% for task in tasks %}
-      <tr class="hover:bg-slate-800/30 transition-colors">
+      <tr class="hover:bg-slate-800/30 transition-colors" data-task-id="{{ task.pk }}">
         <td class="px-4 py-3.5 text-slate-500 font-mono text-xs">{{ forloop.counter }}</td>
         <td class="px-4 py-3.5">
           <a href="{% url 'task_detail' task.pk %}" class="text-slate-200 font-medium hover:text-cyan-400 transition-colors {% if task.completed %}line-through text-slate-500{% endif %}">{{ task.title }}</a>
@@ -35,9 +41,7 @@
           {% if task.description %}{{ task.description|truncatechars:60 }}{% else %}<span class="text-slate-600 italic">—</span>{% endif %}
         </td>
         <td class="px-4 py-3.5 text-slate-500 text-xs hidden md:table-cell">{{ task.created_at|date:"M j" }}</td>
-        <td class="px-4 py-3.5 text-center">
-          {% status_badge task.completed %}
-        </td>
+        <td class="px-4 py-3.5 text-center">{% status_badge task.completed %}</td>
         <td class="px-4 py-3.5 text-right">
           <div class="flex items-center justify-end gap-1">
             <form method="POST" action="{% url 'task_toggle' task.pk %}" class="inline">
@@ -56,7 +60,7 @@
         </td>
       </tr>
       {% empty %}
-      <tr>
+      <tr id="task-empty-row">
         <td colspan="6" class="px-4 py-12 text-center text-slate-500 text-sm">
           No tasks yet.
           <a href="{% url 'task_create' %}" class="text-cyan-400 hover:text-cyan-300 ml-1">Create one</a>
@@ -67,11 +71,116 @@
   </table>
 </div>
 
-<div class="mt-4 text-xs text-slate-600 flex items-center gap-4">
-  <span>{{ task_count }} task{{ task_count|pluralize }}</span>
-  <span class="text-emerald-500">{{ completed_count }} done</span>
+<div id="task-counts" class="mt-4 text-xs text-slate-600 flex items-center gap-4">
+  <span id="count-total">{{ task_count }} task{{ task_count|pluralize }}</span>
+  <span id="count-done" class="text-emerald-500">{{ completed_count }} done</span>
   {% if task_count and completed_count %}
-  <span class="text-slate-500">{{ pending_count }} pending</span>
+  <span id="count-pending" class="text-slate-500">{{ pending_count }} pending</span>
   {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const searchInput = document.getElementById("task-search");
+  const clearBtn = document.getElementById("search-clear");
+  const tbody = document.getElementById("task-tbody");
+  const countTotal = document.getElementById("count-total");
+  const countDone = document.getElementById("count-done");
+  const countPending = document.getElementById("count-pending");
+
+  let controller = null;
+
+  async function doSearch(q) {
+    if (controller) controller.abort();
+    controller = new AbortController();
+
+    const url = q ? `/tasks/search/?q=${encodeURIComponent(q)}` : "";
+
+    if (!url) {
+      location.reload();
+      return;
+    }
+
+    try {
+      const resp = await fetch(url, { signal: controller.signal });
+      const data = await resp.json();
+      renderRows(data.tasks, data.count);
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-12 text-center text-slate-500 text-sm">Search failed.</td></tr>`;
+      }
+    }
+  }
+
+  function renderRows(tasks, count) {
+    if (!tasks.length) {
+      tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-12 text-center text-slate-500 text-sm">No tasks match your search.</td></tr>`;
+      countTotal.textContent = "0 tasks";
+      countDone.textContent = "0 done";
+      if (countPending) countPending.textContent = "0 pending";
+      return;
+    }
+
+    const done = tasks.filter(function (t) { return t.completed; }).length;
+    const pending = count - done;
+
+    let html = "";
+    for (let i = 0; i < tasks.length; i++) {
+      const t = tasks[i];
+      const titleClass = t.completed ? "line-through text-slate-500" : "";
+      const descClass = t.completed ? "line-through" : "";
+      const desc = t.description || '<span class="text-slate-600 italic">\u2014</span>';
+      const badge = t.completed
+        ? '<span class="inline-flex items-center gap-1 text-xs font-medium text-emerald-400 bg-emerald-950/40 border border-emerald-700/40 rounded-full px-2.5 py-0.5"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Done</span>'
+        : '<span class="inline-flex items-center gap-1 text-xs font-medium text-amber-400 bg-amber-950/40 border border-amber-700/40 rounded-full px-2.5 py-0.5"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>Open</span>';
+      const toggleIcon = t.completed ? "M6 6l12 12" : "M5 13l4 4L19 7";
+
+      html += '<tr class="hover:bg-slate-800/30 transition-colors">';
+      html += '<td class="px-4 py-3.5 text-slate-500 font-mono text-xs">' + (i + 1) + '</td>';
+      html += '<td class="px-4 py-3.5"><a href="/tasks/' + t.pk + '/" class="text-slate-200 font-medium hover:text-cyan-400 transition-colors ' + titleClass + '">' + escHtml(t.title) + '</a></td>';
+      html += '<td class="px-4 py-3.5 text-slate-500 text-xs hidden sm:table-cell ' + descClass + '">' + desc + '</td>';
+      html += '<td class="px-4 py-3.5 text-slate-500 text-xs hidden md:table-cell">' + t.created + '</td>';
+      html += '<td class="px-4 py-3.5 text-center">' + badge + '</td>';
+      html += '<td class="px-4 py-3.5 text-right"><div class="flex items-center justify-end gap-1">';
+      html += '<form method="POST" action="/tasks/' + t.pk + '/toggle/" class="inline"><input type="hidden" name="csrfmiddlewaretoken" value="' + csrfToken + '"><button type="submit" class="p-1.5 text-slate-500 hover:text-emerald-400 transition-colors" title="' + (t.completed ? "Reopen" : "Complete") + '"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' + toggleIcon + '"/></svg></button></form>';
+      html += '<a href="/tasks/' + t.pk + '/edit/" class="p-1.5 text-slate-500 hover:text-cyan-400 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a>';
+      html += '<a href="/tasks/' + t.pk + '/delete/" class="p-1.5 text-slate-500 hover:text-pink-400 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></a>';
+      html += '</div></td></tr>';
+    }
+    tbody.innerHTML = html;
+    countTotal.textContent = count + " task" + (count !== 1 ? "s" : "");
+    countDone.textContent = done + " done";
+    if (countPending) countPending.textContent = pending + " pending";
+  }
+
+  function escHtml(s) {
+    const d = document.createElement("div");
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+
+  let debounceTimer = null;
+  searchInput.addEventListener("input", function () {
+    clearBtn.classList.toggle("hidden", !this.value);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function () {
+      const q = searchInput.value.trim();
+      doSearch(q);
+    }, 300);
+  });
+
+  clearBtn.addEventListener("click", function () {
+    searchInput.value = "";
+    this.classList.add("hidden");
+    clearTimeout(debounceTimer);
+    location.reload();
+  });
+
+  // grab csrf token for inline forms
+  var csrfToken = document.querySelector("[name=csrfmiddlewaretoken]");
+  if (csrfToken) csrfToken = csrfToken.value;
+})();
+</script>
 {% endblock %}
