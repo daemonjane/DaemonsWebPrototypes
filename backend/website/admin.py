@@ -17,6 +17,15 @@ class TaskAdmin(admin.ModelAdmin):
     list_editable = ["completed"]
     list_per_page = 25
     save_on_top = True
+    actions_on_bottom = True
+    actions_selection_counter = True
+    ordering = ["-created_at"]
+    fieldsets = [
+        (None, {"fields": ["title", "description"]}),
+        ("Status", {"fields": ["completed"]}),
+        ("Timestamps", {"fields": ["created_at", "updated_at"], "classes": ["collapse"]}),
+    ]
+    readonly_fields = ["created_at", "updated_at"]
     actions = ["mark_completed", "mark_pending", "export_csv"]
 
     @admin.action(description="Mark selected as completed")
