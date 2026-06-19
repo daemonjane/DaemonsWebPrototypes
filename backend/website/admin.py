@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.http import HttpResponse
 
 from .models import ContactMessage, Task
 
@@ -14,6 +15,25 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ["title", "description"]
     date_hierarchy = "created_at"
     list_editable = ["completed"]
+    actions = ["mark_completed", "mark_pending", "export_csv"]
+
+    @admin.action(description="Mark selected as completed")
+    def mark_completed(self, request, queryset):
+        updated = queryset.update(completed=True)
+        self.message_user(request, f"{updated} task(s) marked as completed.")
+
+    @admin.action(description="Mark selected as pending")
+    def mark_pending(self, request, queryset):
+        updated = queryset.update(completed=False)
+        self.message_user(request, f"{updated} task(s) marked as pending.")
+
+    @admin.action(description="Export selected as CSV")
+    def export_csv(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = "attachment; filename=tasks.csv"
+        for task in queryset:
+            response.write(f"{task.pk},{task.title},{task.completed},{task.created_at}\n")
+        return response
 
 
 @admin.register(ContactMessage)
