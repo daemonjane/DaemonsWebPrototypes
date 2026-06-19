@@ -43,3 +43,19 @@ def time_ago(value):
 @register.filter
 def field_errors(field):
     return field.errors
+
+
+@register.filter
+def pluralize_count(value, arg="s"):
+    if value == 1:
+        return f"{value} {arg}" if not arg.endswith("s") else f"{value} {arg[:-1]}"
+    return f"{value} {arg}"
+
+
+@register.simple_tag
+def task_stats():
+    from ..models import Task
+    total = Task.objects.count()
+    done = Task.objects.filter(completed=True).count()
+    pending = total - done
+    return f"{done}/{total} done ({pending} pending)"
