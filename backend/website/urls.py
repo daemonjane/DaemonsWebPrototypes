@@ -16,5 +16,6 @@ page_patterns = [
 urlpatterns = [
     path("", views.home, name="home"),
     path("contact/", views.contact, name="contact"),
-
+    path("tasks/", views.task_list, name="task_list"),
+    path("tasks/create/", views.task_create, name="task_create"),
 ] + page_patterns
