@@ -33,6 +33,9 @@
         <div>
           <label for="{{ form.message.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">Message</label>
           {{ form.message }}
+          {% if form.message.help_text %}
+          <p class="text-slate-600 text-xs mt-1">{{ form.message.help_text }}</p>
+          {% endif %}
           {% if form.message.errors %}
           <p class="text-pink-400 text-xs mt-1">{{ form.message.errors.0 }}</p>
           {% endif %}
