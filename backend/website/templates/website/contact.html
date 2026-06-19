@@ -1,0 +1,48 @@
+{% extends "website/base.html" %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <div class="text-center mb-10">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Get in Touch</h1>
+    <p class="text-slate-400 mt-3">Have a question about our hardware? We are here to help.</p>
+  </div>
+
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 sm:p-8">
+    <form method="POST" action="{% url 'contact' %}">
+      {% csrf_token %}
+
+      <div class="space-y-5">
+        <div>
+          <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">Name</label>
+          {{ form.name }}
+          {% if form.name.errors %}
+          <p class="text-pink-400 text-xs mt-1">{{ form.name.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
+          {{ form.email }}
+          {% if form.email.errors %}
+          <p class="text-pink-400 text-xs mt-1">{{ form.email.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          <label for="{{ form.message.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">Message</label>
+          {{ form.message }}
+          {% if form.message.errors %}
+          <p class="text-pink-400 text-xs mt-1">{{ form.message.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors cursor-pointer">
+          Send Message
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
