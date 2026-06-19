@@ -52,7 +52,7 @@
   </div>
   <div class="border-t border-slate-800 py-4">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-600">
-      <div>&copy; {{ current_year|default:"2026" }} TechStore Engine. Global Supply Hub.</div>
+      <div>&copy; {{ current_year|default:"2026" }} TechStore Engine. Global Supply Hub. {% load website_extras %}<span class="ml-2">| {% current_time %}</span></div>
       <div class="flex items-center gap-4">
         <span class="flex items-center gap-1.5" title="Live visitors">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>

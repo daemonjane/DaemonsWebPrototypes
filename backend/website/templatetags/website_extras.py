@@ -60,6 +60,12 @@ def pluralize_count(value, arg="s"):
 
 
 @register.simple_tag
+def current_time(format_str="Y-m-d H:i"):
+    from datetime import datetime
+    return datetime.now().strftime(format_str)
+
+
+@register.simple_tag
 def task_stats():
     from ..models import Task
     total = Task.objects.count()
