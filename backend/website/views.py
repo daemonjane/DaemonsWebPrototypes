@@ -17,16 +17,19 @@ PAGES = {
 
 
 def home(request):
+    """Render the homepage with the 5 most recent tasks."""
     recent_tasks = Task.objects.all()[:5]
     return render(request, "website/home.html", {"recent_tasks": recent_tasks})
 
 
 def page_placeholder(request, page_name):
+    """Render a placeholder page for sections not yet built."""
     title, description = PAGES.get(page_name, ("Page", "This page is coming soon."))
     return render(request, "website/page_placeholder.html", {"title": title, "description": description})
 
 
 def contact(request):
+    """Handle contact form GET (display) and POST (validate + save + message)."""
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -39,11 +42,13 @@ def contact(request):
 
 
 def task_list(request):
+    """Display all tasks in a table with status badges and action icons."""
     tasks = Task.objects.all()
     return render(request, "website/task_list.html", {"tasks": tasks})
 
 
 def task_create(request):
+    """Show blank form on GET; validate and save on POST."""
     if request.method == "POST":
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -56,6 +61,7 @@ def task_create(request):
 
 
 def task_update(request, pk):
+    """Show prefilled form on GET; validate and save changes on POST."""
     task = get_object_or_404(Task, pk=pk)
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
@@ -69,6 +75,7 @@ def task_update(request, pk):
 
 
 def task_delete(request, pk):
+    """Show confirmation on GET; delete task on POST."""
     task = get_object_or_404(Task, pk=pk)
     if request.method == "POST":
         task.delete()
@@ -78,8 +85,10 @@ def task_delete(request, pk):
 
 
 def custom_404(request, exception):
+    """Render a themed 404 error page."""
     return render(request, "website/404.html", status=404)
 
 
 def custom_500(request):
+    """Render a themed 500 error page."""
     return render(request, "website/500.html", status=500)
