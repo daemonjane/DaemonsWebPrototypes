@@ -15,6 +15,8 @@ page_patterns = [
 
 urlpatterns = [
     path("", views.home, name="home"),
+    path("robots.txt", views.robots_txt, name="robots_txt"),
+    path("humans.txt", views.humans_txt, name="humans_txt"),
     path("contact/", views.contact, name="contact"),
     path("tasks/", views.task_list, name="task_list"),
     path("tasks/create/", views.task_create, name="task_create"),
