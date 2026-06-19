@@ -21,6 +21,9 @@
         <div>
           <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">Title</label>
           {{ form.title }}
+          {% if form.title.help_text %}
+          <p class="text-slate-600 text-xs mt-1">{{ form.title.help_text }}</p>
+          {% endif %}
           {% if form.title.errors %}
           <p class="text-pink-400 text-xs mt-1">{{ form.title.errors.0 }}</p>
           {% endif %}
@@ -29,6 +32,9 @@
         <div>
           <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
           {{ form.description }}
+          {% if form.description.help_text %}
+          <p class="text-slate-600 text-xs mt-1">{{ form.description.help_text }}</p>
+          {% endif %}
           {% if form.description.errors %}
           <p class="text-pink-400 text-xs mt-1">{{ form.description.errors.0 }}</p>
           {% endif %}
