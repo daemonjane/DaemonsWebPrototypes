@@ -23,6 +23,15 @@ def home(request):
     return render(request, "website/home.html", {"recent_tasks": recent_tasks})
 
 
+def sitemap_xml(request):
+    urls = [
+        "/", "/tasks/", "/contact/", "/shop/", "/about/", "/faq/", "/privacy/", "/terms/", "/cookies/",
+    ]
+    entries = "".join(f"<url><loc>https://techstore.example.com{url}</loc></url>" for url in urls)
+    xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{entries}</urlset>'
+    return HttpResponse(xml, content_type="application/xml")
+
+
 def page_placeholder(request, page_name):
     """Render a placeholder page for sections not yet built."""
     title, description = PAGES.get(page_name, ("Page", "This page is coming soon."))
