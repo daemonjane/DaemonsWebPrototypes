@@ -59,8 +59,9 @@
           <span>browsing now</span>
         </span>
         <a href="/privacy/" class="hover:text-slate-400 transition-colors">Privacy</a>
-        <a href="/terms/" class="hover:text-slate-400 transition-colors">Terms</a>
-        <a href="/cookies/" class="hover:text-slate-400 transition-colors">Cookies</a>
+          <a href="/terms/" class="hover:text-slate-400 transition-colors">Terms</a>
+          <a href="/cookies/" class="hover:text-slate-400 transition-colors">Cookies</a>
+          {% if user.is_staff %}<a href="{% url 'admin:index' %}" class="hover:text-cyan-400 transition-colors">Admin</a>{% endif %}
       </div>
     </div>
   </div>
