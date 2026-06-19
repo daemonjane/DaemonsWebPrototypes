@@ -128,6 +128,11 @@ def humans_txt(request):
     return HttpResponse("TechStore\nBuilt with Django 6.0\n", content_type="text/plain")
 
 
+def forbidden(request, exception):
+    """Render a themed 403 error page."""
+    return render(request, "website/403.html", status=403)
+
+
 def custom_404(request, exception):
     """Render a themed 404 error page."""
     return render(request, "website/404.html", status=404)
