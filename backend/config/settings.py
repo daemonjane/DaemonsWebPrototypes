@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+APPEND_SLASH = True
+
 
 # Application definition
 
@@ -129,3 +131,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MAINTENANCE_MODE = False
