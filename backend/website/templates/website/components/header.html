@@ -21,9 +21,12 @@
 
       <div class="flex items-center gap-3">
         {% if user.is_authenticated %}
-        <a href="/logout/" class="hidden md:inline-flex text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Logout</a>
+        <form method="POST" action="{% url 'logout' %}" class="hidden md:block">
+          {% csrf_token %}
+          <button type="submit" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer">Logout</button>
+        </form>
         {% else %}
-        <a href="/login/" class="hidden md:inline-flex text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors">Sign In</a>
+        <a href="{% url 'login' %}" class="hidden md:inline-flex text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors">Sign In</a>
         {% endif %}
 
         <button id="theme-toggle" class="p-2 text-slate-400 hover:text-cyan-400 transition-colors" aria-label="Toggle theme" title="Toggle theme">
@@ -60,9 +63,12 @@
       <a href="/tasks/" {% if current_path == '/tasks/' %}aria-current="page"{% endif %} class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/tasks/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Tasks</a>
       <hr class="border-slate-800 my-2">
       {% if user.is_authenticated %}
-      <a href="/logout/" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors">Logout</a>
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors cursor-pointer">Logout</button>
+      </form>
       {% else %}
-      <a href="/login/" class="block px-3 py-2 rounded-md text-sm font-medium text-cyan-400 hover:text-white hover:bg-slate-800/50 transition-colors">Sign In</a>
+      <a href="{% url 'login' %}" class="block px-3 py-2 rounded-md text-sm font-medium text-cyan-400 hover:text-white hover:bg-slate-800/50 transition-colors">Sign In</a>
       {% endif %}
       {% endwith %}
     </div>
