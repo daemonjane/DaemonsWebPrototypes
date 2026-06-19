@@ -86,7 +86,7 @@ pip install django djangorestframework django-cors-headers
 cd backend
 python manage.py migrate
 python manage.py seed_tasks
-python manage.py createsuperuser
+python manage.py create_admin
 python manage.py runserver 0.0.0.0:8000
 ```
 
@@ -97,18 +97,30 @@ python manage.py runserver 0.0.0.0:8000
 | Path | View | Description |
 |------|------|-------------|
 | `/` | `home` | Homepage with task stats & recent tasks |
-| `/tasks/` | `task_list` | Full task table with status badges |
-| `/tasks/create/` | `task_create` | New task form |
-| `/tasks/<id>/` | `task_detail` | Task detail page |
-| `/tasks/<id>/edit/` | `task_update` | Edit task form |
-| `/tasks/<id>/delete/` | `task_delete` | Delete confirmation |
-| `/tasks/<id>/toggle/` | `task_toggle` | Toggle completed (POST) |
+| `/login/` | `LoginView` | Login page |
+| `/logout/` | `LogoutView` | Logout (POST-only) |
+| `/accounts/register/` | `register` | User registration |
+| `/tasks/` | `task_list` | Full task table with status badges (login required) |
+| `/tasks/search/` | `task_search` | AJAX search JSON endpoint (login required) |
+| `/tasks/create/` | `task_create` | New task form (login required) |
+| `/tasks/<id>/` | `task_detail` | Task detail page (login required) |
+| `/tasks/<id>/edit/` | `task_update` | Edit task form (login required) |
+| `/tasks/<id>/delete/` | `task_delete` | Delete confirmation (login required) |
+| `/tasks/<id>/toggle/` | `task_toggle` | Toggle completed (POST, login required) |
 | `/contact/` | `contact` | Contact form with messages |
 | `/shop/`, `/faq/`, `/about/` | `page_placeholder` | Placeholder pages |
 | `/robots.txt` | `robots_txt` | Robots exclusion |
 | `/humans.txt` | `humans_txt` | Credits |
 | `/sitemap.xml` | `sitemap_xml` | XML sitemap |
 | `/admin/` | Django Admin | Dark-themed admin |
+
+### Authentication
+
+Task management requires login. Use the admin credentials below or register at `/accounts/register/`.
+
+**Admin credentials:**
+- **Username:** `admin`
+- **Password:** `admin`
 
 ---
 
