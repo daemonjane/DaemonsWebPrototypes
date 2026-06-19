@@ -67,7 +67,11 @@
   </table>
 </div>
 
-<div class="mt-4 text-xs text-slate-600">
-  Showing {{ tasks|length }} task{{ tasks|length|pluralize }}
+<div class="mt-4 text-xs text-slate-600 flex items-center gap-4">
+  <span>{{ task_count }} task{{ task_count|pluralize }}</span>
+  <span class="text-emerald-500">{{ completed_count }} done</span>
+  {% if task_count and completed_count %}
+  <span class="text-slate-500">{{ pending_count }} pending</span>
+  {% endif %}
 </div>
 {% endblock %}

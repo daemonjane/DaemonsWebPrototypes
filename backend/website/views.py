@@ -63,7 +63,14 @@ def contact(request):
 def task_list(request):
     """Display all tasks in a table with status badges and action icons."""
     tasks = Task.objects.all()
-    return render(request, "website/task_list.html", {"tasks": tasks})
+    task_count = tasks.count()
+    completed_count = tasks.filter(completed=True).count()
+    return render(request, "website/task_list.html", {
+        "tasks": tasks,
+        "task_count": task_count,
+        "completed_count": completed_count,
+        "pending_count": task_count - completed_count,
+    })
 
 
 def task_create(request):
