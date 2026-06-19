@@ -75,6 +75,12 @@ def task_update(request, pk):
     return render(request, "website/task_form.html", {"form": form, "title": "Edit Task"})
 
 
+def task_detail(request, pk):
+    """Show a single task's full details."""
+    task = get_object_or_404(Task, pk=pk)
+    return render(request, "website/task_detail.html", {"task": task})
+
+
 def task_delete(request, pk):
     """Show confirmation on GET; delete task on POST."""
     task = get_object_or_404(Task, pk=pk)

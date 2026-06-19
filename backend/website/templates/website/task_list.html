@@ -27,7 +27,7 @@
       <tr class="hover:bg-slate-800/30 transition-colors">
         <td class="px-4 py-3.5 text-slate-500 font-mono text-xs">{{ forloop.counter }}</td>
         <td class="px-4 py-3.5">
-          <p class="text-slate-200 font-medium {% if task.completed %}line-through text-slate-500{% endif %}">{{ task.title }}</p>
+          <a href="{% url 'task_detail' task.pk %}" class="text-slate-200 font-medium hover:text-cyan-400 transition-colors {% if task.completed %}line-through text-slate-500{% endif %}">{{ task.title }}</a>
         </td>
         <td class="px-4 py-3.5 text-slate-500 text-xs hidden sm:table-cell {% if task.completed %}line-through{% endif %}">
           {% if task.description %}{{ task.description|truncatechars:60 }}{% else %}<span class="text-slate-600 italic">—</span>{% endif %}
