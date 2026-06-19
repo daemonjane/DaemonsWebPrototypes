@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import ContactForm, TaskForm
@@ -82,6 +83,14 @@ def task_delete(request, pk):
         messages.success(request, f"Task '{task.title}' deleted.")
         return redirect("task_list")
     return render(request, "website/task_confirm_delete.html", {"task": task})
+
+
+def robots_txt(request):
+    return HttpResponse("User-agent: *\nDisallow:\n", content_type="text/plain")
+
+
+def humans_txt(request):
+    return HttpResponse("TechStore\nBuilt with Django 6.0\n", content_type="text/plain")
 
 
 def custom_404(request, exception):
