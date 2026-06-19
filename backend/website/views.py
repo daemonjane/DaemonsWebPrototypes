@@ -93,6 +93,17 @@ def task_update(request, pk):
     return render(request, "website/task_form.html", {"form": form, "title": "Edit Task"})
 
 
+def task_toggle(request, pk):
+    """Toggle a task's completed status via POST and redirect."""
+    task = get_object_or_404(Task, pk=pk)
+    if request.method == "POST":
+        task.completed = not task.completed
+        task.save()
+        status = "completed" if task.completed else "reopened"
+        messages.success(request, f"Task '{task.title}' marked as {status}.")
+    return redirect("task_list")
+
+
 def task_detail(request, pk):
     """Show a single task's full details."""
     task = get_object_or_404(Task, pk=pk)
