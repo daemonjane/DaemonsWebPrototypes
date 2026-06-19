@@ -38,3 +38,11 @@ def contact(request):
 
 def contact_thanks(request):
     return render(request, "website/contact_thanks.html")
+
+
+def custom_404(request, exception):
+    return render(request, "website/404.html", status=404)
+
+
+def custom_500(request):
+    return render(request, "website/500.html", status=500)

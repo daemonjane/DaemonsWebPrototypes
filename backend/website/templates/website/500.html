@@ -1,0 +1,13 @@
+{% extends "website/base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="text-center py-20">
+  <h1 class="text-6xl font-extrabold text-pink-400">500</h1>
+  <p class="text-slate-400 mt-4 text-lg">Something went wrong on our end.</p>
+  <a href="/" class="inline-block mt-8 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+    Back to Home
+  </a>
+</div>
+{% endblock %}
