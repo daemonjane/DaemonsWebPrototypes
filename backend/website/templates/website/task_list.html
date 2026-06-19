@@ -1,0 +1,74 @@
+{% extends "website/base.html" %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+  <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Tasks</h1>
+  <a href="{% url 'task_create' %}" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold py-2.5 px-5 rounded-lg transition-colors inline-flex items-center gap-1.5">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+    New Task
+  </a>
+</div>
+
+<div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="bg-slate-800/50 border-b border-slate-700">
+        <th class="text-left px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider w-10">#</th>
+        <th class="text-left px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider">Title</th>
+        <th class="text-left px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Description</th>
+        <th class="text-center px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider w-24">Status</th>
+        <th class="text-right px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider w-32">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-800">
+      {% for task in tasks %}
+      <tr class="hover:bg-slate-800/30 transition-colors">
+        <td class="px-4 py-3.5 text-slate-500 font-mono text-xs">{{ forloop.counter }}</td>
+        <td class="px-4 py-3.5">
+          <p class="text-slate-200 font-medium {% if task.completed %}line-through text-slate-500{% endif %}">{{ task.title }}</p>
+        </td>
+        <td class="px-4 py-3.5 text-slate-500 text-xs hidden sm:table-cell {% if task.completed %}line-through{% endif %}">
+          {% if task.description %}{{ task.description|truncatechars:60 }}{% else %}<span class="text-slate-600 italic">—</span>{% endif %}
+        </td>
+        <td class="px-4 py-3.5 text-center">
+          {% if task.completed %}
+          <span class="inline-flex items-center gap-1 text-emerald-400 text-xs font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            Done
+          </span>
+          {% else %}
+          <span class="inline-flex items-center gap-1 text-slate-500 text-xs font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+            Pending
+          </span>
+          {% endif %}
+        </td>
+        <td class="px-4 py-3.5 text-right">
+          <div class="flex items-center justify-end gap-1">
+            <a href="{% url 'task_update' task.pk %}" class="p-1.5 text-slate-500 hover:text-cyan-400 transition-colors" title="Edit">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            </a>
+            <a href="{% url 'task_delete' task.pk %}" class="p-1.5 text-slate-500 hover:text-pink-400 transition-colors" title="Delete">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="px-4 py-12 text-center text-slate-500 text-sm">
+          No tasks yet.
+          <a href="{% url 'task_create' %}" class="text-cyan-400 hover:text-cyan-300 ml-1">Create one</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-4 text-xs text-slate-600">
+  Showing {{ tasks|length }} task{{ tasks|length|pluralize }}
+</div>
+{% endblock %}
