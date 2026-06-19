@@ -9,6 +9,9 @@
   box-sizing: border-box;
 }
 
+/* Scrollbar
+   ========================================================================== */
+
 html {
   scrollbar-color: #0891b2 #0f172a;
   scrollbar-width: thin;
