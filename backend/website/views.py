@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 
 
 from .forms import CommentForm, ContactForm, TaskForm
-from .models import Task
+from .models import Comment, Task
 
 PAGES = {
     "shop": ("Shop", "Browse our curated collection of premium hardware."),
@@ -33,6 +33,7 @@ def home(request):
         "total_tasks": total_tasks,
         "completed_tasks": completed_tasks,
         "pending_tasks": pending_tasks,
+        "total_comments": Comment.objects.count(),
     })
 
 
@@ -41,7 +42,7 @@ def sitemap_xml(request):
     static_urls = [
         "/", "/tasks/", "/contact/", "/shop/", "/about/", "/faq/", "/privacy/", "/terms/", "/cookies/",
     ]
-    task_urls = [f"/tasks/{t.pk}/" for t in Task.objects.all()]
+    task_urls = [f"/tasks/{t.pk}/" for t in Task.objects.all()] + [f"/tasks/{t.pk}/comment/" for t in Task.objects.all()]
     all_urls = static_urls + task_urls
     entries = "".join(f"<url><loc>https://techstore.example.com{url}</loc></url>" for url in all_urls)
     xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{entries}</urlset>'
