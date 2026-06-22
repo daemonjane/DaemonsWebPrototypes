@@ -81,12 +81,13 @@ npm run build     # Production build → dist/
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install django djangorestframework django-cors-headers
+pip install -r backend/requirements.txt
 
 cd backend
 python manage.py migrate
-python manage.py seed_tasks
-python manage.py create_admin
+python manage.py seed_tasks           # 10 tasks with comments
+python manage.py seed_data             # 21 products across 3 categories
+python manage.py create_admin          # Creates user: admin / admin123
 python manage.py runserver 0.0.0.0:8000
 ```
 
@@ -113,7 +114,8 @@ python manage.py runserver 0.0.0.0:8000
 | `/robots.txt` | `robots_txt` | Robots exclusion |
 | `/humans.txt` | `humans_txt` | Credits |
 | `/sitemap.xml` | `sitemap_xml` | XML sitemap |
-| `/admin/` | Django Admin | Dark-themed admin |
+| `/admin/` | Django Admin | Dark-themed admin with full CRUD |
+| `/api/health/` | `health_check` | REST API health check |
 
 ### Authentication
 
@@ -124,26 +126,201 @@ Task management requires login. The registration flow:
 4. Email is required and validated for spaces
 5. Logout requires POST (prevents CSRF-based logout)
 
-**Admin credentials:**
-- **Username:** `admin`
-- **Password:** `admin123`
+---
+
+> **Note:** The Vue frontend uses static mock data from `src/data/products.js`. The Django backend has its own product catalog managed via admin. They share the same schema but are independent data stores — the Django admin is the source of truth for backend data, while the Vue SPA renders its own fixed product list.
 
 ---
 
 ## 🗄️ Data Models
 
 ### website app
-- **Task** — title, description, completed, timestamps, comment_count
-- **Comment** — task (FK), author, body, timestamps; ordered by creation
-- **ContactMessage** — name, email, message, timestamp
+| Model | Fields | Admin Features |
+|-------|--------|---------------|
+| **Task** | title, description, completed, created_at, updated_at | Bulk mark done/pending, CSV export, inline edit, search, filter, date drill-down |
+| **Comment** | task (FK), author, body, created_at, updated_at | Bulk delete, filter by task/date, clickable task link, body preview |
+| **ContactMessage** | name, email, message, created_at | Read-only, bulk delete old messages, search by name/email/message |
 
 ### api app
-- **Category** — name, slug
-- **Product** — slug (PK), name, price, category, image, rating, specs, stock
-- **Order** — email, name, address, status, gift card
-- **OrderItem** — product, name, price, quantity, item_type
-- **BackInStockRequest** — product, email
-- **ContactMessage** — name, email, message
+| Model | Fields | Admin Features |
+|-------|--------|---------------|
+| **Category** | name, slug | Slug auto-populated from name, search by name |
+| **Product** | slug (PK), name, price, category (FK), image, rating, specs (JSON), stock, timestamps | Filter by category/rating, search by name/description, slug auto-populated |
+| **Order** | email, name, address, status, gift_card, created_at | Inline order items, filter by status, search by name/email |
+| **OrderItem** | order (FK), product (FK), name, price, quantity, item_type | Inline in Order admin |
+| **BackInStockRequest** | product (FK), email, created_at | Search by email/product, date drill-down |
+
+---
+
+## 🎛️ Admin Panel
+
+Access the admin interface at **`http://localhost:8000/admin/`** after starting the server.
+
+### Login
+```bash
+# Create the admin user (first time only):
+python manage.py create_admin
+
+# Or create a custom superuser:
+python manage.py createsuperuser
+```
+
+**Default admin credentials:**
+- **Username:** `admin`
+- **Password:** `admin123`
+
+### Managing Data via Admin
+
+#### Adding a Product
+1. Go to `/admin/api/product/add/`
+2. Fill in: **Slug** (auto-filled from name), **Name**, **Price**, **Category** (select or `+` to add new), **Description**, **Image URL**, **Rating**, **Stock**
+3. **Specs** - enter as a JSON list, e.g. `["RTX 5070 12GB", "32GB DDR5"]`
+4. Click **Save**
+
+#### Adding a Category
+1. Go to `/admin/api/category/add/`
+2. Enter **Name** — **Slug** fills automatically
+3. Click **Save**
+
+#### Managing Orders
+1. Go to `/admin/api/order/` — see all orders with status, search by customer name/email
+2. Click an order to view/edit details
+3. **Add items inline** — scroll to "Order items" section, click "Add another Order Item"
+4. **Update status** — choose from: Placed, Processing, Shipped, Out for delivery, Delivered
+
+#### Managing Tasks
+Custom admin actions available:
+- **Mark selected as completed** — bulk mark done
+- **Mark selected as pending** — bulk reopen
+- **Export selected as CSV** — download task data
+- **Inline editing** — toggle completed checkbox directly in list view
+- **Edit/Create** — structured form with collapsible timestamps section
+
+#### Managing Comments
+- **Search** — by author, body content, or task title
+- **Filter** — by creation date or task
+- **Bulk delete** — select comments and choose "Delete selected comments"
+- **Task link** — click to jump directly to the commented task
+
+#### Managing Contact Messages
+- Read-only (created via the public contact form)
+- **Delete old messages** action — removes messages older than 30 days
+
+---
+
+## 👤 User-Facing Features
+
+### Task Management (requires login)
+| Feature | How To |
+|---------|--------|
+| **View tasks** | `/tasks/` — table with status badges, search bar |
+| **Live search** | Type in the search box — results appear instantly via AJAX |
+| **Create task** | `/tasks/create/` — title + optional description |
+| **Edit task** | Click edit icon or "Edit Task" on detail page |
+| **Toggle status** | Click the checkmark/x button in the table |
+| **Delete task** | Click trash icon, confirm on next page |
+| **View details** | Click task title for full view with timestamps |
+| **Add comment** | Scroll to bottom of task detail page, enter name + comment |
+
+### Registration & Login
+1. Go to `/accounts/register/`
+2. Enter username, email, and password (auto-login on success)
+3. Or go to `/login/` if you already have an account
+4. Logout via POST (button in header)
+
+### Contact
+- `/contact/` — public form; messages visible to admins only
+
+---
+
+## 🔍 Database Access (SQLite)
+
+The database file is at **`backend/db.sqlite3`**. You have several ways to inspect and query it:
+
+### Option 1: Django Shell (Recommended)
+```bash
+python manage.py shell
+
+# Example queries:
+>>> from website.models import *
+>>> Task.objects.count()
+>>> Task.objects.filter(completed=True)
+>>> Comment.objects.filter(author="Alice")
+>>> ContactMessage.objects.all()
+
+>>> from api.models import *
+>>> Category.objects.all()
+>>> Product.objects.filter(price__lt=100)
+>>> Product.objects.filter(stock=0)           # Out of stock items
+>>> Order.objects.filter(status="placed")
+```
+
+### Option 2: Django `dbshell`
+```bash
+python manage.py dbshell
+# SQLite prompt — run raw SQL:
+.tables
+SELECT * FROM website_task;
+SELECT * FROM api_product WHERE price < 100;
+SELECT COUNT(*) FROM website_comment;
+```
+
+### Option 3: Direct SQLite (when Django isn't running)
+```bash
+sqlite3 backend/db.sqlite3
+.tables
+SELECT title, completed FROM website_task;
+```
+
+### Option 4: GUI Browser (DB Browser for SQLite)
+Install [DB Browser for SQLite](https://sqlitebrowser.org/), open `backend/db.sqlite3`, and browse/edit tables visually.
+
+### Option 5: Management Commands
+```bash
+python manage.py count_models     # Show record counts for all models
+python manage.py list_tasks       # List all tasks with status in terminal
+python manage.py health_check     # Verify database connection
+```
+
+---
+
+## 🚀 Seeding Sample Data
+
+```bash
+# Seed 10 tasks with comments (1-4 comments each):
+python manage.py seed_tasks
+
+# Seed 21 products across categories:
+python manage.py seed_data
+
+# Create admin user:
+python manage.py create_admin
+```
+
+### Full Startup Sequence
+```bash
+source .venv/bin/activate
+cd backend
+python manage.py migrate
+python manage.py seed_tasks
+python manage.py seed_data
+python manage.py create_admin
+python manage.py runserver 0.0.0.0:8000
+```
+
+---
+
+## 📝 Management Commands
+
+| Command | Description |
+|---------|-------------|
+| `seed_tasks` | Create 10 sample tasks with comments |
+| `seed_data` | Create 21 products with categories |
+| `create_admin` | Create admin user (`admin` / `admin123`) |
+| `count_models` | Show record counts (Tasks, Comments, Contact Messages) |
+| `list_tasks` | Show all tasks in terminal |
+| `reset_tasks` | Delete all tasks and reseed |
+| `health_check` | Database connectivity test |
 
 ---
 
@@ -175,31 +352,6 @@ Task management requires login. The registration flow:
 
 ---
 
-## 📝 Management Commands
-
-```bash
-python manage.py seed_tasks      # Create 10 sample tasks with comments
-python manage.py seed_data        # Create 21 products
-python manage.py create_admin     # Create admin user
-python manage.py count_models     # Show record counts
-python manage.py list_tasks       # Show all tasks in terminal
-python manage.py reset_tasks      # Delete & reseed tasks
-python manage.py health_check     # Database connectivity test
-```
-
----
-
-## 💬 Comment System
-
-Each task supports threaded conversation via comments:
-- **Add comments** — name + body form on task detail page (login required)
-- **Comment count** — visible in task list table and recent tasks component
-- **Ordering** — oldest first for natural reading flow
-- **Admin management** — bulk delete, filter by task/date, inline preview
-- **Cascade delete** — comments removed when their task is deleted
-
----
-
 ## ♿ Accessibility
 
 - Skip-to-content link
@@ -215,6 +367,10 @@ Each task supports threaded conversation via comments:
 
 ```bash
 python backend/manage.py test website
+# Run specific test class:
+python backend/manage.py test website.tests.RegisterViewTests
+# Run with verbose output:
+python backend/manage.py test website --verbosity=2
 ```
 
 ---
