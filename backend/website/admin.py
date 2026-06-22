@@ -10,7 +10,7 @@ admin.site.index_title = "Welcome to TechStore Admin"
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ["title", "completed", "created_at", "updated_at"]
+    list_display = ["title", "completed", "comment_count", "created_at", "updated_at"]
     list_filter = ["completed"]
     search_fields = ["title", "description"]
     date_hierarchy = "created_at"
@@ -27,6 +27,10 @@ class TaskAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ["created_at", "updated_at"]
     actions = ["mark_completed", "mark_pending", "export_csv"]
+
+    @admin.display(description="Comments")
+    def comment_count(self, obj):
+        return obj.comments.count()
 
     @admin.action(description="Mark selected as completed")
     def mark_completed(self, request, queryset):
@@ -49,16 +53,28 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ["author", "task", "created_at", "body_preview"]
-    list_filter = ["created_at"]
-    search_fields = ["author", "body"]
+    list_display = ["author", "task_link", "created_at", "body_preview"]
+    list_filter = ["created_at", "task"]
+    search_fields = ["author", "body", "task__title"]
     date_hierarchy = "created_at"
     list_per_page = 25
     readonly_fields = ["created_at", "updated_at"]
+    actions = ["delete_selected_comments"]
 
     def body_preview(self, obj):
         return obj.body[:60] + "..." if len(obj.body) > 60 else obj.body
     body_preview.short_description = "body"
+
+    def task_link(self, obj):
+        from django.utils.html import format_html
+        return format_html('<a href="{}">{}</a>', obj.task.get_absolute_url(), obj.task.title)
+    task_link.short_description = "task"
+
+    @admin.action(description="Delete selected comments")
+    def delete_selected_comments(self, request, queryset):
+        count = queryset.count()
+        queryset.delete()
+        self.message_user(request, f"{count} comment(s) deleted.")
 
 
 @admin.register(ContactMessage)
