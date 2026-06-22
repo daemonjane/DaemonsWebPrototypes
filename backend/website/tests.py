@@ -135,7 +135,7 @@ class CommentViewTests(TestCase):
         resp = self.client.post(reverse("add_comment", kwargs={"pk": self.task.pk}), {
             "author": "Eve", "body": "Hack!"
         })
-        self.assertNotEqual(resp.status_code, 302)
+        self.assertRedirects(resp, f"{reverse('login')}?next={reverse('add_comment', kwargs={'pk': self.task.pk})}")
         self.assertEqual(self.task.comments.count(), 0)
 
     def test_comment_count_in_task_list(self):
