@@ -43,7 +43,7 @@
 │   ├── manage.py
 │   ├── config/                     # Project settings, root URLconf
 │   ├── website/                    # MVT app (templates, forms, views)
-│   │   ├── models.py               # Task, ContactMessage
+│   │   ├── models.py               # Task, ContactMessage, Comment
 │   │   ├── views.py                # 14 function views
 │   │   ├── forms.py                # ContactForm, TaskForm
 │   │   ├── admin.py                # Custom admin config + actions
