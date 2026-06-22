@@ -1,12 +1,12 @@
 from django.contrib import messages
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 
 
-from .forms import CommentForm, ContactForm, TaskForm
+from .forms import CommentForm, ContactForm, RegisterForm, TaskForm
 from .models import Comment, Task
 
 PAGES = {
@@ -56,15 +56,16 @@ def page_placeholder(request, page_name):
 
 
 def register(request):
-    """User registration view."""
+    """User registration view with auto-login."""
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Account created! You can now log in.")
-            return redirect("login")
+            user = form.save()
+            login(request, user)
+            messages.success(request, f"Welcome, {user.username}! Your account has been created.")
+            return redirect("task_list")
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
     return render(request, "website/register.html", {"form": form})
 
 
