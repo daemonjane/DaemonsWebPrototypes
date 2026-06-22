@@ -107,6 +107,7 @@ python manage.py runserver 0.0.0.0:8000
 | `/tasks/<id>/edit/` | `task_update` | Edit task form (login required) |
 | `/tasks/<id>/delete/` | `task_delete` | Delete confirmation (login required) |
 | `/tasks/<id>/toggle/` | `task_toggle` | Toggle completed (POST, login required) |
+| `/tasks/<id>/comment/` | `add_comment` | Add comment (POST, login required) |
 | `/contact/` | `contact` | Contact form with messages |
 | `/shop/`, `/faq/`, `/about/` | `page_placeholder` | Placeholder pages |
 | `/robots.txt` | `robots_txt` | Robots exclusion |
