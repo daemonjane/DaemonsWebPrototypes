@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Task
+from .models import Comment, Task
 
 
 class TaskModelTests(TestCase):
@@ -83,6 +83,67 @@ class TaskViewTests(TestCase):
         self.assertEqual(resp.status_code, 302)
         task.refresh_from_db()
         self.assertTrue(task.completed)
+
+
+class CommentModelTests(TestCase):
+    def setUp(self):
+        self.task = Task.objects.create(title="Commentable Task")
+
+    def test_create_comment(self):
+        comment = Comment.objects.create(task=self.task, author="Alice", body="Nice task!")
+        self.assertEqual(str(comment), f"Alice on {self.task.title}")
+        self.assertEqual(self.task.comments.count(), 1)
+
+    def test_comment_ordering(self):
+        c1 = Comment.objects.create(task=self.task, author="A", body="First")
+        c2 = Comment.objects.create(task=self.task, author="B", body="Second")
+        comments = self.task.comments.all()
+        self.assertEqual(comments[0], c1)
+        self.assertEqual(comments[1], c2)
+
+    def test_cascade_delete(self):
+        Comment.objects.create(task=self.task, author="A", body="Test")
+        self.assertEqual(Comment.objects.count(), 1)
+        self.task.delete()
+        self.assertEqual(Comment.objects.count(), 0)
+
+
+class CommentViewTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth.models import User
+        self.user = User.objects.create_user("testuser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+        self.task = Task.objects.create(title="Test Task")
+
+    def test_detail_view_shows_comments(self):
+        Comment.objects.create(task=self.task, author="Alice", body="Great work")
+        resp = self.client.get(reverse("task_detail", kwargs={"pk": self.task.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Great work")
+        self.assertContains(resp, "Alice")
+
+    def test_add_comment_post(self):
+        resp = self.client.post(reverse("add_comment", kwargs={"pk": self.task.pk}), {
+            "author": "Bob", "body": "Nice comment"
+        })
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(self.task.comments.count(), 1)
+        self.assertEqual(self.task.comments.first().author, "Bob")
+
+    def test_add_comment_requires_login(self):
+        self.client.logout()
+        resp = self.client.post(reverse("add_comment", kwargs={"pk": self.task.pk}), {
+            "author": "Eve", "body": "Hack!"
+        })
+        self.assertNotEqual(resp.status_code, 302)
+        self.assertEqual(self.task.comments.count(), 0)
+
+    def test_comment_count_in_task_list(self):
+        Comment.objects.create(task=self.task, author="A", body="X")
+        Comment.objects.create(task=self.task, author="B", body="Y")
+        resp = self.client.get(reverse("task_list"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "2")
 
 
 class ContactViewTests(TestCase):

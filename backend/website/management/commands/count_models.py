@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from website.models import ContactMessage, Task
+from website.models import Comment, ContactMessage, Task
 
 
 class Command(BaseCommand):
@@ -9,6 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         counts = {
             "Tasks": Task.objects.count(),
+            "Comments": Comment.objects.count(),
             "Contact Messages": ContactMessage.objects.count(),
         }
         for label, count in counts.items():
