@@ -30,4 +30,5 @@ urlpatterns = [
     path("tasks/<int:pk>/toggle/", views.task_toggle, name="task_toggle"),
     path("tasks/<int:pk>/edit/", views.task_update, name="task_update"),
     path("tasks/<int:pk>/delete/", views.task_delete, name="task_delete"),
+    path("tasks/<int:pk>/comment/", views.add_comment, name="add_comment"),
 ] + page_patterns
