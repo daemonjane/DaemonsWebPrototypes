@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/>
   <br/>
   <img src="https://img.shields.io/badge/build-passing-22c55e?logo=checkmarx"/>
-  <img src="https://img.shields.io/badge/coverage-15_tests-06b6d4"/>
+  <img src="https://img.shields.io/badge/coverage-22_tests-06b6d4"/>
   <img src="https://img.shields.io/badge/commits-290+-blue"/>
   <img src="https://img.shields.io/badge/license-MIT-blue"/>
 </p>
@@ -96,7 +96,7 @@ python manage.py runserver 0.0.0.0:8000
 
 | Path | View | Description |
 |------|------|-------------|
-| `/` | `home` | Homepage with task stats & recent tasks |
+| `/` | `home` | Homepage with task stats, comment count & recent tasks |
 | `/login/` | `LoginView` | Login page |
 | `/logout/` | `LogoutView` | Logout (POST-only) |
 | `/accounts/register/` | `register` | User registration |
@@ -128,8 +128,8 @@ Task management requires login. Use the admin credentials below or register at `
 ## 🗄️ Data Models
 
 ### website app
-- **Task** — title, description, completed, timestamps
-- **Comment** — task (FK), author, body, timestamps
+- **Task** — title, description, completed, timestamps, comment_count
+- **Comment** — task (FK), author, body, timestamps; ordered by creation
 - **ContactMessage** — name, email, message, timestamp
 
 ### api app
@@ -173,7 +173,7 @@ Task management requires login. Use the admin credentials below or register at `
 ## 📝 Management Commands
 
 ```bash
-python manage.py seed_tasks      # Create 5 sample tasks
+python manage.py seed_tasks      # Create 10 sample tasks with comments
 python manage.py seed_data        # Create 21 products
 python manage.py create_admin     # Create admin user
 python manage.py count_models     # Show record counts
@@ -181,6 +181,17 @@ python manage.py list_tasks       # Show all tasks in terminal
 python manage.py reset_tasks      # Delete & reseed tasks
 python manage.py health_check     # Database connectivity test
 ```
+
+---
+
+## 💬 Comment System
+
+Each task supports threaded conversation via comments:
+- **Add comments** — name + body form on task detail page (login required)
+- **Comment count** — visible in task list table and recent tasks component
+- **Ordering** — oldest first for natural reading flow
+- **Admin management** — bulk delete, filter by task/date, inline preview
+- **Cascade delete** — comments removed when their task is deleted
 
 ---
 
