@@ -39,19 +39,9 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ["title", "description", "completed"]
         widgets = {
-            "title": forms.TextInput(attrs={
-                "class": "w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400",
-                "placeholder": "Task title",
-                "autofocus": True,
-            }),
-            "description": forms.Textarea(attrs={
-                "class": "w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400",
-                "placeholder": "Optional description",
-                "rows": 3,
-            }),
-            "completed": forms.CheckboxInput(attrs={
-                "class": "w-4 h-4 rounded border-slate-700 bg-slate-800 text-cyan-600 focus:ring-cyan-400",
-            }),
+            "title": forms.TextInput(attrs={"class": INPUT_CLASS, "placeholder": "Task title", "autofocus": True}),
+            "description": forms.Textarea(attrs={"class": INPUT_CLASS, "placeholder": "Optional description", "rows": 3}),
+            "completed": forms.CheckboxInput(attrs={"class": "w-4 h-4 rounded border-slate-700 bg-slate-800 text-cyan-600 focus:ring-cyan-400"}),
         }
         help_texts = {
             "title": "Give your task a clear, concise title.",
@@ -112,14 +102,6 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ["author", "body"]
         widgets = {
-            "author": forms.TextInput(attrs={
-                "class": "w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400",
-                "placeholder": "Your name",
-                "autofocus": True,
-            }),
-            "body": forms.Textarea(attrs={
-                "class": "w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400",
-                "placeholder": "Write a comment...",
-                "rows": 3,
-            }),
+            "author": forms.TextInput(attrs={"class": INPUT_CLASS, "placeholder": "Your name", "autofocus": True}),
+            "body": forms.Textarea(attrs={"class": INPUT_CLASS, "placeholder": "Write a comment...", "rows": 3}),
         }
