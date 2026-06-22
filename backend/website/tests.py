@@ -156,3 +156,53 @@ class ContactViewTests(TestCase):
             "name": "Test", "email": "test@example.com", "message": "Hello"
         })
         self.assertEqual(resp.status_code, 302)
+
+
+class RegisterViewTests(TestCase):
+    def test_register_get(self):
+        resp = self.client.get(reverse("register"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Create Account")
+
+    def test_register_post_success(self):
+        resp = self.client.post(reverse("register"), {
+            "username": "newuser",
+            "email": "new@example.com",
+            "password1": "Str0ng!Pass",
+            "password2": "Str0ng!Pass",
+        })
+        self.assertRedirects(resp, reverse("task_list"))
+        from django.contrib.auth.models import User
+        self.assertTrue(User.objects.filter(username="newuser").exists())
+
+    def test_register_auto_login(self):
+        self.client.post(reverse("register"), {
+            "username": "autouser",
+            "email": "auto@example.com",
+            "password1": "Str0ng!Pass",
+            "password2": "Str0ng!Pass",
+        })
+        resp = self.client.get(reverse("task_list"))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_register_password_mismatch(self):
+        resp = self.client.post(reverse("register"), {
+            "username": "baduser",
+            "email": "bad@example.com",
+            "password1": "Str0ng!Pass",
+            "password2": "DifferentPass1",
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "password")
+
+    def test_register_duplicate_username(self):
+        from django.contrib.auth.models import User
+        User.objects.create_user("existing", password="Pass123!")
+        resp = self.client.post(reverse("register"), {
+            "username": "existing",
+            "email": "dup@example.com",
+            "password1": "Str0ng!Pass",
+            "password2": "Str0ng!Pass",
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "already exists")
