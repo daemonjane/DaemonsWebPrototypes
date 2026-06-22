@@ -129,6 +129,7 @@ Task management requires login. Use the admin credentials below or register at `
 
 ### website app
 - **Task** — title, description, completed, timestamps
+- **Comment** — task (FK), author, body, timestamps
 - **ContactMessage** — name, email, message, timestamp
 
 ### api app
