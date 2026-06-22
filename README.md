@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/>
   <br/>
   <img src="https://img.shields.io/badge/build-passing-22c55e?logo=checkmarx"/>
-  <img src="https://img.shields.io/badge/coverage-22_tests-06b6d4"/>
+  <img src="https://img.shields.io/badge/coverage-27_tests-06b6d4"/>
   <img src="https://img.shields.io/badge/commits-290+-blue"/>
   <img src="https://img.shields.io/badge/license-MIT-blue"/>
 </p>
@@ -45,7 +45,7 @@
 │   ├── website/                    # MVT app (templates, forms, views)
 │   │   ├── models.py               # Task, ContactMessage, Comment
 │   │   ├── views.py                # 14 function views
-│   │   ├── forms.py                # ContactForm, TaskForm
+│   │   ├── forms.py                # RegisterForm, ContactForm, TaskForm, CommentForm
 │   │   ├── admin.py                # Custom admin config + actions
 │   │   ├── middleware.py           # MaintenanceModeMiddleware
 │   │   ├── context_processors.py   # site_context
@@ -99,7 +99,7 @@ python manage.py runserver 0.0.0.0:8000
 | `/` | `home` | Homepage with task stats, comment count & recent tasks |
 | `/login/` | `LoginView` | Login page |
 | `/logout/` | `LogoutView` | Logout (POST-only) |
-| `/accounts/register/` | `register` | User registration |
+| `/accounts/register/` | `register` | User registration with auto-login |
 | `/tasks/` | `task_list` | Full task table with status badges (login required) |
 | `/tasks/search/` | `task_search` | AJAX search JSON endpoint (login required) |
 | `/tasks/create/` | `task_create` | New task form (login required) |
@@ -117,7 +117,12 @@ python manage.py runserver 0.0.0.0:8000
 
 ### Authentication
 
-Task management requires login. Use the admin credentials below or register at `/accounts/register/`.
+Task management requires login. The registration flow:
+1. Visit `/accounts/register/` with username, email, and password
+2. On success, user is **auto-logged in** and redirected to `/tasks/`
+3. Fields validated inline with per-field error messages
+4. Email is required and validated for spaces
+5. Logout requires POST (prevents CSRF-based logout)
 
 **Admin credentials:**
 - **Username:** `admin`
