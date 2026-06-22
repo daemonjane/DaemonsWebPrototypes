@@ -2,6 +2,24 @@ from django.db import models
 from django.urls import reverse
 
 
+class Comment(models.Model):
+    """A comment attached to a task."""
+
+    task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="comments")
+    author = models.CharField("author", max_length=100)
+    body = models.TextField("body")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["created_at"]
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+
+    def __str__(self):
+        return f"{self.author} on {self.task.title}"
+
+
 class Task(models.Model):
     """A to-do task with completion tracking."""
 
