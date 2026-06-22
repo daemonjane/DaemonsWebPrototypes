@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import ContactMessage, Task
+from .models import Comment, ContactMessage, Task
 
 
 class ContactForm(forms.ModelForm):
@@ -65,4 +65,24 @@ class TaskForm(forms.ModelForm):
         help_texts = {
             "title": "Give your task a clear, concise title.",
             "description": "Add any additional details or notes (optional).",
+        }
+
+
+class CommentForm(forms.ModelForm):
+    """Form for adding comments to a task."""
+
+    class Meta:
+        model = Comment
+        fields = ["author", "body"]
+        widgets = {
+            "author": forms.TextInput(attrs={
+                "class": "w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400",
+                "placeholder": "Your name",
+                "autofocus": True,
+            }),
+            "body": forms.Textarea(attrs={
+                "class": "w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400",
+                "placeholder": "Write a comment...",
+                "rows": 3,
+            }),
         }
