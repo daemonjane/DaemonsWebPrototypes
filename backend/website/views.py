@@ -188,6 +188,7 @@ def task_search(request):
             "description": t.description[:80] if t.description else "",
             "completed": t.completed,
             "created": t.created_at.strftime("%b %d"),
+            "comment_count": t.comments.count(),
         }
         for t in tasks
     ]

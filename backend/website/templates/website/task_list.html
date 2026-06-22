@@ -27,6 +27,7 @@
         <th class="text-left px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider w-10">#</th>
         <th class="text-left px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider">Title</th>
         <th class="text-left px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Description</th>
+        <th class="text-center px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider w-20 hidden lg:table-cell">Comments</th>
         <th class="text-left px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider hidden md:table-cell w-32">Created</th>
         <th class="text-center px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider w-24">Status</th>
         <th class="text-right px-4 py-3 text-slate-400 font-semibold text-xs uppercase tracking-wider w-32">Actions</th>
@@ -41,6 +42,9 @@
         </td>
         <td class="px-4 py-3.5 text-slate-500 text-xs hidden sm:table-cell {% if task.completed %}line-through{% endif %}">
           {% if task.description %}{{ task.description|truncatechars:60 }}{% else %}<span class="text-slate-600 italic">—</span>{% endif %}
+        </td>
+        <td class="px-4 py-3.5 text-center hidden lg:table-cell">
+          <span class="text-xs text-slate-500">{{ task.comments.count }}</span>
         </td>
         <td class="px-4 py-3.5 text-slate-500 text-xs hidden md:table-cell">{{ task.created_at|date:"M j" }}</td>
         <td class="px-4 py-3.5 text-center">{% status_badge task.completed %}</td>
@@ -63,7 +67,7 @@
       </tr>
       {% empty %}
       <tr id="task-empty-row">
-        <td colspan="6" class="px-4 py-12 text-center text-slate-500 text-sm">
+        <td colspan="7" class="px-4 py-12 text-center text-slate-500 text-sm">
           No tasks yet.
           <a href="{% url 'task_create' %}" class="text-cyan-400 hover:text-cyan-300 ml-1">Create one</a>
         </td>
@@ -112,14 +116,14 @@
       renderRows(data.tasks, data.count);
     } catch (err) {
       if (err.name !== "AbortError") {
-        tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-12 text-center text-slate-500 text-sm">Search failed.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-12 text-center text-slate-500 text-sm">Search failed.</td></tr>`;
       }
     }
   }
 
   function renderRows(tasks, count) {
     if (!tasks.length) {
-      tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-12 text-center text-slate-500 text-sm">No tasks match your search.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-12 text-center text-slate-500 text-sm">No tasks match your search.</td></tr>`;
       countTotal.textContent = "0 tasks";
       countDone.textContent = "0 done";
       if (countPending) countPending.textContent = "0 pending";
@@ -144,6 +148,7 @@
       html += '<td class="px-4 py-3.5 text-slate-500 font-mono text-xs">' + (i + 1) + '</td>';
       html += '<td class="px-4 py-3.5"><a href="/tasks/' + t.pk + '/" class="text-slate-200 font-medium hover:text-cyan-400 transition-colors ' + titleClass + '">' + escHtml(t.title) + '</a></td>';
       html += '<td class="px-4 py-3.5 text-slate-500 text-xs hidden sm:table-cell ' + descClass + '">' + desc + '</td>';
+      html += '<td class="px-4 py-3.5 text-center hidden lg:table-cell"><span class="text-xs text-slate-500">' + (t.comment_count || 0) + '</span></td>';
       html += '<td class="px-4 py-3.5 text-slate-500 text-xs hidden md:table-cell">' + t.created + '</td>';
       html += '<td class="px-4 py-3.5 text-center">' + badge + '</td>';
       html += '<td class="px-4 py-3.5 text-right"><div class="flex items-center justify-end gap-1">';
