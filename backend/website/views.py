@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 
 
-from .forms import ContactForm, TaskForm
+from .forms import CommentForm, ContactForm, TaskForm
 from .models import Task
 
 PAGES = {
@@ -137,9 +137,31 @@ def task_toggle(request, pk):
 
 @login_required
 def task_detail(request, pk):
-    """Show a single task's full details."""
+    """Show a single task's full details with comments."""
     task = get_object_or_404(Task, pk=pk)
-    return render(request, "website/task_detail.html", {"task": task})
+    comments = task.comments.all()
+    form = CommentForm()
+    return render(request, "website/task_detail.html", {
+        "task": task,
+        "comments": comments,
+        "form": form,
+    })
+
+
+@login_required
+def add_comment(request, pk):
+    """Handle POST to add a comment to a task."""
+    task = get_object_or_404(Task, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.task = task
+            comment.save()
+            messages.success(request, "Comment added.")
+        else:
+            messages.error(request, "Please fix the errors below.")
+    return redirect("task_detail", pk=pk)
 
 
 @login_required
