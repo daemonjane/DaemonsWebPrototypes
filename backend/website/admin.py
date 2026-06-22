@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.http import HttpResponse
 
-from .models import ContactMessage, Task
+from .models import Comment, ContactMessage, Task
 
 admin.site.site_header = "TechStore Administration"
 admin.site.site_title = "TechStore Admin"
@@ -45,6 +45,20 @@ class TaskAdmin(admin.ModelAdmin):
         for task in queryset:
             response.write(f"{task.pk},{task.title},{task.completed},{task.created_at}\n")
         return response
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ["author", "task", "created_at", "body_preview"]
+    list_filter = ["created_at"]
+    search_fields = ["author", "body"]
+    date_hierarchy = "created_at"
+    list_per_page = 25
+    readonly_fields = ["created_at", "updated_at"]
+
+    def body_preview(self, obj):
+        return obj.body[:60] + "..." if len(obj.body) > 60 else obj.body
+    body_preview.short_description = "body"
 
 
 @admin.register(ContactMessage)
