@@ -258,6 +258,37 @@ input.error, textarea.error {
   }
 }
 
+/* Comments
+   ========================================================================== */
+
+.comment-bubble {
+  position: relative;
+}
+
+.comment-bubble::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -0.75rem;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, #06b6d4, transparent);
+  border-radius: 1px;
+  opacity: 0.3;
+}
+
+.comment-bubble:first-child::before {
+  border-radius: 1px 1px 0 0;
+}
+
+.comment-bubble:last-child::before {
+  border-radius: 0 0 1px 1px;
+}
+
+.comment-enter {
+  animation: fadeIn 0.3s ease;
+}
+
 /* Print
    ========================================================================== */
 
