@@ -965,3 +965,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .translate-y-2{transform:translateY(0.5rem)}
 .origin-top{transform-origin:top}
 .origin-center{transform-origin:center}
+.gap-0{gap:0}
