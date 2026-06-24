@@ -1,3 +1,5 @@
+"""Data models for the API app — Products, Cart, Orders, Tracking, Add-ons."""
+
 from django.contrib.auth.models import User
 from django.db import models
 
