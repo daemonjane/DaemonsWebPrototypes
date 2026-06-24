@@ -909,3 +909,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .border-green-300{--border-opacity:1;border-color:rgba(134,239,172,var(--border-opacity))}
 .border-green-400{--border-opacity:1;border-color:rgba(74,222,128,var(--border-opacity))}
 .border-green-500{--border-opacity:1;border-color:rgba(34,197,94,var(--border-opacity))}
+.border-green-600{--border-opacity:1;border-color:rgba(22,163,74,var(--border-opacity))}
