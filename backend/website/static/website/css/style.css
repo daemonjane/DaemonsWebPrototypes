@@ -540,3 +540,5 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .line-clamp-1 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
 .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .line-clamp-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+
+.flex-1{flex:1 1 0%}
