@@ -512,3 +512,8 @@ def product_search(request):
     ]
 
     return Response({"results": data, "count": len(data)})
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def api_version(request):
+    return Response({"version": "1.0.0", "api": "techstore"})
