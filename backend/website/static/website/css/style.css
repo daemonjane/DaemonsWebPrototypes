@@ -335,3 +335,4 @@ input.error, textarea.error {
 .overflow-y-hidden{overflow-y:hidden}
 .whitespace-normal{white-space:normal}
 .whitespace-nowrap{white-space:nowrap}
+.whitespace-pre{white-space:pre}
