@@ -141,7 +141,7 @@ function countInCategory(catSlug) {
           </button>
         </div>
         <div class="flex gap-2">
-          <input v-model="searchQuery" type="text" placeholder="Search by name..." class="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm focus:ring-2 focus:ring-cyan-400 focus:outline-none w-36 sm:w-auto">
+          <input v-model="searchQuery" type="search" placeholder="Search by name..." class="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm focus:ring-2 focus:ring-cyan-400 focus:outline-none w-36 sm:w-auto" aria-label="Search products by name">
           <select v-model="currentSort" class="bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-sm focus:ring-2 focus:ring-cyan-400 focus:outline-none">
             <option value="default">Sort by</option>
             <option value="price-asc">Price: Low to High</option>
