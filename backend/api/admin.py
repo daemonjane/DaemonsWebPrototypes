@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html, mark_safe
 
-from .models import BackInStockRequest, Cart, CartItem, Category, ContactMessage, Order, OrderItem, Product, Subscription, Wishlist
+from .models import BackInStockRequest, Cart, CartItem, Category, ContactMessage, Order, OrderItem, OrderTracking, Product, ProductAddon, Subscription, TrackingHistory, Wishlist
 
 
 @admin.register(Category)
