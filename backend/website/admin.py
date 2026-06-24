@@ -100,6 +100,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ["author", "task_link", "created_at", "body_preview"]
     list_filter = ["created_at", "task", "author"]
     search_fields = ["author", "body", "task__title"]
+    search_help_text = "Search by author name, comment body, or task title"
     autocomplete_fields = ["task"]
     date_hierarchy = "created_at"
     list_per_page = 25
