@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="animate-pulse space-y-6">
+  <div class="animate-pulse space-y-6" role="status" aria-label="Content loading">
     <!-- Page layout (default) -->
     <div v-if="type === 'page'" class="space-y-6">
       <div class="h-8 bg-slate-800 rounded w-1/3"></div>
