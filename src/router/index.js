@@ -47,9 +47,35 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+    return { top: 0, behavior: 'smooth' }
+  },
 })
 
+const TITLES = {
+  '/': 'Home',
+  '/shop': 'Shop',
+  '/favorites': 'Favorites',
+  '/checkout': 'Checkout',
+  '/login': 'Sign In',
+  '/register': 'Register',
+  '/contact': 'Contact',
+  '/about': 'About',
+  '/insights': 'Market Pulse',
+  '/faq': 'FAQ',
+  '/privacy': 'Privacy Policy',
+  '/terms': 'Terms of Service',
+  '/cookies': 'Cookie Policy',
+  '/profile': 'Your Profile',
+  '/orders': 'Order History',
+  '/tracking': 'Order Tracking',
+  '/counter': 'Counter',
+}
+
 router.beforeEach(async (to) => {
+  const title = to.path.startsWith('/product/') ? 'Product' : (TITLES[to.path] || 'TechStore')
+  document.title = `${title} | TechStore`
   if (to.meta?.requiresAuth) {
     const { useUser } = await import('../composables/useUser')
     const { user, refresh } = useUser()
