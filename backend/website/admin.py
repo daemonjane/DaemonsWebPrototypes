@@ -135,6 +135,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "created_at", "message_preview"]
     search_fields = ["name", "email", "message"]
     search_help_text = "Search by name, email, or message content"
+    actions_on_bottom = True
     date_hierarchy = "created_at"
     readonly_fields = ["name", "email", "message", "created_at", "message_preview"]
     fieldsets = [
