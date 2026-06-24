@@ -128,6 +128,7 @@ class BackInStockRequestAdmin(admin.ModelAdmin):
     search_fields = ["email", "product__name"]
     date_hierarchy = "created_at"
     readonly_fields = ["created_at"]
+    list_per_page = 25
 
     def product_link(self, obj):
         return format_html(
