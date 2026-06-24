@@ -789,3 +789,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .list-disc{list-style-type:disc}
 .list-decimal{list-style-type:decimal}
 .appearance-none{appearance:none}
+.box-border{box-sizing:border-box}
