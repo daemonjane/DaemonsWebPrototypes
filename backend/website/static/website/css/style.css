@@ -745,3 +745,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .cursor-crosshair{cursor:crosshair}
 .cursor-zoom-in{cursor:zoom-in}
 .cursor-zoom-out{cursor:zoom-out}
+.cursor-grab{cursor:grab}
