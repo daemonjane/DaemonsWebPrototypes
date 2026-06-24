@@ -313,3 +313,4 @@ input.error, textarea.error {
 .cursor-not-allowed{cursor:not-allowed}
 .select-none{user-select:none}
 .select-all{user-select:all}
+.pointer-events-none{pointer-events:none}
