@@ -17,6 +17,7 @@ class TaskAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
     list_editable = ["completed"]
     list_per_page = 25
+    list_max_show_all = 200
     save_on_top = True
     actions_on_bottom = True
     actions_selection_counter = True
