@@ -71,6 +71,7 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ["author", "body", "task__title"]
     date_hierarchy = "created_at"
     list_per_page = 25
+    list_max_show_all = 200
     readonly_fields = ["created_at", "updated_at", "body_preview"]
     fieldsets = [
         (None, {"fields": ["task", "author", "body", "body_preview"]}),
