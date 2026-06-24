@@ -146,6 +146,38 @@ class CommentViewTests(TestCase):
         self.assertContains(resp, "2")
 
 
+class DashboardViewTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth.models import User
+        self.staff = User.objects.create_user("staff", password="pass", is_staff=True)
+        self.user = User.objects.create_user("user", password="pass")
+
+    def test_dashboard_requires_staff(self):
+        self.client.login(username="user", password="pass")
+        resp = self.client.get(reverse("admin_dashboard"))
+        self.assertEqual(resp.status_code, 302)
+
+    def test_dashboard_loads_for_staff(self):
+        self.client.login(username="staff", password="pass")
+        resp = self.client.get(reverse("admin_dashboard"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Dashboard")
+
+    def test_dashboard_shows_counts(self):
+        from .models import Task
+        Task.objects.create(title="T1")
+        Task.objects.create(title="T2")
+        self.client.login(username="staff", password="pass")
+        resp = self.client.get(reverse("admin_dashboard"))
+        self.assertContains(resp, "2")
+        self.assertContains(resp, "0")
+
+    def test_dashboard_shows_recent_orders(self):
+        self.client.login(username="staff", password="pass")
+        resp = self.client.get(reverse("admin_dashboard"))
+        self.assertEqual(resp.status_code, 200)
+
+
 class ContactViewTests(TestCase):
     def test_contact_get(self):
         resp = self.client.get(reverse("contact"))
