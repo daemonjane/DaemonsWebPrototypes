@@ -721,3 +721,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .grid{display:grid}
 .inline-grid{display:inline-grid}
 .hidden{display:none}
+.table{display:table}
