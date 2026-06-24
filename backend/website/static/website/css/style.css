@@ -798,3 +798,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .border-none{border-style:none}
 .bg-transparent{background-color:transparent}
 .bg-current{background-color:currentColor}
+.bg-black{--bg-opacity:1;background-color:rgba(0,0,0,var(--bg-opacity))}
