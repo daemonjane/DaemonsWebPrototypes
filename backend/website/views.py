@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
@@ -108,15 +109,27 @@ def contact(request):
 
 @login_required
 def task_list(request):
-    """Display all tasks in a table with status badges and action icons."""
-    tasks = Task.objects.all()
-    task_count = tasks.count()
-    completed_count = tasks.filter(completed=True).count()
+    """Display paginated tasks in a table with status badges and action icons."""
+    task_qs = Task.objects.all()
+    task_count = task_qs.count()
+    completed_count = task_qs.filter(completed=True).count()
+
+    paginator = Paginator(task_qs, 10)
+    page = request.GET.get("page")
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        tasks = paginator.page(1)
+    except EmptyPage:
+        tasks = paginator.page(paginator.num_pages)
+
     return render(request, "website/task_list.html", {
         "tasks": tasks,
         "task_count": task_count,
         "completed_count": completed_count,
         "pending_count": task_count - completed_count,
+        "page_obj": tasks,
+        "paginator": paginator,
     })
 
 
