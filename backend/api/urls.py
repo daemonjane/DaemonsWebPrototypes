@@ -19,6 +19,8 @@ urlpatterns = [
     path('wishlist/check/<slug:slug>/', views.wishlist_check, name='wishlist-check'),
     path('orders/', views.order_list, name='order-list'),
     path('orders/<int:pk>/', views.order_detail, name='order-detail'),
+    path('orders/<int:pk>/tracking/', views.order_tracking, name='order-tracking'),
     path('orders/checkout/', views.order_checkout, name='order-checkout'),
+    path('products/<slug:slug>/addons/', views.product_addons, name='product-addons'),
     path('products/search/', views.product_search, name='product-search'),
 ]
