@@ -1070,3 +1070,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}
 .bg-gradient-to-b{background-image:linear-gradient(to bottom,var(--tw-gradient-stops))}
 .from-cyan-500{--tw-gradient-from:rgba(6,182,212,1);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(6,182,212,0))}
+.to-blue-500{--tw-gradient-to:rgba(59,130,246,1)}
