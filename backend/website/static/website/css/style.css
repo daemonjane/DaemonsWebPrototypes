@@ -602,3 +602,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .p-6{padding:1.5rem}
 .px-0{padding-left:0;padding-right:0}
 .px-1{padding-left:0.25rem;padding-right:0.25rem}
+.py-0{padding-top:0;padding-bottom:0}
