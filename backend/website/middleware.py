@@ -19,6 +19,16 @@ class MaintenanceModeMiddleware:
 
 
 class SecureHeadersMiddleware:
+    csp = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://fonts.googleapis.com; "
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com https://unpkg.com; "
+        "font-src 'self' https://fonts.gstatic.com; "
+        "img-src 'self' data: blob: https://api.osimart.com; "
+        "connect-src 'self' http://localhost:* https://api.osimart.com; "
+        "frame-ancestors 'none';"
+    )
+
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -30,6 +40,8 @@ class SecureHeadersMiddleware:
             response["X-Frame-Options"] = "DENY"
         if not response.has_header("Referrer-Policy"):
             response["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        if not response.has_header("Content-Security-Policy"):
+            response["Content-Security-Policy"] = self.csp
         return response
 
 
