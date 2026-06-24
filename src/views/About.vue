@@ -72,6 +72,7 @@ const milestones = [
         v-for="v in values"
         :key="v.id"
         @click="expandedValue = expandedValue === v.id ? null : v.id"
+        :aria-label="(expandedValue === v.id ? 'Collapse' : 'Expand') + ' ' + v.title"
         class="bg-slate-900 p-5 rounded-xl border text-left transition-all duration-200"
         :class="expandedValue === v.id ? 'border-cyan-700 bg-cyan-950/10' : 'border-slate-800 hover:border-slate-700'"
       >
