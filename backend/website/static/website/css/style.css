@@ -404,3 +404,4 @@ input.error, textarea.error {
 .auto-cols-max{grid-auto-columns:max-content}
 .auto-rows-auto{grid-auto-rows:auto}
 .auto-rows-min{grid-auto-rows:min-content}
+.auto-rows-max{grid-auto-rows:max-content}
