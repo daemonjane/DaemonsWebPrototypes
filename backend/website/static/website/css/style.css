@@ -1026,3 +1026,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .self-stretch{align-self:stretch}
 .flex-nowrap{flex-wrap:nowrap}
 .flex-row-reverse{flex-direction:row-reverse}
+.flex-col-reverse{flex-direction:column-reverse}
