@@ -108,7 +108,7 @@ function countInCategory(catSlug) {
         <div>
           <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ categoryMeta[currentFilter]?.label || 'All Products' }}</h1>
           <p class="text-slate-400 mt-1 text-sm">{{ categoryMeta[currentFilter]?.desc }}</p>
-          <p class="text-xs text-slate-500 mt-1 font-mono">{{ filteredProducts.length }} of {{ products.length }} products</p>
+          <p class="text-xs text-slate-500 mt-1 font-mono" aria-live="polite">{{ filteredProducts.length }} of {{ products.length }} products</p>
         </div>
       </div>
 
