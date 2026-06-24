@@ -63,6 +63,14 @@ export const api = {
   },
   osimart: {
     banners: () => request('GET', '/api/osimart/banners/'),
+    products: (params = {}) => {
+      const qs = new URLSearchParams(params).toString()
+      return request('GET', `/api/osimart/products/${qs ? '?' + qs : ''}`)
+    },
+    productDetail: (id) => request('GET', `/api/osimart/products/${id}/`),
+    categories: () => request('GET', '/api/osimart/categories/'),
+    store: () => request('GET', '/api/osimart/store/'),
+    home: () => request('GET', '/api/osimart/home/'),
   },
   search: (query, category = '') => {
     const params = new URLSearchParams()

@@ -1,23 +1,67 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { products } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 import { useFavorites } from '../composables/useFavorites'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 
+const OSIMART_IMAGE_BASE = 'https://api.osimart.com'
+
 const route = useRoute()
 const productId = route.params.id
-const product = computed(() => products.find(p => p.id === productId))
 
+const product = ref(null)
 const loading = ref(true)
 const addingToCart = ref(false)
 const addons = ref([])
 const selectedAddons = ref([])
 
 const { addItem } = useCart()
+
+function normalizeProduct(p) {
+  const imgPath = p.main_image?.path
+  return {
+    id: p.slugified_name || p.id,
+    uuid: p.id,
+    name: p.name,
+    category: p.categories?.[0]?.category?.slugified_name || 'uncategorized',
+    price: parseFloat(p.price_range || '0'),
+    image: imgPath ? `${OSIMART_IMAGE_BASE}/${imgPath}` : '/assets/placeholder.svg',
+    description: stripHtml(p.description || ''),
+    rating: 4.5,
+    stock: p.remaining_stock ?? p.stock ?? 0,
+    specs: (p.sections || []).flatMap(s =>
+      (s.items || []).map(i => `${i.name}: ${i.value}`)
+    ),
+  }
+}
+
+function stripHtml(html) {
+  const d = document.createElement('div')
+  d.innerHTML = html
+  return d.textContent || d.innerText || ''
+}
+
+async function fetchProduct() {
+  try {
+    const { api } = await import('../utils/api')
+    const [prodList] = await Promise.all([
+      api.osimart.products({ limit: 50 }),
+    ])
+    const found = (prodList.results || []).find(
+      p => p.slugified_name === productId || p.id === productId
+    )
+    if (found) {
+      product.value = normalizeProduct(found)
+    }
+  } catch (e) {
+    console.error('Failed to load product', e)
+  } finally {
+    loading.value = false
+  }
+}
 
 async function fetchAddons() {
   try {
@@ -38,15 +82,17 @@ function toggleAddon(addon) {
   }
 }
 
-function handleAddItem(product) {
+function handleAddItem() {
+  if (!product.value) return
   addingToCart.value = true
-  addItem({ id: product.id, name: product.name, price: product.price })
+  addItem({ id: product.value.id, name: product.value.name, price: product.value.price })
   for (const addon of selectedAddons.value) {
     addItem({ id: `addon-${addon.id}`, name: addon.name, price: addon.price })
   }
   selectedAddons.value = []
   setTimeout(() => { addingToCart.value = false }, 600)
 }
+
 const { visit } = useRecentlyViewed()
 const { toggle: toggleFavorite, isFavorite } = useFavorites()
 
@@ -54,7 +100,6 @@ const notifyEmail = ref('')
 const notifySubmitted = ref(false)
 
 const BACK_IN_STOCK_KEY = 'back_in_stock_requests'
-const existingRequests = JSON.parse(localStorage.getItem(BACK_IN_STOCK_KEY) || '[]')
 
 function submitNotifyRequest() {
   if (!notifyEmail.value.trim() || !product.value) return
@@ -77,12 +122,12 @@ function shareProduct() {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await fetchProduct()
   if (product.value) {
     visit(product.value.id)
     fetchAddons()
   }
-  setTimeout(() => { loading.value = false }, 600)
 })
 </script>
 
@@ -177,7 +222,9 @@ onMounted(() => {
           </button>
         </div>
         <p class="text-slate-400 mt-4 leading-relaxed">{{ product.description }}</p>
-        <div class="mt-6">
+
+        <!-- Technical Specs -->
+        <div v-if="product.specs.length" class="mt-6">
           <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
             <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -191,7 +238,8 @@ onMounted(() => {
             </li>
           </ul>
         </div>
-        <!-- Add-ons / Micro-transactions -->
+
+        <!-- Add-ons -->
         <div v-if="addons.length" class="mt-6 p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
           <h3 class="text-white font-semibold text-sm mb-3 flex items-center gap-2">
             <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,7 +269,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <button v-if="product.stock !== 0" @click="handleAddItem(product)" 
+        <button v-if="product.stock !== 0" @click="handleAddItem"
                 class="mt-8 w-full sm:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
           <svg v-if="addingToCart" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
           <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

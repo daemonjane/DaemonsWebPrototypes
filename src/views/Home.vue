@@ -1,22 +1,65 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import AnimatedCounter from '../components/AnimatedCounter.vue'
 import AbstractArt from '../components/AbstractArt.vue'
-import { products } from '../data/products'
+import { products as fallbackProducts } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
+
+const OSIMART_IMAGE_BASE = 'https://api.osimart.com'
 
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 const { items: recentlyViewed } = useRecentlyViewed()
 
-const recentlyScrollRef = ref(null)
+const products = ref(fallbackProducts)
+const banners = ref([])
+const loading = ref(true)
 
-function scrollRecently(dir) {
-  if (!recentlyScrollRef.value) return
-  const amount = dir === 'left' ? -300 : 300
-  recentlyScrollRef.value.scrollBy({ left: amount, behavior: 'smooth' })
+function normalizeProduct(p) {
+  const imgPath = p.main_image?.path
+  return {
+    id: p.slugified_name || p.id,
+    uuid: p.id,
+    name: p.name,
+    category: p.categories?.[0]?.category?.slugified_name || 'uncategorized',
+    price: parseFloat(p.price_range || '0'),
+    image: imgPath ? `${OSIMART_IMAGE_BASE}/${imgPath}` : '/assets/placeholder.svg',
+    description: stripHtml(p.description || ''),
+    rating: 4.5,
+    stock: p.remaining_stock ?? p.stock ?? 0,
+    specs: (p.sections || []).flatMap(s => (s.items || []).map(i => `${i.name}: ${i.value}`)),
+  }
 }
+
+function stripHtml(html) {
+  const d = document.createElement('div')
+  d.innerHTML = html
+  return d.textContent || d.innerText || ''
+}
+
+onMounted(async () => {
+  try {
+    const { api } = await import('../utils/api')
+    const [prodRes, bannerRes] = await Promise.allSettled([
+      api.osimart.products({ limit: 50 }),
+      api.osimart.banners(),
+    ])
+    if (prodRes.status === 'fulfilled') {
+      const items = prodRes.value.results || prodRes.value || []
+      if (items.length > 0) {
+        products.value = items.map(normalizeProduct)
+      }
+    }
+    if (bannerRes.status === 'fulfilled') {
+      banners.value = bannerRes.value.results || []
+    }
+  } catch (e) {
+    console.error('Osimart fetch failed, using fallback data', e)
+  } finally {
+    loading.value = false
+  }
+})
 
 // Countdown timer
 const countdownSeconds = ref(300)
@@ -69,25 +112,26 @@ onUnmounted(() => {
   if (intervalId) clearInterval(intervalId)
 })
 
-// Show more / less
 const showMoreItems = ref(false)
+const recentlyScrollRef = ref(null)
 
-// Trending items
-const trendingIds = ['thermal-paste', 'cable-ties', 'cleaning-kit', 'gpu-bracket', 'displayport-cable', 'mouse-bungee']
-const trendingProducts = products.filter(p => trendingIds.includes(p.id))
+function scrollRecently(dir) {
+  if (!recentlyScrollRef.value) return
+  const amount = dir === 'left' ? -300 : 300
+  recentlyScrollRef.value.scrollBy({ left: amount, behavior: 'smooth' })
+}
 
-// Featured products
-const featuredProducts = products.filter(p => ['gaming-mouse', 'mousepad', 'usb-hub'].includes(p.id))
-
-// New arrivals (our 6 new products)
-const newArrivals = products.filter(p =>
-  ['stream-deck', 'gaming-chair', 'cpu-cooler', 'nvme-ssd', 'sleeved-cables', 'microphone'].includes(p.id)
-)
-
-// Other products (everything not featured or new)
-const otherProducts = products.filter(p =>
-  !['gaming-mouse', 'mousepad', 'usb-hub', 'stream-deck', 'gaming-chair', 'cpu-cooler', 'nvme-ssd', 'sleeved-cables', 'microphone'].includes(p.id)
-)
+// Dynamic product sections from Osimart data
+const trendingProducts = computed(() => products.value.slice(0, 6))
+const featuredProducts = computed(() => products.value.slice(0, 3))
+const newArrivals = computed(() => {
+  return [...products.value].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '')).slice(0, 6)
+})
+const otherProducts = computed(() => {
+  const featuredIds = new Set(featuredProducts.value.map(p => p.id))
+  const newIds = new Set(newArrivals.value.map(p => p.id))
+  return products.value.filter(p => !featuredIds.has(p.id) && !newIds.has(p.id))
+})
 
 const showAllOther = ref(false)
 
@@ -108,32 +152,37 @@ function quickAdd(product) {
 
 <template>
   <div class="space-y-20 sm:space-y-28">
-    <!-- Hero -->
-    <!-- Quick Section Nav -->
-    <nav class="flex flex-wrap justify-center gap-2 sm:gap-3 py-4 -mb-8" aria-label="Section quick links">
-      <a href="#metrics" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 focus-visible:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800 focus-visible:outline-2 focus-visible:outline-cyan-400">Metrics</a>
-      <a href="#features" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 focus-visible:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800 focus-visible:outline-2 focus-visible:outline-cyan-400">Features</a>
-      <a href="#testimonials" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 focus-visible:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800 focus-visible:outline-2 focus-visible:outline-cyan-400">Reviews</a>
-      <a href="#products" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 focus-visible:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800 focus-visible:outline-2 focus-visible:outline-cyan-400">Gear</a>
-      <a href="#bundles" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 focus-visible:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800 focus-visible:outline-2 focus-visible:outline-cyan-400">Bundles</a>
-      <a href="#micro-upgrades" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 focus-visible:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800 focus-visible:outline-2 focus-visible:outline-cyan-400">Upgrades</a>
-      <a href="#insights-membership" class="text-xs sm:text-sm font-mono text-slate-500 hover:text-cyan-400 focus-visible:text-cyan-400 transition-colors px-3 py-1.5 rounded-full bg-slate-900/50 border border-slate-800 hover:border-cyan-800 focus-visible:outline-2 focus-visible:outline-cyan-400">Membership</a>
-    </nav>
+    <!-- Banners carousel -->
+    <section v-if="banners.length" class="relative overflow-hidden rounded-xl">
+      <div class="flex transition-transform duration-500">
+        <div v-for="(banner, i) in banners" :key="banner.id || i" class="min-w-full">
+          <img :src="`https://api.osimart.com/${banner.image?.path || ''}`" :alt="banner.title || 'Banner'" class="w-full h-48 sm:h-72 object-cover" />
+          <div v-if="banner.title" class="absolute inset-0 flex items-center justify-center bg-black/30">
+            <h2 class="text-white text-2xl sm:text-4xl font-bold">{{ banner.title }}</h2>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Hero -->
     <section id="hero" class="relative flex flex-col items-center text-center py-12 sm:py-20 lg:py-24 overflow-hidden"
               role="region" aria-labelledby="hero-heading">
       <div class="hero-glow"></div>
       <AbstractArt variant="hero" class="absolute inset-0 w-full h-full" />
-      <div id="hero-core-container" class="relative max-w-3xl space-y-5 sm:space-y-7">
+      <div class="relative max-w-3xl space-y-5 sm:space-y-7">
         <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">SYSTEM_READY</span>
         <h1 id="hero-heading" class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">Your Command Station Awaits</h1>
         <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto">Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.</p>
-        <div id="hero-actions" class="flex flex-wrap justify-center gap-4 pt-4">
+        <div class="flex flex-wrap justify-center gap-4 pt-4">
           <router-link to="/shop" class="bg-cyan-600 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Start Building</router-link>
           <router-link to="/insights" class="border border-slate-600 text-slate-300 px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Explore Membership</router-link>
         </div>
       </div>
+    </section>
+
+    <!-- Banners (static fallback if none from API) -->
+    <section v-if="!banners.length" class="relative flex flex-col items-center text-center py-12 sm:py-16 overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-800">
+      <p class="text-slate-400 text-sm max-w-lg mx-auto px-4">Browse our latest collection — premium hardware sourced directly from verified vendors.</p>
     </section>
 
     <!-- Metrics -->
@@ -167,6 +216,7 @@ function quickAdd(product) {
     </section>
 
     <!-- Testimonials -->
+    <!-- ... (unchanged) ... -->
     <section id="testimonials" class="space-y-8 sm:space-y-10" role="region" aria-labelledby="testimonials-heading">
       <h2 id="testimonials-heading" class="text-2xl sm:text-3xl font-bold text-white text-center">Trusted by Builders</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -199,6 +249,7 @@ function quickAdd(product) {
 
     <!-- Recently Viewed -->
     <section v-if="recentlyViewed.length > 0" id="recently-viewed" class="space-y-6 sm:space-y-8" role="region" aria-labelledby="recently-viewed-heading">
+      <!-- ... (unchanged) ... -->
       <h2 id="recently-viewed-heading" class="text-lg sm:text-xl font-semibold text-white flex items-center gap-2">
         <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -213,22 +264,22 @@ function quickAdd(product) {
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </button>
         <div ref="recentlyScrollRef" class="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-cyan-800 scrollbar-track-slate-900">
-        <router-link
-          v-for="item in recentlyViewed"
-          :key="item.id"
-          :to="`/product/${item.id}`"
-          v-memo="[item.id, item.price]"
-          class="flex-shrink-0 w-40 sm:w-44 bg-slate-900 rounded-lg border border-slate-800 overflow-hidden hover:border-cyan-700 hover:-translate-y-0.5 transition-all duration-200 snap-start group"
-        >
-          <div class="h-24 bg-slate-800 overflow-hidden">
-            <img :src="item.image" :alt="item.name" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          </div>
-          <div class="p-2.5 space-y-1">
-            <p class="text-xs text-slate-200 truncate font-medium">{{ item.name }}</p>
-            <p class="text-cyan-400 text-xs font-mono">${{ item.price.toFixed(2) }}</p>
-          </div>
-        </router-link>
-      </div>
+          <router-link
+            v-for="item in recentlyViewed"
+            :key="item.id"
+            :to="`/product/${item.id}`"
+            v-memo="[item.id, item.price]"
+            class="flex-shrink-0 w-40 sm:w-44 bg-slate-900 rounded-lg border border-slate-800 overflow-hidden hover:border-cyan-700 hover:-translate-y-0.5 transition-all duration-200 snap-start group"
+          >
+            <div class="h-24 bg-slate-800 overflow-hidden">
+              <img :src="item.image" :alt="item.name" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-2.5 space-y-1">
+              <p class="text-xs text-slate-200 truncate font-medium">{{ item.name }}</p>
+              <p class="text-cyan-400 text-xs font-mono">${{ item.price.toFixed(2) }}</p>
+            </div>
+          </router-link>
+        </div>
       </div>
     </section>
 
@@ -246,49 +297,13 @@ function quickAdd(product) {
         </p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        <!-- Vanguard Desktop large card -->
-        <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col md:col-span-2 md:flex-row group transition-all duration-300 hover:border-slate-700 hover:shadow-xl hover:shadow-cyan-950/30 hover:-translate-y-1 transform">
-          <div class="w-full md:w-1/2 shrink-0 bg-slate-800 aspect-[16/10] md:aspect-auto md:h-full relative overflow-hidden">
-            <img src="/assets/vanguard-desktop-fallback.png" alt="Vanguard Gaming Desktop" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-          </div>
-          <div class="p-5 sm:p-6 flex flex-col flex-1 justify-between space-y-4">
-            <div class="space-y-4">
-              <div class="flex justify-between items-start">
-                <h3 class="text-lg sm:text-xl font-bold text-white">Vanguard Series Core i7 / <mark class="bg-cyan-900/40 text-cyan-300 px-1.5 py-0.5 rounded text-sm">RTX 5070</mark></h3>
-                <span class="bg-cyan-500/10 text-cyan-400 text-xs font-mono px-2 py-0.5 rounded border border-cyan-500/20 uppercase tracking-wider hidden sm:inline">Flagship Rig</span>
-              </div>
-              <p class="text-slate-400 text-sm leading-relaxed">Extreme workload desktop. Liquid‑cooled silence engineered for absolute dominance.</p>
-              <div class="space-y-2">
-                <label class="text-xs text-slate-500 font-medium block">Price-to-Quality Metric:</label>
-                <meter min="0" max="10" low="4" high="7" optimum="9" value="9.4" class="w-full max-w-xs h-2 block">9.4/10</meter>
-              </div>
-              <details class="text-sm text-slate-400">
-                <summary class="font-medium text-slate-300 hover:text-cyan-400 cursor-pointer transition-colors">Technical Blueprint</summary>
-                <ul class="mt-2 space-y-1.5 list-disc list-inside bg-slate-950/40 p-3 rounded-lg border border-slate-800/60 font-mono text-xs">
-                  <li><strong class="text-slate-300">GPU:</strong> 12GB Next‑Gen</li>
-                  <li><strong class="text-slate-300">CPU:</strong> Intel i7‑14th, 20‑Core</li>
-                  <li><strong class="text-slate-300">Cooling:</strong> 360mm AIO</li>
-                </ul>
-              </details>
-            </div>
-            <div class="flex items-center justify-between pt-4 border-t border-slate-800">
-              <span class="text-xl sm:text-2xl font-mono font-bold text-white">$2,499</span>
-              <button @click="addItem({ id: 'vanguard-desktop', name: 'Vanguard Series Core i7 / RTX 5070', price: 2499 })"
-                      class="bg-cyan-600 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-md text-sm font-semibold hover:bg-cyan-500 shadow-md hover:shadow-lg hover:shadow-cyan-500/20 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add to Cart</button>
-            </div>
-          </div>
-        </article>
-
-        <!-- Keyboard -->
-        <ProductCard :product="products.find(p => p.id === 'cyberpro-keyboard')" />
-
-        <!-- Monitor -->
-        <ProductCard :product="products.find(p => p.id === 'ultrawide-monitor')" />
+        <ProductCard v-for="product in featuredProducts" :key="product.uuid || product.id" :product="product" />
       </div>
     </section>
 
-    <!-- Bundles -->
+    <!-- Bundles (unchained) -->
     <section id="bundles" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="bundles-heading">
+      <!-- ... unchanged ... -->
       <div class="text-center space-y-3">
         <h2 id="bundles-heading" class="text-2xl sm:text-3xl font-bold text-white">Complete Your Spacestation</h2>
         <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Hand‑picked combos that save you money. Bundle pricing adjusts with demand.</p>
@@ -305,8 +320,7 @@ function quickAdd(product) {
             <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$2,596</span>
             <small class="text-slate-500">One‑time purchase</small>
           </div>
-          <button @click="addBundleToCart(bundles[0])"
-                  class="mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
+          <button @click="addBundleToCart(bundles[0])" class="mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
         </div>
         <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 border border-slate-700 flex flex-col space-y-5 hover:border-cyan-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-900/20 transition-all duration-300">
           <div class="flex items-center gap-3">
@@ -319,19 +333,18 @@ function quickAdd(product) {
             <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$1,299</span>
             <small class="text-slate-500">Free shipping</small>
           </div>
-          <button @click="addBundleToCart(bundles[1])"
-                  class="mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
+          <button @click="addBundleToCart(bundles[1])" class="mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
         </div>
       </div>
     </section>
 
     <!-- Micro-upgrades -->
     <section id="micro-upgrades" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="upgrades-heading">
+      <!-- ... unchanged ... -->
       <div class="text-center space-y-3">
         <h2 id="upgrades-heading" class="text-2xl sm:text-3xl font-bold text-white">Personalize & Protect</h2>
         <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Small add‑ons that make your rig truly yours. They're so affordable you'll want them all.</p>
       </div>
-
       <form id="upgrades-form" @submit.prevent>
         <fieldset class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <legend class="sr-only">Optional hardware upgrades and services</legend>
@@ -353,12 +366,7 @@ function quickAdd(product) {
               <span class="text-cyan-400 font-semibold text-sm">+$14.99</span>
               <div class="max-h-0 overflow-hidden transition-all duration-300 peer-checked:max-h-24 peer-checked:mt-3">
                 <label for="custom-engraving-text" class="text-xs text-slate-500 font-bold block">Engraving Text:</label>
-                <input type="text" id="custom-engraving-text" value="jxne" placeholder=" " required minlength="3"
-                       class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-slate-200 font-mono
-                              focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950
-                              [&:not(:placeholder-shown):invalid]:border-pink-500 [&:not(:placeholder-shown):invalid]:ring-pink-500/30
-                              [&:not(:placeholder-shown):valid]:border-emerald-500 [&:not(:placeholder-shown):valid]:ring-emerald-500/30
-                              transition-colors">
+                <input type="text" id="custom-engraving-text" value="jxne" placeholder=" " required minlength="3" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-slate-200 font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 [&:not(:placeholder-shown):invalid]:border-pink-500 [&:not(:placeholder-shown):invalid]:ring-pink-500/30 [&:not(:placeholder-shown):valid]:border-emerald-500 [&:not(:placeholder-shown):valid]:ring-emerald-500/30 transition-colors">
               </div>
             </label>
           </div>
@@ -384,7 +392,7 @@ function quickAdd(product) {
           ⚡ Trending Now!!!
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div v-for="product in trendingProducts" :key="product.id" class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
+          <div v-for="product in trendingProducts" :key="product.uuid || product.id" class="group flex items-center justify-between bg-slate-800 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 overflow-hidden rounded bg-slate-700 shrink-0">
                 <img :src="product.image" :alt="product.name" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-1">
@@ -405,6 +413,7 @@ function quickAdd(product) {
 
     <!-- Insights Preview (locked) -->
     <section id="insights-preview" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="insights-preview-heading">
+      <!-- ... unchanged ... -->
       <div class="text-center space-y-3">
         <h2 id="insights-preview-heading" class="text-2xl sm:text-3xl font-bold text-white flex items-center justify-center gap-2">
           <span class="flex h-2 w-2 relative">
@@ -413,18 +422,13 @@ function quickAdd(product) {
           </span>
           Market Pulse Preview
         </h2>
-        <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
-          Live component pricing, demand trends, and allocation forecasts — locked for members only.
-          <br class="hidden sm:block">Subscribe to see the full data stream.
-        </p>
+        <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Live component pricing, demand trends, and allocation forecasts — locked for members only. <br class="hidden sm:block">Subscribe to see the full data stream.</p>
       </div>
       <div class="relative group max-w-3xl mx-auto">
         <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-[2px] rounded-xl border border-dashed border-cyan-800/50 transition-all duration-300 group-hover:bg-slate-950/70">
           <span class="text-4xl mb-2">🔒</span>
           <p class="text-white font-semibold text-sm sm:text-base mb-4">Unlock Real‑Time Market Data</p>
-          <router-link to="/insights" class="bg-cyan-600 text-white px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-cyan-500 active:scale-95 transition-all duration-150 shadow-lg shadow-cyan-900/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
-            Subscribe to Unlock →
-          </router-link>
+          <router-link to="/insights" class="bg-cyan-600 text-white px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-cyan-500 active:scale-95 transition-all duration-150 shadow-lg shadow-cyan-900/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Subscribe to Unlock →</router-link>
         </div>
         <div class="bg-slate-900 rounded-xl p-6 border border-slate-800 opacity-40 blur-sm select-none pointer-events-none">
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
@@ -450,12 +454,12 @@ function quickAdd(product) {
 
     <!-- Insights Membership Tiers -->
     <section id="insights-membership" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="membership-heading">
+      <!-- ... unchanged ... -->
       <div class="text-center space-y-3">
         <h2 id="membership-heading" class="text-2xl sm:text-3xl font-bold text-white">Insights Membership</h2>
         <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Know when to buy. Live market data, price alerts, and benchmarking tools.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
-        <!-- Monthly -->
         <div class="bg-slate-900 rounded-xl p-6 border border-slate-800 flex flex-col space-y-4 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
           <h3 class="text-lg sm:text-xl font-semibold text-white">Monthly Pass</h3>
           <p class="text-slate-400 text-sm">Perfect for a one‑time build optimization.</p>
@@ -467,7 +471,6 @@ function quickAdd(product) {
           </ul>
           <button @click="selectMembership('monthly')" class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Monthly</button>
         </div>
-        <!-- Annual (highlighted) -->
         <div class="relative p-[2px] rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-fuchsia-500 md:scale-105 shadow-xl shadow-cyan-950/40 z-10 hover:shadow-2xl hover:shadow-cyan-900/50 transition-all duration-300">
           <div class="h-full w-full bg-slate-900 rounded-[10px] p-6 flex flex-col space-y-4 relative">
             <span class="absolute -top-3 right-4 bg-cyan-600 text-black text-xs px-3 py-1 rounded-full font-bold">BEST VALUE</span>
@@ -494,7 +497,7 @@ function quickAdd(product) {
         <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Fresh gear added to the catalogue. Verified and ready to ship.</p>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <ProductCard v-for="product in newArrivals" :key="product.id" :product="product" v-memo="[product.id, product.price, product.rating]" />
+        <ProductCard v-for="product in newArrivals" :key="product.uuid || product.id" :product="product" v-memo="[product.uuid || product.id, product.price, product.rating]" />
       </div>
     </section>
 
@@ -517,7 +520,7 @@ function quickAdd(product) {
         </button>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <ProductCard v-for="product in (showAllOther ? otherProducts : otherProducts.slice(0, 3))" :key="product.id" :product="product" v-memo="[product.id, product.price, product.rating, showAllOther]" />
+        <ProductCard v-for="product in (showAllOther ? otherProducts : otherProducts.slice(0, 3))" :key="product.uuid || product.id" :product="product" v-memo="[product.uuid || product.id, product.price, product.rating, showAllOther]" />
       </div>
     </section>
   </div>

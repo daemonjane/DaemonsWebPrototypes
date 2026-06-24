@@ -28,4 +28,9 @@ urlpatterns = [
     path('products/search/', views.product_search, name='product-search'),
     path('version/', views.api_version, name='api-version'),
     path('osimart/banners/', views_osimart.osimart_banners, name='osimart-banners'),
+    path('osimart/products/', views_osimart.osimart_products, name='osimart-products'),
+    path('osimart/products/<uuid:product_id>/', views_osimart.osimart_product_detail, name='osimart-product-detail'),
+    path('osimart/categories/', views_osimart.osimart_categories, name='osimart-categories'),
+    path('osimart/store/', views_osimart.osimart_store, name='osimart-store'),
+    path('osimart/home/', views_osimart.osimart_home, name='osimart-home'),
 ]
