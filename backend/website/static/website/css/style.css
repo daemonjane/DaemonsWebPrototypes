@@ -945,3 +945,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .duration-700{transition-duration:700ms}
 .duration-1000{transition-duration:1000ms}
 .ease-linear{transition-timing-function:linear}
+.ease-in{transition-timing-function:cubic-bezier(0.4,0,1,1)}
