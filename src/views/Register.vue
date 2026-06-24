@@ -49,6 +49,7 @@ async function register() {
             class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
             :class="{ 'border-pink-500': errors.username }"
             aria-required="true"
+            autocomplete="username"
           >
           <p v-if="errors.username" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.username }}</p>
         </div>
