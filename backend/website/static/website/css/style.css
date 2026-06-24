@@ -779,3 +779,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .italic{font-style:italic}
 .not-italic{font-style:normal}
 .underline{text-decoration-line:underline}
+.line-through{text-decoration-line:line-through}
