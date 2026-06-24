@@ -37,7 +37,7 @@ const routes = [
   { path: '/faq', component: FAQ },
   { path: '/counter', component: CounterFeature },
   { path: '/tracking', component: OrderTracking },
-  { path: '/confirmation', component: OrderConfirmation },
+  { path: '/confirmation', component: OrderConfirmation, meta: { title: 'Order Confirmation' } },
   { path: '/privacy', component: PrivacyPolicy },
   { path: '/terms', component: TermsOfService },
   { path: '/cookies', component: CookiesPolicy },
