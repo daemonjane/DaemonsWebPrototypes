@@ -41,7 +41,7 @@ const routes = [
   { path: '/privacy', component: PrivacyPolicy },
   { path: '/terms', component: TermsOfService },
   { path: '/cookies', component: CookiesPolicy },
-  { path: '/:pathMatch(.*)*', component: NotFound },
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ]
 
 const router = createRouter({
