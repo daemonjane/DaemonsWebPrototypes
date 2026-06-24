@@ -16,6 +16,12 @@
         <a href="/about/" {% if current_path == '/about/' %}aria-current="page"{% endif %} class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/about/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">About</a>
         <a href="/contact/" {% if current_path == '/contact/' %}aria-current="page"{% endif %} class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/contact/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Contact</a>
         <a href="/tasks/" {% if current_path == '/tasks/' %}aria-current="page"{% endif %} class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/tasks/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Tasks</a>
+        {% if user.is_staff %}
+        <a href="/dashboard/" {% if current_path == '/dashboard/' %}aria-current="page"{% endif %} class="px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 {% if current_path == '/dashboard/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">
+          <svg class="w-3.5 h-3.5 -mt-0.5 inline-block mr-1" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          Dashboard
+        </a>
+        {% endif %}
         {% endwith %}
       </nav>
 
@@ -61,6 +67,9 @@
       <a href="/about/" {% if current_path == '/about/' %}aria-current="page"{% endif %} class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/about/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">About</a>
       <a href="/contact/" {% if current_path == '/contact/' %}aria-current="page"{% endif %} class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/contact/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Contact</a>
       <a href="/tasks/" {% if current_path == '/tasks/' %}aria-current="page"{% endif %} class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/tasks/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Tasks</a>
+      {% if user.is_staff %}
+      <a href="/dashboard/" {% if current_path == '/dashboard/' %}aria-current="page"{% endif %} class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {% if current_path == '/dashboard/' %}text-cyan-400 bg-cyan-950/30{% else %}text-slate-400 hover:text-white hover:bg-slate-800/50{% endif %}">Dashboard</a>
+      {% endif %}
       <hr class="border-slate-800 my-2">
       {% if user.is_authenticated %}
       <form method="POST" action="{% url 'logout' %}">
