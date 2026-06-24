@@ -382,3 +382,4 @@ input.error, textarea.error {
 .order-last{order:9999}
 .order-none{order:0}
 .col-auto{grid-column:auto}
+.col-span-1{grid-column:span 1/span 1}
