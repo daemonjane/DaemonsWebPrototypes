@@ -249,7 +249,7 @@ function quickAdd(product) {
         <!-- Vanguard Desktop large card -->
         <article class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col md:col-span-2 md:flex-row group transition-all duration-300 hover:border-slate-700 hover:shadow-xl hover:shadow-cyan-950/30 hover:-translate-y-1 transform">
           <div class="w-full md:w-1/2 shrink-0 bg-slate-800 aspect-[16/10] md:aspect-auto md:h-full relative overflow-hidden">
-            <img src="/assets/vanguard-desktop-fallback.png" alt="Vanguard Gaming Desktop" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
+            <img src="/static/assets/vanguard-desktop-fallback.png" alt="Vanguard Gaming Desktop" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
           </div>
           <div class="p-5 sm:p-6 flex flex-col flex-1 justify-between space-y-4">
             <div class="space-y-4">
