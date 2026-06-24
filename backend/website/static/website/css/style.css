@@ -575,3 +575,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .leading-relaxed{line-height:1.625}
 .leading-loose{line-height:2}
 .border-0{border-width:0}
+.border-2{border-width:2px}
