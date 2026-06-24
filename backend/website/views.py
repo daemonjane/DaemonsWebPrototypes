@@ -421,7 +421,9 @@ def csrf_failure(request, reason=""):
 
 def custom_404(request, exception):
     """Render a themed 404 error page."""
-    return render(request, "website/404.html", status=404)
+    response = render(request, "website/404.html", status=404)
+    response["X-Robots-Tag"] = "noindex"
+    return response
 
 
 def custom_500(request):
