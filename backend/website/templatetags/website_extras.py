@@ -103,3 +103,15 @@ def task_stats():
     done = Task.objects.filter(completed=True).count()
     pending = total - done
     return f"{done}/{total} done ({pending} pending)"
+
+
+@register.filter
+def model_verbose_name(obj):
+    return obj._meta.verbose_name.title() if hasattr(obj, "_meta") else ""
+
+
+
+@register.filter
+def model_field(obj, field_name):
+    val = getattr(obj, field_name, "")
+    return val() if callable(val) else val
