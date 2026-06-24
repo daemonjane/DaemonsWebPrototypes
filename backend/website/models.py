@@ -1,5 +1,25 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+
+
+class UserProfile(models.Model):
+    """Extended profile information for users."""
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    bio = models.TextField("bio", blank=True, help_text="A short bio about yourself")
+    location = models.CharField("location", max_length=100, blank=True, help_text="Your location")
+    phone = models.CharField("phone", max_length=20, blank=True, help_text="Contact phone number")
+    avatar_url = models.URLField("avatar URL", blank=True, help_text="URL to your avatar image")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the profile was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when the profile was last updated")
+
+    class Meta:
+        verbose_name = "User Profile"
+        verbose_name_plural = "User Profiles"
+
+    def __str__(self):
+        return f"Profile of {self.user.username}"
 
 
 class NewsletterSubscription(models.Model):
