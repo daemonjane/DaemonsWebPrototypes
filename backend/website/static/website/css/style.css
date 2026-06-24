@@ -842,3 +842,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .text-transparent{color:transparent}
 .text-current{color:currentColor}
 .text-black{--text-opacity:1;color:rgba(0,0,0,var(--text-opacity))}
+.text-white{--text-opacity:1;color:rgba(255,255,255,var(--text-opacity))}
