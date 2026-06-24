@@ -19,6 +19,7 @@ class OsimartClient:
     _token_expires_at = 0
 
     def __init__(self, store_id=None, timeout=15):
+        """Initialize Osimart API client with optional store override and request timeout."""
         self.store_id = store_id or self.STORE_ID
         self.timeout = timeout
 
