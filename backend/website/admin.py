@@ -22,6 +22,7 @@ class TaskAdmin(admin.ModelAdmin):
     actions_on_bottom = True
     actions_selection_counter = True
     ordering = ["-created_at"]
+    sortable_by = ["title", "completed", "created_at", "updated_at"]
     fieldsets = [
         (None, {"fields": ["title", "description", "description_preview"]}),
         ("Status", {"fields": ["completed"]}),
