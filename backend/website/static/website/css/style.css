@@ -1000,3 +1000,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .col-span-4{grid-column:span 4/span 4}
 .col-span-full{grid-column:1/-1}
 .row-span-1{grid-row:span 1/span 1}
+.row-span-2{grid-row:span 2/span 2}
