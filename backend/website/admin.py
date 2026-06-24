@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.models import LogEntry
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -191,6 +192,26 @@ class TaskFileAdmin(admin.ModelAdmin):
     def filename(self, obj):
         return obj.filename()
     filename.short_description = "file"
+
+
+@admin.register(LogEntry)
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = ["action_time", "user", "content_type", "object_repr", "action_flag"]
+    list_filter = ["action_flag", "content_type"]
+    search_fields = ["object_repr", "user__username"]
+    date_hierarchy = "action_time"
+    list_select_related = ["user", "content_type"]
+    readonly_fields = [f.name for f in LogEntry._meta.fields]
+    actions = None
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(UserProfile)
