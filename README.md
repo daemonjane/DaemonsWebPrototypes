@@ -228,6 +228,42 @@ docker run -d -p 8000:8000 -v $(pwd)/backend/db.sqlite3:/app/db.sqlite3 techstor
 
 ---
 
+### Production Checklist
+
+Before deploying to production, verify these items:
+
+- [ ] **`DEBUG = False`** in `config/settings.py`
+- [ ] **`SECRET_KEY`** set via environment variable (not hardcoded)
+- [ ] **`ALLOWED_HOSTS`** set to your domain(s), e.g. `["yourdomain.com", "www.yourdomain.com"]`
+- [ ] **`STATIC_ROOT`** collected: `python manage.py collectstatic --noinput`
+- [ ] **HTTPS** enabled via reverse proxy (Nginx + Let's Encrypt)
+- [ ] **Database backup** strategy in place (SQLite is a single file — easy to cron-copy)
+- [ ] **`MAINTENANCE_MODE = False`** (toggle to `True` to show a maintenance page)
+
+### Environment Variables
+
+The following variables can be set in your shell or in a `.env` file (loaded via `python-dotenv`):
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DJANGO_SECRET_KEY` | *(hardcoded dev key)* | Production secret key (generate with `python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'`) |
+| `DJANGO_DEBUG` | `True` | Set to `False` in production |
+| `DJANGO_ALLOWED_HOSTS` | `*` | Comma-separated list of allowed domain names |
+| `DJANGO_PORT` | `8000` | Port for the dev server |
+| `MAINTENANCE_MODE` | `False` | Set to `True` to display maintenance page |
+
+### Network URLs Cheat Sheet
+
+| Context | URL | Purpose |
+|---------|-----|---------|
+| Local dev | `http://localhost:8000/` | Your own machine |
+| LAN access | `http://192.168.x.x:8000/` | Other devices on your network |
+| Production | `https://yourdomain.com/` | Public internet |
+| Admin panel | `http://localhost:8000/admin/` | Django admin (all environments) |
+| API health | `http://localhost:8000/api/health/` | Quick connectivity check |
+
+---
+
 ## 🌐 Django Routes
 
 | Path | View | Description |
@@ -500,12 +536,37 @@ python manage.py runserver 0.0.0.0:8000
 
 ## 🧪 Running Tests
 
+### Test Suite
+
 ```bash
+# Run all website app tests (12 tests):
 python backend/manage.py test website
-# Run specific test class:
-python backend/manage.py test website.tests.RegisterViewTests
+
 # Run with verbose output:
 python backend/manage.py test website --verbosity=2
+
+# Run a specific test class:
+python backend/manage.py test website.tests.RegisterViewTests
+
+# Run a single test method:
+python backend/manage.py test website.tests.RegisterViewTests.test_register_success
+```
+
+### What's Tested
+
+| Test Class | Tests | Coverage |
+|------------|-------|----------|
+| `TaskViewTests` | 7 | Task CRUD, toggle, search, comment flow, auth guards |
+| `RegisterViewTests` | 5 | Registration success, auto-login, duplicate user, invalid email, GET form |
+
+### CI Quick Reference
+
+```bash
+# Full test suite (exit code 0 = all pass):
+python backend/manage.py test website --verbosity=2 && echo "ALL PASSED"
+
+# Check for pending migrations:
+python backend/manage.py makemigrations --check --dry-run
 ```
 
 ---
