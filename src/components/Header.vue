@@ -4,15 +4,25 @@
  * Includes: logo, desktop + mobile nav, global search with dropdown, cart badge with count.
  * @component
  */
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useTheme } from '../composables/useTheme'
+import { useUser } from '../composables/useUser'
 import { products } from '../data/products'
 
 const route = useRoute()
+const router = useRouter()
 const { totalItems } = useCart()
 const { isDark, toggle: toggleTheme } = useTheme()
+const { user, isAuthenticated, isStaff, refresh, logout } = useUser()
+
+onMounted(() => { refresh() })
+
+async function handleLogout() {
+  await logout()
+  if (route.path !== '/') router.push('/')
+}
 
 function themedToggle() {
   document.documentElement.classList.add('theme-transitioning')
@@ -45,7 +55,6 @@ const navLinks = [
   { path: '/faq', label: 'FAQ' },
   { path: '/about', label: 'About' },
   { path: '/contact', label: 'Contact' },
-  { path: '/counter', label: 'Counter' },
 ]
 
 function closeSearch() {
@@ -86,6 +95,14 @@ function closeSearch() {
           >
             {{ link.label }}
           </router-link>
+          <a
+            v-if="isStaff()"
+            href="/dashboard/"
+            class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+          </a>
         </nav>
 
         <!-- Search + Cart + Mobile Toggle -->
@@ -128,6 +145,30 @@ function closeSearch() {
               <p class="px-3 py-2 text-xs text-slate-500 border-t border-slate-800">{{ searchResults.total }} result{{ searchResults.total !== 1 ? 's' : '' }} — press Enter to search all</p>
             </div>
           </div>
+
+          <!-- Profile / Auth -->
+          <router-link
+            v-if="isAuthenticated()"
+            to="/profile"
+            class="hidden md:inline-flex text-sm font-medium items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Profile
+          </router-link>
+          <button
+            v-if="isAuthenticated()"
+            @click="handleLogout"
+            class="hidden md:inline-flex text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer"
+          >
+            Logout
+          </button>
+          <router-link
+            v-else
+            to="/login"
+            class="hidden md:inline-flex text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+          >
+            Sign In
+          </router-link>
 
           <!-- Theme toggle -->
           <button
@@ -215,6 +256,37 @@ function closeSearch() {
             @click="mobileMenuOpen = false"
           >
             {{ link.label }}
+          </router-link>
+          <hr class="border-slate-800 my-2">
+          <a
+            v-if="isStaff()"
+            href="/dashboard/"
+            class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          >
+            Dashboard
+          </a>
+          <template v-if="isAuthenticated()">
+            <router-link
+              to="/profile"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              @click="mobileMenuOpen = false"
+            >
+              Profile
+            </router-link>
+            <button
+              @click="handleLogout; mobileMenuOpen = false"
+              class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors cursor-pointer"
+            >
+              Logout
+            </button>
+          </template>
+          <router-link
+            v-else
+            to="/login"
+            class="block px-3 py-2 rounded-md text-sm font-medium text-cyan-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+            @click="mobileMenuOpen = false"
+          >
+            Sign In
           </router-link>
         </div>
       </nav>

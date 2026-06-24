@@ -18,10 +18,12 @@ const OrderConfirmation = () => import('../views/OrderConfirmation.vue')
 const PrivacyPolicy = () => import('../views/PrivacyPolicy.vue')
 const TermsOfService = () => import('../views/TermsOfService.vue')
 const CookiesPolicy = () => import('../views/CookiesPolicy.vue')
+const Profile = () => import('../views/Profile.vue')
 
 const routes = [
   { path: '/', component: Home },
   { path: '/shop', component: Shop },
+  { path: '/profile', component: Profile, meta: { requiresAuth: true } },
   { path: '/product/:id', component: ProductDetail },
   { path: '/favorites', component: FavoritesVue },
   { path: '/checkout', component: Checkout },
@@ -43,6 +45,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+router.beforeEach(async (to) => {
+  if (to.meta?.requiresAuth) {
+    const { useUser } = await import('../composables/useUser')
+    const { user, refresh } = useUser()
+    if (!user.value) await refresh()
+    if (!user.value) return '/login'
+  }
 })
 
 export default router

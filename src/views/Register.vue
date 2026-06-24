@@ -1,29 +1,35 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { validateForm } from '../utils/validation'
+import { useUser } from '../composables/useUser'
 
 const router = useRouter()
-const name = ref('')
+const { refresh } = useUser()
+const username = ref('')
 const email = ref('')
 const password = ref('')
 const errors = reactive({})
+const pending = ref(false)
 
-function register() {
+async function register() {
   Object.keys(errors).forEach(key => delete errors[key])
-
-  const validationErrors = validateForm(
-    { name: name.value, email: email.value, password: password.value },
-    { name: ['required'], email: ['required', 'email'], password: ['required'] }
-  )
-
-  if (Object.keys(validationErrors).length > 0) {
-    Object.assign(errors, validationErrors)
+  if (!username.value || !email.value || !password.value) {
+    if (!username.value) errors.username = 'Username is required.'
+    if (!email.value) errors.email = 'Email is required.'
+    if (!password.value) errors.password = 'Password is required.'
     return
   }
-
-  localStorage.setItem('techstore_user', JSON.stringify({ email: email.value }))
-  router.push('/')
+  pending.value = true
+  try {
+    const { api } = await import('../utils/api')
+    await api.register(username.value, email.value, password.value)
+    await refresh()
+    router.push('/')
+  } catch (e) {
+    errors.form = e.message || 'Registration failed'
+  } finally {
+    pending.value = false
+  }
 }
 </script>
 
@@ -33,19 +39,18 @@ function register() {
       <h1 class="text-2xl font-bold text-center mb-6">Create Account</h1>
 
       <form @submit.prevent="register" novalidate>
+        <p v-if="errors.form" class="mb-4 p-3 rounded-lg bg-pink-950/30 border border-pink-700/50 text-pink-300 text-sm" role="alert">{{ errors.form }}</p>
+
         <div class="mb-4">
           <input
-            v-model="name"
+            v-model="username"
             type="text"
-            placeholder="Full Name"
+            placeholder="Username"
             class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
-            :class="{ 'border-pink-500': errors.name }"
-            :aria-describedby="errors.name ? 'name-error' : undefined"
+            :class="{ 'border-pink-500': errors.username }"
             aria-required="true"
           >
-          <p v-if="errors.name" id="name-error" class="text-pink-400 text-xs mt-1" role="alert">
-            {{ errors.name }}
-          </p>
+          <p v-if="errors.username" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.username }}</p>
         </div>
 
         <div class="mb-4">
@@ -55,12 +60,9 @@ function register() {
             placeholder="Email"
             class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
             :class="{ 'border-pink-500': errors.email }"
-            :aria-describedby="errors.email ? 'email-error' : undefined"
             aria-required="true"
           >
-          <p v-if="errors.email" id="email-error" class="text-pink-400 text-xs mt-1" role="alert">
-            {{ errors.email }}
-          </p>
+          <p v-if="errors.email" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
         </div>
 
         <div class="mb-4">
@@ -70,16 +72,13 @@ function register() {
             placeholder="Password"
             class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
             :class="{ 'border-pink-500': errors.password }"
-            :aria-describedby="errors.password ? 'password-error' : undefined"
             aria-required="true"
           >
-          <p v-if="errors.password" id="password-error" class="text-pink-400 text-xs mt-1" role="alert">
-            {{ errors.password }}
-          </p>
+          <p v-if="errors.password" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.password }}</p>
         </div>
 
-        <button type="submit" class="w-full bg-cyan-600 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-cyan-400">
-          Register
+        <button type="submit" :disabled="pending" class="w-full bg-cyan-600 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-cyan-400 disabled:opacity-50">
+          {{ pending ? 'Creating account...' : 'Register' }}
         </button>
       </form>
 
