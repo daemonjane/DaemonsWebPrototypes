@@ -351,3 +351,4 @@ input.error, textarea.error {
 .italic{font-style:italic}
 .not-italic{font-style:normal}
 .underline{text-decoration-line:underline}
+.line-through{text-decoration-line:line-through}
