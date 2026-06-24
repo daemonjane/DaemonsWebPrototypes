@@ -32,6 +32,8 @@ class TaskAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ["created_at", "updated_at", "description_preview"]
     actions = ["mark_completed", "mark_pending", "export_csv"]
+    actions_on_top = True
+    actions_on_bottom = True
 
     @admin.display(description="Comments")
     def comment_count(self, obj):
