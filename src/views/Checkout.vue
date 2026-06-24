@@ -221,15 +221,19 @@ async function placeOrder() {
                 <div class="relative">
                   <input v-model="form.expDate" type="text" placeholder=" " id="pay-exp"
                     class="peer w-full bg-slate-800 border border-slate-700 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-cyan-500 transition-colors"
-                    :class="{ 'border-pink-500': errors.expDate }" aria-required="true">
+                    :class="{ 'border-pink-500': errors.expDate }" aria-required="true"
+                    :aria-describedby="errors.expDate ? 'exp-error' : undefined">
                   <label for="pay-exp" class="absolute left-2 top-1 text-[10px] text-slate-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-cyan-400 transition-all duration-200 pointer-events-none">MM/YY</label>
                 </div>
                 <div class="relative">
                   <input v-model="form.cvv" type="text" placeholder=" " id="pay-cvv"
                     class="peer w-full bg-slate-800 border border-slate-700 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-cyan-500 transition-colors"
-                    :class="{ 'border-pink-500': errors.cvv }" aria-required="true">
+                    :class="{ 'border-pink-500': errors.cvv }" aria-required="true"
+                    :aria-describedby="errors.cvv ? 'cvv-error' : undefined">
                   <label for="pay-cvv" class="absolute left-2 top-1 text-[10px] text-slate-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-cyan-400 transition-all duration-200 pointer-events-none">CVV</label>
                 </div>
+                <p v-if="errors.expDate" id="exp-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.expDate }}</p>
+                <p v-if="errors.cvv" id="cvv-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.cvv }}</p>
               </div>
 
               <!-- Gift Card Checker -->
