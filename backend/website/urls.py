@@ -2,6 +2,7 @@ import os
 
 from django.conf import settings
 from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 from django.urls import path, re_path
 from django.views.static import serve as static_serve
 
@@ -19,6 +20,20 @@ urlpatterns = [
     path("accounts/register/", views.register, name="register"),
     path("login/", auth_views.LoginView.as_view(template_name="website/login.html", authentication_form=LoginForm), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("password-reset/", auth_views.PasswordResetView.as_view(
+        template_name="website/password_reset.html",
+        success_url=reverse_lazy("password_reset_done"),
+    ), name="password_reset"),
+    path("password-reset/done/", auth_views.PasswordResetDoneView.as_view(
+        template_name="website/password_reset_done.html",
+    ), name="password_reset_done"),
+    path("password-reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(
+        template_name="website/password_reset_confirm.html",
+        success_url=reverse_lazy("password_reset_complete"),
+    ), name="password_reset_confirm"),
+    path("password-reset/complete/", auth_views.PasswordResetCompleteView.as_view(
+        template_name="website/password_reset_complete.html",
+    ), name="password_reset_complete"),
     path("profile/", views.profile, name="profile"),
     path("tasks/", views.task_list, name="task_list"),
     path("tasks/search/", views.task_search, name="task_search"),
