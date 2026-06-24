@@ -10,6 +10,7 @@ from .forms import LoginForm
 
 urlpatterns = [
     path("", views.home, name="home"),
+    path("favicon.ico", views.favicon, name="favicon"),
     path("robots.txt", views.robots_txt, name="robots_txt"),
     path("humans.txt", views.humans_txt, name="humans_txt"),
     path("sitemap.xml", views.sitemap_xml, name="sitemap_xml"),

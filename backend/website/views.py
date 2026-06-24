@@ -373,6 +373,10 @@ def newsletter_subscribe(request):
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
+def favicon(request):
+    return redirect("/favicon.svg")
+
+
 def robots_txt(request):
     return HttpResponse(render_to_string("website/robots.txt"), content_type="text/plain")
 
