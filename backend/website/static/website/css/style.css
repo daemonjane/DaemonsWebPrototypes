@@ -364,3 +364,4 @@ input.error, textarea.error {
 .font-black{font-weight:900}
 .tracking-tighter{letter-spacing:-0.05em}
 .tracking-normal{letter-spacing:0}
+.tracking-wide{letter-spacing:0.025em}
