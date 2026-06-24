@@ -58,6 +58,11 @@ def endswith(value, arg):
 
 
 @register.filter
+def contains(value, arg):
+    return arg in str(value)
+
+
+@register.filter
 def field_errors(field):
     return field.errors
 
