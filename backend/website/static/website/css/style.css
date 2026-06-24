@@ -614,3 +614,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .m-3{margin:0.75rem}
 .m-4{margin:1rem}
 .mx-auto{margin-left:auto;margin-right:auto}
+.my-auto{margin-top:auto;margin-bottom:auto}
