@@ -16,6 +16,12 @@ class CategoryAdmin(admin.ModelAdmin):
         return obj.products.count()
 
 
+class ProductAddonInline(admin.TabularInline):
+    model = ProductAddon
+    extra = 1
+    fields = ["name", "price", "description", "is_available"]
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ["name", "category", "price", "rating", "stock", "addon_count", "image_preview", "created_at"]
@@ -60,12 +66,6 @@ class ProductAdmin(admin.ModelAdmin):
                 obj.description[:300] + "..." if len(obj.description) > 300 else obj.description,
             )
         return mark_safe('<span class="text-slate-600">—</span>')
-
-
-class ProductAddonInline(admin.TabularInline):
-    model = ProductAddon
-    extra = 1
-    fields = ["name", "price", "description", "is_available"]
 
 
 class OrderItemInline(admin.TabularInline):
