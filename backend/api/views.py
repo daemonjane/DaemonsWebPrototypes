@@ -151,16 +151,21 @@ def csrf_token(request):
 # ---------------------------------------------------------------------------
 
 def _get_cart(user):
-    cart, _ = Cart.objects.prefetch_related("items__product").get_or_create(user=user)
+    cart, _ = Cart.objects.get_or_create(user=user)
     return cart
+
+
+def _cart_json(cart):
+    """Serialize cart with a fresh DB hit to avoid stale prefetch caches."""
+    fresh = Cart.objects.get(pk=cart.pk)
+    return CartSerializer(fresh).data
 
 
 @api_view(['GET'])
 def cart_get(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
-    serializer = CartSerializer(_get_cart(request.user))
-    return Response(serializer.data)
+    return Response(_cart_json(_get_cart(request.user)))
 
 
 @api_view(['POST'])
@@ -211,8 +216,7 @@ def cart_add(request):
             item_type=item_type,
         )
 
-    serializer = CartSerializer(cart)
-    return Response(serializer.data)
+    return Response(_cart_json(cart))
 
 
 @api_view(['PATCH', 'DELETE'])
@@ -227,8 +231,7 @@ def cart_item_detail(request, item_id):
 
     if request.method == 'DELETE':
         item.delete()
-        serializer = CartSerializer(_get_cart(request.user))
-        return Response(serializer.data)
+        return Response(_cart_json(_get_cart(request.user)))
 
     try:
         data = json.loads(request.body)
@@ -246,8 +249,7 @@ def cart_item_detail(request, item_id):
     if item.quantity <= 0:
         item.delete()
 
-    serializer = CartSerializer(_get_cart(request.user))
-    return Response(serializer.data)
+    return Response(_cart_json(_get_cart(request.user)))
 
 
 @api_view(['POST'])
@@ -256,8 +258,7 @@ def cart_clear(request):
         return Response({"error": "Not authenticated."}, status=401)
     cart = _get_cart(request.user)
     cart.items.all().delete()
-    serializer = CartSerializer(cart)
-    return Response(serializer.data)
+    return Response(_cart_json(_get_cart(request.user)))
 
 
 @api_view(['POST'])
@@ -302,8 +303,7 @@ def cart_merge(request):
                 quantity=quantity, image=image, item_type=item_type,
             )
 
-    serializer = CartSerializer(cart)
-    return Response(serializer.data)
+    return Response(_cart_json(cart))
 
 
 # ---------------------------------------------------------------------------
