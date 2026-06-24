@@ -1034,3 +1034,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .blur{filter:blur(8px)}
 .blur-md{filter:blur(12px)}
 .blur-lg{filter:blur(16px)}
+.brightness-50{filter:brightness(0.5)}
