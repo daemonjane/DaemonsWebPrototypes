@@ -315,3 +315,4 @@ input.error, textarea.error {
 .select-all{user-select:all}
 .pointer-events-none{pointer-events:none}
 .pointer-events-auto{pointer-events:auto}
+.resize{resize:both}
