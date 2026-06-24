@@ -995,3 +995,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .grid-rows-1{grid-template-rows:repeat(1,minmax(0,1fr))}
 .grid-rows-2{grid-template-rows:repeat(2,minmax(0,1fr))}
 .col-span-1{grid-column:span 1/span 1}
+.col-span-2{grid-column:span 2/span 2}
