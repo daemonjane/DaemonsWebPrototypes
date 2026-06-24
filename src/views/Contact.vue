@@ -31,6 +31,11 @@ function submitForm() {
 
 <template>
   <div class="max-w-4xl mx-auto px-4 py-12">
+    <nav class="text-xs text-slate-500 mb-4" aria-label="Breadcrumb">
+      <router-link to="/" class="hover:text-cyan-400 transition-colors">Home</router-link>
+      <span class="mx-1">/</span>
+      <span class="text-slate-300">Contact</span>
+    </nav>
     <h1 class="text-3xl font-bold text-white mb-2">Contact Us</h1>
     <p class="text-slate-400 mb-8">Have a question about a product, build, or order? We're here to help.</p>
 
