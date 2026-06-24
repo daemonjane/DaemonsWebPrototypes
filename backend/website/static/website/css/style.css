@@ -986,3 +986,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .order-first{order:-9999}
 .order-last{order:9999}
 .order-none{order:0}
+.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
