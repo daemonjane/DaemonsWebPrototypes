@@ -105,6 +105,32 @@ class OrderItem(models.Model):
         return f"{self.name} x{self.quantity}"
 
 
+class Subscription(models.Model):
+    """Membership/subscription tier with recurring billing."""
+
+    class Tier(models.TextChoices):
+        BASIC = "basic", "Basic"
+        PRO = "pro", "Pro"
+        ENTERPRISE = "enterprise", "Enterprise"
+
+    tier = models.CharField("tier", max_length=20, choices=Tier.choices, unique=True, help_text="Subscription tier identifier")
+    name = models.CharField("name", max_length=100, help_text="Display name for this subscription tier")
+    price = models.DecimalField("price", max_digits=8, decimal_places=2, help_text="Monthly price in USD")
+    description = models.TextField("description", help_text="Short description of what this tier includes")
+    features = models.JSONField("features", default=list, help_text="List of features included in this tier")
+    duration_days = models.IntegerField("duration days", default=30, help_text="Billing cycle length in days")
+    active = models.BooleanField("active", default=True, help_text="Whether this tier is available for purchase")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["price"]
+        verbose_name = "Subscription"
+        verbose_name_plural = "Subscriptions"
+
+    def __str__(self):
+        return f"{self.name} (${self.price}/mo)"
+
+
 class BackInStockRequest(models.Model):
     """Notification request for when a product is back in stock."""
 
