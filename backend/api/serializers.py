@@ -1,3 +1,5 @@
+"""DRF serializers for API models — Cart, Orders, Products, Add-ons."""
+
 from rest_framework import serializers
 
 from .models import Cart, CartItem, Order, OrderItem, OrderTracking, Product, ProductAddon, TrackingHistory, Wishlist
