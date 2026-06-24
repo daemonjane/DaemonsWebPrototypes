@@ -61,6 +61,9 @@ export const api = {
   addons: {
     list: (slug) => request('GET', `/api/products/${slug}/addons/`),
   },
+  osimart: {
+    banners: () => request('GET', '/api/osimart/banners/'),
+  },
   search: (query, category = '') => {
     const params = new URLSearchParams()
     if (query) params.set('q', query)

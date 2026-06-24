@@ -1,8 +1,9 @@
-"""API URL configuration — Auth, Cart, Orders, Products, Tracking, Add-ons."""
+"""API URL configuration — Auth, Cart, Orders, Products, Tracking, Add-ons, Osimart."""
 
 from django.urls import path
 
 from . import views
+from . import views_osimart
 
 urlpatterns = [
     path('health/', views.health_check, name='health-check'),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('products/<slug:slug>/addons/', views.product_addons, name='product-addons'),
     path('products/search/', views.product_search, name='product-search'),
     path('version/', views.api_version, name='api-version'),
+    path('osimart/banners/', views_osimart.osimart_banners, name='osimart-banners'),
 ]

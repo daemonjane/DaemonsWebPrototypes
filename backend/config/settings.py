@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'website',
     'api',
+    'services',
     'rest_framework',
     'corsheaders',
 ]
