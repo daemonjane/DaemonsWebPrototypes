@@ -26,8 +26,8 @@ class Task(models.Model):
     title = models.CharField("title", max_length=200, help_text="A short, descriptive title for the task")
     description = models.TextField("description", blank=True, help_text="Optional longer description of what the task involves")
     completed = models.BooleanField("completed", default=False, help_text="Mark as completed when the task is finished")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the task was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when the task was last modified")
 
     class Meta:
         ordering = ["-created_at"]
