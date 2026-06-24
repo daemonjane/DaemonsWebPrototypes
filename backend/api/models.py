@@ -308,3 +308,9 @@ def status_label(self):
     return Order.Status(self.status).label if self.status else ""
 Order.status_label = status_label
 del status_label
+
+@property
+def item_count(self):
+    return self.items.count()
+Order.item_count_prop = item_count
+del item_count
