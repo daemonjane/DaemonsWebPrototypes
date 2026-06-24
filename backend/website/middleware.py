@@ -42,6 +42,8 @@ class SecureHeadersMiddleware:
             response["Referrer-Policy"] = "strict-origin-when-cross-origin"
         if not response.has_header("Content-Security-Policy"):
             response["Content-Security-Policy"] = self.csp
+        if not response.has_header("X-Robots-Tag"):
+            response["X-Robots-Tag"] = "index, follow" if not settings.DEBUG else "noindex, nofollow"
         return response
 
 
