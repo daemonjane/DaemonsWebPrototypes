@@ -984,3 +984,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .order-3{order:3}
 .order-4{order:4}
 .order-first{order:-9999}
+.order-last{order:9999}
