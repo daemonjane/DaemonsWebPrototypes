@@ -572,3 +572,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .leading-tight{line-height:1.25}
 .leading-snug{line-height:1.375}
 .leading-normal{line-height:1.5}
+.leading-relaxed{line-height:1.625}
