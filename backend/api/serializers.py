@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Cart, CartItem, Order, OrderItem, Product, Wishlist
+from .models import Cart, CartItem, Order, OrderItem, OrderTracking, Product, ProductAddon, TrackingHistory, Wishlist
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -35,6 +35,12 @@ class CartSerializer(serializers.ModelSerializer):
         return sum(item.quantity for item in obj.items.all())
 
 
+class ProductAddonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductAddon
+        fields = ["id", "name", "description", "price", "image", "is_available"]
+
+
 class WishlistSerializer(serializers.ModelSerializer):
     product_slugs = serializers.SlugRelatedField(source="products", slug_field="slug", read_only=True, many=True)
 
@@ -54,13 +60,17 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
     total = serializers.SerializerMethodField()
+    has_tracking = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
-        fields = ["id", "email", "name", "address", "status", "items", "total", "created_at"]
+        fields = ["id", "email", "name", "address", "status", "items", "total", "gift_card_code", "gift_card_discount", "has_tracking", "created_at"]
 
     def get_total(self, obj):
         total = sum(float(item.price) * item.quantity for item in obj.items.all())
         if obj.gift_card_discount:
             total -= float(obj.gift_card_discount)
         return round(total, 2)
+
+    def get_has_tracking(self, obj):
+        return hasattr(obj, "tracking") and bool(obj.tracking.tracking_number)
