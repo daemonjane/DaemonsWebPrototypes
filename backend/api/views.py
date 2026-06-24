@@ -77,7 +77,7 @@ def auth_login(request):
     cache_key = f"login_rate:{ip}"
     attempts = cache.get(cache_key, 0)
     if attempts >= 5:
-        return Response({"error": "Too many login attempts. Try again later."}, status=429)
+        return Response({"error": "Too many login attempts. Try again later."}, status=429, headers={"Retry-After": "300", "X-RateLimit-Reset": "300"})
 
     data = request.data
 
