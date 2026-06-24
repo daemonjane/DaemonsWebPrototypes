@@ -406,3 +406,4 @@ input.error, textarea.error {
 .auto-rows-min{grid-auto-rows:min-content}
 .auto-rows-max{grid-auto-rows:max-content}
 .justify-start{justify-content:flex-start}
+.justify-end{justify-content:flex-end}
