@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html, mark_safe
 
-from .models import BackInStockRequest, Category, ContactMessage, Order, OrderItem, Product
+from .models import BackInStockRequest, Category, ContactMessage, Order, OrderItem, Product, Subscription
 
 
 @admin.register(Category)
@@ -86,6 +86,34 @@ class OrderAdmin(admin.ModelAdmin):
         if obj.gift_card_discount:
             total -= obj.gift_card_discount
         return f"${total:.2f}"
+
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ["name", "tier", "price", "duration_days", "active", "feature_count"]
+    list_filter = ["active", "tier"]
+    search_fields = ["name", "description"]
+    readonly_fields = ["created_at", "feature_preview"]
+    fieldsets = [
+        (None, {"fields": ["tier", "name", "price", "duration_days", "active"]}),
+        ("Description", {"fields": ["description"]}),
+        ("Features", {"fields": ["features", "feature_preview"]}),
+        ("Timestamps", {"fields": ["created_at"], "classes": ["collapse"]}),
+    ]
+
+    @admin.display(description="Features")
+    def feature_count(self, obj):
+        return len(obj.features)
+
+    @admin.display(description="Preview")
+    def feature_preview(self, obj):
+        if obj.features:
+            items = "".join(
+                f'<li style="color:#94a3b8;font-size:0.75rem;padding:2px 0">{f}</li>'
+                for f in obj.features
+            )
+            return mark_safe(f'<ul style="margin:4px 0;padding-left:16px">{items}</ul>')
+        return mark_safe('<span class="text-slate-600">—</span>')
 
 
 @admin.register(BackInStockRequest)
