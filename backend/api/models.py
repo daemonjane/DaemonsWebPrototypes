@@ -194,6 +194,7 @@ class CartItem(models.Model):
         PRODUCT = "product", "Product"
         UPGRADE = "upgrade", "Upgrade"
         MEMBERSHIP = "membership", "Membership"
+        ADDON = "addon", "Add-on"
 
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items", verbose_name="cart")
     product = models.ForeignKey(
