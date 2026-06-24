@@ -37,6 +37,11 @@ const milestones = [
 <template>
   <div class="max-w-4xl mx-auto px-4 py-12 relative">
     <AbstractArt variant="about" class="absolute inset-0 w-full h-full" />
+    <nav class="text-xs text-slate-500 mb-4 relative" aria-label="Breadcrumb">
+      <router-link to="/" class="hover:text-cyan-400 transition-colors">Home</router-link>
+      <span class="mx-1">/</span>
+      <span class="text-slate-300">About</span>
+    </nav>
     <span class="text-xs font-mono text-cyan-500 uppercase tracking-wider bg-cyan-950/30 px-2 py-1 rounded relative">Company</span>
     <h1 class="text-3xl sm:text-4xl font-bold text-white mt-3 mb-2">About TechStore</h1>
     <p class="text-slate-400 mb-10">The infrastructure behind the infrastructure.</p>
