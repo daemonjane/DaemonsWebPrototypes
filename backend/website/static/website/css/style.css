@@ -786,3 +786,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .list-inside{list-style-position:inside}
 .list-outside{list-style-position:outside}
 .list-none{list-style-type:none}
+.list-disc{list-style-type:disc}
