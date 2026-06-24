@@ -151,7 +151,7 @@ function closeQuickView() {
           </ul>
         </div>
         <div class="flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2" role="group" aria-label="Quantity selector">
             <button
               @click.stop="decrement"
               class="bg-slate-700 px-2 py-1 rounded text-sm hover:bg-slate-600 transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400"
