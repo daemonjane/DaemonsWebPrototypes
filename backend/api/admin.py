@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html, mark_safe
 
-from .models import BackInStockRequest, Category, ContactMessage, Order, OrderItem, Product, Subscription
+from .models import BackInStockRequest, Cart, CartItem, Category, ContactMessage, Order, OrderItem, Product, Subscription, Wishlist
 
 
 @admin.register(Category)
@@ -68,7 +68,7 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ["pk", "name", "email", "status", "item_count", "total_value", "created_at"]
+    list_display = ["pk", "user", "name", "email", "status", "item_count", "total_value", "created_at"]
     list_filter = ["status"]
     search_fields = ["name", "email", "address"]
     date_hierarchy = "created_at"
@@ -158,3 +158,49 @@ class ContactMessageAdmin(admin.ModelAdmin):
             '<div class="field-description_preview">{}</div>',
             obj.message[:200] + "..." if len(obj.message) > 200 else obj.message,
         )
+
+
+class CartItemInline(admin.TabularInline):
+    model = CartItem
+    extra = 0
+    readonly_fields = ["created_at"]
+    fields = ["product", "name", "price", "quantity", "item_type", "created_at"]
+
+
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ["name", "cart", "price", "quantity", "item_type", "created_at"]
+    search_fields = ["name", "cart__user__username"]
+    list_filter = ["item_type"]
+    date_hierarchy = "created_at"
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ["user", "item_count", "total", "created_at", "updated_at"]
+    search_fields = ["user__username", "user__email"]
+    date_hierarchy = "created_at"
+    inlines = [CartItemInline]
+    readonly_fields = ["created_at", "updated_at"]
+
+    @admin.display(description="Items")
+    def item_count(self, obj):
+        return obj.items.count()
+
+    @admin.display(description="Total")
+    def total(self, obj):
+        total = sum(float(item.price) * item.quantity for item in obj.items.all())
+        return f"${total:.2f}"
+
+
+@admin.register(Wishlist)
+class WishlistAdmin(admin.ModelAdmin):
+    list_display = ["user", "product_count", "created_at"]
+    search_fields = ["user__username", "user__email"]
+    date_hierarchy = "created_at"
+    filter_horizontal = ["products"]
+    readonly_fields = ["created_at"]
+
+    @admin.display(description="Products")
+    def product_count(self, obj):
+        return obj.products.count()

@@ -2,14 +2,16 @@ import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.db import models as db_models
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
-from django.views.decorators.http import require_http_methods
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
+from .models import Cart, CartItem, Order, OrderItem, Product, Wishlist
+from .serializers import CartSerializer, OrderSerializer
 from website.models import UserProfile
 
 
@@ -34,6 +36,10 @@ def _user_data(user):
 def health_check(request):
     return Response({'status': 'ok'})
 
+
+# ---------------------------------------------------------------------------
+# Auth
+# ---------------------------------------------------------------------------
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -138,3 +144,333 @@ def auth_profile(request):
 def csrf_token(request):
     """Return a CSRF token for the client."""
     return Response({"csrfToken": get_token(request)})
+
+
+# ---------------------------------------------------------------------------
+# Cart
+# ---------------------------------------------------------------------------
+
+def _get_cart(user):
+    cart, _ = Cart.objects.prefetch_related("items__product").get_or_create(user=user)
+    return cart
+
+
+@api_view(['GET'])
+def cart_get(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+    serializer = CartSerializer(_get_cart(request.user))
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def cart_add(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, TypeError):
+        return Response({"error": "Invalid JSON."}, status=400)
+
+    cart = _get_cart(request.user)
+    product_slug = data.get("product_slug")
+    item_type = data.get("item_type", "product")
+    name = data.get("name", "")
+    price = data.get("price", 0)
+    quantity = int(data.get("quantity", 1))
+    image = data.get("image", "")
+
+    product = None
+    if item_type == "product" and product_slug:
+        try:
+            product = Product.objects.get(slug=product_slug)
+            name = product.name
+            price = float(product.price)
+            image = product.image
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found."}, status=404)
+
+    existing = cart.items.filter(
+        item_type=item_type,
+        name=name,
+        product=product,
+    ).first()
+
+    if existing:
+        existing.quantity += quantity
+        existing.save()
+    else:
+        CartItem.objects.create(
+            cart=cart,
+            product=product,
+            name=name,
+            price=price,
+            quantity=quantity,
+            image=image,
+            item_type=item_type,
+        )
+
+    serializer = CartSerializer(cart)
+    return Response(serializer.data)
+
+
+@api_view(['PATCH', 'DELETE'])
+def cart_item_detail(request, item_id):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+
+    try:
+        item = CartItem.objects.get(id=item_id, cart__user=request.user)
+    except CartItem.DoesNotExist:
+        return Response({"error": "Item not found."}, status=404)
+
+    if request.method == 'DELETE':
+        item.delete()
+        serializer = CartSerializer(_get_cart(request.user))
+        return Response(serializer.data)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, TypeError):
+        return Response({"error": "Invalid JSON."}, status=400)
+
+    if "quantity" in data:
+        item.quantity = max(0, int(data["quantity"]))
+    if "price" in data:
+        item.price = data["price"]
+    if "name" in data:
+        item.name = data["name"]
+    item.save()
+
+    if item.quantity <= 0:
+        item.delete()
+
+    serializer = CartSerializer(_get_cart(request.user))
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def cart_clear(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+    cart = _get_cart(request.user)
+    cart.items.all().delete()
+    serializer = CartSerializer(cart)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def cart_merge(request):
+    """Merge localStorage cart items into server cart after login."""
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, TypeError):
+        return Response({"error": "Invalid JSON."}, status=400)
+
+    cart = _get_cart(request.user)
+    local_items = data.get("items", [])
+
+    for local in local_items:
+        product_slug = local.get("product_slug") or local.get("id")
+        item_type = local.get("item_type") or local.get("type", "product")
+        name = local.get("name", "")
+        price = local.get("price", 0)
+        quantity = int(local.get("quantity", 1))
+        image = local.get("image", "")
+
+        product = None
+        if item_type == "product" and product_slug:
+            try:
+                product = Product.objects.get(slug=product_slug)
+                name = product.name
+                price = float(product.price)
+                image = product.image
+            except Product.DoesNotExist:
+                continue
+
+        existing = cart.items.filter(item_type=item_type, name=name, product=product).first()
+        if existing:
+            existing.quantity += quantity
+            existing.save()
+        else:
+            CartItem.objects.create(
+                cart=cart, product=product, name=name, price=price,
+                quantity=quantity, image=image, item_type=item_type,
+            )
+
+    serializer = CartSerializer(cart)
+    return Response(serializer.data)
+
+
+# ---------------------------------------------------------------------------
+# Wishlist
+# ---------------------------------------------------------------------------
+
+def _get_wishlist(user):
+    wishlist, _ = Wishlist.objects.get_or_create(user=user)
+    return wishlist
+
+
+@api_view(['GET'])
+def wishlist_get(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+    wishlist = _get_wishlist(request.user)
+    slugs = list(wishlist.products.values_list("slug", flat=True))
+    return Response({"product_slugs": slugs})
+
+
+@api_view(['POST'])
+def wishlist_toggle(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, TypeError):
+        return Response({"error": "Invalid JSON."}, status=400)
+
+    slug = data.get("slug")
+    if not slug:
+        return Response({"error": "slug is required."}, status=400)
+
+    try:
+        product = Product.objects.get(slug=slug)
+    except Product.DoesNotExist:
+        return Response({"error": "Product not found."}, status=404)
+
+    wishlist = _get_wishlist(request.user)
+    if wishlist.products.filter(slug=slug).exists():
+        wishlist.products.remove(product)
+        added = False
+    else:
+        wishlist.products.add(product)
+        added = True
+
+    slugs = list(wishlist.products.values_list("slug", flat=True))
+    return Response({"added": added, "product_slugs": slugs})
+
+
+@api_view(['GET'])
+def wishlist_check(request, slug):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+    wishlist = _get_wishlist(request.user)
+    return Response({"is_favorite": wishlist.products.filter(slug=slug).exists()})
+
+
+# ---------------------------------------------------------------------------
+# Orders
+# ---------------------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def order_list(request):
+    orders = Order.objects.filter(user=request.user).prefetch_related("items")
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def order_detail(request, pk):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+    try:
+        order = Order.objects.get(pk=pk, user=request.user)
+    except Order.DoesNotExist:
+        return Response({"error": "Order not found."}, status=404)
+    serializer = OrderSerializer(order)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def order_checkout(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "Please sign in to place an order."}, status=401)
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, TypeError):
+        return Response({"error": "Invalid JSON."}, status=400)
+
+    cart = _get_cart(request.user)
+    cart_items = cart.items.all()
+    if not cart_items:
+        return Response({"error": "Cart is empty."}, status=400)
+
+    name = data.get("name", request.user.get_full_name() or request.user.username)
+    email = data.get("email", request.user.email)
+    address = data.get("address", "")
+
+    if not address:
+        return Response({"error": "Shipping address is required."}, status=400)
+
+    gift_card_code = data.get("gift_card_code", "")
+    gift_card_discount = data.get("gift_card_discount")
+
+    order = Order.objects.create(
+        user=request.user,
+        email=email,
+        name=name,
+        address=address,
+        gift_card_code=gift_card_code,
+        gift_card_discount=gift_card_discount,
+    )
+
+    for cart_item in cart_items:
+        OrderItem.objects.create(
+            order=order,
+            product=cart_item.product,
+            name=cart_item.name,
+            price=cart_item.price,
+            quantity=cart_item.quantity,
+            item_type=cart_item.item_type,
+        )
+
+    cart_items.delete()
+
+    serializer = OrderSerializer(order)
+    return Response(serializer.data, status=201)
+
+
+# ---------------------------------------------------------------------------
+# Products / Search
+# ---------------------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def product_search(request):
+    q = request.GET.get("q", "").strip()
+    category_slug = request.GET.get("category", "").strip()
+
+    products = Product.objects.select_related("category").all()
+    if q:
+        products = products.filter(
+            db_models.Q(name__icontains=q)
+            | db_models.Q(description__icontains=q)
+        )
+    if category_slug:
+        products = products.filter(category__slug=category_slug)
+
+    products = products.order_by("name")[:50]
+
+    data = [
+        {
+            "slug": p.slug,
+            "name": p.name,
+            "price": float(p.price),
+            "image": p.image,
+            "category": p.category.name,
+            "category_slug": p.category.slug,
+            "rating": p.rating,
+            "stock": p.stock,
+            "description": p.description[:200] if p.description else "",
+        }
+        for p in products
+    ]
+
+    return Response({"results": data, "count": len(data)})

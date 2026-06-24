@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -50,6 +51,10 @@ class Order(models.Model):
         OUT_FOR_DELIVERY = "out_for_delivery", "Out for Delivery"
         DELIVERED = "delivered", "Delivered"
 
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="orders",
+        verbose_name="user", help_text="The user who placed the order (null for guest)",
+    )
     email = models.EmailField("email", help_text="Customer email for order notifications")
     name = models.CharField("name", max_length=200, help_text="Full name for shipping")
     address = models.TextField("address", help_text="Shipping address including street, city, and postal code")
@@ -165,3 +170,65 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.email}"
+
+
+class Cart(models.Model):
+    """A user's shopping cart (one per user)."""
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cart", verbose_name="user")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the cart was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when the cart was last modified")
+
+    class Meta:
+        verbose_name = "Cart"
+        verbose_name_plural = "Carts"
+
+    def __str__(self):
+        return f"Cart of {self.user.username}"
+
+
+class CartItem(models.Model):
+    """An individual item within a shopping cart."""
+
+    class ItemType(models.TextChoices):
+        PRODUCT = "product", "Product"
+        UPGRADE = "upgrade", "Upgrade"
+        MEMBERSHIP = "membership", "Membership"
+
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items", verbose_name="cart")
+    product = models.ForeignKey(
+        Product, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="product",
+        help_text="The product (null for custom items like upgrades)",
+    )
+    name = models.CharField("name", max_length=200, help_text="Item display name")
+    price = models.DecimalField("price", max_digits=8, decimal_places=2, help_text="Unit price at time of adding")
+    quantity = models.PositiveIntegerField("quantity", default=1, help_text="Number of units")
+    image = models.CharField("image URL", max_length=500, blank=True, help_text="Image URL (auto-populated for products)")
+    item_type = models.CharField(
+        "item type", max_length=20, choices=ItemType.choices, default=ItemType.PRODUCT,
+        help_text="Product, upgrade, or membership",
+    )
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the item was added")
+
+    class Meta:
+        ordering = ["created_at"]
+        verbose_name = "Cart Item"
+        verbose_name_plural = "Cart Items"
+
+    def __str__(self):
+        return f"{self.name} x{self.quantity}"
+
+
+class Wishlist(models.Model):
+    """A user's wishlist of favorite products."""
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="wishlist", verbose_name="user")
+    products = models.ManyToManyField(Product, related_name="wishlists", verbose_name="products")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the wishlist was created")
+
+    class Meta:
+        verbose_name = "Wishlist"
+        verbose_name_plural = "Wishlists"
+
+    def __str__(self):
+        return f"Wishlist of {self.user.username}"
