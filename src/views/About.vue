@@ -107,6 +107,7 @@ const milestones = [
       <button
         @click="timelineOpen = !timelineOpen"
         class="w-full flex items-center justify-between p-6 text-left"
+        :aria-expanded="timelineOpen"
       >
         <h2 class="text-xl font-semibold text-white">Milestones</h2>
         <svg class="w-5 h-5 text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': timelineOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
