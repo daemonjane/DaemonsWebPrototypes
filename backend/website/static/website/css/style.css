@@ -436,3 +436,4 @@ input.error, textarea.error {
 .self-end{align-self:flex-end}
 .self-center{align-self:center}
 .self-stretch{align-self:stretch}
+.place-content-center{place-content:center}
