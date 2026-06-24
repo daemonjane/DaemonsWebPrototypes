@@ -1,9 +1,23 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils.html import format_html, mark_safe
 
 from .models import Comment, ContactMessage, NewsletterSubscription, Task, TaskFile, UserProfile
 
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
+    can_delete = False
+    fields = ["bio", "location", "phone", "avatar_url"]
+
+
+class UserAdmin(BaseUserAdmin):
+    inlines = [UserProfileInline]
+
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 admin.site.site_header = "TechStore Administration"
 admin.site.site_title = "TechStore Admin"
 admin.site.index_title = "Welcome to TechStore Admin"
