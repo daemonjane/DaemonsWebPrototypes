@@ -178,12 +178,20 @@ def cart_add(request):
             image = product.image
         except Product.DoesNotExist:
             return Response({"error": "Product not found."}, status=404)
+    elif item_type == "addon" and product_slug:
+        try:
+            product = Product.objects.get(slug=product_slug)
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found."}, status=404)
 
     existing = cart.items.filter(
         item_type=item_type,
         name=name,
         product=product,
     ).first()
+
+    if existing and item_type == "addon":
+        return Response({"error": "Add-on already in cart."}, status=409)
 
     if existing:
         existing.quantity += quantity
