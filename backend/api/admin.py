@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 
 from .models import BackInStockRequest, Category, ContactMessage, Order, OrderItem, Product
 
@@ -34,7 +34,7 @@ class ProductAdmin(admin.ModelAdmin):
             return format_html(
                 '<img src="{}" class="field-image_preview" alt="{}" />', obj.image, obj.name
             )
-        return format_html('<span class="text-slate-600">No image</span>')
+        return mark_safe('<span class="text-slate-600">No image</span>')
 
     @admin.display(description="Preview")
     def description_preview(self, obj):
@@ -43,7 +43,7 @@ class ProductAdmin(admin.ModelAdmin):
                 '<div class="field-description_preview">{}</div>',
                 obj.description[:300] + "..." if len(obj.description) > 300 else obj.description,
             )
-        return format_html('<span class="text-slate-600">—</span>')
+        return mark_safe('<span class="text-slate-600">—</span>')
 
 
 class OrderItemInline(admin.TabularInline):
