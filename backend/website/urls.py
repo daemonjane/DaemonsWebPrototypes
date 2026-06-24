@@ -19,6 +19,7 @@ urlpatterns = [
     path("accounts/register/", views.register, name="register"),
     path("login/", auth_views.LoginView.as_view(template_name="website/login.html", authentication_form=LoginForm), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("profile/", views.profile, name="profile"),
     path("tasks/", views.task_list, name="task_list"),
     path("tasks/search/", views.task_search, name="task_search"),
     path("tasks/create/", views.task_create, name="task_create"),

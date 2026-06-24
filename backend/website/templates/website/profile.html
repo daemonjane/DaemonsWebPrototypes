@@ -1,0 +1,38 @@
+{% extends "website/base.html" %}
+
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-12">
+  <h1 class="text-3xl font-bold text-white mb-8">Your Profile</h1>
+  <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 space-y-4">
+    <div>
+      <label class="text-slate-400 text-sm">Username</label>
+      <p class="text-white font-medium">{{ profile_user.username }}</p>
+    </div>
+    <div>
+      <label class="text-slate-400 text-sm">Email</label>
+      <p class="text-white font-medium">{{ profile_user.email }}</p>
+    </div>
+    {% with profile=profile_user.profile %}
+      {% if profile %}
+        <div>
+          <label class="text-slate-400 text-sm">Location</label>
+          <p class="text-white font-medium">{{ profile.location|default:"—" }}</p>
+        </div>
+        <div>
+          <label class="text-slate-400 text-sm">Phone</label>
+          <p class="text-white font-medium">{{ profile.phone|default:"—" }}</p>
+        </div>
+        <div>
+          <label class="text-slate-400 text-sm">Bio</label>
+          <p class="text-white font-medium">{{ profile.bio|default:"—" }}</p>
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+  <div class="mt-6">
+    <a href="{% url 'task_list' %}" class="text-cyan-400 hover:text-cyan-300 transition-colors">View your tasks →</a>
+  </div>
+</div>
+{% endblock %}

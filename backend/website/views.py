@@ -377,6 +377,11 @@ def favicon(request):
     return redirect("/favicon.svg")
 
 
+@login_required
+def profile(request):
+    return render(request, "website/profile.html", {"profile_user": request.user})
+
+
 def robots_txt(request):
     return HttpResponse(render_to_string("website/robots.txt"), content_type="text/plain")
 
