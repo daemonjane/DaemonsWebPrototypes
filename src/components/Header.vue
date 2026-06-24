@@ -116,7 +116,7 @@ function closeSearch() {
         <div class="flex items-center gap-3">
 
           <!-- Search (desktop) -->
-          <div class="hidden sm:relative sm:block">
+          <div class="hidden sm:relative sm:block" role="search">
             <input
               v-model="searchQuery"
               type="text"
