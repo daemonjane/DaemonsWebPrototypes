@@ -8,8 +8,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 
 
+from .email_utils import send_contact_auto_reply, send_subscription_confirmation
 from .forms import CommentForm, ContactForm, RegisterForm, TaskForm
-from .models import Comment, ContactMessage, Task
+from .models import Comment, ContactMessage, NewsletterSubscription, Task
 
 PAGES = {
     "shop": ("Shop", "Browse our curated collection of premium hardware."),
@@ -98,7 +99,11 @@ def contact(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
+            contact_msg = form.save()
+            try:
+                send_contact_auto_reply(contact_msg)
+            except Exception:
+                pass
             messages.success(request, "Thank you! Your message has been sent. We will get back to you within 24 hours.")
             return redirect("contact")
     else:
@@ -231,6 +236,37 @@ def task_search(request):
         for t in tasks
     ]
     return JsonResponse({"tasks": data, "count": len(data)})
+
+
+def newsletter_subscribe(request):
+    """Handle newsletter subscription from the footer form."""
+    if request.method == "POST":
+        email = request.POST.get("email", "").strip()
+        if email:
+            subscription, created = NewsletterSubscription.objects.get_or_create(
+                email=email,
+                defaults={"active": True},
+            )
+            if created:
+                try:
+                    send_subscription_confirmation(subscription)
+                except Exception:
+                    pass
+                messages.success(request, "Thank you for subscribing to our newsletter!")
+            else:
+                if not subscription.active:
+                    subscription.active = True
+                    subscription.save()
+                    try:
+                        send_subscription_confirmation(subscription)
+                    except Exception:
+                        pass
+                    messages.success(request, "Your subscription has been reactivated!")
+                else:
+                    messages.info(request, "You are already subscribed to our newsletter.")
+        else:
+            messages.error(request, "Please provide a valid email address.")
+    return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
 def robots_txt(request):
