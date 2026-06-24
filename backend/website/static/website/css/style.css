@@ -324,3 +324,4 @@ input.error, textarea.error {
 .object-fill{object-fit:fill}
 .object-scale-down{object-fit:scale-down}
 .object-center{object-position:center}
+.object-top{object-position:top}
