@@ -256,6 +256,29 @@ class OrderTracking(models.Model):
         return f"Tracking #{self.tracking_number or 'N/A'} for Order #{self.order_id}"
 
 
+class ProductAddon(models.Model):
+    """Optional add-on / micro-transaction item for a product (e.g. cleaning kit, extended warranty)."""
+
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="addons", verbose_name="product",
+        help_text="The product this add-on belongs to",
+    )
+    name = models.CharField("name", max_length=200, help_text="Add-on display name (e.g. 'Cleaning Kit')")
+    description = models.TextField("description", blank=True, help_text="Short description of what this add-on includes")
+    price = models.DecimalField("price", max_digits=8, decimal_places=2, help_text="Additional cost in USD")
+    image = models.CharField("image URL", max_length=500, blank=True, help_text="Optional thumbnail image for the add-on")
+    is_available = models.BooleanField("available", default=True, help_text="Whether this add-on can be purchased")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the add-on was created")
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "Product Add-on"
+        verbose_name_plural = "Product Add-ons"
+
+    def __str__(self):
+        return f"{self.name} (+${self.price}) for {self.product.name}"
+
+
 class TrackingHistory(models.Model):
     """A single status event in the order tracking timeline."""
 
