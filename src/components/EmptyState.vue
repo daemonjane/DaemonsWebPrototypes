@@ -19,7 +19,7 @@ const icons = {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center py-16 sm:py-20 text-center space-y-4">
+  <div class="flex flex-col items-center justify-center py-16 sm:py-20 text-center space-y-4" role="status">
     <div class="text-slate-600" v-html="icons[icon] || icons.search"></div>
     <h3 class="text-xl font-bold text-white">{{ title }}</h3>
     <p v-if="message" class="text-slate-400 text-sm max-w-md">{{ message }}</p>
