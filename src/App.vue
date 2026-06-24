@@ -26,7 +26,7 @@ onErrorCaptured((err) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-950 text-slate-200 font-sans antialiased selection:bg-cyan-500 selection:text-black relative">
+  <div lang="en" class="min-h-screen bg-slate-950 text-slate-200 font-sans antialiased selection:bg-cyan-500 selection:text-black relative">
     <BackgroundEffects />
     <div class="relative z-10">
       <!-- Skip link for keyboard users -->
