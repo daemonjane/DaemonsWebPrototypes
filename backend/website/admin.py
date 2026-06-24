@@ -21,6 +21,7 @@ class TaskAdmin(admin.ModelAdmin):
     save_on_top = True
     actions_on_bottom = True
     actions_selection_counter = True
+    show_full_result_count = True
     ordering = ["-created_at"]
     sortable_by = ["title", "completed", "created_at", "updated_at"]
     fieldsets = [
