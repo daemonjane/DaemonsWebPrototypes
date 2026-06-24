@@ -16,6 +16,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% block twitter_title %}TechStore{% endblock %}">
   <meta name="twitter:description" content="{% block twitter_description %}Premium hardware and tech accessories.{% endblock %}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "TechStore",
+    "url": "{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}"
+  }
+  </script>
   <meta http-equiv="dns-prefetch-control" content="on" />
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
