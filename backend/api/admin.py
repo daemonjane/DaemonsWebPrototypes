@@ -20,7 +20,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ["name", "category", "price", "rating", "stock", "image_preview", "created_at"]
     list_filter = ["category", "rating", "stock"]
-    search_fields = ["name", "description"]
+    search_fields = ["name", "description", "slug"]
     prepopulated_fields = {"slug": ("name",)}
     date_hierarchy = "created_at"
     readonly_fields = ["created_at", "updated_at", "image_preview", "description_preview"]
