@@ -325,3 +325,4 @@ input.error, textarea.error {
 .object-scale-down{object-fit:scale-down}
 .object-center{object-position:center}
 .object-top{object-position:top}
+.overflow-auto{overflow:auto}
