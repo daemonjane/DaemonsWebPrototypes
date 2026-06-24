@@ -1,3 +1,5 @@
+"""API URL configuration — Auth, Cart, Orders, Products, Tracking, Add-ons."""
+
 from django.urls import path
 
 from . import views
