@@ -7,6 +7,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
+import { useFavorites } from '../composables/useFavorites'
 import { useTheme } from '../composables/useTheme'
 import { useUser } from '../composables/useUser'
 import { products } from '../data/products'
@@ -21,8 +22,6 @@ const { user, isAuthenticated, isStaff, refresh, logout } = useUser()
 onMounted(async () => {
   await refresh()
   if (user.value) {
-    const { init: initCart } = useCart()
-    const { init: initFavs } = useFavorites()
     await Promise.allSettled([initCart(), initFavs()])
   }
 })
