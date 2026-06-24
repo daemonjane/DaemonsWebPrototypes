@@ -431,3 +431,4 @@ input.error, textarea.error {
 .items-center{align-items:center}
 .items-baseline{align-items:baseline}
 .items-stretch{align-items:stretch}
+.self-auto{align-self:auto}
