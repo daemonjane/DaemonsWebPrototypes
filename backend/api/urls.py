@@ -26,3 +26,4 @@ urlpatterns = [
     path('products/<slug:slug>/addons/', views.product_addons, name='product-addons'),
     path('products/search/', views.product_search, name='product-search'),
 ]
+    path('version/', views.api_version, name='api-version'),
