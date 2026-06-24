@@ -319,3 +319,4 @@ input.error, textarea.error {
 .resize-none{resize:none}
 .resize-y{resize:vertical}
 .resize-x{resize:horizontal}
+.object-cover{object-fit:cover}
