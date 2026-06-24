@@ -781,3 +781,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .underline{text-decoration-line:underline}
 .line-through{text-decoration-line:line-through}
 .no-underline{text-decoration-line:none}
+.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
