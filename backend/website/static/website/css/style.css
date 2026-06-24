@@ -433,3 +433,4 @@ input.error, textarea.error {
 .items-stretch{align-items:stretch}
 .self-auto{align-self:auto}
 .self-start{align-self:flex-start}
+.self-end{align-self:flex-end}
