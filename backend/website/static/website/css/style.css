@@ -741,3 +741,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .cursor-not-allowed{cursor:not-allowed}
 .cursor-text{cursor:text}
 .cursor-move{cursor:move}
+.cursor-wait{cursor:wait}
