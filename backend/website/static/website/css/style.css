@@ -960,3 +960,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 -rotate-90{transform:rotate(-90deg)}
 .translate-x-0{transform:translateX(0)}
 .translate-y-0{transform:translateY(0)}
+.translate-y-1{transform:translateY(0.25rem)}
