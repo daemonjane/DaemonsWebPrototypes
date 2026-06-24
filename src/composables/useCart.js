@@ -2,101 +2,246 @@ import { ref, computed, watch } from 'vue'
 import { useToast } from './useToast'
 
 const STORAGE_KEY = 'techstore_cart'
+const localCart = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
+const serverCart = ref({ items: [], total_price: 0, total_items: 0 })
+let useServer = false
 
-const cart = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
-
-watch(cart, (newVal) => {
+watch(localCart, (newVal) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(newVal))
 }, { deep: true })
 
-/**
- * @typedef {Object} CartItem
- * @property {string} id
- * @property {string} name
- * @property {number} price
- * @property {number} quantity
- * @property {'product'|'upgrade'|'membership'} [type]
- */
+function serverToLocal(server) {
+  return (server.items || []).map(item => ({
+    id: item.product_slug || `item-${item.id}`,
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+    image: item.product_image || item.image,
+    type: item.item_type,
+    _serverId: item.id,
+  }))
+}
 
-/**
- * Composable for managing the shopping cart.
- * Persists cart state to localStorage automatically.
- *
- * @returns {{
- *   cart: import('vue').Ref<CartItem[]>,
- *   totalItems: import('vue').ComputedRef<number>,
- *   totalPrice: import('vue').ComputedRef<number>,
- *   addItem: (product: { id: string, name: string, price: number }, quantity?: number) => void,
- *   updateQuantity: (productId: string, delta: number) => void,
- *   removeItem: (productId: string) => void,
- *   clearCart: () => void,
- *   addUpgrade: (id: string, name: string, price: number) => void,
- *   removeUpgrade: (id: string, name: string) => void,
- *   setMembership: (type: string|null, name: string, price: number) => void
- * }}
- */
+function localToServer(local) {
+  return local.map(item => ({
+    product_slug: item.type === 'product' ? item.id : undefined,
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+    image: item.image || '',
+    item_type: item.type || 'product',
+  }))
+}
+
 export function useCart() {
   const { addToast } = useToast()
 
-  const totalItems = computed(() => cart.value.reduce((sum, item) => sum + item.quantity, 0))
-  const totalPrice = computed(() => cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0))
+  const cart = computed(() => {
+    if (useServer) return serverToLocal(serverCart.value)
+    return localCart.value
+  })
 
-  function addItem(product, quantity = 1) {
-    const existing = cart.value.find(p => p.id === product.id)
+  const totalItems = computed(() => {
+    if (useServer) return serverCart.value.total_items || 0
+    return localCart.value.reduce((sum, item) => sum + item.quantity, 0)
+  })
+
+  const totalPrice = computed(() => {
+    if (useServer) return serverCart.value.total_price || 0
+    return localCart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  })
+
+  async function init() {
+    try {
+      const { useUser } = await import('./useUser')
+      const { user } = useUser()
+      if (!user.value) {
+        useServer = false
+        return
+      }
+      const { api } = await import('../utils/api')
+      const data = await api.cart.get()
+      serverCart.value = data
+      useServer = true
+    } catch {
+      useServer = false
+    }
+  }
+
+  async function refresh() {
+    if (!useServer) return
+    try {
+      const { api } = await import('../utils/api')
+      serverCart.value = await api.cart.get()
+    } catch {
+      useServer = false
+    }
+  }
+
+  async function addItem(product, quantity = 1) {
+    if (useServer) {
+      try {
+        const { api } = await import('../utils/api')
+        serverCart.value = await api.cart.add({
+          product_slug: product.id,
+          quantity,
+          name: product.name,
+          price: product.price,
+          image: product.image || '',
+        })
+        addToast(`Added ${product.name} to cart`, 3000, 'success')
+      } catch (e) {
+        addToast(e.message, 3000, 'error')
+      }
+      return
+    }
+    const existing = localCart.value.find(p => p.id === product.id)
     if (existing) {
       existing.quantity += quantity
       addToast(`Updated quantity of ${product.name} (${existing.quantity})`, 3000, 'success')
     } else {
-      cart.value.push({ ...product, quantity })
+      localCart.value.push({ ...product, quantity })
       addToast(`Added ${product.name} to cart`, 3000, 'success')
     }
   }
 
-  function updateQuantity(productId, delta) {
-    const item = cart.value.find(p => p.id === productId)
+  async function updateQuantity(productId, delta) {
+    if (useServer) {
+      try {
+        const item = cart.value.find(p => p.id === productId)
+        if (!item) return
+        const newQty = item.quantity + delta
+        if (newQty <= 0) {
+          const { api } = await import('../utils/api')
+          serverCart.value = await api.cart.removeItem(item._serverId)
+          addToast('Removed from cart', 3000, 'error')
+        } else {
+          const { api } = await import('../utils/api')
+          serverCart.value = await api.cart.updateItem(item._serverId, { quantity: newQty })
+          addToast(`Updated quantity (${newQty})`, 3000, 'success')
+        }
+      } catch (e) {
+        addToast(e.message, 3000, 'error')
+      }
+      return
+    }
+    const item = localCart.value.find(p => p.id === productId)
     if (!item) return
-    const oldQuantity = item.quantity
     item.quantity += delta
     if (item.quantity <= 0) {
-      cart.value = cart.value.filter(p => p.id !== productId)
-      addToast(`Removed ${item.name} from cart`, 3000, 'error')
+      localCart.value = localCart.value.filter(p => p.id !== productId)
+      addToast('Removed from cart', 3000, 'error')
     } else {
-      addToast(`Updated ${item.name} (${oldQuantity} → ${item.quantity})`, 3000, 'success')
+      addToast(`Updated quantity (${item.quantity})`, 3000, 'success')
     }
   }
 
-  function removeItem(productId) {
-    const item = cart.value.find(p => p.id === productId)
-    if (item) {
-      cart.value = cart.value.filter(p => p.id !== productId)
-      addToast(`Removed ${item.name} from cart`, 3000, 'error')
+  async function removeItem(productId) {
+    if (useServer) {
+      try {
+        const item = cart.value.find(p => p.id === productId)
+        if (!item) return
+        const { api } = await import('../utils/api')
+        serverCart.value = await api.cart.removeItem(item._serverId)
+        addToast('Removed from cart', 3000, 'error')
+      } catch (e) {
+        addToast(e.message, 3000, 'error')
+      }
+      return
     }
+    localCart.value = localCart.value.filter(p => p.id !== productId)
+    addToast('Removed from cart', 3000, 'error')
   }
 
-  function clearCart() {
-    cart.value = []
+  async function clearCart() {
+    if (useServer) {
+      try {
+        const { api } = await import('../utils/api')
+        serverCart.value = await api.cart.clear()
+      } catch (e) {
+        addToast(e.message, 3000, 'error')
+      }
+      return
+    }
+    localCart.value = []
     addToast('Cart cleared', 2000, 'error')
   }
 
-  function addUpgrade(id, name, price) {
-    // Remove any existing upgrade with the same id
-    cart.value = cart.value.filter(item => item.id !== id)
-    cart.value.push({ id, name, price, quantity: 1, type: 'upgrade' })
+  async function addUpgrade(id, name, price) {
+    if (useServer) {
+      try {
+        const { api } = await import('../utils/api')
+        serverCart.value = await api.cart.add({ name, price, item_type: 'upgrade', quantity: 1 })
+        addToast(`Added ${name}`, 3000, 'success')
+      } catch (e) {
+        addToast(e.message, 3000, 'error')
+      }
+      return
+    }
+    localCart.value = localCart.value.filter(item => item.id !== id)
+    localCart.value.push({ id, name, price, quantity: 1, type: 'upgrade' })
     addToast(`Added ${name}`, 3000, 'success')
   }
 
-  function removeUpgrade(id, name) {
-    cart.value = cart.value.filter(item => item.id !== id)
+  async function removeUpgrade(id, name) {
+    if (useServer) {
+      const item = cart.value.find(p => p.id === id)
+      if (item && item._serverId) {
+        try {
+          const { api } = await import('../utils/api')
+          serverCart.value = await api.cart.removeItem(item._serverId)
+        } catch {
+          // ignore
+        }
+      }
+      return
+    }
+    localCart.value = localCart.value.filter(item => item.id !== id)
     addToast(`Removed ${name}`, 3000, 'error')
   }
 
-  function setMembership(type, name, price) {
-    cart.value = cart.value.filter(item => item.type !== 'membership')
+  async function setMembership(type, name, price) {
+    if (useServer) {
+      try {
+        const { api } = await import('../utils/api')
+        const itemsToRemove = cart.value.filter(i => i.type === 'membership')
+        for (const item of itemsToRemove) {
+          if (item._serverId) await api.cart.removeItem(item._serverId)
+        }
+        if (type) {
+          serverCart.value = await api.cart.add({ name, price, item_type: 'membership', quantity: 1 })
+        } else {
+          serverCart.value = await api.cart.get()
+        }
+        addToast(type ? `Selected ${name}` : 'Membership removed', 3000, 'success')
+      } catch (e) {
+        addToast(e.message, 3000, 'error')
+      }
+      return
+    }
+    localCart.value = localCart.value.filter(item => item.type !== 'membership')
     if (type) {
-      cart.value.push({ id: `membership-${type}`, name, price, quantity: 1, type: 'membership' })
+      localCart.value.push({ id: `membership-${type}`, name, price, quantity: 1, type: 'membership' })
       addToast(`Selected ${name}`, 3000, 'success')
     }
   }
 
-  return { cart, totalItems, totalPrice, addItem, updateQuantity, removeItem, clearCart, addUpgrade, removeUpgrade, setMembership }
+  async function mergeLocalIntoServer() {
+    const items = localCart.value
+    if (items.length === 0) return
+    try {
+      const { api } = await import('../utils/api')
+      serverCart.value = await api.cart.merge(items)
+      localCart.value = []
+      useServer = true
+    } catch {
+      useServer = false
+    }
+  }
+
+  return {
+    cart, totalItems, totalPrice,
+    init, refresh, mergeLocalIntoServer,
+    addItem, updateQuantity, removeItem, clearCart, addUpgrade, removeUpgrade, setMembership,
+  }
 }

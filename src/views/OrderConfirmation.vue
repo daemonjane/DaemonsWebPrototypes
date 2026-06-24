@@ -1,8 +1,9 @@
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
-const orderNumber = Math.floor(100000 + Math.random() * 900000)
+const orderNumber = route.query.id || Math.floor(100000 + Math.random() * 900000)
 </script>
 
 <template>
@@ -19,8 +20,8 @@ const orderNumber = Math.floor(100000 + Math.random() * 900000)
       <p class="text-2xl font-mono font-bold text-cyan-400">#{{ orderNumber }}</p>
     </div>
     <div class="space-y-3">
-      <router-link to="/tracking" class="block w-full sm:w-auto sm:inline-block bg-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-cyan-500 transition-all">
-        Track Order
+      <router-link to="/orders" class="block w-full sm:w-auto sm:inline-block bg-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-cyan-500 transition-all">
+        View Orders
       </router-link>
       <router-link to="/shop" class="block w-full sm:w-auto sm:inline-block border border-slate-600 text-slate-300 px-8 py-3 rounded-lg font-semibold hover:border-cyan-500 hover:text-cyan-400 transition-all sm:ml-3">
         Continue Shopping

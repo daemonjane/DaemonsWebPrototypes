@@ -21,4 +21,28 @@ export const api = {
     get: () => request('GET', '/api/auth/profile/'),
     update: (data) => request('PATCH', '/api/auth/profile/', data),
   },
+  cart: {
+    get: () => request('GET', '/api/cart/'),
+    add: (data) => request('POST', '/api/cart/add/', data),
+    updateItem: (itemId, data) => request('PATCH', `/api/cart/item/${itemId}/`, data),
+    removeItem: (itemId) => request('DELETE', `/api/cart/item/${itemId}/`),
+    clear: () => request('POST', '/api/cart/clear/'),
+    merge: (items) => request('POST', '/api/cart/merge/', { items }),
+  },
+  wishlist: {
+    get: () => request('GET', '/api/wishlist/'),
+    toggle: (slug) => request('POST', '/api/wishlist/toggle/', { slug }),
+    check: (slug) => request('GET', `/api/wishlist/check/${slug}/`),
+  },
+  orders: {
+    list: () => request('GET', '/api/orders/'),
+    detail: (id) => request('GET', `/api/orders/${id}/`),
+    checkout: (data) => request('POST', '/api/orders/checkout/', data),
+  },
+  search: (query, category = '') => {
+    const params = new URLSearchParams()
+    if (query) params.set('q', query)
+    if (category) params.set('category', category)
+    return request('GET', `/api/products/search/?${params}`)
+  },
 }

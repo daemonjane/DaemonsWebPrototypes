@@ -15,6 +15,7 @@ const NotFound = () => import('../views/NotFound.vue')
 const CounterFeature = () => import('../views/CounterFeature.vue')
 const OrderTracking = () => import('../views/OrderTracking.vue')
 const OrderConfirmation = () => import('../views/OrderConfirmation.vue')
+const OrderHistory = () => import('../views/OrderHistory.vue')
 const PrivacyPolicy = () => import('../views/PrivacyPolicy.vue')
 const TermsOfService = () => import('../views/TermsOfService.vue')
 const CookiesPolicy = () => import('../views/CookiesPolicy.vue')
@@ -24,6 +25,7 @@ const routes = [
   { path: '/', component: Home },
   { path: '/shop', component: Shop },
   { path: '/profile', component: Profile, meta: { requiresAuth: true } },
+  { path: '/orders', component: OrderHistory, meta: { requiresAuth: true } },
   { path: '/product/:id', component: ProductDetail },
   { path: '/favorites', component: FavoritesVue },
   { path: '/checkout', component: Checkout },

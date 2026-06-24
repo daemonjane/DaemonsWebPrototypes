@@ -13,11 +13,19 @@ import { products } from '../data/products'
 
 const route = useRoute()
 const router = useRouter()
-const { totalItems } = useCart()
+const { totalItems, init: initCart } = useCart()
+const { init: initFavs } = useFavorites()
 const { isDark, toggle: toggleTheme } = useTheme()
 const { user, isAuthenticated, isStaff, refresh, logout } = useUser()
 
-onMounted(() => { refresh() })
+onMounted(async () => {
+  await refresh()
+  if (user.value) {
+    const { init: initCart } = useCart()
+    const { init: initFavs } = useFavorites()
+    await Promise.allSettled([initCart(), initFavs()])
+  }
+})
 
 async function handleLogout() {
   await logout()
@@ -155,6 +163,14 @@ function closeSearch() {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             Profile
           </router-link>
+          <router-link
+            v-if="isAuthenticated()"
+            to="/orders"
+            class="hidden md:inline-flex text-sm font-medium items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Orders
+          </router-link>
           <button
             v-if="isAuthenticated()"
             @click="handleLogout"
@@ -272,6 +288,13 @@ function closeSearch() {
               @click="mobileMenuOpen = false"
             >
               Profile
+            </router-link>
+            <router-link
+              to="/orders"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              @click="mobileMenuOpen = false"
+            >
+              Orders
             </router-link>
             <button
               @click="handleLogout; mobileMenuOpen = false"

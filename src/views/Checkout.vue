@@ -45,6 +45,8 @@ const membershipTotal = computed(() =>
 const discountAmount = computed(() => totalPrice.value * (giftCardDiscount.value / 100))
 const finalTotal = computed(() => totalPrice.value - discountAmount.value)
 
+const placing = ref(false)
+
 function applyGiftCard() {
   giftCardError.value = ''
   if (!giftCardCode.value.trim()) {
@@ -91,12 +93,26 @@ function prevStep() {
   currentStep.value--
 }
 
-function placeOrder() {
-  addToast('Order placed successfully!', 'success')
-  setTimeout(() => {
-    clearCart()
-    router.push('/confirmation')
-  }, 1500)
+async function placeOrder() {
+  placing.value = true
+  try
+  {
+    const { api } = await import('../utils/api')
+    const result = await api.orders.checkout({
+      name: form.name,
+      email: form.email,
+      address: form.address,
+      gift_card_code: giftCardApplied.value ? giftCardCode.value : '',
+      gift_card_discount: giftCardApplied.value ? giftCardDiscount.value : null,
+    })
+    await clearCart()
+    addToast('Order placed successfully!', 'success')
+    router.push(`/confirmation?id=${result.id}`)
+  } catch (e) {
+    addToast(e.message || 'Failed to place order', 'error')
+  } finally {
+    placing.value = false
+  }
 }
 </script>
 
@@ -294,9 +310,9 @@ function placeOrder() {
                 class="flex-1 border border-slate-700 py-3 rounded-md font-semibold hover:bg-slate-800 transition">
                 Back
               </button>
-              <button @click="placeOrder"
-                class="flex-1 bg-emerald-700 hover:bg-emerald-600 py-3 rounded-md font-bold transition active:scale-95">
-                Place Order — ${{ finalTotal.toFixed(2) }}
+              <button @click="placeOrder" :disabled="placing"
+                class="flex-1 bg-emerald-700 hover:bg-emerald-600 py-3 rounded-md font-bold transition active:scale-95 disabled:opacity-50">
+                {{ placing ? 'Placing Order...' : `Place Order — $${finalTotal.toFixed(2)}` }}
               </button>
             </div>
           </div>

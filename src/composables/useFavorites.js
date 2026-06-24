@@ -2,28 +2,19 @@ import { ref, computed } from 'vue'
 import { products } from '../data/products'
 
 const STORAGE_KEY = 'techstore_favorites'
-
-const ids = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
+const localIds = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
+const serverSlugs = ref([])
+let useServer = false
 
 function persist() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(ids.value))
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(localIds.value))
 }
 
-/**
- * Composable for managing a wishlist of favorite products.
- * Persists to localStorage automatically.
- *
- * @returns {{
- *   favoriteIds: import('vue').Ref<string[]>,
- *   items: import('vue').ComputedRef<Object[]>,
- *   count: import('vue').ComputedRef<number>,
- *   toggle: (productId: string) => void,
- *   isFavorite: (productId: string) => boolean,
- *   clear: () => void
- * }}
- */
 export function useFavorites() {
-  const favoriteIds = ids
+  const ids = computed(() => {
+    if (useServer) return serverSlugs.value
+    return localIds.value
+  })
 
   const items = computed(() =>
     ids.value.map(id => products.find(p => p.id === id)).filter(Boolean)
@@ -31,12 +22,44 @@ export function useFavorites() {
 
   const count = computed(() => ids.value.length)
 
-  function toggle(productId) {
-    const idx = ids.value.indexOf(productId)
+  async function init() {
+    try {
+      const { useUser } = await import('./useUser')
+      const { user } = useUser()
+      if (!user.value) {
+        useServer = false
+        return
+      }
+      const { api } = await import('../utils/api')
+      const data = await api.wishlist.get()
+      serverSlugs.value = data.product_slugs || []
+      useServer = true
+    } catch {
+      useServer = false
+    }
+  }
+
+  async function toggle(productId) {
+    if (useServer) {
+      try {
+        const { api } = await import('../utils/api')
+        const data = await api.wishlist.toggle(productId)
+        serverSlugs.value = data.product_slugs || []
+      } catch {
+        // fallback to local
+        toggleLocal(productId)
+      }
+      return
+    }
+    toggleLocal(productId)
+  }
+
+  function toggleLocal(productId) {
+    const idx = localIds.value.indexOf(productId)
     if (idx === -1) {
-      ids.value.push(productId)
+      localIds.value.push(productId)
     } else {
-      ids.value.splice(idx, 1)
+      localIds.value.splice(idx, 1)
     }
     persist()
   }
@@ -45,10 +68,22 @@ export function useFavorites() {
     return ids.value.includes(productId)
   }
 
-  function clear() {
-    ids.value = []
+  async function clear() {
+    if (useServer) {
+      try {
+        const { api } = await import('../utils/api')
+        for (const slug of serverSlugs.value) {
+          await api.wishlist.toggle(slug)
+        }
+        serverSlugs.value = []
+      } catch {
+        // ignore
+      }
+      return
+    }
+    localIds.value = []
     persist()
   }
 
-  return { favoriteIds, items, count, toggle, isFavorite, clear }
+  return { ids, items, count, init, toggle, isFavorite, clear }
 }

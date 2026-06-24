@@ -15,6 +15,33 @@ export function useUser() {
     } finally {
       state.loaded = true
     }
+    if (state.user) {
+      await Promise.allSettled([
+        syncCart(),
+        syncWishlist(),
+      ])
+    }
+  }
+
+  async function syncCart() {
+    try {
+      const { useCart } = await import('./useCart')
+      const cart = useCart()
+      await cart.mergeLocalIntoServer()
+      await cart.init()
+    } catch {
+      // ignore
+    }
+  }
+
+  async function syncWishlist() {
+    try {
+      const { useFavorites } = await import('./useFavorites')
+      const favs = useFavorites()
+      await favs.init()
+    } catch {
+      // ignore
+    }
   }
 
   async function logout() {
