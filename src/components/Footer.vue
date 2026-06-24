@@ -73,7 +73,7 @@ function getCSRF() {
           <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Stay Updated</h3>
           <p class="text-xs text-slate-500">Get allocation drops and pricing alerts.</p>
           <form @submit.prevent="subscribeNewsletter" class="flex gap-2">
-            <input v-model="newsletterEmail" type="email" placeholder="Your email" class="flex-1 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            <input v-model="newsletterEmail" type="email" placeholder="Your email" class="flex-1 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" aria-label="Newsletter email">
             <button type="submit" class="bg-cyan-600 text-white px-3 py-2 rounded-md text-xs font-semibold hover:bg-cyan-500 transition-colors">Subscribe</button>
           </form>
           <p v-if="newsletterMsg" class="text-xs text-slate-400 mt-1">{{ newsletterMsg }}</p>
