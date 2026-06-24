@@ -153,7 +153,7 @@ onMounted(async () => {
         <p class="text-2xl text-cyan-400 mt-4 font-mono">${{ product.price.toFixed(2) }}</p>
 
         <!-- Stock status -->
-        <div v-if="product.stock !== undefined" class="mt-3">
+        <div v-if="product.stock !== undefined" class="mt-3" aria-live="polite">
           <span v-if="product.stock === 0"
                 class="inline-flex items-center gap-1.5 bg-red-950/30 text-red-400 text-xs font-mono px-3 py-1.5 rounded-full border border-red-800/50">
             <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
