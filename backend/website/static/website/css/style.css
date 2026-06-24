@@ -941,3 +941,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .duration-100{transition-duration:100ms}
 .duration-200{transition-duration:200ms}
 .duration-300{transition-duration:300ms}
+.duration-500{transition-duration:500ms}
