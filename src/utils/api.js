@@ -55,7 +55,11 @@ export const api = {
   orders: {
     list: () => request('GET', '/api/orders/'),
     detail: (id) => request('GET', `/api/orders/${id}/`),
+    tracking: (id) => request('GET', `/api/orders/${id}/tracking/`),
     checkout: (data) => request('POST', '/api/orders/checkout/', data),
+  },
+  addons: {
+    list: (slug) => request('GET', `/api/products/${slug}/addons/`),
   },
   search: (query, category = '') => {
     const params = new URLSearchParams()
