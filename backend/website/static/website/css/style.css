@@ -300,3 +300,4 @@ input.error, textarea.error {
 }
 .transition-all{transition:all 0.2s ease}
 .transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke}
+.transition-transform{transition-property:transform}
