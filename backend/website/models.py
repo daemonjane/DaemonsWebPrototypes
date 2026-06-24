@@ -5,7 +5,7 @@ from django.urls import reverse
 class Comment(models.Model):
     """A comment attached to a task."""
 
-    task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="comments")
+    task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="comments", help_text="The task this comment belongs to")
     author = models.CharField("author", max_length=100, help_text="Your name or display name")
     body = models.TextField("body", help_text="Your comment text")
     created_at = models.DateTimeField(auto_now_add=True)
