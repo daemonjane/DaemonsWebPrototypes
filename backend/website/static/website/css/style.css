@@ -938,3 +938,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .transition-opacity{transition-property:opacity;transition-duration:150ms;transition-timing-function:cubic-bezier(0.4,0,0.2,1)}
 .transition-shadow{transition-property:box-shadow;transition-duration:150ms;transition-timing-function:cubic-bezier(0.4,0,0.2,1)}
 .transition-transform{transition-property:transform;transition-duration:150ms;transition-timing-function:cubic-bezier(0.4,0,0.2,1)}
+.duration-100{transition-duration:100ms}
