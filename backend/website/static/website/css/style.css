@@ -714,3 +714,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .overflow-x-scroll{overflow-x:scroll}
 .overflow-y-scroll{overflow-y:scroll}
 .block{display:block}
+.inline-block{display:inline-block}
