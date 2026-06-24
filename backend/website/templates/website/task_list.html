@@ -77,6 +77,34 @@
   </table>
 </div>
 
+{% if paginator.num_pages > 1 %}
+<nav class="flex items-center justify-between mt-6 text-sm" aria-label="Task pagination">
+  <span class="text-xs text-slate-600">
+    Page {{ page_obj.number }} of {{ paginator.num_pages }}
+    ({{ task_count }} task{{ task_count|pluralize }})
+  </span>
+  <div class="flex items-center gap-1">
+    {% if page_obj.has_previous %}
+    <a href="?page=1" class="px-3 py-1.5 rounded-md bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors text-xs" title="First">&laquo;</a>
+    <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1.5 rounded-md bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors text-xs">&lsaquo; Prev</a>
+    {% endif %}
+
+    {% for num in paginator.page_range %}
+      {% if num == page_obj.number %}
+      <span class="px-3 py-1.5 rounded-md bg-cyan-600 text-white text-xs font-semibold">{{ num }}</span>
+      {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+      <a href="?page={{ num }}" class="px-3 py-1.5 rounded-md bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors text-xs">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1.5 rounded-md bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors text-xs">Next &rsaquo;</a>
+    <a href="?page={{ paginator.num_pages }}" class="px-3 py-1.5 rounded-md bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors text-xs" title="Last">&raquo;</a>
+    {% endif %}
+  </div>
+</nav>
+{% endif %}
+
 <div id="task-counts" class="mt-4 text-xs text-slate-600 flex items-center gap-4">
   <span id="count-total">{{ task_count }} task{{ task_count|pluralize }}</span>
   <span id="count-done" class="text-emerald-500">{{ completed_count }} done</span>
@@ -95,6 +123,7 @@
   const countTotal = document.getElementById("count-total");
   const countDone = document.getElementById("count-done");
   const countPending = document.getElementById("count-pending");
+  const paginationNav = document.querySelector("[aria-label='Task pagination']");
 
   let controller = null;
 
@@ -109,6 +138,8 @@
       location.reload();
       return;
     }
+
+    if (paginationNav) paginationNav.style.display = "none";
 
     try {
       const resp = await fetch(url, { signal: controller.signal });
