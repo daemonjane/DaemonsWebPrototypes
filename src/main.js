@@ -2,7 +2,10 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { useLoadingBar } from './composables/useLoadingBar'
+import { ensureCSRF } from './utils/api'
 import './style.css'
+
+ensureCSRF()
 
 router.beforeEach(() => {
   const { start } = useLoadingBar()

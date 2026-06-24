@@ -1,9 +1,21 @@
 const BASE = ''
 
+function getCSRFToken() {
+  const name = 'csrftoken'
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
+  return match ? decodeURIComponent(match[2]) : ''
+}
+
 async function request(method, path, body) {
+  const headers = { 'Content-Type': 'application/json' }
+  const unsafe = ['POST', 'PUT', 'PATCH', 'DELETE']
+  if (unsafe.includes(method)) {
+    const token = getCSRFToken()
+    if (token) headers['X-CSRFToken'] = token
+  }
   const opts = {
     method,
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     credentials: 'same-origin',
   }
   if (body) opts.body = JSON.stringify(body)
@@ -11,6 +23,12 @@ async function request(method, path, body) {
   const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`)
   return data
+}
+
+export async function ensureCSRF() {
+  if (!getCSRFToken()) {
+    await fetch(`${BASE}/api/auth/csrf/`, { credentials: 'same-origin' })
+  }
 }
 
 export const api = {
