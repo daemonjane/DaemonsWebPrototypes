@@ -389,3 +389,4 @@ input.error, textarea.error {
 .col-span-5{grid-column:span 5/span 5}
 .col-span-6{grid-column:span 6/span 6}
 .col-span-full{grid-column:1/-1}
+.row-auto{grid-row:auto}
