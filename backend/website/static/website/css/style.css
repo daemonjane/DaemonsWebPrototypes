@@ -303,3 +303,4 @@ input.error, textarea.error {
 .transition-transform{transition-property:transform}
 .scale-105{transform:scale(1.05)}
 .scale-110{transform:scale(1.10)}
+.opacity-0{opacity:0}
