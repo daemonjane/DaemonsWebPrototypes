@@ -184,7 +184,9 @@ class NewsletterSubscriptionAdmin(admin.ModelAdmin):
 @admin.register(TaskFile)
 class TaskFileAdmin(admin.ModelAdmin):
     list_display = ["filename", "task_link", "uploaded_at"]
+    list_filter = ["uploaded_at"]
     search_fields = ["name", "task__title"]
+    autocomplete_fields = ["task"]
     search_help_text = "Search by filename or task title"
     date_hierarchy = "uploaded_at"
     list_select_related = ["task"]
