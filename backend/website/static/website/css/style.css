@@ -379,3 +379,4 @@ input.error, textarea.error {
 .list-decimal{list-style-type:decimal}
 .list-none{list-style-type:none}
 .order-first{order:-9999}
+.order-last{order:9999}
