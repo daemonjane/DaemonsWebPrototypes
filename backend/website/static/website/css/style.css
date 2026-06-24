@@ -302,3 +302,4 @@ input.error, textarea.error {
 .transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke}
 .transition-transform{transition-property:transform}
 .scale-105{transform:scale(1.05)}
+.scale-110{transform:scale(1.10)}
