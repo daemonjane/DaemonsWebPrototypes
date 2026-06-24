@@ -19,6 +19,7 @@ urlpatterns = [
     path("robots.txt", views.robots_txt, name="robots_txt"),
     path("humans.txt", views.humans_txt, name="humans_txt"),
     path("sitemap.xml", views.sitemap_xml, name="sitemap_xml"),
+    path("dashboard/", views.admin_dashboard, name="admin_dashboard"),
     path("contact/", views.contact, name="contact"),
     path("accounts/register/", views.register, name="register"),
     path("login/", auth_views.LoginView.as_view(template_name="website/login.html"), name="login"),

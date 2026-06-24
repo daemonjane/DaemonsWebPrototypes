@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
@@ -7,7 +8,7 @@ from django.template.loader import render_to_string
 
 
 from .forms import CommentForm, ContactForm, RegisterForm, TaskForm
-from .models import Comment, Task
+from .models import Comment, ContactMessage, Task
 
 PAGES = {
     "shop": ("Shop", "Browse our curated collection of premium hardware."),
@@ -34,6 +35,29 @@ def home(request):
         "completed_tasks": completed_tasks,
         "pending_tasks": pending_tasks,
         "total_comments": Comment.objects.count(),
+    })
+
+
+@staff_member_required
+def admin_dashboard(request):
+    from api.models import Category, Order, Product
+    product_count = Product.objects.count()
+    category_count = Category.objects.count()
+    order_count = Order.objects.count()
+    task_count = Task.objects.count()
+    comment_count = Comment.objects.count()
+    contact_count = ContactMessage.objects.count()
+    recent_orders = Order.objects.select_related().order_by("-created_at")[:5]
+    recent_tasks = Task.objects.prefetch_related("comments").order_by("-created_at")[:5]
+    return render(request, "website/admin_dashboard.html", {
+        "product_count": product_count,
+        "category_count": category_count,
+        "order_count": order_count,
+        "task_count": task_count,
+        "comment_count": comment_count,
+        "contact_count": contact_count,
+        "recent_orders": recent_orders,
+        "recent_tasks": recent_tasks,
     })
 
 
