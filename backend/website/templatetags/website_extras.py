@@ -53,6 +53,11 @@ def startswith(value, arg):
 
 
 @register.filter
+def endswith(value, arg):
+    return str(value).endswith(arg)
+
+
+@register.filter
 def field_errors(field):
     return field.errors
 
