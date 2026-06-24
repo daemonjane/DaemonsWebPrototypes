@@ -952,3 +952,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .scale-100{transform:scale(1)}
 .scale-105{transform:scale(1.05)}
 .scale-110{transform:scale(1.1)}
+.rotate-0{transform:rotate(0deg)}
