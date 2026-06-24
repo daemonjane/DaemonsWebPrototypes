@@ -2,6 +2,22 @@ from django.db import models
 from django.urls import reverse
 
 
+class NewsletterSubscription(models.Model):
+    """An email subscriber to the TechStore newsletter."""
+
+    email = models.EmailField("email", unique=True, help_text="Subscriber email address")
+    active = models.BooleanField("active", default=True, help_text="Whether the subscription is active")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the subscription was created")
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Newsletter Subscription"
+        verbose_name_plural = "Newsletter Subscriptions"
+
+    def __str__(self):
+        return self.email
+
+
 class Comment(models.Model):
     """A comment attached to a task."""
 
