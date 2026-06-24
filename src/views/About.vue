@@ -97,7 +97,7 @@ const milestones = [
             <span class="text-cyan-400 font-mono text-xs">{{ tech.level }}%</span>
           </div>
           <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-            <div class="h-full rounded-full transition-all duration-1000 ease-out" :style="{ width: stackVisible ? tech.level + '%' : '0%' }" :class="tech.color"></div>
+            <div class="h-full rounded-full transition-all duration-1000 ease-out" :style="{ width: stackVisible ? tech.level + '%' : '0%' }" :class="tech.color" role="progressbar" :aria-valuenow="tech.level" aria-valuemin="0" aria-valuemax="100" :aria-label="tech.name + ' proficiency: ' + tech.level + '%'"></div>
           </div>
         </div>
       </div>
