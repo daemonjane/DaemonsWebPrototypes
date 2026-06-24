@@ -128,7 +128,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ["name", "email", "created_at"]
+    list_display = ["name", "email", "created_at", "message_preview"]
     search_fields = ["name", "email", "message"]
     date_hierarchy = "created_at"
     readonly_fields = ["name", "email", "message", "created_at", "message_preview"]
@@ -159,7 +159,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
 @admin.register(NewsletterSubscription)
 class NewsletterSubscriptionAdmin(admin.ModelAdmin):
     list_display = ["email", "active", "created_at"]
-    list_filter = ["active"]
+    list_filter = ["active", "created_at"]
     search_fields = ["email"]
     date_hierarchy = "created_at"
     list_per_page = 50
