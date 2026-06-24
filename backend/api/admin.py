@@ -143,6 +143,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "created_at"]
     search_fields = ["name", "email", "message"]
     date_hierarchy = "created_at"
+    list_per_page = 25
     readonly_fields = ["name", "email", "message", "created_at", "message_preview"]
     fieldsets = [
         (None, {"fields": ["name", "email", "message", "message_preview"]}),
