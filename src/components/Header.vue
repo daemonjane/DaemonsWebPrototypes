@@ -298,6 +298,7 @@ function closeSearch() {
             <button
               @click="handleLogout; mobileMenuOpen = false"
               class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors cursor-pointer"
+              aria-label="Logout"
             >
               Logout
             </button>
