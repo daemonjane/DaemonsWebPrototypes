@@ -350,3 +350,4 @@ input.error, textarea.error {
 .capitalize{text-transform:capitalize}
 .italic{font-style:italic}
 .not-italic{font-style:normal}
+.underline{text-decoration-line:underline}
