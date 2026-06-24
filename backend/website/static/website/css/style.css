@@ -395,3 +395,4 @@ input.error, textarea.error {
 .row-span-3{grid-row:span 3/span 3}
 .row-span-full{grid-row:1/-1}
 .grid-flow-row{grid-auto-flow:row}
+.grid-flow-col{grid-auto-flow:column}
