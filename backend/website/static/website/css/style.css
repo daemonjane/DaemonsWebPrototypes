@@ -320,3 +320,4 @@ input.error, textarea.error {
 .resize-y{resize:vertical}
 .resize-x{resize:horizontal}
 .object-cover{object-fit:cover}
+.object-contain{object-fit:contain}
