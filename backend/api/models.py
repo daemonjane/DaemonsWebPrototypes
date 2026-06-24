@@ -314,3 +314,12 @@ def item_count(self):
     return self.items.count()
 Order.item_count_prop = item_count
 del item_count
+
+@property
+def computed_total(self):
+    total = sum(float(i.price) * i.quantity for i in self.items.all())
+    if self.gift_card_discount:
+        total -= float(self.gift_card_discount)
+    return round(total, 2)
+Order.computed_total = computed_total
+del computed_total
