@@ -48,6 +48,11 @@ def trim(value):
 
 
 @register.filter
+def startswith(value, arg):
+    return str(value).startswith(arg)
+
+
+@register.filter
 def field_errors(field):
     return field.errors
 
