@@ -329,3 +329,4 @@ input.error, textarea.error {
 .overflow-hidden{overflow:hidden}
 .overflow-scroll{overflow:scroll}
 .overflow-visible{overflow:visible}
+.overflow-x-auto{overflow-x:auto}
