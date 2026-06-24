@@ -19,7 +19,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ["name", "category", "price", "rating", "stock", "image_preview", "created_at"]
-    list_filter = ["category", "rating"]
+    list_filter = ["category", "rating", "stock"]
     search_fields = ["name", "description"]
     prepopulated_fields = {"slug": ("name",)}
     date_hierarchy = "created_at"
