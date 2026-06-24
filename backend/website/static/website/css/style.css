@@ -322,3 +322,4 @@ input.error, textarea.error {
 .object-cover{object-fit:cover}
 .object-contain{object-fit:contain}
 .object-fill{object-fit:fill}
+.object-scale-down{object-fit:scale-down}
