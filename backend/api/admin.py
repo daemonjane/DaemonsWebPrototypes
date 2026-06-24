@@ -71,6 +71,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ["status"]
     search_fields = ["name", "email"]
     date_hierarchy = "created_at"
+    list_per_page = 25
     inlines = [OrderItemInline]
     readonly_fields = ["created_at", "item_count", "total_value"]
     fieldsets = [
