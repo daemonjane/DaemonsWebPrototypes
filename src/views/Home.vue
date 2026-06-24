@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import AnimatedCounter from '../components/AnimatedCounter.vue'
 import AbstractArt from '../components/AbstractArt.vue'
@@ -15,6 +15,31 @@ const { items: recentlyViewed } = useRecentlyViewed()
 const products = ref(fallbackProducts)
 const banners = ref([])
 const loading = ref(true)
+const activeSlide = ref(0)
+let slideTimer = null
+
+onMounted(() => { startSlideTimer() })
+onUnmounted(() => { clearInterval(slideTimer) })
+
+function startSlideTimer() {
+  slideTimer = setInterval(() => {
+    if (banners.value.length) {
+      activeSlide.value = (activeSlide.value + 1) % banners.value.length
+    }
+  }, 5000)
+}
+
+function setSlide(i) {
+  activeSlide.value = i
+  clearInterval(slideTimer)
+  startSlideTimer()
+}
+
+watch(banners, () => {
+  activeSlide.value = 0
+  clearInterval(slideTimer)
+  startSlideTimer()
+})
 
 function normalizeProduct(p) {
   const imgPath = p.main_image?.path
@@ -153,14 +178,17 @@ function quickAdd(product) {
 <template>
   <div class="space-y-20 sm:space-y-28">
     <!-- Banners carousel -->
-    <section v-if="banners.length" class="relative overflow-hidden rounded-xl">
-      <div class="flex transition-transform duration-500">
-        <div v-for="(banner, i) in banners" :key="banner.id || i" class="min-w-full">
+    <section v-if="banners.length" class="relative overflow-hidden rounded-xl" role="region" aria-label="Promotional banners">
+      <div class="flex transition-transform duration-500" :style="{ transform: `translateX(-${activeSlide * 100}%)` }">
+        <div v-for="(banner, i) in banners" :key="banner.id || i" class="min-w-full relative">
           <img :src="`https://api.osimart.com/${banner.image?.path || ''}`" :alt="banner.title || 'Banner'" class="w-full h-48 sm:h-72 object-cover" />
           <div v-if="banner.title" class="absolute inset-0 flex items-center justify-center bg-black/30">
             <h2 class="text-white text-2xl sm:text-4xl font-bold">{{ banner.title }}</h2>
           </div>
         </div>
+      </div>
+      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2" role="tablist" aria-label="Slide navigation">
+        <button v-for="(banner, i) in banners" :key="i" @click="setSlide(i)" :aria-label="`Go to slide ${i + 1}`" :aria-selected="activeSlide === i" :class="['w-2.5 h-2.5 rounded-full transition-all', activeSlide === i ? 'bg-cyan-400 scale-125' : 'bg-slate-500/60 hover:bg-slate-400']"></button>
       </div>
     </section>
 
