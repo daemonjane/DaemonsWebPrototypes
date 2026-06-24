@@ -517,3 +517,22 @@ def product_search(request):
 @permission_classes([AllowAny])
 def api_version(request):
     return Response({"version": "1.0.0", "api": "techstore"})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def newsletter_subscribe(request):
+    from website.models import NewsletterSubscription
+    email = request.data.get("email", "").strip()
+    if not email:
+        return Response({"error": "Email is required."}, status=400)
+    subscription, created = NewsletterSubscription.objects.get_or_create(
+        email=email, defaults={"active": True},
+    )
+    if created:
+        return Response({"message": "Subscribed successfully."}, status=201)
+    if not subscription.active:
+        subscription.active = True
+        subscription.save()
+        return Response({"message": "Subscription reactivated."})
+    return Response({"message": "Already subscribed."})
