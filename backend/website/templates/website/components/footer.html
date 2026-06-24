@@ -1,3 +1,4 @@
+{% load website_extras %}
 <footer id="main-footer" class="bg-slate-900 border-t border-slate-800 mt-16 sm:mt-20">
   <div class="max-w-7xl mx-auto px-4 py-10 sm:py-12">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -52,7 +53,7 @@
   </div>
   <div class="border-t border-slate-800 py-4">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-600">
-      <div>&copy; {{ current_year|default:"2026" }} TechStore Engine. Global Supply Hub. {% load website_extras %}<span class="ml-2">| {% current_time %}</span></div>
+      <div>&copy; {% current_time "Y" %} TechStore Engine. Global Supply Hub. <span class="ml-2">| {% current_time %}</span></div>
       <div class="flex items-center gap-4">
         <span class="flex items-center gap-1.5" title="Live visitors">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -62,7 +63,7 @@
         <a href="/privacy/" class="hover:text-slate-400 transition-colors">Privacy</a>
         <a href="/terms/" class="hover:text-slate-400 transition-colors">Terms</a>
         <a href="/cookies/" class="hover:text-slate-400 transition-colors">Cookies</a>
-          {% if user.is_staff %}<a href="{% url 'admin:index' %}" class="hover:text-cyan-400 transition-colors">Admin</a>{% endif %}
+        {% if user.is_staff %}<a href="{% url 'admin:index' %}" class="hover:text-cyan-400 transition-colors">Admin</a>{% endif %}
         <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors">GitHub</a>
         <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors">Twitter</a>
       </div>
