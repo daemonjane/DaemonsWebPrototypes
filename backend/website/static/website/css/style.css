@@ -427,3 +427,4 @@ input.error, textarea.error {
 .content-around{align-content:space-around}
 .content-evenly{align-content:space-evenly}
 .items-start{align-items:flex-start}
+.items-end{align-items:flex-end}
