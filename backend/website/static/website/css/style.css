@@ -749,3 +749,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .cursor-grabbing{cursor:grabbing}
 .pointer-events-none{pointer-events:none}
 .pointer-events-auto{pointer-events:auto}
+.select-none{user-select:none}
