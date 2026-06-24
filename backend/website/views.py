@@ -385,6 +385,10 @@ def humans_txt(request):
     return HttpResponse(render_to_string("website/humans.txt"), content_type="text/plain")
 
 
+def gone(request, exception=None):
+    return render(request, "website/410.html", status=410)
+
+
 def forbidden(request, exception):
     """Render a themed 403 error page."""
     return render(request, "website/403.html", status=403)
