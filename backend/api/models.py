@@ -139,7 +139,7 @@ class BackInStockRequest(models.Model):
         help_text="The product to be notified about",
     )
     email = models.EmailField("email", help_text="Email address for the notification")
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the notification request was created")
 
     class Meta:
         ordering = ["-created_at"]
