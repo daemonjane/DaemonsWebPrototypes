@@ -100,6 +100,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ["author", "task_link", "created_at", "body_preview"]
     list_filter = ["created_at", "task"]
     search_fields = ["author", "body", "task__title"]
+    autocomplete_fields = ["task"]
     date_hierarchy = "created_at"
     list_per_page = 25
     list_select_related = ["task"]
