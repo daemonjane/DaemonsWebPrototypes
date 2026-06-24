@@ -17,6 +17,7 @@ const { items, count, clear } = useFavorites()
         v-if="count > 0"
         @click="clear"
         class="text-sm text-slate-500 hover:text-pink-400 transition-colors px-3 py-1.5 rounded-md border border-slate-800 hover:border-pink-900/50"
+        aria-label="Clear all favorites"
       >
         Clear all
       </button>
