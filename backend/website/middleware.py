@@ -1,6 +1,7 @@
 import logging
 
 from django.conf import settings
+from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import render
 
 logger = logging.getLogger(__name__)
@@ -42,6 +43,18 @@ class CacheControlMiddleware:
             if not response.has_header("Cache-Control"):
                 response["Cache-Control"] = "public, max-age=60"
         return response
+
+
+class HttpsRedirectMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if not settings.DEBUG and not request.is_secure():
+            return HttpResponsePermanentRedirect(
+                request.build_absolute_uri().replace("http://", "https://", 1)
+            )
+        return self.get_response(request)
 
 
 class ErrorLoggingMiddleware:
