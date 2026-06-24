@@ -2,6 +2,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
+from .forms import LoginForm
 
 page_patterns = [
     path("shop/", views.page_placeholder, {"page_name": "shop"}, name="shop"),
@@ -22,7 +23,7 @@ urlpatterns = [
     path("dashboard/", views.admin_dashboard, name="admin_dashboard"),
     path("contact/", views.contact, name="contact"),
     path("accounts/register/", views.register, name="register"),
-    path("login/", auth_views.LoginView.as_view(template_name="website/login.html"), name="login"),
+    path("login/", auth_views.LoginView.as_view(template_name="website/login.html", authentication_form=LoginForm), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("tasks/", views.task_list, name="task_list"),
     path("tasks/search/", views.task_search, name="task_search"),

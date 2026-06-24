@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from .models import Comment, ContactMessage, Task
 
@@ -92,6 +92,22 @@ class RegisterForm(UserCreationForm):
         if email and " " in email:
             raise forms.ValidationError("Email must not contain spaces.")
         return email
+
+
+class LoginForm(AuthenticationForm):
+    """Custom login form with Tailwind-styled inputs."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].widget.attrs.update({
+            "class": INPUT_CLASS,
+            "placeholder": "Username",
+            "autofocus": True,
+        })
+        self.fields["password"].widget.attrs.update({
+            "class": INPUT_CLASS,
+            "placeholder": "Password",
+        })
 
 
 class CommentForm(forms.ModelForm):
