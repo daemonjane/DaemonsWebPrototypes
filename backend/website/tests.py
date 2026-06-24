@@ -146,6 +146,70 @@ class CommentViewTests(TestCase):
         self.assertContains(resp, "2")
 
 
+class TaskListPaginationTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth.models import User
+        self.user = User.objects.create_user("testuser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+        Task.objects.all().delete()
+        for i in range(25):
+            Task.objects.create(title=f"Task {i+1}")
+
+    def test_page_one_returns_first_ten(self):
+        resp = self.client.get(reverse("task_list"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Task 25")
+        self.assertContains(resp, "Task 16")
+        self.assertNotContains(resp, "Task 15")
+
+    def test_page_two_returns_next_ten(self):
+        resp = self.client.get(reverse("task_list"), {"page": 2})
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Task 15")
+        self.assertContains(resp, "Task 6")
+        self.assertNotContains(resp, "Task 25")
+
+    def test_page_three_returns_last_five(self):
+        resp = self.client.get(reverse("task_list"), {"page": 3})
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Task 5")
+        self.assertContains(resp, "Task 1")
+        self.assertNotContains(resp, "Task 25")
+
+    def test_invalid_page_returns_first(self):
+        resp = self.client.get(reverse("task_list"), {"page": "abc"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Task 25")
+
+    def test_out_of_range_page_returns_last(self):
+        resp = self.client.get(reverse("task_list"), {"page": 999})
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Task 1")
+
+    def test_pagination_links_shown_when_many_tasks(self):
+        resp = self.client.get(reverse("task_list"))
+        self.assertContains(resp, "Page 1 of 3")
+
+    def test_no_pagination_when_few_tasks(self):
+        Task.objects.all().delete()
+        Task.objects.create(title="Only Task")
+        resp = self.client.get(reverse("task_list"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotContains(resp, "Page 1 of")
+
+    def test_pagination_context(self):
+        resp = self.client.get(reverse("task_list"))
+        self.assertIn("paginator", resp.context)
+        self.assertIn("page_obj", resp.context)
+        self.assertEqual(resp.context["paginator"].num_pages, 3)
+
+    def test_search_returns_all_matches(self):
+        resp = self.client.get(reverse("task_search"), {"q": "Task"})
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertEqual(data["count"], 25)
+
+
 class DashboardViewTests(TestCase):
     def setUp(self):
         from django.contrib.auth.models import User
