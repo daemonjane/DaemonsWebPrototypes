@@ -644,3 +644,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .w-1\/4{width:25%}
 .w-3\/4{width:75%}
 .w-auto{width:auto}
+.w-full{width:100%}
