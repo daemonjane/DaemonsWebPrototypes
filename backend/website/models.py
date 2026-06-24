@@ -8,8 +8,8 @@ class Comment(models.Model):
     task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="comments", help_text="The task this comment belongs to")
     author = models.CharField("author", max_length=100, help_text="Your name or display name")
     body = models.TextField("body", help_text="Your comment text")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the comment was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when the comment was last updated")
 
     class Meta:
         ordering = ["created_at"]
