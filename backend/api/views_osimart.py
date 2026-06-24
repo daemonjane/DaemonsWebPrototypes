@@ -1,3 +1,5 @@
+from django.views.decorators.cache import cache_page
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -8,13 +10,15 @@ def _get_client():
     return OsimartClient()
 
 
-def _proxy(request, method_name, *args, **kwargs):
+def _proxy(request, method_name, cache_seconds=60, *args, **kwargs):
     try:
         client = _get_client()
         params = request.GET.dict()
         method = getattr(client, method_name)
         data = method(*args, **kwargs, params=params)
-        return Response(data)
+        response = Response(data)
+        response["Cache-Control"] = f"public, max-age={cache_seconds}"
+        return response
     except OsimartError as e:
         return Response({"error": str(e)}, status=502)
 
