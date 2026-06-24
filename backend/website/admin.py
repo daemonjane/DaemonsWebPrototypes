@@ -34,7 +34,7 @@ class TaskFileInline(admin.TabularInline):
 class TaskAdmin(admin.ModelAdmin):
     inlines = [TaskFileInline]
     list_display = ["title", "completed", "file_count", "comment_count", "created_at", "updated_at"]
-    list_filter = ["completed"]
+    list_filter = ["completed", "created_at", "updated_at"]
     search_fields = ["title", "description"]
     date_hierarchy = "created_at"
     list_editable = ["completed"]
@@ -197,7 +197,7 @@ class TaskFileAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ["user", "location", "phone", "created_at"]
     search_fields = ["user__username", "user__email", "location", "phone"]
-    list_filter = ["location"]
+    list_filter = ["location", "created_at"]
     date_hierarchy = "created_at"
     readonly_fields = ["created_at", "updated_at"]
     fieldsets = [
