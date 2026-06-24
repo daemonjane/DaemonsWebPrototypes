@@ -321,3 +321,4 @@ input.error, textarea.error {
 .resize-x{resize:horizontal}
 .object-cover{object-fit:cover}
 .object-contain{object-fit:contain}
+.object-fill{object-fit:fill}
