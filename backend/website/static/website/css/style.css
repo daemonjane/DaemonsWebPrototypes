@@ -664,3 +664,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .h-64{height:16rem}
 .h-96{height:24rem}
 .h-auto{height:auto}
+.h-full{height:100%}
