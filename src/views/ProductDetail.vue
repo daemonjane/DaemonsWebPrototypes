@@ -14,12 +14,37 @@ const product = computed(() => products.find(p => p.id === productId))
 
 const loading = ref(true)
 const addingToCart = ref(false)
+const addons = ref([])
+const selectedAddons = ref([])
 
 const { addItem } = useCart()
+
+async function fetchAddons() {
+  try {
+    const { api } = await import('../utils/api')
+    const data = await api.addons.list(productId)
+    addons.value = data.addons || []
+  } catch {
+    addons.value = []
+  }
+}
+
+function toggleAddon(addon) {
+  const idx = selectedAddons.value.findIndex(a => a.id === addon.id)
+  if (idx >= 0) {
+    selectedAddons.value.splice(idx, 1)
+  } else {
+    selectedAddons.value.push({ id: addon.id, name: addon.name, price: addon.price })
+  }
+}
 
 function handleAddItem(product) {
   addingToCart.value = true
   addItem({ id: product.id, name: product.name, price: product.price })
+  for (const addon of selectedAddons.value) {
+    addItem({ id: `addon-${addon.id}`, name: addon.name, price: addon.price })
+  }
+  selectedAddons.value = []
   setTimeout(() => { addingToCart.value = false }, 600)
 }
 const { visit } = useRecentlyViewed()
@@ -53,7 +78,10 @@ function shareProduct() {
 }
 
 onMounted(() => {
-  if (product.value) visit(product.value.id)
+  if (product.value) {
+    visit(product.value.id)
+    fetchAddons()
+  }
   setTimeout(() => { loading.value = false }, 600)
 })
 </script>
@@ -163,6 +191,36 @@ onMounted(() => {
             </li>
           </ul>
         </div>
+        <!-- Add-ons / Micro-transactions -->
+        <div v-if="addons.length" class="mt-6 p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
+          <h3 class="text-white font-semibold text-sm mb-3 flex items-center gap-2">
+            <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            Add-ons &amp; Extras
+          </h3>
+          <div class="space-y-2">
+            <label
+              v-for="addon in addons"
+              :key="addon.id"
+              class="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors"
+              :class="selectedAddons.find(a => a.id === addon.id) ? 'bg-cyan-950/20 border border-cyan-800/40' : 'bg-slate-800/30 border border-slate-800 hover:border-slate-700'"
+            >
+              <input
+                type="checkbox"
+                :checked="selectedAddons.find(a => a.id === addon.id)"
+                @change="toggleAddon(addon)"
+                class="w-4 h-4 rounded border-slate-600 bg-slate-800 text-cyan-500 focus:ring-cyan-400 focus:ring-offset-0"
+              />
+              <div class="flex-1 min-w-0">
+                <span class="text-sm text-slate-200 font-medium">{{ addon.name }}</span>
+                <p v-if="addon.description" class="text-xs text-slate-500 truncate">{{ addon.description }}</p>
+              </div>
+              <span class="text-sm text-cyan-400 font-mono font-medium shrink-0">+${{ addon.price.toFixed(2) }}</span>
+            </label>
+          </div>
+        </div>
+
         <button v-if="product.stock !== 0" @click="handleAddItem(product)" 
                 class="mt-8 w-full sm:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
           <svg v-if="addingToCart" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
@@ -186,7 +244,9 @@ onMounted(() => {
       <div class="flex items-center justify-between gap-3">
         <div class="min-w-0">
           <p class="text-sm text-white truncate font-medium">{{ product.name }}</p>
-          <p class="text-cyan-400 font-mono font-bold">${{ product.price.toFixed(2) }}</p>
+          <p class="text-cyan-400 font-mono font-bold">
+            ${{ (product.price + selectedAddons.reduce((s, a) => s + a.price, 0)).toFixed(2) }}
+          </p>
         </div>
         <button
           v-if="product.stock !== 0"
