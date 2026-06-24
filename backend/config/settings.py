@@ -175,6 +175,8 @@ CSRF_FAILURE_VIEW = "website.views.csrf_failure"
 
 INTERNAL_IPS = ["127.0.0.1", "localhost"]
 
+SILENCED_SYSTEM_CHECKS = ["security.W004", "security.W008"]
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
