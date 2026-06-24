@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
 class MaintenanceModeMiddleware:
@@ -9,10 +9,7 @@ class MaintenanceModeMiddleware:
     def __call__(self, request):
         if getattr(settings, "MAINTENANCE_MODE", False):
             if not request.path.startswith("/admin/"):
-                return HttpResponse(
-                    "<h1>Under Maintenance</h1><p>We'll be back shortly.</p>",
-                    status=503,
-                )
+                return render(request, "website/503.html", status=503)
         return self.get_response(request)
 
 
