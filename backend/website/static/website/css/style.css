@@ -806,3 +806,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .bg-gray-300{--bg-opacity:1;background-color:rgba(209,213,219,var(--bg-opacity))}
 .bg-gray-400{--bg-opacity:1;background-color:rgba(156,163,175,var(--bg-opacity))}
 .bg-gray-500{--bg-opacity:1;background-color:rgba(107,114,128,var(--bg-opacity))}
+.bg-gray-600{--bg-opacity:1;background-color:rgba(75,85,99,var(--bg-opacity))}
