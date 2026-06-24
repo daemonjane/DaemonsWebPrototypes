@@ -19,6 +19,7 @@ from django.urls import include, path
 
 from website import views
 
+handler400 = "website.views.bad_request"
 handler403 = "website.views.forbidden"
 handler404 = "website.views.custom_404"
 handler500 = "website.views.custom_500"

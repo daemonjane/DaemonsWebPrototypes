@@ -390,6 +390,10 @@ def humans_txt(request):
     return HttpResponse(render_to_string("website/humans.txt"), content_type="text/plain")
 
 
+def bad_request(request, exception=None):
+    return render(request, "website/400.html", status=400)
+
+
 def gone(request, exception=None):
     return render(request, "website/410.html", status=410)
 
