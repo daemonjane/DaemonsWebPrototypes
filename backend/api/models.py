@@ -302,3 +302,9 @@ class TrackingHistory(models.Model):
 
     def __str__(self):
         return f"{self.status} at {self.timestamp}"
+
+@property
+def status_label(self):
+    return Order.Status(self.status).label if self.status else ""
+Order.status_label = status_label
+del status_label
