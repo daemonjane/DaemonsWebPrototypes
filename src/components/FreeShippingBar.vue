@@ -8,7 +8,7 @@ const { remaining, progress, qualifies } = useFreeShipping()
   <div class="bg-slate-800 border border-slate-700 rounded-lg px-3 sm:px-4 py-2.5 text-xs sm:text-sm">
     <div class="flex items-center justify-between gap-2 mb-1.5">
       <span v-if="qualifies" class="text-emerald-400 font-semibold flex items-center gap-1.5" aria-live="polite">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
         Free Shipping Applied!
       </span>
       <span v-else class="text-slate-400">
