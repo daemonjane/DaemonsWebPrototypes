@@ -187,7 +187,7 @@ onMounted(async () => {
             </button>
           </div>
         </div>
-        <div v-else-if="notifySubmitted" class="mt-4 text-sm text-emerald-400 font-medium">
+        <div v-else-if="notifySubmitted" class="mt-4 text-sm text-emerald-400 font-medium" aria-live="polite">
           ✓ We'll email you when this product is back in stock.
         </div>
 
