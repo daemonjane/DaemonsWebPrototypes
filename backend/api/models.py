@@ -62,7 +62,7 @@ class Order(models.Model):
         "status", max_length=20, choices=Status.choices, default=Status.PLACED,
         help_text="Current order status in the fulfillment lifecycle",
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the order was placed")
 
     class Meta:
         ordering = ["-created_at"]
