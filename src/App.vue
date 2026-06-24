@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onErrorCaptured } from 'vue'
 import { useRoute } from 'vue-router'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
@@ -15,6 +16,13 @@ const route = useRoute()
 const { showSkeleton } = useRouteLoading()
 useSalesNotifications()
 useDocumentTitle()
+const appError = ref(null)
+
+onErrorCaptured((err) => {
+  appError.value = err.message || 'An unexpected error occurred'
+  console.error(err)
+  return false
+})
 </script>
 
 <template>
@@ -32,6 +40,10 @@ useDocumentTitle()
       <Header />
 
       <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
+        <div v-if="appError" class="bg-pink-900/30 border border-pink-700/50 rounded-xl p-4 mb-6 text-pink-300 text-sm" role="alert">
+          {{ appError }}
+          <button @click="appError = null" class="ml-2 text-pink-400 hover:text-pink-200 underline">Dismiss</button>
+        </div>
         <SkeletonLoader v-if="showSkeleton" />
         <router-view v-else v-slot="{ Component }">
           <transition name="page" mode="out-in">
