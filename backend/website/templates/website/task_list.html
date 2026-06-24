@@ -45,6 +45,9 @@
         </td>
         <td class="px-4 py-3.5 text-center hidden lg:table-cell">
           <span class="text-xs text-slate-500">{{ task.comments.count }}</span>
+          {% if task.files.count %}
+          <span class="ml-1 text-cyan-500" title="{{ task.files.count }} file(s)">&#x1F4CE;</span>
+          {% endif %}
         </td>
         <td class="px-4 py-3.5 text-slate-500 text-xs hidden md:table-cell">{{ task.created_at|date:"M j" }}</td>
         <td class="px-4 py-3.5 text-center">{% status_badge task.completed %}</td>

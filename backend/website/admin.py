@@ -2,16 +2,24 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.html import format_html, mark_safe
 
-from .models import Comment, ContactMessage, NewsletterSubscription, Task, UserProfile
+from .models import Comment, ContactMessage, NewsletterSubscription, Task, TaskFile, UserProfile
 
 admin.site.site_header = "TechStore Administration"
 admin.site.site_title = "TechStore Admin"
 admin.site.index_title = "Welcome to TechStore Admin"
 
 
+class TaskFileInline(admin.TabularInline):
+    model = TaskFile
+    extra = 0
+    readonly_fields = ["uploaded_at"]
+    fields = ["file", "name", "uploaded_at"]
+
+
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ["title", "completed", "comment_count", "created_at", "updated_at"]
+    inlines = [TaskFileInline]
+    list_display = ["title", "completed", "file_count", "comment_count", "created_at", "updated_at"]
     list_filter = ["completed"]
     search_fields = ["title", "description"]
     date_hierarchy = "created_at"
@@ -34,6 +42,10 @@ class TaskAdmin(admin.ModelAdmin):
     actions = ["mark_completed", "mark_pending", "export_csv"]
     actions_on_top = True
     actions_on_bottom = True
+
+    @admin.display(description="Files")
+    def file_count(self, obj):
+        return obj.files.count()
 
     @admin.display(description="Comments")
     def comment_count(self, obj):
@@ -148,6 +160,23 @@ class NewsletterSubscriptionAdmin(admin.ModelAdmin):
     def mark_inactive(self, request, queryset):
         updated = queryset.update(active=False)
         self.message_user(request, f"{updated} subscription(s) marked as inactive.")
+
+
+@admin.register(TaskFile)
+class TaskFileAdmin(admin.ModelAdmin):
+    list_display = ["filename", "task_link", "uploaded_at"]
+    search_fields = ["name", "task__title"]
+    date_hierarchy = "uploaded_at"
+    list_select_related = ["task"]
+    readonly_fields = ["uploaded_at"]
+
+    def task_link(self, obj):
+        return format_html('<a href="{}">{}</a>', obj.task.get_absolute_url(), obj.task.title)
+    task_link.short_description = "task"
+
+    def filename(self, obj):
+        return obj.filename()
+    filename.short_description = "file"
 
 
 @admin.register(UserProfile)

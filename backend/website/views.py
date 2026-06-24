@@ -144,7 +144,13 @@ def task_create(request):
     if request.method == "POST":
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.save()
+            task = form.save()
+            uploaded = request.FILES.getlist("attachments")
+            if len(uploaded) > 4:
+                messages.error(request, "You can attach a maximum of 4 files.")
+                return render(request, "website/task_form.html", {"form": form, "title": "Create Task"})
+            for f in uploaded:
+                task.files.create(file=f, name=f.name)
             messages.success(request, "Task created successfully.")
             return redirect("task_list")
     else:
@@ -160,11 +166,17 @@ def task_update(request, pk):
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
+            uploaded = request.FILES.getlist("attachments")
+            if len(uploaded) > 4:
+                messages.error(request, "You can attach a maximum of 4 files.")
+                return render(request, "website/task_form.html", {"form": form, "title": "Edit Task", "task": task})
+            for f in uploaded:
+                task.files.create(file=f, name=f.name)
             messages.success(request, "Task updated successfully.")
             return redirect("task_list")
     else:
         form = TaskForm(instance=task)
-    return render(request, "website/task_form.html", {"form": form, "title": "Edit Task"})
+    return render(request, "website/task_form.html", {"form": form, "title": "Edit Task", "task": task})
 
 
 @login_required
@@ -182,7 +194,7 @@ def task_toggle(request, pk):
 @login_required
 def task_detail(request, pk):
     """Show a single task's full details with comments."""
-    task = get_object_or_404(Task, pk=pk)
+    task = get_object_or_404(Task.objects.prefetch_related("files"), pk=pk)
     comments = task.comments.all()
     form = CommentForm()
     return render(request, "website/task_detail.html", {
@@ -210,9 +222,11 @@ def add_comment(request, pk):
 
 @login_required
 def task_delete(request, pk):
-    """Show confirmation on GET; delete task on POST."""
+    """Show confirmation on GET; delete task + files on POST."""
     task = get_object_or_404(Task, pk=pk)
     if request.method == "POST":
+        for tf in task.files.all():
+            tf.file.delete(save=False)
         task.delete()
         messages.success(request, f"Task '{task.title}' deleted.")
         return redirect("task_list")

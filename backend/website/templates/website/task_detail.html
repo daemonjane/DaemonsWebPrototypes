@@ -23,6 +23,21 @@
     <p class="text-sm text-slate-600 italic mb-6">No description provided.</p>
     {% endif %}
 
+    {% if task.files.exists %}
+    <div class="mb-6">
+      <h3 class="text-sm font-semibold text-slate-400 mb-2">Attachments ({{ task.files.count }}/4)</h3>
+      <div class="space-y-2">
+        {% for tf in task.files.all %}
+        <div class="flex items-center gap-3 bg-slate-800/50 rounded-lg px-4 py-2.5 border border-slate-700/50">
+          <svg class="w-5 h-5 text-cyan-400 flex-shrink-0" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          <a href="{{ tf.file.url }}" target="_blank" class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors truncate">{{ tf.filename }}</a>
+          <span class="text-xs text-slate-600 ml-auto">{{ tf.uploaded_at|date:"M j, g:i A" }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
     <div class="flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500 mb-6">
       <span>Created: {{ task.created_at|date:"M j, Y g:i A" }} ({{ task.created_at|time_ago }})</span>
       {% if task.updated_at != task.created_at %}

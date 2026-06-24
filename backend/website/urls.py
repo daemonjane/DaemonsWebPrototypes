@@ -29,6 +29,12 @@ urlpatterns = [
     path("newsletter/", views.newsletter_subscribe, name="newsletter_subscribe"),
 ]
 
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += [
+        re_path(r"^media/(?P<path>.*)$", static_serve, {"document_root": settings.MEDIA_ROOT}),
+    ]
+
 # Serve the built Vue SPA assets (dist/) at root level in development
 if settings.DEBUG:
     dist_root = settings.BASE_DIR.parent / "dist"

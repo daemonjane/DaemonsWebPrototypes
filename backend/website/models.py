@@ -77,6 +77,24 @@ class Task(models.Model):
         return reverse("task_detail", kwargs={"pk": self.pk})
 
 
+class TaskFile(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="files", help_text="The task this file belongs to")
+    file = models.FileField("file", upload_to="task_files/", help_text="Upload a file (max 4 per task)")
+    name = models.CharField("name", max_length=255, blank=True, help_text="Optional display name for the file")
+    uploaded_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the file was uploaded")
+
+    class Meta:
+        ordering = ["uploaded_at"]
+        verbose_name = "Task File"
+        verbose_name_plural = "Task Files"
+
+    def __str__(self):
+        return self.name or self.file.name
+
+    def filename(self):
+        return self.file.name.split("/")[-1]
+
+
 class ContactMessage(models.Model):
     """User-submitted contact form message."""
 
