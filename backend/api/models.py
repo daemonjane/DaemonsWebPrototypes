@@ -120,7 +120,7 @@ class Subscription(models.Model):
     features = models.JSONField("features", default=list, help_text="List of features included in this tier")
     duration_days = models.IntegerField("duration days", default=30, help_text="Billing cycle length in days")
     active = models.BooleanField("active", default=True, help_text="Whether this tier is available for purchase")
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the subscription tier was created")
 
     class Meta:
         ordering = ["price"]
