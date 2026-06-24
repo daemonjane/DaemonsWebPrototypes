@@ -795,3 +795,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .border-dashed{border-style:dashed}
 .border-dotted{border-style:dotted}
 .border-double{border-style:double}
+.border-none{border-style:none}
