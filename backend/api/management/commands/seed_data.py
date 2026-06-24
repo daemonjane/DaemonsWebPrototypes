@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from api.models import Category, Product
+from api.models import Category, Product, ProductAddon
 
 
 PRODUCTS = [
@@ -222,6 +222,23 @@ PRODUCTS = [
 ]
 
 
+ADDONS = [
+    {"product_slug": "cyberpro-keyboard", "name": "Cleaning Kit", "description": "Microfiber cloth and keycap puller for easy maintenance.", "price": "9.99"},
+    {"product_slug": "cyberpro-keyboard", "name": "Custom Keycap Set", "description": "PBT double-shot keycaps in retro beige.", "price": "29.99"},
+    {"product_slug": "cyberpro-keyboard", "name": "Wrist Rest", "description": "Memory foam wrist rest with magnetic attachment.", "price": "14.99"},
+    {"product_slug": "cyberpro-keyboard", "name": "USB-C Coiled Cable", "description": "Aviator-style coiled cable in matching color.", "price": "19.99"},
+    {"product_slug": "gaming-mouse", "name": "Mouse Skates (PTFE)", "description": "Replacement pure PTFE mouse feet for smooth glide.", "price": "5.99"},
+    {"product_slug": "gaming-mouse", "name": "Grip Tape Set", "description": "Pre-cut textured grip tape for side buttons and shell.", "price": "7.99"},
+    {"product_slug": "gaming-mouse", "name": "Paracord Cable", "description": "Ultra-flexible paracord replacement cable.", "price": "8.99"},
+    {"product_slug": "wireless-headset", "name": "Replacement Earpads", "description": "Memory foam velour earpads for comfort.", "price": "12.99"},
+    {"product_slug": "wireless-headset", "name": "Charging Stand", "description": "Dedicated magnetic charging stand for headset.", "price": "24.99"},
+    {"product_slug": "vanguard-desktop", "name": "Extended Warranty (2yr)", "description": "2-year extended warranty with on-site service.", "price": "99.99"},
+    {"product_slug": "vanguard-desktop", "name": "RGB Light Strip Kit", "description": "Addressable RGB light strips with controller.", "price": "19.99"},
+    {"product_slug": "ultrawide-monitor", "name": "Monitor Arm", "description": "Gas-spring monitor arm for ultrawide displays.", "price": "59.99"},
+    {"product_slug": "ultrawide-monitor", "name": "Screen Cleaning Kit", "description": "Professional screen cleaner with microfiber cloth.", "price": "7.99"},
+]
+
+
 class Command(BaseCommand):
     help = "Seed the database with products from the frontend mock data"
 
@@ -237,3 +254,18 @@ class Command(BaseCommand):
                 defaults={**data, "category": category},
             )
         self.stdout.write(self.style.SUCCESS(f"Seeded {len(PRODUCTS)} products"))
+
+        addon_count = 0
+        for addon_data in ADDONS:
+            product_slug = addon_data.pop("product_slug")
+            try:
+                product = Product.objects.get(slug=product_slug)
+            except Product.DoesNotExist:
+                continue
+            ProductAddon.objects.update_or_create(
+                product=product,
+                name=addon_data["name"],
+                defaults={**addon_data},
+            )
+            addon_count += 1
+        self.stdout.write(self.style.SUCCESS(f"Seeded {addon_count} product add-ons"))
