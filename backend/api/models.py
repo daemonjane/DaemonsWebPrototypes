@@ -30,8 +30,8 @@ class Product(models.Model):
     rating = models.FloatField("rating", help_text="Average customer rating (0.0–5.0)")
     specs = models.JSONField("specifications", default=list, help_text="Key specifications as key-value pairs, e.g. [{'key': 'Weight', 'value': '1.2kg'}]")
     stock = models.IntegerField("stock", null=True, blank=True, help_text="Current inventory count (leave blank for unlimited)")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the product was added")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when the product was last modified")
 
     class Meta:
         ordering = ["name"]
