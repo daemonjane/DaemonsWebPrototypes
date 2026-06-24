@@ -932,3 +932,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .focus\:ring-2:focus{--ring-offset-shadow:0 0 0 var(--ring-offset-width) var(--ring-offset-color);box-shadow:var(--ring-offset-shadow),0 0 0 2px rgba(59,130,246,0.5)}
 .focus\:ring-cyan-500:focus{--ring-opacity:1;box-shadow:0 0 0 3px rgba(6,182,212,var(--ring-opacity))}
 .focus\:outline-none:focus{outline:none}
+.focus\:ring-offset-2:focus{--ring-offset-width:2px}
