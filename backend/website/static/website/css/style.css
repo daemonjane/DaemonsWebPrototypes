@@ -369,3 +369,4 @@ input.error, textarea.error {
 .tracking-widest{letter-spacing:0.1em}
 .leading-none{line-height:1}
 .leading-tight{line-height:1.25}
+.leading-snug{line-height:1.375}
