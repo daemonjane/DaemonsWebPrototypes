@@ -1,0 +1,17 @@
+[Unit]
+Description=TechStore Django Backend
+After=network.target
+
+[Service]
+Type=simple
+User=deploy
+WorkingDirectory=/home/deploy/techstore/backend
+ExecStart=/home/deploy/techstore/.venv/bin/gunicorn config.wsgi:application --bind 127.0.0.1:8000 --workers 4
+Restart=always
+RestartSec=5
+Environment="DJANGO_SECRET_KEY=change-this"
+Environment="DJANGO_DEBUG=False"
+Environment="DJANGO_ALLOWED_HOSTS=yourdomain.com"
+
+[Install]
+WantedBy=multi-user.target
