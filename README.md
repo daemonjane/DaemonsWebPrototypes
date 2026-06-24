@@ -66,6 +66,41 @@
 
 ---
 
+## 🏗️ Deployment Options
+
+This project runs a Django backend serving both a REST API and a server-rendered MVT website (task manager, contact form, auth). There are three ways to deploy it, depending on your needs.
+
+### Architecture Overview
+
+```
+                         ┌──────────────┐
+ Browser ──HTTP/HTTPS──► │  Nginx       │
+                         │  (optional)  │
+                         └──────┬───────┘
+                                │
+                    ┌───────────▼───────────┐
+                    │  Gunicorn (WSGI)      │
+                    │  ─ or ─              │
+                    │  runserver (dev)      │
+                    └───────────┬───────────┘
+                                │
+                    ┌───────────▼───────────┐
+                    │  Django Backend        │
+                    │  · MVT Templates       │
+                    │  · REST API (/api/)    │
+                    │  · Admin (/admin/)     │
+                    └───────────┬───────────┘
+                                │
+                    ┌───────────▼───────────┐
+                    │  SQLite Database       │
+                    │  (backend/db.sqlite3)  │
+                    └───────────────────────┘
+```
+
+**Single-server setup** — no external database or separate frontend build step required. The Vue frontend lives in a separate directory (`src/`, `dist/`) but is not served by Django; it uses mock data and runs independently via `npm run dev`.
+
+---
+
 ## 🚀 Quick Start
 
 ### Vue Frontend
@@ -90,6 +125,106 @@ python manage.py seed_data             # 21 products across 3 categories
 python manage.py create_admin          # Creates user: admin / admin123
 python manage.py runserver 0.0.0.0:8000
 ```
+
+---
+
+### Local Deployment (Viewing on Your Network)
+
+To make the site accessible to other devices on your LAN (phone, tablet, other computers):
+
+```bash
+cd backend
+python manage.py runserver 0.0.0.0:8000
+```
+
+**From another device:** open `http://<YOUR_IP>:8000/` in a browser.
+
+> **Find your IP:** run `ip addr show | grep inet` (Linux), `ipconfig getifaddr en0` (macOS), or `ipconfig` (Windows).
+
+| URL | What you see |
+|-----|-------------|
+| `http://localhost:8000/` | Homepage with task stats & recent tasks |
+| `http://localhost:8000/tasks/` | Task manager (login required) |
+| `http://localhost:8000/admin/` | Django admin panel |
+| `http://localhost:8000/api/health/` | API health check endpoint |
+
+---
+
+### Production Deployment (Gunicorn)
+
+For a proper production setup, swap `runserver` for **Gunicorn**:
+
+```bash
+pip install gunicorn
+cd backend
+gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4
+```
+
+**Recommended:** place behind **Nginx** (see below) for static file serving, SSL termination, and security headers.
+
+---
+
+### Nginx Reverse Proxy
+
+Place Nginx in front of Gunicorn to serve static files and handle HTTPS:
+
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location /static/ {
+        alias /path/to/backend/staticfiles/;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+First collect static files:
+```bash
+python manage.py collectstatic --noinput
+```
+
+---
+
+### Docker Deployment
+
+Run the entire backend in a container:
+
+```bash
+# Build & start
+docker compose up --build
+
+# The site is available at http://localhost:8000
+```
+
+Or pull and run with a single container:
+```bash
+docker build -t techstore-backend backend/
+docker run -d -p 8000:8000 -v $(pwd)/backend/db.sqlite3:/app/db.sqlite3 techstore-backend
+```
+
+---
+
+### Deployment Quick Reference
+
+| Step | Command |
+|------|---------|
+| Install dependencies | `pip install -r backend/requirements.txt` |
+| Run migrations | `python backend/manage.py migrate` |
+| Seed sample data | `python backend/manage.py seed_tasks && python backend/manage.py seed_data` |
+| Create admin user | `python backend/manage.py create_admin` |
+| Collect static files | `python backend/manage.py collectstatic --noinput` |
+| Start development server | `python backend/manage.py runserver 0.0.0.0:8000` |
+| Start Gunicorn | `gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4` |
+| Verify health | `curl http://localhost:8000/api/health/` |
 
 ---
 
