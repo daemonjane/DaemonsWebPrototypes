@@ -11,7 +11,7 @@ const { items, count, clear } = useFavorites()
     <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
       <div>
         <h1 class="text-3xl font-bold text-white">Favorites</h1>
-        <p class="text-slate-400 mt-1">{{ count }} saved {{ count === 1 ? 'item' : 'items' }}</p>
+        <p class="text-slate-400 mt-1" aria-live="polite">{{ count }} saved {{ count === 1 ? 'item' : 'items' }}</p>
       </div>
       <button
         v-if="count > 0"
