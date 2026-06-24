@@ -974,3 +974,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .gap-6{gap:1.5rem}
 .gap-8{gap:2rem}
 .gap-x-1{column-gap:0.25rem}
+.gap-x-2{column-gap:0.5rem}
