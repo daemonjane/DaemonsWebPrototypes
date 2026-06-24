@@ -772,3 +772,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .text-ellipsis{text-overflow:ellipsis}
 .text-clip{text-overflow:clip}
+.uppercase{text-transform:uppercase}
