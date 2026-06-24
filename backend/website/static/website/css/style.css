@@ -516,3 +516,9 @@ input.error, textarea.error {
 .mx-2{margin-left:0.5rem;margin-right:0.5rem}
 .mx-3{margin-left:0.75rem;margin-right:0.75rem}
 .mx-4{margin-left:1rem;margin-right:1rem}
+
+@media print {
+  #main-header, #main-footer, .no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
+}
