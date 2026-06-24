@@ -546,3 +546,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .flex-grow{flex-grow:1}
 .flex-wrap{flex-wrap:wrap}
 .flex-nowrap{flex-wrap:nowrap}
+.flex-col{flex-direction:column}
