@@ -1,41 +1,86 @@
 {% extends "website/base.html" %}
 {% load website_extras %}
+{% load static %}
 
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Dashboard</h1>
-  <a href="{% url 'admin:index' %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold py-2.5 px-5 rounded-lg transition-colors inline-flex items-center gap-1.5">
-    <svg class="w-4 h-4" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-    Django Admin
-  </a>
+  <div class="flex items-center gap-3">
+    <span class="text-xs text-slate-500">{{ now|date:"M j, Y" }}</span>
+    <a href="{% url 'admin:index' %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold py-2.5 px-5 rounded-lg transition-colors inline-flex items-center gap-1.5">
+      <svg class="w-4 h-4" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      Django Admin
+    </a>
+  </div>
 </div>
 
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-  <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-    <span class="text-3xl font-extrabold text-cyan-400">{{ product_count }}</span>
-    <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Products</p>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mb-8">
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+    <span class="text-2xl font-extrabold text-cyan-400">{{ product_count }}</span>
+    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wider font-semibold">Products</p>
   </div>
-  <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-    <span class="text-3xl font-extrabold text-emerald-400">{{ category_count }}</span>
-    <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Categories</p>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+    <span class="text-2xl font-extrabold text-emerald-400">{{ category_count }}</span>
+    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wider font-semibold">Categories</p>
   </div>
-  <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-    <span class="text-3xl font-extrabold text-amber-400">{{ order_count }}</span>
-    <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Orders</p>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+    <span class="text-2xl font-extrabold text-amber-400">{{ order_count }}</span>
+    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wider font-semibold">Orders</p>
   </div>
-  <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-    <span class="text-3xl font-extrabold text-indigo-400">{{ task_count }}</span>
-    <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Tasks</p>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+    <span class="text-2xl font-extrabold text-purple-400">${{ total_revenue|floatformat:0 }}</span>
+    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wider font-semibold">Revenue</p>
   </div>
-  <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-    <span class="text-3xl font-extrabold text-pink-400">{{ comment_count }}</span>
-    <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Comments</p>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+    <span class="text-2xl font-extrabold text-sky-400">{{ user_count }}</span>
+    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wider font-semibold">Users</p>
   </div>
-  <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-    <span class="text-3xl font-extrabold text-sky-400">{{ contact_count }}</span>
-    <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Messages</p>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+    <span class="text-2xl font-extrabold text-indigo-400">{{ task_count }}</span>
+    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wider font-semibold">Tasks</p>
+  </div>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+    <span class="text-2xl font-extrabold text-pink-400">{{ comment_count }}</span>
+    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wider font-semibold">Comments</p>
+  </div>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+    <span class="text-2xl font-extrabold text-slate-400">{{ contact_count }}</span>
+    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wider font-semibold">Messages</p>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+    <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">Orders by Status</h2>
+    <canvas id="orderStatusChart" height="220"></canvas>
+  </div>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+    <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">Revenue (Last 30 Days)</h2>
+    <canvas id="revenueChart" height="220"></canvas>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+    <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">Products by Category</h2>
+    <canvas id="categoryChart" height="220"></canvas>
+  </div>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+    <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">Daily Orders (Last 14 Days)</h2>
+    <canvas id="dailyOrdersChart" height="220"></canvas>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+    <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">Top Products by Sales</h2>
+    <canvas id="topProductsChart" height="220"></canvas>
+  </div>
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+    <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">Task Completion</h2>
+    <canvas id="taskChart" height="220"></canvas>
   </div>
 </div>
 
@@ -84,7 +129,7 @@
         <thead>
           <tr class="bg-slate-800/30">
             <th class="text-left px-4 py-2.5 text-slate-500 font-semibold text-xs uppercase tracking-wider">Title</th>
-            <th class="text-center px-4 py-2.5 text-slate-500 font-semibold text-xs uppercase tracking-wider">Comments</th>
+            <th class="text-center px-4 py-2.5 text-slate-500 font-semibold text-xs uppercase tracking-wider">Files</th>
             <th class="text-center px-4 py-2.5 text-slate-500 font-semibold text-xs uppercase tracking-wider">Status</th>
             <th class="text-right px-4 py-2.5 text-slate-500 font-semibold text-xs uppercase tracking-wider">Date</th>
           </tr>
@@ -95,7 +140,7 @@
             <td class="px-4 py-2.5 text-slate-300 text-xs font-medium">
               <a href="{% url 'task_detail' task.pk %}" class="hover:text-cyan-400 transition-colors {% if task.completed %}line-through text-slate-500{% endif %}">{{ task.title }}</a>
             </td>
-            <td class="px-4 py-2.5 text-center text-slate-500 text-xs">{{ task.comments.count }}</td>
+            <td class="px-4 py-2.5 text-center text-slate-500 text-xs">{{ task.files.count }}</td>
             <td class="px-4 py-2.5 text-center">{% status_badge task.completed %}</td>
             <td class="px-4 py-2.5 text-slate-500 text-xs text-right">{{ task.created_at|date:"M j" }}</td>
           </tr>
@@ -109,7 +154,7 @@
   </div>
 </div>
 
-<div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+<div class="bg-slate-900 border border-slate-800 rounded-xl p-5 mb-8">
   <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">Quick Actions</h2>
   <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
     <a href="{% url 'admin:api_product_add' %}" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg px-4 py-3 text-center transition-colors group">
@@ -130,4 +175,150 @@
     </a>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  Chart.defaults.color = "#94a3b8";
+  Chart.defaults.borderColor = "rgba(148, 163, 184, 0.1)";
+  Chart.defaults.font.family = "ui-sans-serif, system-ui, sans-serif";
+
+  const statusCtx = document.getElementById("orderStatusChart");
+  new Chart(statusCtx, {
+    type: "doughnut",
+    data: {
+      labels: {{ order_status_labels|safe }},
+      datasets: [{
+        data: {{ order_status_data }},
+        backgroundColor: ["#38bdf8", "#fbbf24", "#a78bfa", "#22d3ee", "#34d399"],
+        borderWidth: 1,
+        borderColor: "#1e293b",
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom", labels: { padding: 16, usePointStyle: true, pointStyle: "circle" } }
+      }
+    }
+  });
+
+  const revCtx = document.getElementById("revenueChart");
+  new Chart(revCtx, {
+    type: "line",
+    data: {
+      labels: {{ dr_labels|safe }},
+      datasets: [{
+        label: "Revenue ($)",
+        data: {{ dr_data }},
+        borderColor: "#a78bfa",
+        backgroundColor: "rgba(167, 139, 250, 0.1)",
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+        pointBackgroundColor: "#a78bfa",
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
+        y: { beginAtZero: true, ticks: { callback: function(v) { return "$" + v; } } }
+      }
+    }
+  });
+
+  const catCtx = document.getElementById("categoryChart");
+  new Chart(catCtx, {
+    type: "bar",
+    data: {
+      labels: {{ cat_labels|safe }},
+      datasets: [{
+        label: "Products",
+        data: {{ cat_data }},
+        backgroundColor: ["#38bdf8", "#34d399", "#fbbf24", "#f472b6", "#a78bfa", "#fb923c"],
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
+  });
+
+  const dailyCtx = document.getElementById("dailyOrdersChart");
+  new Chart(dailyCtx, {
+    type: "bar",
+    data: {
+      labels: {{ do_labels|safe }},
+      datasets: [{
+        label: "Orders",
+        data: {{ do_data }},
+        backgroundColor: "rgba(56, 189, 248, 0.7)",
+        borderColor: "#38bdf8",
+        borderWidth: 1,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxTicksLimit: 14 } },
+        y: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
+  });
+
+  const topCtx = document.getElementById("topProductsChart");
+  new Chart(topCtx, {
+    type: "bar",
+    data: {
+      labels: {{ tp_labels|safe }},
+      datasets: [{
+        label: "Units Sold",
+        data: {{ tp_qty }},
+        backgroundColor: "rgba(251, 191, 36, 0.7)",
+        borderColor: "#fbbf24",
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      indexAxis: "y",
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { precision: 0 } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+
+  const taskCtx = document.getElementById("taskChart");
+  new Chart(taskCtx, {
+    type: "doughnut",
+    data: {
+      labels: ["Done", "Pending"],
+      datasets: [{
+        data: [{{ task_done }}, {{ task_pending }}],
+        backgroundColor: ["#34d399", "#475569"],
+        borderWidth: 1,
+        borderColor: "#1e293b",
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom", labels: { padding: 16, usePointStyle: true, pointStyle: "circle" } }
+      }
+    }
+  });
+</script>
 {% endblock %}

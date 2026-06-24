@@ -43,15 +43,88 @@ def home(request):
 
 @staff_member_required
 def admin_dashboard(request):
-    from api.models import Category, Order, Product
+    from datetime import timedelta
+    from decimal import Decimal
+
+    from django.db.models import Count, Sum, F
+    from django.db.models.functions import TruncDate
+    from django.utils import timezone
+
+    from api.models import Category, Order, OrderItem, Product, Wishlist
+
+    now = timezone.now()
+    thirty_days_ago = now - timedelta(days=30)
+    fourteen_days_ago = now - timedelta(days=14)
+
     product_count = Product.objects.count()
     category_count = Category.objects.count()
     order_count = Order.objects.count()
     task_count = Task.objects.count()
     comment_count = Comment.objects.count()
     contact_count = ContactMessage.objects.count()
+    user_count = User.objects.count()
+    wishlist_count = Wishlist.objects.count()
+
+    total_revenue = OrderItem.objects.aggregate(
+        total=Sum(F("price") * F("quantity"))
+    )["total"] or Decimal("0.00")
+
+    orders_by_status = {
+        s: Order.objects.filter(status=s).count()
+        for s, _ in Order.Status.choices
+    }
+
+    products_by_category = list(
+        Category.objects.annotate(count=Count("products"))
+        .values("name", "count")
+        .order_by("-count")
+    )
+
+    daily_orders = list(
+        Order.objects.filter(created_at__gte=fourteen_days_ago)
+        .annotate(date=TruncDate("created_at"))
+        .values("date")
+        .annotate(count=Count("id"))
+        .order_by("date")
+    )
+
+    daily_revenue = list(
+        OrderItem.objects.filter(order__created_at__gte=thirty_days_ago)
+        .annotate(date=TruncDate("order__created_at"))
+        .values("date")
+        .annotate(total=Sum(F("price") * F("quantity")))
+        .order_by("date")
+    )
+
+    top_products = list(
+        OrderItem.objects.filter(product__isnull=False)
+        .values(name=F("product__name"), slug=F("product__slug"))
+        .annotate(total_qty=Sum("quantity"), total_rev=Sum(F("price") * F("quantity")))
+        .order_by("-total_qty")[:10]
+    )
+
+    task_done = Task.objects.filter(completed=True).count()
+    task_pending = task_count - task_done
+
+    order_status_labels = [s[1] for s in Order.Status.choices]
+    order_status_data = [orders_by_status.get(s[0], 0) for s in Order.Status.choices]
+
+    cat_labels = [c["name"] for c in products_by_category]
+    cat_data = [c["count"] for c in products_by_category]
+
+    do_labels = [d["date"].strftime("%b %d") for d in daily_orders]
+    do_data = [d["count"] for d in daily_orders]
+
+    dr_labels = [d["date"].strftime("%b %d") for d in daily_revenue]
+    dr_data = [float(d["total"]) for d in daily_revenue]
+
+    tp_labels = [p["name"] for p in top_products]
+    tp_qty = [p["total_qty"] for p in top_products]
+    tp_rev = [float(p["total_rev"]) for p in top_products]
+
     recent_orders = Order.objects.select_related().order_by("-created_at")[:5]
     recent_tasks = Task.objects.prefetch_related("comments").order_by("-created_at")[:5]
+
     return render(request, "website/admin_dashboard.html", {
         "product_count": product_count,
         "category_count": category_count,
@@ -59,6 +132,22 @@ def admin_dashboard(request):
         "task_count": task_count,
         "comment_count": comment_count,
         "contact_count": contact_count,
+        "user_count": user_count,
+        "wishlist_count": wishlist_count,
+        "total_revenue": float(total_revenue),
+        "order_status_labels": order_status_labels,
+        "order_status_data": order_status_data,
+        "cat_labels": cat_labels,
+        "cat_data": cat_data,
+        "do_labels": do_labels,
+        "do_data": do_data,
+        "dr_labels": dr_labels,
+        "dr_data": dr_data,
+        "tp_labels": tp_labels,
+        "tp_qty": tp_qty,
+        "tp_rev": tp_rev,
+        "task_done": task_done,
+        "task_pending": task_pending,
         "recent_orders": recent_orders,
         "recent_tasks": recent_tasks,
     })
