@@ -3,7 +3,7 @@ defineProps({
   type: {
     type: String,
     default: 'page',
-    validator: v => ['page', 'card', 'detail', 'list'].includes(v),
+    validator: v => ['page', 'card', 'detail', 'list', 'banner'].includes(v),
   },
 })
 </script>
@@ -48,6 +48,9 @@ defineProps({
         <div class="h-12 bg-slate-800 rounded-lg w-40 pt-4"></div>
       </div>
     </div>
+
+    <!-- Banner layout -->
+    <div v-else-if="type === 'banner'" class="h-48 sm:h-72 bg-slate-800 rounded-xl"></div>
 
     <!-- List layout -->
     <div v-else-if="type === 'list'" class="space-y-4">
