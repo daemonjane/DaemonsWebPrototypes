@@ -442,3 +442,4 @@ input.error, textarea.error {
 .place-items-center{place-items:center}
 .place-items-start{place-items:start}
 .place-items-end{place-items:end}
+.place-self-auto{place-self:auto}
