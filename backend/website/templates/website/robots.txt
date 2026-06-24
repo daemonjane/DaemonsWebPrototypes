@@ -7,7 +7,7 @@ Disallow: /tasks/*/edit/
 Allow: /tasks/
 Allow: /contact/
 
-Sitemap: https://techstore.example.com/sitemap.xml
+Sitemap: {{ request.scheme }}://{{ request.get_host }}/sitemap.xml
 
-Host: https://techstore.example.com
+Host: {{ request.scheme }}://{{ request.get_host }}
 

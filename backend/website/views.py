@@ -157,9 +157,20 @@ def sitemap_xml(request):
     static_urls = [
         "/", "/tasks/", "/contact/", "/shop/", "/about/", "/faq/", "/privacy/", "/terms/", "/cookies/",
     ]
-    task_urls = [f"/tasks/{t.pk}/" for t in Task.objects.all()] + [f"/tasks/{t.pk}/comment/" for t in Task.objects.all()]
-    all_urls = static_urls + task_urls
-    entries = "".join(f"<url><loc>https://techstore.example.com{url}</loc></url>" for url in all_urls)
+    task_urls = [f"/tasks/{t.pk}/" for t in Task.objects.all()]
+    product_urls = []
+    try:
+        from services.osimart import OsimartClient
+        client = OsimartClient()
+        data = client.get_products()
+        for p in data.get("results", []):
+            slug = p.get("slugified_name", "")
+            if slug:
+                product_urls.append(f"/product/{slug}/")
+    except Exception:
+        pass
+    all_urls = static_urls + task_urls + product_urls
+    entries = "".join(f"<url><loc>{request.build_absolute_uri(url)}</loc></url>" for url in all_urls)
     xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{entries}</urlset>'
     return HttpResponse(xml, content_type="application/xml")
 
@@ -383,11 +394,11 @@ def profile(request):
 
 
 def robots_txt(request):
-    return HttpResponse(render_to_string("website/robots.txt"), content_type="text/plain")
+    return HttpResponse(render_to_string("website/robots.txt", {"request": request}), content_type="text/plain")
 
 
 def humans_txt(request):
-    return HttpResponse(render_to_string("website/humans.txt"), content_type="text/plain")
+    return HttpResponse(render_to_string("website/humans.txt", {"request": request}), content_type="text/plain")
 
 
 def bad_request(request, exception=None):
