@@ -1,0 +1,9 @@
+Thank you for contacting TechStore, {{ message.name }}.
+
+We have received your message and will get back to you within 24 hours.
+
+--- Your message ---
+{{ message.message }}
+
+---
+This is an automated response — please do not reply directly to this email.

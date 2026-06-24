@@ -1,0 +1,6 @@
+Welcome to the TechStore newsletter!
+
+You have successfully subscribed with {{ subscription.email }}.
+You will now receive allocation drops, pricing alerts, and exclusive offers.
+
+If you did not sign up for this newsletter, you can safely ignore this email.
