@@ -35,6 +35,7 @@ class TaskFileInline(admin.TabularInline):
 class TaskAdmin(admin.ModelAdmin):
     inlines = [TaskFileInline]
     list_display = ["title", "completed", "file_count", "comment_count", "created_at", "updated_at"]
+    list_display_links = ["title"]
     list_filter = ["completed", "created_at", "updated_at"]
     search_fields = ["title", "description"]
     search_help_text = "Search by title or description"
