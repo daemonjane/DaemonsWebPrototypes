@@ -19,29 +19,19 @@
       {% endif %}
 
       <div class="space-y-5">
+        {% for field in form %}
         <div class="field-group">
-          <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">Username</label>
-          <input type="text" name="username" id="{{ form.username.id_for_label }}" class="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" placeholder="Username" autofocus required>
-          {% if form.username.errors %}
+          <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
           <div class="mt-1">
-            {% for error in form.username.errors %}
+            {% for error in field.errors %}
             <p class="text-pink-400 text-xs">{{ error }}</p>
             {% endfor %}
           </div>
           {% endif %}
         </div>
-
-        <div class="field-group">
-          <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
-          <input type="password" name="password" id="{{ form.password.id_for_label }}" class="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" placeholder="Password" required>
-          {% if form.password.errors %}
-          <div class="mt-1">
-            {% for error in form.password.errors %}
-            <p class="text-pink-400 text-xs">{{ error }}</p>
-            {% endfor %}
-          </div>
-          {% endif %}
-        </div>
+        {% endfor %}
 
         <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 px-6 rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2">
           <svg class="w-4 h-4" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
