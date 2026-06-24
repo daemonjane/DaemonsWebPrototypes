@@ -318,3 +318,4 @@ input.error, textarea.error {
 .resize{resize:both}
 .resize-none{resize:none}
 .resize-y{resize:vertical}
+.resize-x{resize:horizontal}
