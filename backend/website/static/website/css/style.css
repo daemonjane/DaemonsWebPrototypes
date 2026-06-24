@@ -1057,3 +1057,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .space-x-4>*+*{margin-left:1rem}
 .space-y-1>*+*{margin-top:0.25rem}
 .space-y-2>*+*{margin-top:0.5rem}
+.space-y-3>*+*{margin-top:0.75rem}
