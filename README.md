@@ -280,6 +280,7 @@ The following variables can be set in your shell or in a `.env` file (loaded via
 | `/tasks/<id>/delete/` | `task_delete` | Delete confirmation (login required) |
 | `/tasks/<id>/toggle/` | `task_toggle` | Toggle completed (POST, login required) |
 | `/tasks/<id>/comment/` | `add_comment` | Add comment (POST, login required) |
+| `/dashboard/` | `admin_dashboard` | Admin dashboard with stats, recent orders/tasks, quick actions (staff only) |
 | `/contact/` | `contact` | Contact form with messages |
 | `/shop/`, `/faq/`, `/about/` | `page_placeholder` | Placeholder pages |
 | `/robots.txt` | `robots_txt` | Robots exclusion |
