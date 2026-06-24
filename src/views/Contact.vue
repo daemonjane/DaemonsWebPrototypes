@@ -85,7 +85,7 @@ function submitForm() {
               ></textarea>
               <p v-if="errors.message" id="contact-msg-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.message }}</p>
             </div>
-            <button type="submit" class="w-full bg-cyan-600 text-white py-3 rounded-lg font-semibold hover:bg-cyan-500 active:scale-95 transition-all">
+            <button type="submit" class="w-full bg-cyan-600 text-white py-3 rounded-lg font-semibold hover:bg-cyan-500 active:scale-95 transition-all" aria-label="Send message">
               Send Message
             </button>
           </form>
