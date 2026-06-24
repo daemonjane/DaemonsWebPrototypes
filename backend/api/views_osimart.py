@@ -47,3 +47,13 @@ def osimart_store(request):
 @api_view(["GET"])
 def osimart_home(request):
     return _proxy(request, "get_home")
+
+
+@api_view(["GET"])
+def osimart_brands(request):
+    return _proxy(request, "get_brands")
+
+
+@api_view(["GET"])
+def osimart_collections(request):
+    return _proxy(request, "get_collections")

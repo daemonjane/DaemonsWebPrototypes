@@ -33,4 +33,6 @@ urlpatterns = [
     path('osimart/categories/', views_osimart.osimart_categories, name='osimart-categories'),
     path('osimart/store/', views_osimart.osimart_store, name='osimart-store'),
     path('osimart/home/', views_osimart.osimart_home, name='osimart-home'),
+    path('osimart/brands/', views_osimart.osimart_brands, name='osimart-brands'),
+    path('osimart/collections/', views_osimart.osimart_collections, name='osimart-collections'),
 ]
