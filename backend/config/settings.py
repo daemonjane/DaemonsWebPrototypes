@@ -69,6 +69,7 @@ MIDDLEWARE = [
     'website.middleware.SecureHeadersMiddleware',
     'website.middleware.MaintenanceModeMiddleware',
     'website.middleware.CacheControlMiddleware',
+    'website.middleware.ErrorLoggingMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -153,6 +154,15 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_FAILURE_VIEW = "website.views.csrf_failure"
 
 INTERNAL_IPS = ["127.0.0.1", "localhost"]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "root": {"handlers": ["console"], "level": "INFO"},
+}
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5_242_880
 

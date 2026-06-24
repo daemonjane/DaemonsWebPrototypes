@@ -1,5 +1,9 @@
+import logging
+
 from django.conf import settings
 from django.shortcuts import render
+
+logger = logging.getLogger(__name__)
 
 
 class MaintenanceModeMiddleware:
@@ -37,4 +41,20 @@ class CacheControlMiddleware:
         if not request.user.is_authenticated and request.method == "GET":
             if not response.has_header("Cache-Control"):
                 response["Cache-Control"] = "public, max-age=60"
+        return response
+
+
+class ErrorLoggingMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if response.status_code >= 500:
+            logger.error(
+                "%s %s -> %s (user=%s, ip=%s)",
+                request.method, request.path,
+                response.status_code,
+                request.user, request.META.get("REMOTE_ADDR"),
+            )
         return response
