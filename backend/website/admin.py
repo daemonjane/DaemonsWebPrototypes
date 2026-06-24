@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponse
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 
 from .models import Comment, ContactMessage, Task
 
@@ -39,7 +39,7 @@ class TaskAdmin(admin.ModelAdmin):
             return format_html(
                 '<div class="field-description_preview">{}</div>', obj.description
             )
-        return format_html('<span class="text-slate-600">—</span>')
+        return mark_safe('<span class="text-slate-600">—</span>')
 
     @admin.action(description="Mark selected as completed")
     def mark_completed(self, request, queryset):
