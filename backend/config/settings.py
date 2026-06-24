@@ -171,6 +171,8 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 CSRF_FAILURE_VIEW = "website.views.csrf_failure"
 
 INTERNAL_IPS = ["127.0.0.1", "localhost"]
