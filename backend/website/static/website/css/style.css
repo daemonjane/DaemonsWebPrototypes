@@ -299,3 +299,4 @@ input.error, textarea.error {
   body { background: white !important; color: black !important; }
 }
 .transition-all{transition:all 0.2s ease}
+.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke}
