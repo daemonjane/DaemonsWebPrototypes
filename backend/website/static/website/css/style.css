@@ -767,3 +767,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .whitespace-pre-line{white-space:pre-line}
 .whitespace-pre-wrap{white-space:pre-wrap}
 .break-normal{word-break:normal;overflow-wrap:normal}
+.break-words{overflow-wrap:break-word}
