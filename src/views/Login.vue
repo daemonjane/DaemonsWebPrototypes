@@ -68,10 +68,15 @@ async function login() {
         </button>
       </form>
 
-      <p class="text-center text-sm mt-4">
-        Don't have an account?
-        <router-link to="/register" class="text-cyan-400 hover:underline">Register</router-link>
-      </p>
+      <div class="text-center text-sm mt-4 space-y-2">
+        <p>
+          Don't have an account?
+          <router-link to="/register" class="text-cyan-400 hover:underline">Register</router-link>
+        </p>
+        <p>
+          <a href="/password-reset/" class="text-slate-500 hover:text-slate-300 transition-colors">Forgot password?</a>
+        </p>
+      </div>
     </div>
   </div>
 </template>
