@@ -298,3 +298,4 @@ input.error, textarea.error {
   }
   body { background: white !important; color: black !important; }
 }
+.transition-all{transition:all 0.2s ease}
