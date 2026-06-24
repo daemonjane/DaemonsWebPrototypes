@@ -3,9 +3,16 @@
 {% block title %}Forbidden{% endblock %}
 
 {% block content %}
-<div class="text-center py-20">
-  <h1 class="text-6xl font-extrabold text-slate-800">403</h1>
-  <p class="text-slate-400 mt-4">You don't have permission to access this page.</p>
-  <a href="/" class="inline-block mt-6 text-cyan-400 hover:text-cyan-300 transition-colors">Go Home</a>
+<div class="text-center py-20 max-w-lg mx-auto px-4">
+  <span class="text-7xl font-extrabold text-pink-400 tracking-tight block">403</span>
+  <svg class="w-16 h-16 mx-auto mt-4 text-slate-600" width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+  <p class="text-slate-400 mt-4 text-lg">You don't have permission to access this page.</p>
+  <p class="text-slate-600 text-sm mt-2">If you believe this is a mistake, contact the site administrator.</p>
+  <div class="flex items-center justify-center gap-3 mt-8">
+    <a href="/" class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-8 rounded-lg transition-colors inline-flex items-center gap-2">
+      <svg class="w-4 h-4" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Back to Home
+    </a>
+  </div>
 </div>
 {% endblock %}
