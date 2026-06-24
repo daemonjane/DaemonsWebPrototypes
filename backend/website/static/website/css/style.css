@@ -1066,3 +1066,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .not-sr-only{position:static;width:auto;height:auto;padding:0;margin:0;overflow:visible;clip:auto;white-space:normal}
 .outline-none{outline:2px solid transparent;outline-offset:2px}
 .outline{outline:2px solid;outline-offset:2px}
+.bg-clip-text{-webkit-background-clip:text;background-clip:text}
