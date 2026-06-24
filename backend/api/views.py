@@ -1,5 +1,8 @@
+import time
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.db import models as db_models
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
@@ -70,6 +73,12 @@ def auth_register(request):
 @csrf_exempt
 def auth_login(request):
     """Authenticate and log in a user."""
+    ip = request.META.get("REMOTE_ADDR", "unknown")
+    cache_key = f"login_rate:{ip}"
+    attempts = cache.get(cache_key, 0)
+    if attempts >= 5:
+        return Response({"error": "Too many login attempts. Try again later."}, status=429)
+
     data = request.data
 
     username = data.get("username", "")
@@ -77,8 +86,10 @@ def auth_login(request):
     user = authenticate(request, username=username, password=password)
 
     if user is None:
+        cache.set(cache_key, attempts + 1, 300)
         return Response({"error": "Invalid username or password."}, status=401)
 
+    cache.delete(cache_key)
     login(request, user)
     return Response(_user_data(user))
 
