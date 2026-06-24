@@ -61,8 +61,10 @@ async function login() {
             class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
             :class="{ 'border-pink-500': errors.password }"
             aria-required="true"
+            autocomplete="current-password"
+            :aria-describedby="errors.password ? 'login-password-error' : undefined"
           >
-          <p v-if="errors.password" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.password }}</p>
+          <p v-if="errors.password" id="login-password-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.password }}</p>
         </div>
 
         <button type="submit" :disabled="pending" class="w-full bg-cyan-600 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-cyan-400 disabled:opacity-50">
