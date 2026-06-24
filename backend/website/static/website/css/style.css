@@ -367,3 +367,4 @@ input.error, textarea.error {
 .tracking-wide{letter-spacing:0.025em}
 .tracking-wider{letter-spacing:0.05em}
 .tracking-widest{letter-spacing:0.1em}
+.leading-none{line-height:1}
