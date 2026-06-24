@@ -6,9 +6,14 @@ from .models import BackInStockRequest, Category, ContactMessage, Order, OrderIt
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["name", "slug"]
+    list_display = ["name", "slug", "product_count"]
     search_fields = ["name"]
     prepopulated_fields = {"slug": ("name",)}
+    list_per_page = 25
+
+    @admin.display(description="Products")
+    def product_count(self, obj):
+        return obj.products.count()
 
 
 @admin.register(Product)
