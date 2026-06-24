@@ -702,3 +702,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .z-30{z-index:30}
 .z-40{z-index:40}
 .z-50{z-index:50}
+.z-auto{z-index:auto}
