@@ -99,7 +99,7 @@ class TaskFile(models.Model):
 class ContactMessage(models.Model):
     """User-submitted contact form message."""
 
-    name = models.CharField("name", max_length=200, help_text="Your full name")
+    name = models.CharField("name", max_length=200, help_text="Your full name (required)")
     email = models.EmailField("email", help_text="Your email address so we can reply")
     message = models.TextField("message", help_text="How can we help you?")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the message was submitted")
