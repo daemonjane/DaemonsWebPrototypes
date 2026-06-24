@@ -18,12 +18,13 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["name", "category", "price", "rating", "stock", "image_preview", "created_at"]
+    list_display = ["name", "category", "price", "rating", "stock", "addon_count", "image_preview", "created_at"]
     list_filter = ["category", "rating", "stock"]
     search_fields = ["name", "description", "slug"]
     save_on_top = True
     prepopulated_fields = {"slug": ("name",)}
     date_hierarchy = "created_at"
+    inlines = [ProductAddonInline]
     readonly_fields = ["created_at", "updated_at", "image_preview", "description_preview"]
     fieldsets = [
         (None, {"fields": ["slug", "name", "category"]}),
@@ -42,6 +43,15 @@ class ProductAdmin(admin.ModelAdmin):
             )
         return mark_safe('<span class="text-slate-600">No image</span>')
 
+    @admin.display(description="Add-ons")
+    def addon_count(self, obj):
+        count = obj.addons.count()
+        if count:
+            return format_html(
+                '<span style="color:#06b6d4;">{} add-on{}</span>', count, "s" if count != 1 else ""
+            )
+        return mark_safe('<span class="text-slate-600">—</span>')
+
     @admin.display(description="Preview")
     def description_preview(self, obj):
         if obj.description:
@@ -50,6 +60,12 @@ class ProductAdmin(admin.ModelAdmin):
                 obj.description[:300] + "..." if len(obj.description) > 300 else obj.description,
             )
         return mark_safe('<span class="text-slate-600">—</span>')
+
+
+class ProductAddonInline(admin.TabularInline):
+    model = ProductAddon
+    extra = 1
+    fields = ["name", "price", "description", "is_available"]
 
 
 class OrderItemInline(admin.TabularInline):
@@ -151,6 +167,39 @@ class BackInStockRequestAdmin(admin.ModelAdmin):
             obj.product.name,
         )
     product_link.short_description = "product"
+
+
+@admin.register(OrderTracking)
+class OrderTrackingAdmin(admin.ModelAdmin):
+    list_display = ["order", "carrier", "tracking_number", "estimated_delivery", "delivered_at"]
+    search_fields = ["tracking_number", "carrier", "order__name", "order__email"]
+    list_filter = ["carrier"]
+    date_hierarchy = "estimated_delivery"
+    fieldsets = [
+        ("Order", {"fields": ["order"]}),
+        ("Tracking Info", {"fields": ["tracking_number", "carrier", "tracking_url"]}),
+        ("Dates", {"fields": ["estimated_delivery", "delivered_at"]}),
+        ("Notes", {"fields": ["notes"], "classes": ["collapse"]}),
+    ]
+
+    @admin.display(description="Order")
+    def order_link(self, obj):
+        return format_html('<a href="/admin/api/order/{}/change/">Order #{}</a>', obj.order_id, obj.order_id)
+
+
+@admin.register(TrackingHistory)
+class TrackingHistoryAdmin(admin.ModelAdmin):
+    list_display = ["tracking", "status", "location", "timestamp"]
+    list_filter = ["status"]
+    search_fields = ["status", "location", "tracking__tracking_number"]
+    date_hierarchy = "timestamp"
+
+
+@admin.register(ProductAddon)
+class ProductAddonAdmin(admin.ModelAdmin):
+    list_display = ["name", "product", "price", "is_available", "created_at"]
+    list_filter = ["is_available", "product__category"]
+    search_fields = ["name", "description", "product__name"]
 
 
 @admin.register(ContactMessage)
