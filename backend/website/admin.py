@@ -37,6 +37,7 @@ class TaskAdmin(admin.ModelAdmin):
     list_display = ["title", "completed", "file_count", "comment_count", "created_at", "updated_at"]
     list_filter = ["completed", "created_at", "updated_at"]
     search_fields = ["title", "description"]
+    search_help_text = "Search by title or description"
     date_hierarchy = "created_at"
     list_editable = ["completed"]
     list_per_page = 25
@@ -130,6 +131,7 @@ class CommentAdmin(admin.ModelAdmin):
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "created_at", "message_preview"]
     search_fields = ["name", "email", "message"]
+    search_help_text = "Search by name, email, or message content"
     date_hierarchy = "created_at"
     readonly_fields = ["name", "email", "message", "created_at", "message_preview"]
     fieldsets = [
@@ -181,6 +183,7 @@ class NewsletterSubscriptionAdmin(admin.ModelAdmin):
 class TaskFileAdmin(admin.ModelAdmin):
     list_display = ["filename", "task_link", "uploaded_at"]
     search_fields = ["name", "task__title"]
+    search_help_text = "Search by filename or task title"
     date_hierarchy = "uploaded_at"
     list_select_related = ["task"]
     readonly_fields = ["uploaded_at"]
