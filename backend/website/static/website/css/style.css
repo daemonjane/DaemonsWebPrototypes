@@ -756,3 +756,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .resize-none{resize:none}
 .resize-x{resize:horizontal}
 .resize-y{resize:vertical}
+.object-contain{object-fit:contain}
