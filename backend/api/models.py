@@ -85,6 +85,7 @@ class OrderItem(models.Model):
         PRODUCT = "product", "Product"
         UPGRADE = "upgrade", "Upgrade"
         MEMBERSHIP = "membership", "Membership"
+        ADDON = "addon", "Add-on"
 
     order = models.ForeignKey(
         Order, on_delete=models.CASCADE, related_name="items", verbose_name="order",
