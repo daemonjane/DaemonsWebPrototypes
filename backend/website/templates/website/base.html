@@ -24,10 +24,25 @@
     "url": "{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}"
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "TechStore",
+    "url": "{% if request %}{{ request.scheme }}://{{ request.get_host }}{% endif %}/",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+1-555-0123",
+      "contactType": "sales",
+      "availableLanguage": ["English"]
+    }
+  }
+  </script>
   <meta http-equiv="dns-prefetch-control" content="on" />
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
   <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
+  <link rel="dns-prefetch" href="https://api.osimart.com" />
   <title>{% block title %}TechStore{% endblock %} | TechStore</title>
   <link rel="icon" type="image/svg+xml" href="{% static 'website/favicon.svg' %}" />
   <link rel="apple-touch-icon" href="{% static 'website/favicon.svg' %}" />
