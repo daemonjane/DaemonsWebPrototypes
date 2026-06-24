@@ -1,5 +1,9 @@
+import os
+
+from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import path, re_path
+from django.views.static import serve as static_serve
 
 from . import views
 from .forms import LoginForm
@@ -23,6 +27,18 @@ urlpatterns = [
     path("tasks/<int:pk>/delete/", views.task_delete, name="task_delete"),
     path("tasks/<int:pk>/comment/", views.add_comment, name="add_comment"),
     path("newsletter/", views.newsletter_subscribe, name="newsletter_subscribe"),
-    # All unmatched routes serve the Vue SPA (storefront)
+]
+
+# Serve the built Vue SPA assets (dist/) at root level in development
+if settings.DEBUG:
+    dist_root = settings.BASE_DIR.parent / "dist"
+    urlpatterns += [
+        re_path(r"^assets/(?P<path>.*)$", static_serve, {"document_root": os.path.join(dist_root, "assets")}),
+        re_path(r"^(?P<path>favicon\.svg)$", static_serve, {"document_root": dist_root}),
+        re_path(r"^(?P<path>icons\.svg)$", static_serve, {"document_root": dist_root}),
+    ]
+
+# All unmatched routes serve the Vue SPA (storefront)
+urlpatterns += [
     re_path(r"^(?!static/).*$", views.vue_spa, name="vue_spa"),
 ]

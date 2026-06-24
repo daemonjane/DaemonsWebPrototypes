@@ -128,9 +128,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR.parent / 'dist',
-]
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
