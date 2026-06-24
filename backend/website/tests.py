@@ -150,6 +150,7 @@ class DashboardViewTests(TestCase):
     def setUp(self):
         from django.contrib.auth.models import User
         self.staff = User.objects.create_user("staff", password="pass", is_staff=True)
+        self.superuser = User.objects.create_user("super", password="pass", is_staff=True, is_superuser=True)
         self.user = User.objects.create_user("user", password="pass")
 
     def test_dashboard_requires_staff(self):
@@ -176,6 +177,29 @@ class DashboardViewTests(TestCase):
         self.client.login(username="staff", password="pass")
         resp = self.client.get(reverse("admin_dashboard"))
         self.assertEqual(resp.status_code, 200)
+
+    def test_admin_add_product_page_loads(self):
+        self.client.login(username="super", password="pass")
+        resp = self.client.get("/admin/api/product/add/")
+        self.assertEqual(resp.status_code, 200)
+
+    def test_admin_add_category_page_loads(self):
+        self.client.login(username="super", password="pass")
+        resp = self.client.get("/admin/api/category/add/")
+        self.assertEqual(resp.status_code, 200)
+
+    def test_admin_add_task_page_loads(self):
+        self.client.login(username="super", password="pass")
+        resp = self.client.get("/admin/website/task/add/")
+        self.assertEqual(resp.status_code, 200)
+
+    def test_admin_change_list_loads(self):
+        self.client.login(username="super", password="pass")
+        for path in ["/admin/api/product/", "/admin/api/category/", "/admin/api/order/",
+                      "/admin/website/task/", "/admin/website/comment/",
+                      "/admin/website/contactmessage/"]:
+            resp = self.client.get(path)
+            self.assertEqual(resp.status_code, 200, f"{path} returned {resp.status_code}")
 
 
 class ContactViewTests(TestCase):
