@@ -7,7 +7,7 @@ const { remaining, progress, qualifies } = useFreeShipping()
 <template>
   <div class="bg-slate-800 border border-slate-700 rounded-lg px-3 sm:px-4 py-2.5 text-xs sm:text-sm">
     <div class="flex items-center justify-between gap-2 mb-1.5">
-      <span v-if="qualifies" class="text-emerald-400 font-semibold flex items-center gap-1.5">
+      <span v-if="qualifies" class="text-emerald-400 font-semibold flex items-center gap-1.5" aria-live="polite">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
         Free Shipping Applied!
       </span>
@@ -15,7 +15,7 @@ const { remaining, progress, qualifies } = useFreeShipping()
         Add <span class="text-cyan-400 font-semibold">${{ remaining.toFixed(2) }}</span> for free shipping
       </span>
     </div>
-    <div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden">
+    <div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100" :aria-label="qualifies ? 'Free shipping achieved' : `Free shipping progress: ${progress}%`">
       <div
         class="h-full rounded-full transition-all duration-500 ease-out"
         :class="qualifies ? 'bg-emerald-400' : 'bg-gradient-to-r from-cyan-600 to-cyan-400'"
