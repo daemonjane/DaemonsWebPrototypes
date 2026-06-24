@@ -257,7 +257,7 @@ class Command(BaseCommand):
 
         addon_count = 0
         for addon_data in ADDONS:
-            product_slug = addon_data.pop("product_slug")
+            product_slug = addon_data["product_slug"]
             try:
                 product = Product.objects.get(slug=product_slug)
             except Product.DoesNotExist:
@@ -265,7 +265,7 @@ class Command(BaseCommand):
             ProductAddon.objects.update_or_create(
                 product=product,
                 name=addon_data["name"],
-                defaults={**addon_data},
+                defaults={"description": addon_data["description"], "price": addon_data["price"]},
             )
             addon_count += 1
         self.stdout.write(self.style.SUCCESS(f"Seeded {addon_count} product add-ons"))
