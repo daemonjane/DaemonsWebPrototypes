@@ -1044,3 +1044,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .contrast-75{filter:contrast(0.75)}
 .contrast-100{filter:contrast(1)}
 .contrast-125{filter:contrast(1.25)}
+.saturate-0{filter:saturate(0)}
