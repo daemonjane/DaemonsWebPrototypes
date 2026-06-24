@@ -69,7 +69,7 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ["pk", "name", "email", "status", "item_count", "total_value", "created_at"]
     list_filter = ["status"]
-    search_fields = ["name", "email"]
+    search_fields = ["name", "email", "address"]
     date_hierarchy = "created_at"
     list_per_page = 25
     inlines = [OrderItemInline]
