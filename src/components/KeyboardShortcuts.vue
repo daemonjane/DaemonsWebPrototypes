@@ -21,14 +21,15 @@ function handler(e) {
     visible.value = !visible.value
     return
   }
-  if (!visible.value) return
+  if (e.key === 'Escape') { visible.value = false; return }
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+  if (e.ctrlKey || e.metaKey) return
   const map = { h: '/', s: '/shop', f: '/favorites', c: '/checkout', t: '/tracking' }
   if (map[e.key]) {
     e.preventDefault()
     router.push(map[e.key])
     visible.value = false
   }
-  if (e.key === 'Escape') visible.value = false
 }
 
 onMounted(() => window.addEventListener('keydown', handler))
