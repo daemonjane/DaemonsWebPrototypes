@@ -68,7 +68,7 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ["pk", "user", "name", "email", "status", "item_count", "total_value", "created_at"]
+    list_display = ["pk", "user", "name", "email", "status", "item_count", "total_value", "track_order", "created_at"]
     list_filter = ["status"]
     search_fields = ["name", "email", "address"]
     date_hierarchy = "created_at"
@@ -93,6 +93,19 @@ class OrderAdmin(admin.ModelAdmin):
         if obj.gift_card_discount:
             total -= obj.gift_card_discount
         return f"${total:.2f}"
+
+    @admin.display(description="Tracking")
+    def track_order(self, obj):
+        if hasattr(obj, "tracking") and obj.tracking.tracking_number:
+            url = obj.tracking.tracking_url or "#"
+            return format_html(
+                '<a href="{}" target="_blank" style="color:#06b6d4;font-weight:600;">📦 Track #{}</a>',
+                url, obj.tracking.tracking_number,
+            )
+        return format_html(
+            '<a href="/admin/api/ordertracking/add/?order={}" style="color:#94a3b8;">➕ Add Tracking</a>',
+            obj.pk,
+        )
 
 
 @admin.register(Subscription)
