@@ -522,3 +522,7 @@ input.error, textarea.error {
   body { background: #fff; color: #000; }
   a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
