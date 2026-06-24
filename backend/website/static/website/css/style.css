@@ -349,3 +349,4 @@ input.error, textarea.error {
 .lowercase{text-transform:lowercase}
 .capitalize{text-transform:capitalize}
 .italic{font-style:italic}
+.not-italic{font-style:normal}
