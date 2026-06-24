@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xj%h(xepbafa391z1ucxn5-f7i-br%1w1xsnb=i9@ar5=-!@c('
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or 'django-insecure-xj%h(xepbafa391z1ucxn5-f7i-br%1w1xsnb=i9@ar5=-!@c('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "True").strip().lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 APPEND_SLASH = True
 
@@ -143,7 +144,7 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 5_242_880
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MAINTENANCE_MODE = False
+MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE", "False").strip().lower() in ("true", "1", "yes")
 
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/tasks/"
