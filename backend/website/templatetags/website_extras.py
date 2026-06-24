@@ -66,6 +66,22 @@ def current_time(format_str="Y-m-d H:i"):
 
 
 @register.simple_tag
+def status_badge_status(status):
+    colors = {
+        "placed": "text-blue-400 bg-blue-950/40 border-blue-700/40",
+        "processing": "text-amber-400 bg-amber-950/40 border-amber-700/40",
+        "shipped": "text-purple-400 bg-purple-950/40 border-purple-700/40",
+        "out_for_delivery": "text-cyan-400 bg-cyan-950/40 border-cyan-700/40",
+        "delivered": "text-emerald-400 bg-emerald-950/40 border-emerald-700/40",
+    }
+    cls = colors.get(status, "text-slate-400 bg-slate-950/40 border-slate-700/40")
+    label = status.replace("_", " ").title()
+    return mark_safe(
+        f'<span class="inline-flex items-center text-xs font-medium rounded-full px-2 py-0.5 border {cls}">{label}</span>'
+    )
+
+
+@register.simple_tag
 def task_stats():
     from ..models import Task
     total = Task.objects.count()
