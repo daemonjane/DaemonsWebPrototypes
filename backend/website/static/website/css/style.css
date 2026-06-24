@@ -770,3 +770,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .break-words{overflow-wrap:break-word}
 .break-all{word-break:break-all}
 .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.text-ellipsis{text-overflow:ellipsis}
