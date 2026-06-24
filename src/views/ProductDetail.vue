@@ -259,6 +259,7 @@ onMounted(async () => {
                 :checked="selectedAddons.find(a => a.id === addon.id)"
                 @change="toggleAddon(addon)"
                 class="w-4 h-4 rounded border-slate-600 bg-slate-800 text-cyan-500 focus:ring-cyan-400 focus:ring-offset-0"
+                :aria-label="'Add ' + addon.name + ' for $' + addon.price.toFixed(2)"
               />
               <div class="flex-1 min-w-0">
                 <span class="text-sm text-slate-200 font-medium">{{ addon.name }}</span>
