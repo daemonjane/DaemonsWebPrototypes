@@ -1,7 +1,10 @@
+from unittest.mock import patch
+
+from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Comment, Task
+from .models import Comment, NewsletterSubscription, Task
 
 
 class TaskModelTests(TestCase):
@@ -326,3 +329,60 @@ class RegisterViewTests(TestCase):
         })
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "already exists")
+
+
+class EmailTests(TestCase):
+    def test_contact_auto_reply_sent(self):
+        resp = self.client.post(reverse("contact"), {
+            "name": "Alice",
+            "email": "alice@example.com",
+            "message": "I love your store!",
+        })
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Thank you for contacting TechStore", mail.outbox[0].subject)
+        self.assertIn("alice@example.com", mail.outbox[0].to)
+        self.assertIn("I love your store!", mail.outbox[0].body)
+
+    def test_contact_auto_reply_does_not_block_on_failure(self):
+        with patch("website.views.send_contact_auto_reply", side_effect=Exception("SMTP down")):
+            resp = self.client.post(reverse("contact"), {
+                "name": "Bob",
+                "email": "bob@example.com",
+                "message": "Hello",
+            })
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, reverse("contact"))
+
+
+class NewsletterSubscriptionTests(TestCase):
+    def test_subscribe_creates_subscription_and_sends_email(self):
+        resp = self.client.post(reverse("newsletter_subscribe"), {"email": "new@example.com"})
+        self.assertEqual(resp.status_code, 302)
+        self.assertTrue(NewsletterSubscription.objects.filter(email="new@example.com").exists())
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Welcome to the TechStore newsletter", mail.outbox[0].subject)
+        self.assertIn("new@example.com", mail.outbox[0].to)
+
+    def test_subscribe_duplicate_does_not_create_duplicate(self):
+        NewsletterSubscription.objects.create(email="dup@example.com")
+        resp = self.client.post(reverse("newsletter_subscribe"), {"email": "dup@example.com"})
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(NewsletterSubscription.objects.filter(email="dup@example.com").count(), 1)
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_subscribe_reactivates_inactive(self):
+        sub = NewsletterSubscription.objects.create(email="old@example.com", active=False)
+        resp = self.client.post(reverse("newsletter_subscribe"), {"email": "old@example.com"})
+        self.assertEqual(resp.status_code, 302)
+        sub.refresh_from_db()
+        self.assertTrue(sub.active)
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_subscribe_without_email_returns_error(self):
+        resp = self.client.post(reverse("newsletter_subscribe"), {"email": ""})
+        self.assertEqual(resp.status_code, 302)
+
+    def test_newsletter_subscription_model_str(self):
+        sub = NewsletterSubscription.objects.create(email="test@example.com")
+        self.assertEqual(str(sub), "test@example.com")

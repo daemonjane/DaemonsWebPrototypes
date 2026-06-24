@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.html import format_html, mark_safe
 
-from .models import Comment, ContactMessage, Task
+from .models import Comment, ContactMessage, NewsletterSubscription, Task
 
 admin.site.site_header = "TechStore Administration"
 admin.site.site_title = "TechStore Admin"
@@ -127,3 +127,24 @@ class ContactMessageAdmin(admin.ModelAdmin):
         count = old.count()
         old.delete()
         self.message_user(request, f"{count} old message(s) deleted.")
+
+
+@admin.register(NewsletterSubscription)
+class NewsletterSubscriptionAdmin(admin.ModelAdmin):
+    list_display = ["email", "active", "created_at"]
+    list_filter = ["active"]
+    search_fields = ["email"]
+    date_hierarchy = "created_at"
+    list_per_page = 50
+    list_editable = ["active"]
+    actions = ["mark_active", "mark_inactive"]
+
+    @admin.action(description="Mark selected as active")
+    def mark_active(self, request, queryset):
+        updated = queryset.update(active=True)
+        self.message_user(request, f"{updated} subscription(s) marked as active.")
+
+    @admin.action(description="Mark selected as inactive")
+    def mark_inactive(self, request, queryset):
+        updated = queryset.update(active=False)
+        self.message_user(request, f"{updated} subscription(s) marked as inactive.")
