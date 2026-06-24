@@ -232,3 +232,46 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f"Wishlist of {self.user.username}"
+
+
+class OrderTracking(models.Model):
+    """Tracking information for a shipped order."""
+
+    order = models.OneToOneField(
+        Order, on_delete=models.CASCADE, related_name="tracking", verbose_name="order",
+        help_text="The order being tracked",
+    )
+    tracking_number = models.CharField("tracking number", max_length=100, blank=True, help_text="Carrier tracking number")
+    carrier = models.CharField("carrier", max_length=100, blank=True, help_text="Shipping carrier name (UPS, FedEx, USPS, etc.)")
+    tracking_url = models.URLField("tracking URL", max_length=500, blank=True, help_text="Link to the carrier's tracking page")
+    estimated_delivery = models.DateField("estimated delivery", null=True, blank=True, help_text="Estimated delivery date")
+    delivered_at = models.DateTimeField("delivered at", null=True, blank=True, help_text="Timestamp when the order was marked delivered")
+    notes = models.TextField("notes", blank=True, help_text="Internal shipping notes")
+
+    class Meta:
+        verbose_name = "Order Tracking"
+        verbose_name_plural = "Order Tracking Records"
+
+    def __str__(self):
+        return f"Tracking #{self.tracking_number or 'N/A'} for Order #{self.order_id}"
+
+
+class TrackingHistory(models.Model):
+    """A single status event in the order tracking timeline."""
+
+    tracking = models.ForeignKey(
+        OrderTracking, on_delete=models.CASCADE, related_name="history", verbose_name="tracking",
+        help_text="The tracking record this event belongs to",
+    )
+    status = models.CharField("status", max_length=100, help_text="Status label (e.g. 'Picked Up', 'In Transit', 'Out for Delivery')")
+    location = models.CharField("location", max_length=200, blank=True, help_text="City/state where the event occurred")
+    note = models.TextField("note", blank=True, help_text="Details about this tracking event")
+    timestamp = models.DateTimeField("timestamp", help_text="When this event occurred")
+
+    class Meta:
+        ordering = ["-timestamp"]
+        verbose_name = "Tracking History Entry"
+        verbose_name_plural = "Tracking History Entries"
+
+    def __str__(self):
+        return f"{self.status} at {self.timestamp}"
