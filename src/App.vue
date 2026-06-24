@@ -9,10 +9,12 @@ import { useRouteLoading } from './composables/useRouteLoading'
 import { useSalesNotifications } from './composables/useSalesNotifications'
 import KeyboardShortcuts from './components/KeyboardShortcuts.vue'
 import BackgroundEffects from './components/BackgroundEffects.vue'
+import { useDocumentTitle } from './composables/useDocumentTitle'
 
 const route = useRoute()
 const { showSkeleton } = useRouteLoading()
 useSalesNotifications()
+useDocumentTitle()
 </script>
 
 <template>
