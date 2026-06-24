@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import models as db_models
@@ -10,7 +8,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Cart, CartItem, Order, OrderItem, Product, Wishlist
+from .models import Cart, CartItem, Order, OrderItem, OrderTracking, Product, ProductAddon, TrackingHistory, Wishlist
 from .serializers import CartSerializer, OrderSerializer
 from website.models import UserProfile
 
@@ -46,11 +44,7 @@ def health_check(request):
 @csrf_exempt
 def auth_register(request):
     """Register a new user account."""
-    try:
-        data = json.loads(request.body)
-    except (json.JSONDecodeError, TypeError):
-        return Response({"error": "Invalid JSON body."}, status=400)
-
+    data = request.data
     username = data.get("username", "").strip()
     email = data.get("email", "").strip()
     password = data.get("password", "")
@@ -76,10 +70,7 @@ def auth_register(request):
 @csrf_exempt
 def auth_login(request):
     """Authenticate and log in a user."""
-    try:
-        data = json.loads(request.body)
-    except (json.JSONDecodeError, TypeError):
-        return Response({"error": "Invalid JSON body."}, status=400)
+    data = request.data
 
     username = data.get("username", "")
     password = data.get("password", "")
@@ -108,11 +99,7 @@ def auth_profile(request):
     if request.method == 'GET':
         return Response(_user_data(request.user))
 
-    try:
-        data = json.loads(request.body)
-    except (json.JSONDecodeError, TypeError):
-        return Response({"error": "Invalid JSON body."}, status=400)
-
+    data = request.data
     user = request.user
     if "email" in data:
         new_email = data["email"].strip()
@@ -173,11 +160,7 @@ def cart_add(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
 
-    try:
-        data = json.loads(request.body)
-    except (json.JSONDecodeError, TypeError):
-        return Response({"error": "Invalid JSON."}, status=400)
-
+    data = request.data
     cart = _get_cart(request.user)
     product_slug = data.get("product_slug")
     item_type = data.get("item_type", "product")
@@ -233,11 +216,7 @@ def cart_item_detail(request, item_id):
         item.delete()
         return Response(_cart_json(_get_cart(request.user)))
 
-    try:
-        data = json.loads(request.body)
-    except (json.JSONDecodeError, TypeError):
-        return Response({"error": "Invalid JSON."}, status=400)
-
+    data = request.data
     if "quantity" in data:
         item.quantity = max(0, int(data["quantity"]))
     if "price" in data:
@@ -267,11 +246,7 @@ def cart_merge(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
 
-    try:
-        data = json.loads(request.body)
-    except (json.JSONDecodeError, TypeError):
-        return Response({"error": "Invalid JSON."}, status=400)
-
+    data = request.data
     cart = _get_cart(request.user)
     local_items = data.get("items", [])
 
@@ -329,18 +304,13 @@ def wishlist_toggle(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
 
-    try:
-        data = json.loads(request.body)
-    except (json.JSONDecodeError, TypeError):
-        return Response({"error": "Invalid JSON."}, status=400)
-
+    data = request.data
     slug = data.get("slug")
     if not slug:
         return Response({"error": "slug is required."}, status=400)
 
-    try:
-        product = Product.objects.get(slug=slug)
-    except Product.DoesNotExist:
+    product = Product.objects.filter(slug=slug).first()
+    if not product:
         return Response({"error": "Product not found."}, status=404)
 
     wishlist = _get_wishlist(request.user)
@@ -392,11 +362,7 @@ def order_checkout(request):
     if not request.user.is_authenticated:
         return Response({"error": "Please sign in to place an order."}, status=401)
 
-    try:
-        data = json.loads(request.body)
-    except (json.JSONDecodeError, TypeError):
-        return Response({"error": "Invalid JSON."}, status=400)
-
+    data = request.data
     cart = _get_cart(request.user)
     cart_items = cart.items.all()
     if not cart_items:
@@ -435,6 +401,70 @@ def order_checkout(request):
 
     serializer = OrderSerializer(order)
     return Response(serializer.data, status=201)
+
+
+# ---------------------------------------------------------------------------
+# Tracking
+# ---------------------------------------------------------------------------
+
+@api_view(['GET'])
+def order_tracking(request, pk):
+    if not request.user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+    try:
+        order = Order.objects.get(pk=pk, user=request.user)
+    except Order.DoesNotExist:
+        return Response({"error": "Order not found."}, status=404)
+
+    try:
+        tracking = order.tracking
+        history = tracking.history.all()
+        return Response({
+            "order_id": order.pk,
+            "tracking_number": tracking.tracking_number,
+            "carrier": tracking.carrier,
+            "tracking_url": tracking.tracking_url,
+            "estimated_delivery": tracking.estimated_delivery.isoformat() if tracking.estimated_delivery else None,
+            "delivered_at": tracking.delivered_at.isoformat() if tracking.delivered_at else None,
+            "current_status": order.get_status_display(),
+            "history": [
+                {
+                    "status": h.status,
+                    "location": h.location,
+                    "note": h.note,
+                    "timestamp": h.timestamp.isoformat(),
+                }
+                for h in history
+            ],
+        })
+    except OrderTracking.DoesNotExist:
+        return Response({"tracking_number": None, "carrier": None, "tracking_url": None, "history": []})
+
+
+# ---------------------------------------------------------------------------
+# Product Add-ons
+# ---------------------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def product_addons(request, slug):
+    try:
+        product = Product.objects.get(slug=slug)
+    except Product.DoesNotExist:
+        return Response({"error": "Product not found."}, status=404)
+
+    addons = product.addons.filter(is_available=True)
+    data = [
+        {
+            "id": a.pk,
+            "name": a.name,
+            "description": a.description,
+            "price": float(a.price),
+            "image": a.image,
+        }
+        for a in addons
+    ]
+    return Response({"addons": data})
 
 
 # ---------------------------------------------------------------------------
