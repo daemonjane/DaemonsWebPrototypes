@@ -157,7 +157,7 @@ async function placeOrder() {
 
           <div class="border-t border-slate-700 mt-4 pt-4 text-right">
             <span class="text-lg">Total: </span>
-            <span class="text-2xl font-bold text-cyan-400">${{ finalTotal.toFixed(2) }}</span>
+            <span class="text-2xl font-bold text-cyan-400" aria-live="polite">${{ finalTotal.toFixed(2) }}</span>
           </div>
         </div>
 
