@@ -532,11 +532,15 @@ def api_version(request):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_exempt
 def newsletter_subscribe(request):
+    import re
     from website.models import NewsletterSubscription
     email = request.data.get("email", "").strip()
     if not email:
         return Response({"error": "Email is required."}, status=400)
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return Response({"error": "Invalid email format."}, status=400)
     subscription, created = NewsletterSubscription.objects.get_or_create(
         email=email, defaults={"active": True},
     )
