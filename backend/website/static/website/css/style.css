@@ -343,3 +343,4 @@ input.error, textarea.error {
 .break-all{word-break:break-all}
 .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .text-left{text-align:left}
+.text-right{text-align:right}
