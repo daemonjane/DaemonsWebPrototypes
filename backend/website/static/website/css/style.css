@@ -784,3 +784,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .subpixel-antialiased{-webkit-font-smoothing:auto;-moz-osx-font-smoothing:auto}
 .list-inside{list-style-position:inside}
+.list-outside{list-style-position:outside}
