@@ -98,7 +98,7 @@ class TaskAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["author", "task_link", "created_at", "body_preview"]
-    list_filter = ["created_at", "task"]
+    list_filter = ["created_at", "task", "author"]
     search_fields = ["author", "body", "task__title"]
     autocomplete_fields = ["task"]
     date_hierarchy = "created_at"
