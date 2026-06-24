@@ -295,7 +295,7 @@ async function placeOrder() {
               <div class="flex gap-2">
                 <input v-model="giftCardCode" type="text" placeholder="Enter code"
                   class="flex-1 bg-slate-800 border border-slate-700 rounded p-2 text-sm"
-                  :disabled="giftCardApplied">
+                  :disabled="giftCardApplied" aria-label="Gift card code">
                 <button v-if="!giftCardApplied" @click.prevent="applyGiftCard"
                   class="bg-emerald-700 hover:bg-emerald-600 text-white text-sm px-4 rounded-md transition active:scale-95">
                   Apply
