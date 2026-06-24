@@ -19,6 +19,7 @@ const TITLES = {
   '/orders': 'Order History',
   '/tracking': 'Order Tracking',
   '/counter': 'Counter',
+  '/confirmation': 'Order Confirmation',
 }
 
 export function useDocumentTitle() {
