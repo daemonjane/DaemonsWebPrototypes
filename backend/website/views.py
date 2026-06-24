@@ -63,7 +63,6 @@ def admin_dashboard(request):
 
 
 def sitemap_xml(request):
-    from website.models import Task
     static_urls = [
         "/", "/tasks/", "/contact/", "/shop/", "/about/", "/faq/", "/privacy/", "/terms/", "/cookies/",
     ]
