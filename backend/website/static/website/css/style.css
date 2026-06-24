@@ -1010,3 +1010,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .items-baseline{align-items:baseline}
 .items-stretch{align-items:stretch}
 .justify-start{justify-content:flex-start}
+.justify-end{justify-content:flex-end}
