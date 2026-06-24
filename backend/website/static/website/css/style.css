@@ -396,3 +396,4 @@ input.error, textarea.error {
 .row-span-full{grid-row:1/-1}
 .grid-flow-row{grid-auto-flow:row}
 .grid-flow-col{grid-auto-flow:column}
+.grid-flow-dense{grid-auto-flow:dense}
