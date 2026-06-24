@@ -736,3 +736,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .inset-x-0{left:0;right:0}
 .inset-y-0{top:0;bottom:0}
 .cursor-pointer{cursor:pointer}
+.cursor-default{cursor:default}
