@@ -38,19 +38,42 @@
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.5;
 }
 
 #header {
   border-bottom: 1px solid #334155;
+  padding: 8px 16px;
+}
+
+#branding h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+#user-tools {
+  font-size: 0.75rem;
 }
 
 .module h2, .module caption {
   background: #1e293b;
   color: #06b6d4;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 10px;
 }
 
 a.section:link, a.section:visited {
   color: #06b6d4;
+}
+
+div.breadcrumbs {
+  font-size: 0.75rem;
+  padding: 6px 16px;
 }
 
 div.breadcrumbs a {
@@ -66,4 +89,243 @@ div.breadcrumbs a {
 .paginator a:hover {
   background: #0891b2;
   color: white;
+}
+
+/* Compact tables */
+#changelist table {
+  font-size: 0.75rem;
+}
+
+#changelist table thead th {
+  padding: 6px 8px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #1e293b;
+  color: #94a3b8;
+  border-bottom: 1px solid #334155;
+}
+
+#changelist table tbody tr {
+  background: #0f172a;
+}
+
+#changelist table tbody tr:hover {
+  background: #1a2332;
+}
+
+#changelist table tbody td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #1e293b;
+}
+
+/* Compact action bar */
+#changelist #toolbar {
+  padding: 8px 12px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+#changelist #toolbar form input[type="text"] {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  width: 180px;
+}
+
+#changelist #toolbar form input[type="submit"] {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+}
+
+/* Tighter form rows */
+.form-row {
+  padding: 8px 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.form-row:last-child {
+  border-bottom: none;
+}
+
+.form-row .label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.form-row .label label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.form-row .field-box {
+  font-size: 0.8125rem;
+}
+
+/* Field help text */
+.help {
+  font-size: 0.6875rem;
+  color: #64748b;
+  margin-top: 2px;
+  padding: 0;
+  line-height: 1.4;
+}
+
+.help a {
+  color: #06b6d4;
+}
+
+/* Inline preview styling */
+.field-preview img,
+.field-image_preview img {
+  max-width: 200px;
+  max-height: 120px;
+  border-radius: 4px;
+  border: 1px solid #334155;
+  display: block;
+  margin-top: 4px;
+  object-fit: cover;
+}
+
+.field-description_preview,
+.field-body_preview {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  background: #1e293b;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border-left: 3px solid #06b6d4;
+  margin-top: 4px;
+  line-height: 1.5;
+  max-width: 480px;
+}
+
+/* Module sections */
+.module {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.module:first-of-type {
+  margin-top: 0;
+}
+
+/* Reduce chunky padding in modules */
+.module table {
+  margin: 0;
+}
+
+.module td, .module th {
+  padding: 6px 8px;
+}
+
+.inline-group .tabular td.original p {
+  font-size: 0.6875rem;
+  color: #64748b;
+}
+
+/* Buttons - more compact */
+.button, input[type="submit"], input[type="button"], .submit-row input {
+  padding: 5px 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-row {
+  padding: 10px 0;
+  border-top: 1px solid #334155;
+  margin-top: 12px;
+}
+
+.object-tools {
+  margin-top: 0;
+}
+
+.object-tools a {
+  padding: 4px 10px;
+  font-size: 0.6875rem;
+  border-radius: 4px;
+}
+
+/* Filter sidebar compact */
+#changelist-filter {
+  font-size: 0.75rem;
+}
+
+#changelist-filter h2 {
+  font-size: 0.6875rem;
+  padding: 6px 10px;
+  background: #1e293b;
+  color: #06b6d4;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+#changelist-filter h3 {
+  font-size: 0.6875rem;
+  padding: 4px 10px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+#changelist-filter ul {
+  padding: 0 10px 6px;
+}
+
+#changelist-filter li a {
+  font-size: 0.6875rem;
+  padding: 2px 0;
+}
+
+/* Dashboard module styling */
+.dashboard .module table th {
+  font-size: 0.75rem;
+  padding: 6px 8px;
+}
+
+.dashboard .module table td {
+  font-size: 0.75rem;
+  padding: 6px 8px;
+}
+
+/* Responsive admin */
+@media (max-width: 1024px) {
+  #changelist #toolbar form input[type="text"] {
+    width: 120px;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 0.75rem;
+  }
+
+  #header {
+    padding: 6px 12px;
+  }
+
+  #changelist table thead th,
+  #changelist table tbody td {
+    padding: 4px 6px;
+  }
+
+  .form-row {
+    padding: 6px 0;
+  }
+
+  .module {
+    border-radius: 4px;
+  }
 }
