@@ -1,3 +1,6 @@
+from pathlib import Path
+
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout
@@ -6,6 +9,15 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
+
+
+def vue_spa(request):
+    """Serve the built Vue SPA (dist/index.html)."""
+    spa_path = Path(settings.BASE_DIR.parent) / "dist" / "index.html"
+    if not spa_path.exists():
+        return HttpResponse("Vue app not built. Run `npm run build` in the project root.", status=200)
+    with open(spa_path) as f:
+        return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
 
 
 from .email_utils import send_contact_auto_reply, send_subscription_confirmation
@@ -25,19 +37,8 @@ PAGES = {
 
 
 def home(request):
-    """Render the homepage with task stats and recent tasks."""
-    tasks = Task.objects.all()
-    recent_tasks = tasks[:5]
-    total_tasks = tasks.count()
-    completed_tasks = tasks.filter(completed=True).count()
-    pending_tasks = total_tasks - completed_tasks
-    return render(request, "website/home.html", {
-        "recent_tasks": recent_tasks,
-        "total_tasks": total_tasks,
-        "completed_tasks": completed_tasks,
-        "pending_tasks": pending_tasks,
-        "total_comments": Comment.objects.count(),
-    })
+    """Serve the Vue SPA homepage."""
+    return vue_spa(request)
 
 
 @staff_member_required

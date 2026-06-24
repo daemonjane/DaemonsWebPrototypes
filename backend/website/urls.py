@@ -1,19 +1,8 @@
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 from .forms import LoginForm
-
-page_patterns = [
-    path("shop/", views.page_placeholder, {"page_name": "shop"}, name="shop"),
-    path("favorites/", views.page_placeholder, {"page_name": "favorites"}, name="favorites"),
-    path("insights/", views.page_placeholder, {"page_name": "insights"}, name="insights"),
-    path("about/", views.page_placeholder, {"page_name": "about"}, name="about"),
-    path("faq/", views.page_placeholder, {"page_name": "faq"}, name="faq"),
-    path("privacy/", views.page_placeholder, {"page_name": "privacy"}, name="privacy"),
-    path("terms/", views.page_placeholder, {"page_name": "terms"}, name="terms"),
-    path("cookies/", views.page_placeholder, {"page_name": "cookies"}, name="cookies"),
-]
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -34,4 +23,6 @@ urlpatterns = [
     path("tasks/<int:pk>/delete/", views.task_delete, name="task_delete"),
     path("tasks/<int:pk>/comment/", views.add_comment, name="add_comment"),
     path("newsletter/", views.newsletter_subscribe, name="newsletter_subscribe"),
-] + page_patterns
+    # All unmatched routes serve the Vue SPA (storefront)
+    re_path(r"^(?!static/).*$", views.vue_spa, name="vue_spa"),
+]
