@@ -44,6 +44,8 @@ class SecureHeadersMiddleware:
             response["Content-Security-Policy"] = self.csp
         if not response.has_header("X-Robots-Tag"):
             response["X-Robots-Tag"] = "index, follow" if not settings.DEBUG else "noindex, nofollow"
+        if not response.has_header("Permissions-Policy"):
+            response["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
         return response
 
 
