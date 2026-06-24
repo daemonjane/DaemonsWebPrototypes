@@ -87,7 +87,8 @@ def auth_login(request):
 
     if user is None:
         cache.set(cache_key, attempts + 1, 300)
-        return Response({"error": "Invalid username or password."}, status=401)
+        remaining = 4 - attempts
+        return Response({"error": "Invalid username or password."}, status=401, headers={"X-RateLimit-Remaining": str(remaining)})
 
     cache.delete(cache_key)
     login(request, user)
