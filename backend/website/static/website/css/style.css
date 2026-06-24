@@ -751,3 +751,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .pointer-events-auto{pointer-events:auto}
 .select-none{user-select:none}
 .select-text{user-select:text}
+.select-all{user-select:all}
