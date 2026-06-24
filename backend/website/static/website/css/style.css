@@ -761,3 +761,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .object-fill{object-fit:fill}
 .object-none{object-fit:none}
 .object-scale-down{object-fit:scale-down}
+.whitespace-normal{white-space:normal}
