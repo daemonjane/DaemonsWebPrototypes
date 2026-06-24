@@ -595,3 +595,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .shadow-xl{box-shadow:0 20px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1)}
 .p-0{padding:0}
 .p-1{padding:0.25rem}
+.p-2{padding:0.5rem}
