@@ -1,1 +1,18 @@
-37
+* text=auto
+*.py text diff=python
+*.vue text
+*.js text
+*.css text
+*.html text
+*.md text
+*.json text
+*.yml text
+*.yaml text
+*.env text
+*.example text
+*.svg -text
+*.ico -text
+*.png -text
+*.jpg -text
+*.webp -text
+
