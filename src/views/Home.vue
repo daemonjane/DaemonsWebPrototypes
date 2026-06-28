@@ -51,6 +51,7 @@ function normalizeProduct(p) {
     price: parseFloat(p.price_range || '0'),
     image: imgPath ? `${OSIMART_IMAGE_BASE}/${imgPath}` : '/assets/placeholder.svg',
     description: stripHtml(p.description || ''),
+    createdAt: p.created_at || p.date_created || null,
     rating: 4.5,
     stock: p.remaining_stock ?? p.stock ?? 0,
     specs: (p.sections || []).flatMap(s => (s.items || []).map(i => `${i.name}: ${i.value}`)),
@@ -150,7 +151,7 @@ function scrollRecently(dir) {
 const trendingProducts = computed(() => products.value.slice(0, 6))
 const featuredProducts = computed(() => products.value.slice(0, 3))
 const newArrivals = computed(() => {
-  return [...products.value].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '')).slice(0, 6)
+  return [...products.value].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).slice(0, 6)
 })
 const otherProducts = computed(() => {
   const featuredIds = new Set(featuredProducts.value.map(p => p.id))
