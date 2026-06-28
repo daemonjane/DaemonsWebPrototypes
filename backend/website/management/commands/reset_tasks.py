@@ -1,3 +1,4 @@
+"""Command to reset all tasks."""
 from django.core.management.base import BaseCommand
 
 from website.models import Task
