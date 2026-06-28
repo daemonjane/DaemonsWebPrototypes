@@ -1,3 +1,4 @@
+# Template tags for the website app.
 from datetime import datetime
 
 from django import template
