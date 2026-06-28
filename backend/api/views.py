@@ -231,7 +231,8 @@ def cart_add(
 
 
 @api_view(['PATCH', 'DELETE'])
-def cart_item_detail(request, item_id):
+def cart_item_detail(
+    """Update or remove a specific cart item."""request, item_id):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
 
