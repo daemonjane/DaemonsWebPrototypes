@@ -166,9 +166,13 @@ def main():
             skipped += 1
             continue
 
-        # Create media entry
-        safe_name = requests.utils.quote(name.replace(" ", "+"))
-        img_url = f"https://placehold.co/600x400/1e293b/38bdf8?text={safe_name}"
+        # Create media entry from product image asset
+        img_file = IMAGE_MAP.get(pid, "")
+        img_url = f"{IMG_BASE_URL}/{img_file}" if img_file else ""
+        if not img_url:
+            print(f"  SKIP  {name} — no image mapping for '{pid}'")
+            skipped += 1
+            continue
         r = sess.post(f"{BASE}/dashboard/apis/medias/", json={"path": img_url, "store": STORE}, headers=headers)
         if r.status_code != 201:
             print(f"  ERROR {name} — media failed ({r.status_code})")

@@ -22,6 +22,32 @@ CATEGORY_MAP = {
     "components": "f3d39fe9-b874-4bf6-8371-b345889dd494",
 }
 
+IMAGE_MAP = {
+    "vanguard-desktop":     "vanguard-desktop-fallback.png",
+    "ultrawide-monitor":    "ultrawide-monitor-fallback.png",
+    "cyberpro-keyboard":    "cyberpro-keyboard-fallback.png",
+    "gaming-mouse":         "gamingmouse.jpg",
+    "wireless-headset":     "headset.jpg",
+    "usb-hub":              "USBhub.jpg",
+    "mousepad":             "mousepad.jpg",
+    "webcam":               "webcam.webp",
+    "speakers":             "speakers.jpg",
+    "thermal-paste":        "ThermalCompound2.jpg",
+    "cable-ties":           "BraidedCableTies.jpg",
+    "cleaning-kit":         "CleaningKit.jpg",
+    "gpu-bracket":          "GPU_support_bracket.jpg",
+    "displayport-cable":    "DisplayPortCable.jpg",
+    "mouse-bungee":         "MouseBungee.webp",
+    "stream-deck":          "stream-deck.svg",
+    "gaming-chair":         "gaming-chair.svg",
+    "cpu-cooler":           "cpu-cooler.svg",
+    "nvme-ssd":             "nvme-ssd.svg",
+    "sleeved-cables":       "sleeved-cables.svg",
+    "microphone":           "microphone.svg",
+}
+
+IMG_BASE_URL = "https://raw.githubusercontent.com/daemonjane/DaemonsWebPrototypes/main/public/assets"
+
 PRODUCTS_JS_PATH = "src/data/products.js"
 
 
@@ -188,12 +214,15 @@ class Command(BaseCommand):
                 skipped += 1
                 continue
 
-            # Create media (placeholder image)
+            # Create media from product image asset
             price = product.get("price", 0)
-            img_url = (
-                f"https://placehold.co/600x400/1e293b/38bdf8?"
-                f"text={requests.utils.quote(name.replace(' ', '+'))}"
-            )
+            img_url = f"{IMG_BASE_URL}/{IMAGE_MAP.get(pid, '')}"
+            if not img_url.endswith(("/" + pid)):
+                pass
+            if not IMAGE_MAP.get(pid):
+                self.stderr.write(f"  SKIP {name}: no image mapping for '{pid}'")
+                skipped += 1
+                continue
             r = sess.post(
                 f"{BASE}/dashboard/apis/medias/",
                 json={"path": img_url, "store": STORE},
