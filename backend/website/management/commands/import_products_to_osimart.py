@@ -46,7 +46,7 @@ IMAGE_MAP = {
     "microphone":           "microphone.svg",
 }
 
-IMG_BASE_URL = "https://raw.githubusercontent.com/daemonjane/DaemonsWebPrototypes/main/public/assets"
+IMG_BASE_URL = "https://cdn.jsdelivr.net/gh/daemonjane/DaemonsWebPrototypes@main/public/assets"
 
 PRODUCTS_JS_PATH = "src/data/products.js"
 

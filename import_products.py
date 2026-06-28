@@ -39,6 +39,31 @@ CATEGORY_MAP = {
     "components": "f3d39fe9-b874-4bf6-8371-b345889dd494",
 }
 
+IMAGE_MAP = {
+    "vanguard-desktop":     "vanguard-desktop-fallback.png",
+    "ultrawide-monitor":    "ultrawide-monitor-fallback.png",
+    "cyberpro-keyboard":    "cyberpro-keyboard-fallback.png",
+    "gaming-mouse":         "gamingmouse.jpg",
+    "wireless-headset":     "headset.jpg",
+    "usb-hub":              "USBhub.jpg",
+    "mousepad":             "mousepad.jpg",
+    "webcam":               "webcam.webp",
+    "speakers":             "speakers.jpg",
+    "thermal-paste":        "ThermalCompound2.jpg",
+    "cable-ties":           "BraidedCableTies.jpg",
+    "cleaning-kit":         "CleaningKit.jpg",
+    "gpu-bracket":          "GPU_support_bracket.jpg",
+    "displayport-cable":    "DisplayPortCable.jpg",
+    "mouse-bungee":         "MouseBungee.webp",
+    "stream-deck":          "stream-deck.svg",
+    "gaming-chair":         "gaming-chair.svg",
+    "cpu-cooler":           "cpu-cooler.svg",
+    "nvme-ssd":             "nvme-ssd.svg",
+    "sleeved-cables":       "sleeved-cables.svg",
+    "microphone":           "microphone.svg",
+}
+
+IMG_BASE_URL = "https://cdn.jsdelivr.net/gh/daemonjane/DaemonsWebPrototypes@main/public/assets"
 
 def parse_products(path):
     """Parse products.js and return list of product dicts."""
