@@ -89,6 +89,20 @@ class OsimartClient:
         except requests.RequestException as e:
             raise OsimartError(f"Osimart API error: {e}") from e
 
+    def _post(self, path, data=None):
+        url = self._api_url(path)
+        payload = dict(data or {})
+        payload.setdefault("store", self.store_id)
+        try:
+            resp = requests.post(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            if resp.status_code == 401:
+                self._access_token = None
+                resp = requests.post(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            resp.raise_for_status()
+            return resp.json()
+        except requests.RequestException as e:
+            raise OsimartError(f"Osimart API error: {e}") from e
+
     # ------------------------------------------------------------------
     # Image helpers
     # ------------------------------------------------------------------
@@ -123,6 +137,12 @@ class OsimartClient:
     def get_store(self, store_id=None, params=None):
         sid = store_id or self.store_id
         return self._get(f"stores/{sid}/", params)
+
+    def create_media(self, image_url):
+        return self._post("medias/", {"path": image_url})
+
+    def create_product(self, data):
+        return self._post("products/", data)
 
     def get_home(self, params=None):
         url = self._api_url("home/")
