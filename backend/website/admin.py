@@ -34,7 +34,8 @@ class TaskFileInline(admin.
 
 
 @admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
+class TaskAdmin(admin.
+    """Admin configuration for Task model."""ModelAdmin):
     inlines = [TaskFileInline]
     list_display = ["title", "completed", "file_count", "comment_count", "created_at", "updated_at"]
     list_display_links = ["title"]
