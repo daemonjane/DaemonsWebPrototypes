@@ -24,7 +24,8 @@ class UserProfile(
         return f"Profile of {self.user.username}"
 
 
-class NewsletterSubscription(models.Model):
+class NewsletterSubscription(
+    """Newsletter email subscription."""models.Model):
     """An email subscriber to the TechStore newsletter."""
 
     email = models.EmailField("email", unique=True, help_text="Subscriber email address")
