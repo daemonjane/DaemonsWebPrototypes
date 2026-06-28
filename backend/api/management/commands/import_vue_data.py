@@ -1,3 +1,4 @@
+"""Command to import Vue.js data."""
 from pathlib import Path
 
 from django.core.management.base import BaseCommand
