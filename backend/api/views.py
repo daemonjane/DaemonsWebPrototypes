@@ -155,12 +155,14 @@ def csrf_token(
 # Cart
 # ---------------------------------------------------------------------------
 
-def _get_cart(user):
+def _get_cart(
+    """Get or create cart for the current session."""user):
     cart, _ = Cart.objects.get_or_create(user=user)
     return cart
 
 
-def _cart_json(cart):
+def _cart_json(
+    """Serialize cart to JSON response."""cart):
     """Serialize cart with a fresh DB hit to avoid stale prefetch caches."""
     fresh = Cart.objects.get(pk=cart.pk)
     return CartSerializer(fresh).data
@@ -316,7 +318,8 @@ def cart_merge(
 # Wishlist
 # ---------------------------------------------------------------------------
 
-def _get_wishlist(user):
+def _get_wishlist(
+    """Get wishlist for the current session."""user):
     wishlist, _ = Wishlist.objects.get_or_create(user=user)
     return wishlist
 
