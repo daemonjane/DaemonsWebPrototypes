@@ -1,3 +1,4 @@
+"""Command to export Osimart data."""
 import json
 
 from django.core.management.base import BaseCommand
