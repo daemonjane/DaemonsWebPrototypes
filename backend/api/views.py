@@ -271,7 +271,8 @@ def cart_clear(
 
 
 @api_view(['POST'])
-def cart_merge(request):
+def cart_merge(
+    """Merge guest cart into user cart after login."""request):
     """Merge localStorage cart items into server cart after login."""
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
