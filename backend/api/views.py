@@ -550,7 +550,8 @@ def api_version(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @csrf_exempt
-def newsletter_subscribe(request):
+def newsletter_subscribe(
+    """Subscribe an email to the newsletter."""request):
     import re
     from website.models import NewsletterSubscription
     email = request.data.get("email", "").strip()
