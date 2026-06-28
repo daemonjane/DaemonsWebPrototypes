@@ -1600,3 +1600,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .border-amber-900{border-color:#78350f}
 .border-amber-950{border-color:#451a03}
 .ring-gray-50{--tw-ring-color:#f9fafb}
+.ring-gray-100{--tw-ring-color:#f3f4f6}
