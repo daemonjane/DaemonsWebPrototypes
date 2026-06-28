@@ -373,7 +373,8 @@ def wishlist_check(
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def order_list(request):
+def order_list(
+    """List orders for the authenticated user."""request):
     orders = Order.objects.filter(user=request.user).prefetch_related("items")
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
