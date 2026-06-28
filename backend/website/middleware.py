@@ -1,3 +1,4 @@
+# Custom middleware for the website.
 import logging
 
 from django.conf import settings
