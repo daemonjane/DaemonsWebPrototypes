@@ -106,10 +106,10 @@ async function placeOrder() {
       gift_card_discount: giftCardApplied.value ? giftCardDiscount.value : null,
     })
     await clearCart()
-    addToast('Order placed successfully!', 'success')
+    addToast('Order placed successfully!', 3000, 'success')
     router.push(`/confirmation?id=${result.id}`)
   } catch (e) {
-    addToast(e.message || 'Failed to place order', 'error')
+    addToast(e.message || 'Failed to place order', 3000, 'error')
   } finally {
     placing.value = false
   }
