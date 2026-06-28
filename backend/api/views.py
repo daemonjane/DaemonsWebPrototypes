@@ -34,8 +34,7 @@ def _user_data(user):
 
 
 @api_view(['GET'])
-def health_check(
-    """Health check endpoint returning server status."""request):
+def health_check(request):
     return Response({'status': 'ok'})
 
 
@@ -46,8 +45,7 @@ def health_check(
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @csrf_exempt
-def auth_register(
-    """Register a new user account."""request):
+def auth_register(request):
     """Register a new user account."""
     data = request.data
     username = data.get("username", "").strip()
@@ -73,8 +71,7 @@ def auth_register(
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @csrf_exempt
-def auth_login(
-    """Authenticate user and return session."""request):
+def auth_login(request):
     """Authenticate and log in a user."""
     ip = request.META.get("REMOTE_ADDR", "unknown")
     cache_key = f"login_rate:{ip}"
@@ -99,16 +96,14 @@ def auth_login(
 
 
 @api_view(['POST'])
-def auth_logout(
-    """Log out the authenticated user."""request):
+def auth_logout(request):
     """Log out the current user."""
     logout(request)
     return Response({"status": "logged out"})
 
 
 @api_view(['GET', 'PATCH'])
-def auth_profile(
-    """Get or update the authenticated user profile."""request):
+def auth_profile(request):
     """Get or update the current user's profile."""
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
@@ -145,8 +140,7 @@ def auth_profile(
 
 @api_view(['GET'])
 @ensure_csrf_cookie
-def csrf_token(
-    """Return a CSRF token for the session."""request):
+def csrf_token(request):
     """Return a CSRF token for the client."""
     return Response({"csrfToken": get_token(request)})
 
@@ -155,30 +149,26 @@ def csrf_token(
 # Cart
 # ---------------------------------------------------------------------------
 
-def _get_cart(
-    """Get or create cart for the current session."""user):
+def _get_cart(user):
     cart, _ = Cart.objects.get_or_create(user=user)
     return cart
 
 
-def _cart_json(
-    """Serialize cart to JSON response."""cart):
+def _cart_json(cart):
     """Serialize cart with a fresh DB hit to avoid stale prefetch caches."""
     fresh = Cart.objects.get(pk=cart.pk)
     return CartSerializer(fresh).data
 
 
 @api_view(['GET'])
-def cart_get(
-    """Retrieve the current user cart."""request):
+def cart_get(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     return Response(_cart_json(_get_cart(request.user)))
 
 
 @api_view(['POST'])
-def cart_add(
-    """Add an item to the cart."""request):
+def cart_add(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
 
@@ -233,8 +223,8 @@ def cart_add(
 
 
 @api_view(['PATCH', 'DELETE'])
-def cart_item_detail(
-    """Update or remove a specific cart item."""request, item_id):
+def cart_item_detail(request, item_id):
+    """Update or remove a specific cart item."""
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
 
@@ -263,8 +253,8 @@ def cart_item_detail(
 
 
 @api_view(['POST'])
-def cart_clear(
-    """Remove all items from the cart."""request):
+def cart_clear(request):
+    """Remove all items from the cart."""
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     cart = _get_cart(request.user)
@@ -273,8 +263,7 @@ def cart_clear(
 
 
 @api_view(['POST'])
-def cart_merge(
-    """Merge guest cart into user cart after login."""request):
+def cart_merge(request):
     """Merge localStorage cart items into server cart after login."""
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
@@ -318,15 +307,14 @@ def cart_merge(
 # Wishlist
 # ---------------------------------------------------------------------------
 
-def _get_wishlist(
-    """Get wishlist for the current session."""user):
+def _get_wishlist(user):
+    """Get or create wishlist for the current user."""
     wishlist, _ = Wishlist.objects.get_or_create(user=user)
     return wishlist
 
 
 @api_view(['GET'])
-def wishlist_get(
-    """Retrieve the user wishlist."""request):
+def wishlist_get(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     wishlist = _get_wishlist(request.user)
@@ -335,8 +323,7 @@ def wishlist_get(
 
 
 @api_view(['POST'])
-def wishlist_toggle(
-    """Toggle a product in the wishlist."""request):
+def wishlist_toggle(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
 
@@ -362,8 +349,7 @@ def wishlist_toggle(
 
 
 @api_view(['GET'])
-def wishlist_check(
-    """Check which products are in the wishlist."""request, slug):
+def wishlist_check(request, slug):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     wishlist = _get_wishlist(request.user)
@@ -376,16 +362,14 @@ def wishlist_check(
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def order_list(
-    """List orders for the authenticated user."""request):
+def order_list(request):
     orders = Order.objects.filter(user=request.user).prefetch_related("items")
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
-def order_detail(
-    """Get details of a specific order."""request, pk):
+def order_detail(request, pk):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     try:
@@ -553,8 +537,7 @@ def api_version(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @csrf_exempt
-def newsletter_subscribe(
-    """Subscribe an email to the newsletter."""request):
+def newsletter_subscribe(request):
     import re
     from website.models import NewsletterSubscription
     email = request.data.get("email", "").strip()
