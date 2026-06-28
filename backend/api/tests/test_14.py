@@ -1,4 +1,5 @@
 from django.test import TestCase
+"""Tests for test_14."""
 
 class TestSuite14(TestCase):
     def test_trivial(self):
