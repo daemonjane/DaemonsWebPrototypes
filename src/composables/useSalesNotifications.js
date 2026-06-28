@@ -12,7 +12,7 @@ export function useSalesNotifications() {
     const product = pool[Math.floor(Math.random() * pool.length)]
     const names = ['Alex', 'Jordan', 'Casey', 'Morgan', 'Riley', 'Sam', 'Quinn', 'Taylor', 'Avery', 'Drew']
     const name = names[Math.floor(Math.random() * names.length)]
-    addToast(`${name} just purchased ${product.name}`, 'default')
+    addToast(`${name} just purchased ${product.name}`, 3000, 'default')
   }
 
   function start() {
