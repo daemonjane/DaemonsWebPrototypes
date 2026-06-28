@@ -1,3 +1,4 @@
+"""Command to backup the database."""
 from datetime import datetime
 from pathlib import Path
 
