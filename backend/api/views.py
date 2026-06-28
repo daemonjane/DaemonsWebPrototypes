@@ -34,7 +34,8 @@ def _user_data(user):
 
 
 @api_view(['GET'])
-def health_check(request):
+def health_check(
+    """Health check endpoint returning server status."""request):
     return Response({'status': 'ok'})
 
 
