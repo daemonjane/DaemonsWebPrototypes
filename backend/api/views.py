@@ -73,7 +73,8 @@ def auth_register(
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @csrf_exempt
-def auth_login(request):
+def auth_login(
+    """Authenticate user and return session."""request):
     """Authenticate and log in a user."""
     ip = request.META.get("REMOTE_ADDR", "unknown")
     cache_key = f"login_rate:{ip}"
