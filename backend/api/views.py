@@ -167,7 +167,8 @@ def _cart_json(cart):
 
 
 @api_view(['GET'])
-def cart_get(request):
+def cart_get(
+    """Retrieve the current user cart."""request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     return Response(_cart_json(_get_cart(request.user)))
