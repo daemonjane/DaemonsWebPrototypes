@@ -7,7 +7,8 @@ from django.utils.html import format_html, mark_safe
 
 from .models import Comment, ContactMessage, NewsletterSubscription, Task, TaskFile, UserProfile
 
-class UserProfileInline(admin.StackedInline):
+class UserProfileInline(admin.
+    """Inline admin for UserProfile model."""StackedInline):
     model = UserProfile
     can_delete = False
     fields = ["bio", "location", "phone", "avatar_url"]
