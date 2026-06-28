@@ -261,7 +261,8 @@ def cart_item_detail(
 
 
 @api_view(['POST'])
-def cart_clear(request):
+def cart_clear(
+    """Remove all items from the cart."""request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     cart = _get_cart(request.user)
