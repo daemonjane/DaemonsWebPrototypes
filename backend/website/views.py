@@ -196,7 +196,8 @@ def register(request):
     return render(request, "website/register.html", {"form": form})
 
 
-def contact(request):
+def contact(
+    """Handle contact form display and submission."""request):
     """Handle contact form GET (display) and POST (validate + save + message)."""
     if request.method == "POST":
         form = ContactForm(request.POST)
