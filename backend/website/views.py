@@ -294,7 +294,8 @@ def task_toggle(request, pk):
 
 
 @login_required
-def task_detail(request, pk):
+def task_detail(
+    """Render task detail view."""request, pk):
     """Show a single task's full details with comments."""
     task = get_object_or_404(Task.objects.prefetch_related("files"), pk=pk)
     comments = task.comments.all()
