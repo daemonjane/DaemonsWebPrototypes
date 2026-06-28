@@ -82,7 +82,8 @@ class Task(
         return reverse("task_detail", kwargs={"pk": self.pk})
 
 
-class TaskFile(models.Model):
+class TaskFile(
+    """File attachment for a task."""models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="files", help_text="The task this file belongs to")
     file = models.FileField("file", upload_to="task_files/", help_text="Upload a file (max 4 per task)")
     name = models.CharField("name", max_length=255, blank=True, help_text="Optional display name for the file")
