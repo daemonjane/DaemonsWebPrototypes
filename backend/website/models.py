@@ -3,7 +3,8 @@ from django.db import models
 from django.urls import reverse
 
 
-class UserProfile(models.Model):
+class UserProfile(
+    """Extended user profile model with additional fields."""models.Model):
     """Extended profile information for users."""
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
