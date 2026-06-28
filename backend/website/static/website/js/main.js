@@ -1,3 +1,4 @@
+// Main JavaScript for the website.
 (function () {
   const scrollBtn = document.getElementById('scroll-to-top');
   if (scrollBtn) {
