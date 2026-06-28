@@ -1,3 +1,4 @@
+# Context processors for templates.
 import random
 from datetime import datetime
 
