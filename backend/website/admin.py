@@ -166,7 +166,8 @@ class ContactMessageAdmin(admin.
 
 
 @admin.register(NewsletterSubscription)
-class NewsletterSubscriptionAdmin(admin.ModelAdmin):
+class NewsletterSubscriptionAdmin(admin.
+    """Admin configuration for NewsletterSubscription model."""ModelAdmin):
     list_display = ["email", "active", "created_at"]
     list_filter = ["active", "created_at"]
     search_fields = ["email"]
