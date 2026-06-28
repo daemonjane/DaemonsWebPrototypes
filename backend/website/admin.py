@@ -7,8 +7,8 @@ from django.utils.html import format_html, mark_safe
 
 from .models import Comment, ContactMessage, NewsletterSubscription, Task, TaskFile, UserProfile
 
-class UserProfileInline(admin.
-    """Inline admin for UserProfile model."""StackedInline):
+class UserProfileInline(admin.StackedInline):
+    """Inline admin for UserProfile model."""
     model = UserProfile
     can_delete = False
     fields = ["bio", "location", "phone", "avatar_url"]
@@ -25,8 +25,8 @@ admin.site.site_title = "TechStore Admin"
 admin.site.index_title = "Welcome to TechStore Admin"
 
 
-class TaskFileInline(admin.
-    """Inline admin for TaskFile model."""TabularInline):
+class TaskFileInline(admin.TabularInline):
+    """Inline admin for TaskFile model."""
     model = TaskFile
     extra = 0
     readonly_fields = ["uploaded_at"]
@@ -34,8 +34,8 @@ class TaskFileInline(admin.
 
 
 @admin.register(Task)
-class TaskAdmin(admin.
-    """Admin configuration for Task model."""ModelAdmin):
+class TaskAdmin(admin.ModelAdmin):
+    """Admin configuration for Task model."""
     inlines = [TaskFileInline]
     list_display = ["title", "completed", "file_count", "comment_count", "created_at", "updated_at"]
     list_display_links = ["title"]
@@ -99,8 +99,8 @@ class TaskAdmin(admin.
 
 
 @admin.register(Comment)
-class CommentAdmin(admin.
-    """Admin configuration for Comment model."""ModelAdmin):
+class CommentAdmin(admin.ModelAdmin):
+    """Admin configuration for Comment model."""
     list_display = ["author", "task_link", "created_at", "body_preview"]
     list_filter = ["created_at", "task", "author"]
     search_fields = ["author", "body", "task__title"]
@@ -135,8 +135,8 @@ class CommentAdmin(admin.
 
 
 @admin.register(ContactMessage)
-class ContactMessageAdmin(admin.
-    """Admin configuration for ContactMessage model."""ModelAdmin):
+class ContactMessageAdmin(admin.ModelAdmin):
+    """Admin configuration for ContactMessage model."""
     list_display = ["name", "email", "created_at", "message_preview"]
     search_fields = ["name", "email", "message"]
     search_help_text = "Search by name, email, or message content"
@@ -168,8 +168,8 @@ class ContactMessageAdmin(admin.
 
 
 @admin.register(NewsletterSubscription)
-class NewsletterSubscriptionAdmin(admin.
-    """Admin configuration for NewsletterSubscription model."""ModelAdmin):
+class NewsletterSubscriptionAdmin(admin.ModelAdmin):
+    """Admin configuration for NewsletterSubscription model."""
     list_display = ["email", "active", "created_at"]
     list_filter = ["active", "created_at"]
     search_fields = ["email"]
@@ -210,8 +210,8 @@ class TaskFileAdmin(admin.ModelAdmin):
 
 
 @admin.register(LogEntry)
-class LogEntryAdmin(admin.
-    """Admin configuration for LogEntry model."""ModelAdmin):
+class LogEntryAdmin(admin.ModelAdmin):
+    """Admin configuration for LogEntry model."""
     list_display = ["action_time", "user", "content_type", "object_repr", "action_flag"]
     list_filter = ["action_flag", "content_type"]
     search_fields = ["object_repr", "user__username"]
