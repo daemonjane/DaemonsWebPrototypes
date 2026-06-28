@@ -15,7 +15,7 @@ const allAccepted = computed(() => preferences.value.essential && preferences.va
 
 function savePreferences() {
   localStorage.setItem('cookie_preferences', JSON.stringify(preferences.value))
-  addToast('Cookie preferences saved.', 'success')
+  addToast('Cookie preferences saved.', 3000, 'success')
 }
 
 function acceptAll() {
