@@ -1,3 +1,4 @@
+# Root URL configuration for the project.
 """
 URL configuration for config project.
 
