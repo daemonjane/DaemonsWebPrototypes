@@ -1621,3 +1621,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .ring-red-800{--tw-ring-color:#991b1b}
 .ring-red-900{--tw-ring-color:#7f1d1d}
 .ring-red-950{--tw-ring-color:#450a0a}
+.ring-green-50{--tw-ring-color:#f0fdf4}
