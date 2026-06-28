@@ -210,7 +210,8 @@ class TaskFileAdmin(admin.ModelAdmin):
 
 
 @admin.register(LogEntry)
-class LogEntryAdmin(admin.ModelAdmin):
+class LogEntryAdmin(admin.
+    """Admin configuration for LogEntry model."""ModelAdmin):
     list_display = ["action_time", "user", "content_type", "object_repr", "action_flag"]
     list_filter = ["action_flag", "content_type"]
     search_fields = ["object_repr", "user__username"]
