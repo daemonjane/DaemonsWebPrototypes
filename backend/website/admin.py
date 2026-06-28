@@ -133,7 +133,8 @@ class CommentAdmin(admin.
 
 
 @admin.register(ContactMessage)
-class ContactMessageAdmin(admin.ModelAdmin):
+class ContactMessageAdmin(admin.
+    """Admin configuration for ContactMessage model."""ModelAdmin):
     list_display = ["name", "email", "created_at", "message_preview"]
     search_fields = ["name", "email", "message"]
     search_help_text = "Search by name, email, or message content"
