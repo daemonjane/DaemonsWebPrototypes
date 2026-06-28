@@ -97,7 +97,8 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 @admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
+class CommentAdmin(admin.
+    """Admin configuration for Comment model."""ModelAdmin):
     list_display = ["author", "task_link", "created_at", "body_preview"]
     list_filter = ["created_at", "task", "author"]
     search_fields = ["author", "body", "task__title"]
