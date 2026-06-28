@@ -33,13 +33,11 @@ export function validateForm(form, rules) {
     if (fieldRules.includes('email') && !isValidEmail(value)) {
       errors[field] = errors[field] || 'Valid email is required'
     }
-    if (fieldRules.includes('minLength')) {
-      const min = rules[field].find(r => r.startsWith('minLength:'))
-      if (min) {
-        const len = parseInt(min.split(':')[1], 10)
-        if (value.length < len) {
-          errors[field] = errors[field] || `Minimum ${len} characters required`
-        }
+    const rule = fieldRules.find(r => r.startsWith('minLength:'))
+    if (rule) {
+      const len = parseInt(rule.split(':')[1], 10)
+      if (value.length < len) {
+        errors[field] = errors[field] || `Minimum ${len} characters required`
       }
     }
   }
