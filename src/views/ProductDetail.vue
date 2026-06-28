@@ -98,7 +98,8 @@ const BACK_IN_STOCK_KEY = 'back_in_stock_requests'
 
 function submitNotifyRequest() {
   if (!notifyEmail.value.trim() || !product.value) return
-  const requests = JSON.parse(localStorage.getItem(BACK_IN_STOCK_KEY) || '[]')
+  let requests = []
+  try { requests = JSON.parse(localStorage.getItem(BACK_IN_STOCK_KEY) || '[]') } catch { requests = [] }
   requests.push({ productId: product.value.id, email: notifyEmail.value.trim(), timestamp: Date.now() })
   localStorage.setItem(BACK_IN_STOCK_KEY, JSON.stringify(requests))
   notifySubmitted.value = true
