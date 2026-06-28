@@ -241,7 +241,8 @@ def task_list(request):
 
 
 @login_required
-def task_create(request):
+def task_create(
+    """Handle task creation form."""request):
     """Show blank form on GET; validate and save on POST."""
     if request.method == "POST":
         form = TaskForm(request.POST)
