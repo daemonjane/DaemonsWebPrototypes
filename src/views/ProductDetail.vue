@@ -47,14 +47,9 @@ function stripHtml(html) {
 async function fetchProduct() {
   try {
     const { api } = await import('../utils/api')
-    const [prodList] = await Promise.all([
-      api.osimart.products({ limit: 50 }),
-    ])
-    const found = (prodList.results || []).find(
-      p => p.slugified_name === productId || p.id === productId
-    )
-    if (found) {
-      product.value = normalizeProduct(found)
+    const data = await api.osimart.productDetail(productId)
+    if (data) {
+      product.value = normalizeProduct(data)
     }
   } catch (e) {
     console.error('Failed to load product', e)
@@ -299,7 +294,7 @@ onMounted(async () => {
         </div>
         <button
           v-if="product.stock !== 0"
-          @click="addItem({ id: product.id, name: product.name, price: product.price })"
+          @click="handleAddItem"
           class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 px-6 rounded-lg transition-all active:scale-95 shrink-0 flex items-center gap-2"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
