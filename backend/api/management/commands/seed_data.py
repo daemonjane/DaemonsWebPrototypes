@@ -1,3 +1,4 @@
+"""Command to seed initial data."""
 from django.core.management.base import BaseCommand
 
 from api.models import Category, Product, ProductAddon
