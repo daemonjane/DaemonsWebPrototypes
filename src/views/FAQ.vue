@@ -22,7 +22,7 @@ function toggle(i) {
 
 <template>
   <div class="max-w-3xl mx-auto px-4 py-12">
-    <Breadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'FAQ' }]" />
+    <Breadcrumbs :crumbs="[{ label: 'Home', to: '/' }, { label: 'FAQ' }]" />
     <h1 class="text-3xl font-bold text-white mb-2">Frequently Asked Questions</h1>
     <p class="text-slate-400 mb-8">Everything you need to know about TechStore, orders, and membership.</p>
 
