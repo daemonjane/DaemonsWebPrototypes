@@ -1,3 +1,4 @@
+"""Command to anonymize user data."""
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
