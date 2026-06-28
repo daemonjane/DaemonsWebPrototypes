@@ -8,7 +8,7 @@ const lastUpdated = 'June 15, 2026'
 
 function handleAccept() {
   accepted.value = true
-  addToast('Terms accepted — welcome aboard.', 'success')
+  addToast('Terms accepted — welcome aboard.', 3000, 'success')
 }
 </script>
 
