@@ -98,7 +98,8 @@ class TaskFile(models.Model):
         return self.file.name.split("/")[-1]
 
 
-class ContactMessage(models.Model):
+class ContactMessage(
+    """Contact form submission from visitors."""models.Model):
     """User-submitted contact form message."""
 
     name = models.CharField("name", max_length=200, help_text="Your full name (required)")
