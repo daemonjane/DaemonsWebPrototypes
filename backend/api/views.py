@@ -359,7 +359,8 @@ def wishlist_toggle(
 
 
 @api_view(['GET'])
-def wishlist_check(request, slug):
+def wishlist_check(
+    """Check which products are in the wishlist."""request, slug):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     wishlist = _get_wishlist(request.user)
