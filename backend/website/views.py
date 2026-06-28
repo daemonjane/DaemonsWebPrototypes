@@ -215,7 +215,8 @@ def contact(
 
 
 @login_required
-def task_list(request):
+def task_list(
+    """List tasks with optional filters."""request):
     """Display paginated tasks in a table with status badges and action icons."""
     task_qs = Task.objects.all()
     task_count = task_qs.count()
