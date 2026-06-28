@@ -1,3 +1,4 @@
+"""Command to restore the database."""
 from pathlib import Path
 
 from django.conf import settings
