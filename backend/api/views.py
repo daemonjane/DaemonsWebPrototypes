@@ -107,7 +107,8 @@ def auth_logout(
 
 
 @api_view(['GET', 'PATCH'])
-def auth_profile(request):
+def auth_profile(
+    """Get or update the authenticated user profile."""request):
     """Get or update the current user's profile."""
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
