@@ -37,8 +37,7 @@ PAGES = {
 }
 
 
-def home(
-    """Render the home page."""request):
+def home(request):
     """Serve the Vue SPA homepage."""
     return vue_spa(request)
 
@@ -197,8 +196,7 @@ def register(request):
     return render(request, "website/register.html", {"form": form})
 
 
-def contact(
-    """Handle contact form display and submission."""request):
+def contact(request):
     """Handle contact form GET (display) and POST (validate + save + message)."""
     if request.method == "POST":
         form = ContactForm(request.POST)
@@ -216,8 +214,7 @@ def contact(
 
 
 @login_required
-def task_list(
-    """List tasks with optional filters."""request):
+def task_list(request):
     """Display paginated tasks in a table with status badges and action icons."""
     task_qs = Task.objects.all()
     task_count = task_qs.count()
@@ -243,8 +240,7 @@ def task_list(
 
 
 @login_required
-def task_create(
-    """Handle task creation form."""request):
+def task_create(request):
     """Show blank form on GET; validate and save on POST."""
     if request.method == "POST":
         form = TaskForm(request.POST)
@@ -297,8 +293,7 @@ def task_toggle(request, pk):
 
 
 @login_required
-def task_detail(
-    """Render task detail view."""request, pk):
+def task_detail(request, pk):
     """Show a single task's full details with comments."""
     task = get_object_or_404(Task.objects.prefetch_related("files"), pk=pk)
     comments = task.comments.all()
