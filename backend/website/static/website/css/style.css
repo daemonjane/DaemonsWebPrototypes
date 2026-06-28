@@ -1654,3 +1654,4 @@ code, kbd, pre, samp { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 .ring-cyan-800{--tw-ring-color:#155e75}
 .ring-cyan-900{--tw-ring-color:#164e63}
 .ring-cyan-950{--tw-ring-color:#083344}
+.outline-gray-50{outline-color:#f9fafb}
