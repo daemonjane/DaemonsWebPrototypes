@@ -1,3 +1,4 @@
+"""Command to fetch banners from Osimart."""
 from django.core.management.base import BaseCommand, CommandError
 
 from services.osimart import OsimartClient, OsimartError
