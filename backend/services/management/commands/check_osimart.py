@@ -1,3 +1,4 @@
+"""Command to check Osimart API availability."""
 from django.core.management.base import BaseCommand
 
 from services.osimart import OsimartClient, OsimartError
