@@ -36,7 +36,8 @@ PAGES = {
 }
 
 
-def home(request):
+def home(
+    """Render the home page."""request):
     """Serve the Vue SPA homepage."""
     return vue_spa(request)
 
