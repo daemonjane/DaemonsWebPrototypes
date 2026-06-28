@@ -322,7 +322,8 @@ def _get_wishlist(user):
 
 
 @api_view(['GET'])
-def wishlist_get(request):
+def wishlist_get(
+    """Retrieve the user wishlist."""request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     wishlist = _get_wishlist(request.user)
