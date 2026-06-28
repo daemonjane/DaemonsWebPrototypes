@@ -2,7 +2,9 @@ import { ref, computed } from 'vue'
 import { products } from '../data/products'
 
 const STORAGE_KEY = 'techstore_favorites'
-const localIds = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
+let stored
+try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') } catch { stored = [] }
+const localIds = ref(stored)
 const serverSlugs = ref([])
 let useServer = false
 
