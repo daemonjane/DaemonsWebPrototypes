@@ -99,7 +99,7 @@ const upgradePrices = {
 
 function onUpgradeChange(event) {
   const id = event.target.id
-  const name = event.target.labels?.[0]?.innerText || id
+  const name = event.target.labels?.[0]?.querySelector('strong')?.textContent?.trim() || id
   if (event.target.checked) {
     addUpgrade(id, name, upgradePrices[id])
   } else {
