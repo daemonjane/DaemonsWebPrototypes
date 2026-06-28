@@ -59,7 +59,7 @@ function applyGiftCard() {
   }
   giftCardDiscount.value = 10
   giftCardApplied.value = true
-  addToast('Gift card applied! 10% discount.', 'success')
+  addToast('Gift card applied! 10% discount.', 3000, 'success')
 }
 
 function nextStep() {
