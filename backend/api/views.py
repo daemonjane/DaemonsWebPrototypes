@@ -145,7 +145,8 @@ def auth_profile(
 
 @api_view(['GET'])
 @ensure_csrf_cookie
-def csrf_token(request):
+def csrf_token(
+    """Return a CSRF token for the session."""request):
     """Return a CSRF token for the client."""
     return Response({"csrfToken": get_token(request)})
 
