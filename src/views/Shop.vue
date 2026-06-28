@@ -202,7 +202,7 @@ function countInCategory(catSlug) {
 
       <!-- Products grid -->
       <div v-if="filteredProducts.length > 0" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <ProductCard v-for="product in filteredProducts" :key="product.uuid" :product="product" :show-full="true" v-memo="[product.uuid, product.price, product.rating, filteredProducts.length]" />
+        <ProductCard v-for="product in filteredProducts" :key="product.uuid" :product="product" :show-full="true" />
       </div>
       <EmptyState v-else icon="search" title="No products found" message="Try adjusting your search or filters." action-label="Clear Filters" @action="resetFilters" />
     </template>

@@ -24,7 +24,7 @@ const { items, count, clear } = useFavorites()
     </div>
 
     <div v-if="items.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <ProductCard v-for="product in items" :key="product.id" :product="product" v-memo="[product.id, product.price, product.rating]" />
+      <ProductCard v-for="product in items" :key="product.id" :product="product" />
     </div>
 
     <EmptyState v-else icon="heart" title="No favorites yet" message="Click the heart icon on any product to save it here." action-label="Browse Products" action-to="/shop" />
