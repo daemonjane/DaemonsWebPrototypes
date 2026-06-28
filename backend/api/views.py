@@ -99,7 +99,8 @@ def auth_login(
 
 
 @api_view(['POST'])
-def auth_logout(request):
+def auth_logout(
+    """Log out the authenticated user."""request):
     """Log out the current user."""
     logout(request)
     return Response({"status": "logged out"})
