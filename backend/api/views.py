@@ -381,7 +381,8 @@ def order_list(
 
 
 @api_view(['GET'])
-def order_detail(request, pk):
+def order_detail(
+    """Get details of a specific order."""request, pk):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     try:
