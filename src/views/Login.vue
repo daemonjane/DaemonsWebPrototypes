@@ -78,7 +78,7 @@ async function login() {
           <router-link to="/register" class="text-cyan-400 hover:underline">Register</router-link>
         </p>
         <p>
-          <a href="/password-reset/" class="text-slate-500 hover:text-slate-300 transition-colors">Forgot password?</a>
+          <span class="text-slate-600 cursor-not-allowed">Forgot password? <span class="text-[10px] text-slate-700">(coming soon)</span></span>
         </p>
       </div>
     </div>
