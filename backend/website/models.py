@@ -60,7 +60,8 @@ class Comment(
         return f"{self.author} on {self.task.title}"
 
 
-class Task(models.Model):
+class Task(
+    """Admin task tracking item."""models.Model):
     """A to-do task with completion tracking."""
 
     title = models.CharField("title", max_length=200, help_text="A short, descriptive title for the task")
