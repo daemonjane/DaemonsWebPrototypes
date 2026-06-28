@@ -1,3 +1,4 @@
+"""Osimart API client for product and order integration."""
 import os
 import time
 
