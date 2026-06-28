@@ -1,4 +1,5 @@
 from django.test import TestCase
+"""Tests for test_models."""
 
 from api.models import Category, Product
 
