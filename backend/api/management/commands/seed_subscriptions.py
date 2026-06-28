@@ -1,3 +1,4 @@
+"""Command to seed subscription data."""
 from django.core.management.base import BaseCommand
 
 from api.models import Subscription
