@@ -175,7 +175,8 @@ def cart_get(
 
 
 @api_view(['POST'])
-def cart_add(request):
+def cart_add(
+    """Add an item to the cart."""request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
 
