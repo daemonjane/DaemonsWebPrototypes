@@ -1,3 +1,4 @@
+"""Command to count model instances."""
 from django.core.management.base import BaseCommand
 
 from website.models import Comment, ContactMessage, Task
