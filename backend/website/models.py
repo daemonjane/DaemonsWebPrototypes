@@ -40,7 +40,8 @@ class NewsletterSubscription(models.Model):
         return self.email
 
 
-class Comment(models.Model):
+class Comment(
+    """User comment on products."""models.Model):
     """A comment attached to a task."""
 
     task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="comments", help_text="The task this comment belongs to")
