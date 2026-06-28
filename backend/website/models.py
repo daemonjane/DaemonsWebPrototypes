@@ -23,8 +23,7 @@ class UserProfile(models.Model):
         return f"Profile of {self.user.username}"
 
 
-class NewsletterSubscription(
-    """Newsletter email subscription."""models.Model):
+class NewsletterSubscription(models.Model):
     """An email subscriber to the TechStore newsletter."""
 
     email = models.EmailField("email", unique=True, help_text="Subscriber email address")
@@ -40,8 +39,7 @@ class NewsletterSubscription(
         return self.email
 
 
-class Comment(
-    """User comment on products."""models.Model):
+class Comment(models.Model):
     """A comment attached to a task."""
 
     task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="comments", help_text="The task this comment belongs to")
@@ -59,8 +57,7 @@ class Comment(
         return f"{self.author} on {self.task.title}"
 
 
-class Task(
-    """Admin task tracking item."""models.Model):
+class Task(models.Model):
     """A to-do task with completion tracking."""
 
     title = models.CharField("title", max_length=200, help_text="A short, descriptive title for the task")
@@ -81,8 +78,8 @@ class Task(
         return reverse("task_detail", kwargs={"pk": self.pk})
 
 
-class TaskFile(
-    """File attachment for a task."""models.Model):
+class TaskFile(models.Model):
+    """File attachment for a task."""
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="files", help_text="The task this file belongs to")
     file = models.FileField("file", upload_to="task_files/", help_text="Upload a file (max 4 per task)")
     name = models.CharField("name", max_length=255, blank=True, help_text="Optional display name for the file")
@@ -100,8 +97,7 @@ class TaskFile(
         return self.file.name.split("/")[-1]
 
 
-class ContactMessage(
-    """Contact form submission from visitors."""models.Model):
+class ContactMessage(models.Model):
     """User-submitted contact form message."""
 
     name = models.CharField("name", max_length=200, help_text="Your full name (required)")
