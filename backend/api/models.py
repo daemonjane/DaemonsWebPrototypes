@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Category(models.Model):
+class Category(
+    """Category model for API."""models.Model):
     """Product category for classifying items."""
 
     name = models.CharField("name", max_length=100, help_text="Display name for the category")
@@ -18,7 +19,8 @@ class Category(models.Model):
         return self.name
 
 
-class Product(models.Model):
+class Product(
+    """Product model for API."""models.Model):
     """Individual product with pricing, specs, and stock tracking."""
 
     slug = models.SlugField("slug", max_length=100, primary_key=True, help_text="URL-friendly identifier (auto-populated from name)")
@@ -43,7 +45,8 @@ class Product(models.Model):
         return self.name
 
 
-class Order(models.Model):
+class Order(
+    """Order model for API."""models.Model):
     """Customer order with status lifecycle."""
 
     class Status(models.TextChoices):
@@ -80,7 +83,8 @@ class Order(models.Model):
         return f"Order #{self.pk}"
 
 
-class OrderItem(models.Model):
+class OrderItem(
+    """OrderItem model for API."""models.Model):
     """An individual line item within an order."""
 
     class ItemType(models.TextChoices):
@@ -113,7 +117,8 @@ class OrderItem(models.Model):
         return f"{self.name} x{self.quantity}"
 
 
-class Subscription(models.Model):
+class Subscription(
+    """Subscription model for API."""models.Model):
     """Membership/subscription tier with recurring billing."""
 
     class Tier(models.TextChoices):
@@ -139,7 +144,8 @@ class Subscription(models.Model):
         return f"{self.name} (${self.price}/mo)"
 
 
-class BackInStockRequest(models.Model):
+class BackInStockRequest(
+    """BackInStockRequest model for API."""models.Model):
     """Notification request for when a product is back in stock."""
 
     product = models.ForeignKey(
@@ -158,7 +164,8 @@ class BackInStockRequest(models.Model):
         return f"{self.email} - {self.product.name}"
 
 
-class ContactMessage(models.Model):
+class ContactMessage(
+    """ContactMessage model for API."""models.Model):
     """User-submitted contact form message from the API endpoint."""
 
     name = models.CharField("name", max_length=200, help_text="Your full name")
@@ -175,7 +182,8 @@ class ContactMessage(models.Model):
         return f"{self.name} - {self.email}"
 
 
-class Cart(models.Model):
+class Cart(
+    """Cart model for API."""models.Model):
     """A user's shopping cart (one per user)."""
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cart", verbose_name="user")
@@ -190,7 +198,8 @@ class Cart(models.Model):
         return f"Cart of {self.user.username}"
 
 
-class CartItem(models.Model):
+class CartItem(
+    """CartItem model for API."""models.Model):
     """An individual item within a shopping cart."""
 
     class ItemType(models.TextChoices):
@@ -223,7 +232,8 @@ class CartItem(models.Model):
         return f"{self.name} x{self.quantity}"
 
 
-class Wishlist(models.Model):
+class Wishlist(
+    """Wishlist model for API."""models.Model):
     """A user's wishlist of favorite products."""
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="wishlist", verbose_name="user")
@@ -238,7 +248,8 @@ class Wishlist(models.Model):
         return f"Wishlist of {self.user.username}"
 
 
-class OrderTracking(models.Model):
+class OrderTracking(
+    """OrderTracking model for API."""models.Model):
     """Tracking information for a shipped order."""
 
     order = models.OneToOneField(
@@ -260,7 +271,8 @@ class OrderTracking(models.Model):
         return f"Tracking #{self.tracking_number or 'N/A'} for Order #{self.order_id}"
 
 
-class ProductAddon(models.Model):
+class ProductAddon(
+    """ProductAddon model for API."""models.Model):
     """Optional add-on / micro-transaction item for a product (e.g. cleaning kit, extended warranty)."""
 
     product = models.ForeignKey(
@@ -283,7 +295,8 @@ class ProductAddon(models.Model):
         return f"{self.name} (+${self.price}) for {self.product.name}"
 
 
-class TrackingHistory(models.Model):
+class TrackingHistory(
+    """TrackingHistory model for API."""models.Model):
     """A single status event in the order tracking timeline."""
 
     tracking = models.ForeignKey(
