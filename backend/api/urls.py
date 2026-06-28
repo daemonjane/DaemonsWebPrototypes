@@ -7,6 +7,7 @@ from . import views_osimart
 
 app_name = "api"
 
+# urlpatterns: API URL patterns.
 urlpatterns = [
     path('health/', views.health_check, name='health-check'),
     path('auth/register/', views.auth_register, name='auth-register'),
