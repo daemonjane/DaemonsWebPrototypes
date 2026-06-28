@@ -9,6 +9,7 @@ from django.views.static import serve as static_serve
 from . import views
 from .forms import LoginForm
 
+# urlpatterns: Website URL patterns.
 urlpatterns = [
     path("", views.home, name="home"),
     path("favicon.ico", views.favicon, name="favicon"),
