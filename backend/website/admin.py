@@ -25,7 +25,8 @@ admin.site.site_title = "TechStore Admin"
 admin.site.index_title = "Welcome to TechStore Admin"
 
 
-class TaskFileInline(admin.TabularInline):
+class TaskFileInline(admin.
+    """Inline admin for TaskFile model."""TabularInline):
     model = TaskFile
     extra = 0
     readonly_fields = ["uploaded_at"]
