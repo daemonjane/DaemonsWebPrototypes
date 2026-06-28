@@ -46,7 +46,8 @@ def health_check(
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @csrf_exempt
-def auth_register(request):
+def auth_register(
+    """Register a new user account."""request):
     """Register a new user account."""
     data = request.data
     username = data.get("username", "").strip()
