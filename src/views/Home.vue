@@ -393,8 +393,8 @@ function quickAdd(product) {
               <p class="text-slate-400 text-sm">Your handle etched into the chassis.</p>
               <span class="text-cyan-400 font-semibold text-sm">+$14.99</span>
               <div class="max-h-0 overflow-hidden transition-all duration-300 peer-checked:max-h-24 peer-checked:mt-3">
-                <label for="custom-engraving-text" class="text-xs text-slate-500 font-bold block">Engraving Text:</label>
-                <input type="text" id="custom-engraving-text" value="jxne" placeholder=" " required minlength="3" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-slate-200 font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 [&:not(:placeholder-shown):invalid]:border-pink-500 [&:not(:placeholder-shown):invalid]:ring-pink-500/30 [&:not(:placeholder-shown):valid]:border-emerald-500 [&:not(:placeholder-shown):valid]:ring-emerald-500/30 transition-colors">
+                <span id="custom-engraving-text-label" class="text-xs text-slate-500 font-bold block">Engraving Text:</span>
+                <input type="text" id="custom-engraving-text" value="jxne" placeholder=" " required minlength="3" aria-labelledby="custom-engraving-text-label" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-slate-200 font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 [&:not(:placeholder-shown):invalid]:border-pink-500 [&:not(:placeholder-shown):invalid]:ring-pink-500/30 [&:not(:placeholder-shown):valid]:border-emerald-500 [&:not(:placeholder-shown):valid]:ring-emerald-500/30 transition-colors">
               </div>
             </label>
           </div>
