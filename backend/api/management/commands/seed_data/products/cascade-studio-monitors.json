@@ -1,0 +1,17 @@
+{
+  "name": "Cascade Audio Studio Monitors 5\"",
+  "slug": "cascade-studio-monitors",
+  "category": "Speakers",
+  "brand": "Cascade Audio",
+  "price": "599.99",
+  "compare_at_price": "699.99",
+  "stock": 15,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Cascade+Audio+Studio+Monitors",
+  "images": [],
+  "collections": [
+    "Professional Studio",
+    "Content Creator Kit"
+  ]
+}
