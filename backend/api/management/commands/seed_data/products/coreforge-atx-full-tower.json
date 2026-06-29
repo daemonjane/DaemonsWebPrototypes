@@ -14,5 +14,17 @@
     "Ultimate Gaming Setup",
     "RGB Everything"
   ],
-  "description": "Spacious full-tower case with tempered glass panels, tool-less drive bays, and support for dual 360mm radiators. The CoreForge ATX case features excellent airflow and cable management."
+  "description": "Spacious full-tower case with tempered glass panels, tool-less drive bays, and support for dual 360mm radiators. The CoreForge ATX case features excellent airflow and cable management.",
+  "variants": [
+    {
+      "name": "Black / Tempered Glass",
+      "price": "199.99",
+      "stock": 15
+    },
+    {
+      "name": "White / Mesh Panel",
+      "price": "219.99",
+      "stock": 10
+    }
+  ]
 }
