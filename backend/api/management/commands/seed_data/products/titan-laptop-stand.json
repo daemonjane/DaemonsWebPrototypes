@@ -14,5 +14,12 @@
     "Work From Home Pro",
     "Compact & Portable"
   ],
-  "description": "Adjustable aluminum laptop stand with ventilated design for optimal cooling. Supports laptops up to 17 inches and features a non-slip silicone surface."
+  "description": "Adjustable aluminum laptop stand with ventilated design for optimal cooling. Supports laptops up to 17 inches and features a non-slip silicone surface.",
+  "variants": [
+    {
+      "name": "Silver Aluminum",
+      "price": "69.99",
+      "stock": 40
+    }
+  ]
 }
