@@ -16,7 +16,7 @@
     {
       "name": "Space Gray",
       "price": "79.99",
-      "stock": 50
+      "remaining_stock": 50
     }
   ],
   "slugified_name": "pulse-usbc-hub",
