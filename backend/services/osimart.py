@@ -237,6 +237,9 @@ class OsimartClient:
     def delete_collection(self, collection_id):
         return self._delete(f"collections/{collection_id}/")
 
+    def create_banner(self, data):
+        return self._post("banners/", data)
+
     def update_banner(self, banner_id, data):
         return self._put(f"banners/{banner_id}/", data)
 
