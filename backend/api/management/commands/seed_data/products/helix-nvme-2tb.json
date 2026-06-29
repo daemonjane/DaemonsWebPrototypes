@@ -1,0 +1,17 @@
+{
+  "name": "Helix Digital 2TB NVMe Gen5 SSD",
+  "slug": "helix-nvme-2tb",
+  "category": "External Storage",
+  "brand": "Helix Digital",
+  "price": "349.99",
+  "compare_at_price": "399.99",
+  "stock": 35,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Helix+Digital+2TB+NVMe",
+  "images": [],
+  "collections": [
+    "Content Creator Kit",
+    "Premium Lifestyle"
+  ]
+}
