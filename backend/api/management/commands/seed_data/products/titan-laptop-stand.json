@@ -2,7 +2,6 @@
   "name": "Titan Hardware Adjustable Laptop Stand",
   "category": "Laptop Stands",
   "brand": "Titan Hardware",
-  "price": "69.99",
   "compare_at_price": "91.79",
   "stock": 48,
   "status": "active",
@@ -21,5 +20,6 @@
       "stock": 40
     }
   ],
-  "slugified_name": "titan-laptop-stand"
+  "slugified_name": "titan-laptop-stand",
+  "price_range": "69.99"
 }
