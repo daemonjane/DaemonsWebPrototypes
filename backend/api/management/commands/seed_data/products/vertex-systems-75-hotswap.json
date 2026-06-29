@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vertex+Systems+75%+Hotswap",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Vertex+75+Angle",
+    "https://placehold.co/600x400?text=Vertex+75+Back"
+  ],
   "collections": [
     "Premium Lifestyle",
     "Compact & Portable"
