@@ -1,6 +1,5 @@
 {
   "name": "Matrix Audio Wireless Earbuds Pro",
-  "slug": "matrix-audio-wireless-earbuds",
   "category": "Headphones",
   "brand": "Matrix Audio",
   "price": "199.99",
@@ -26,5 +25,6 @@
       "price": "199.99",
       "stock": 20
     }
-  ]
+  ],
+  "slugified_name": "matrix-audio-wireless-earbuds"
 }
