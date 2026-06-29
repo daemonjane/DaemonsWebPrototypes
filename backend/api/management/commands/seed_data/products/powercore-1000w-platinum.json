@@ -14,5 +14,12 @@
     "Ultimate Gaming Setup",
     "Silent Operator"
   ],
-  "description": "Fully modular 1000W PSU with 80+ Platinum efficiency, Japanese capacitors, and a 135mm fluid dynamic bearing fan. The PowerCore Platinum delivers clean, stable power."
+  "description": "Fully modular 1000W PSU with 80+ Platinum efficiency, Japanese capacitors, and a 135mm fluid dynamic bearing fan. The PowerCore Platinum delivers clean, stable power.",
+  "variants": [
+    {
+      "name": "Black Sleeved Cables",
+      "price": "249.99",
+      "stock": 18
+    }
+  ]
 }
