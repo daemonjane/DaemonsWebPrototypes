@@ -14,5 +14,17 @@
     "Budget Build",
     "RGB Everything"
   ],
-  "description": "Complete set of premium paracord-sleeved PSU cables in your choice of color. Compatible with all modular PSUs and features individually sleeved wires with combs."
+  "description": "Complete set of premium paracord-sleeved PSU cables in your choice of color. Compatible with all modular PSUs and features individually sleeved wires with combs.",
+  "variants": [
+    {
+      "name": "Black / White Combs",
+      "price": "79.99",
+      "stock": 35
+    },
+    {
+      "name": "White / Black Combs",
+      "price": "79.99",
+      "stock": 25
+    }
+  ]
 }
