@@ -13,5 +13,6 @@
   "collections": [
     "RGB Everything",
     "Silent Operator"
-  ]
+  ],
+  "description": "Three-pack of 140mm RGB fans with PWM control, daisy-chain design, and hydro-dynamic bearings. Each fan delivers 85 CFM of airflow at just 28dB."
 }
