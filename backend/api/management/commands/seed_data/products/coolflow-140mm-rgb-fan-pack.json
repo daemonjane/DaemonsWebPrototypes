@@ -16,12 +16,12 @@
     {
       "name": "3-Pack / PWM",
       "price": "89.99",
-      "stock": 35
+      "remaining_stock": 35
     },
     {
       "name": "Single Fan",
       "price": "32.99",
-      "stock": 25
+      "remaining_stock": 25
     }
   ],
   "slugified_name": "coolflow-140mm-rgb-fan-pack",
