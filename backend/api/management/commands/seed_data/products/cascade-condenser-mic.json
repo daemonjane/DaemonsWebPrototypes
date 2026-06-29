@@ -1,6 +1,5 @@
 {
   "name": "Cascade Audio Condenser Microphone",
-  "slug": "cascade-condenser-mic",
   "category": "Microphones",
   "brand": "Cascade Audio",
   "price": "299.99",
@@ -21,5 +20,6 @@
       "price": "299.99",
       "stock": 20
     }
-  ]
+  ],
+  "slugified_name": "cascade-condenser-mic"
 }
