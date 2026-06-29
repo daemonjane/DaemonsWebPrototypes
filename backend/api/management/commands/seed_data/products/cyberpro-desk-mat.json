@@ -1,6 +1,5 @@
 {
   "name": "CyberPro Heavy Duty Desk Mat XL",
-  "slug": "cyberpro-desk-mat",
   "category": "Mouse Pads",
   "brand": "CyberPro",
   "price": "39.99",
@@ -21,5 +20,6 @@
       "price": "39.99",
       "stock": 75
     }
-  ]
+  ],
+  "slugified_name": "cyberpro-desk-mat"
 }
