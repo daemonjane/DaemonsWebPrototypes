@@ -14,5 +14,12 @@
     "Professional Studio",
     "Compact & Portable"
   ],
-  "description": "Premium USB-C DAC/Amp with dual ESS ES9039Q2M chips, 4.4mm balanced output, and MQA support. The Summit Electronics Portable DAC drives even demanding headphones with ease."
+  "description": "Premium USB-C DAC/Amp with dual ESS ES9039Q2M chips, 4.4mm balanced output, and MQA support. The Summit Electronics Portable DAC drives even demanding headphones with ease.",
+  "variants": [
+    {
+      "name": "USB-C / 4.4mm Balanced",
+      "price": "299.99",
+      "stock": 22
+    }
+  ]
 }
