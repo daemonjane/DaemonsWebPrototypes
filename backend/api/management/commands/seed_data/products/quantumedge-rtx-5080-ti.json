@@ -19,12 +19,12 @@
     {
       "name": "Air Cooled",
       "price": "1599.99",
-      "stock": 4
+      "remaining_stock": 4
     },
     {
       "name": "Liquid Cooled",
       "price": "1899.99",
-      "stock": 4
+      "remaining_stock": 4
     }
   ],
   "slugified_name": "quantumedge-rtx-5080-ti",
