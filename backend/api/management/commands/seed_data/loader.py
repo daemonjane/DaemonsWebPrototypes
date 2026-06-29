@@ -19,6 +19,8 @@ class SeedLoader:
         self._load_variant_types(verbosity)
         self._load_collections(verbosity)
         self._load_products(verbosity)
+        self._load_banners(verbosity)
+        self._load_announcements(verbosity)
 
     def _items(self, subdir):
         d = os.path.join(self.data_dir, subdir)
@@ -86,5 +88,23 @@ class SeedLoader:
                 result = self.client.create_product(payload)
                 if verbosity >= 1:
                     print(f"  ✓ Product '{data['name']}'")
+            except OsimartError as e:
+                print(f"  ✗ {fname}: {e}")
+
+    def _load_banners(self, verbosity):
+        for fname, data in self._items("banners"):
+            try:
+                self.client.update_banner(fname.replace(".json", ""), data)
+                if verbosity >= 1:
+                    print(f"  ✓ Banner '{data.get('title', fname)}'")
+            except OsimartError as e:
+                print(f"  ✗ {fname}: {e}")
+
+    def _load_announcements(self, verbosity):
+        for fname, data in self._items("announcements"):
+            try:
+                self.client.create_announcement_bar(data)
+                if verbosity >= 1:
+                    print(f"  ✓ Announcement '{data.get('message', fname)[:40]}'")
             except OsimartError as e:
                 print(f"  ✗ {fname}: {e}")
