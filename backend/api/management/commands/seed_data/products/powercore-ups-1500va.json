@@ -14,5 +14,12 @@
     "Work From Home Pro",
     "Server Rack Solutions"
   ],
-  "description": "1500VA UPS with pure sine wave output, 10 power outlets, and USB/network surge protection. Provides 30 minutes of runtime at half load for your workstation."
+  "description": "1500VA UPS with pure sine wave output, 10 power outlets, and USB/network surge protection. Provides 30 minutes of runtime at half load for your workstation.",
+  "variants": [
+    {
+      "name": "With USB Management",
+      "price": "349.99",
+      "stock": 18
+    }
+  ]
 }
