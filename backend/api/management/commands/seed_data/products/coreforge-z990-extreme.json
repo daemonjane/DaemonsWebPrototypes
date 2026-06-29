@@ -14,5 +14,12 @@
     "Extreme Overclocking",
     "Ultimate Gaming Setup"
   ],
-  "description": "Premium E-ATX motherboard with 28-phase VRM, PCIe 5.0 support, triple M.2 slots, and integrated 10GbE networking. Designed for extreme overclocking and professional workloads."
+  "description": "Premium E-ATX motherboard with 28-phase VRM, PCIe 5.0 support, triple M.2 slots, and integrated 10GbE networking. Designed for extreme overclocking and professional workloads.",
+  "variants": [
+    {
+      "name": "With WiFi 7 Module",
+      "price": "599.99",
+      "stock": 15
+    }
+  ]
 }
