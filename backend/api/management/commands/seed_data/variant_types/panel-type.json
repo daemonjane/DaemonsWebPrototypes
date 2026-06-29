@@ -1,0 +1,11 @@
+{
+  "name": "Panel Type",
+  "values": [
+    "IPS",
+    "VA",
+    "TN",
+    "OLED",
+    "Mini-LED",
+    "QD-OLED"
+  ]
+}
