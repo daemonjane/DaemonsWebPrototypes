@@ -3,7 +3,6 @@
   "category": "Mice",
   "brand": "ApexGear",
   "compare_at_price": "101.99",
-  "stock": 66,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=ApexGear+Ergonomic+Mouse",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "apexgear-ergo-mouse",
-  "price_range": "79.99"
+  "price_range": "79.99",
+  "remaining_stock": 66
 }
