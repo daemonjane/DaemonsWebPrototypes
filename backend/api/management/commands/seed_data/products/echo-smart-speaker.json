@@ -1,6 +1,5 @@
 {
   "name": "Echo Innovations Smart Speaker Pro",
-  "slug": "echo-smart-speaker",
   "category": "Smart Home",
   "brand": "Echo Innovations",
   "price": "199.99",
@@ -21,5 +20,6 @@
       "price": "199.99",
       "stock": 30
     }
-  ]
+  ],
+  "slugified_name": "echo-smart-speaker"
 }
