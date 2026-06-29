@@ -3,7 +3,6 @@
   "category": "Desktops",
   "brand": "Vanguard",
   "compare_at_price": "2141.99",
-  "stock": 24,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vanguard+Desktop+Mini",
@@ -56,5 +55,6 @@
       ]
     }
   ],
-  "price_range": "1799.99"
+  "price_range": "1799.99",
+  "remaining_stock": 24
 }
