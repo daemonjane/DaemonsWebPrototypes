@@ -1,0 +1,17 @@
+{
+  "name": "CoolFlow 140mm RGB Fan 3-Pack",
+  "slug": "coolflow-140mm-rgb-fan-pack",
+  "category": "Cooling",
+  "brand": "CoolFlow",
+  "price": "89.99",
+  "compare_at_price": "109.99",
+  "stock": 60,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=CoolFlow+140mm+RGB+Fan",
+  "images": [],
+  "collections": [
+    "RGB Everything",
+    "Silent Operator"
+  ]
+}
