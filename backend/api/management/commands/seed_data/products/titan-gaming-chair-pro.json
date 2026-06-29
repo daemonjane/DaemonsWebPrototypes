@@ -1,0 +1,17 @@
+{
+  "name": "Titan Hardware Gaming Chair Pro",
+  "slug": "titan-gaming-chair-pro",
+  "category": "Gaming Chairs",
+  "brand": "Titan Hardware",
+  "price": "599.99",
+  "compare_at_price": "749.99",
+  "stock": 18,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Titan+Hardware+Gaming+Chair",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "Premium Lifestyle"
+  ]
+}
