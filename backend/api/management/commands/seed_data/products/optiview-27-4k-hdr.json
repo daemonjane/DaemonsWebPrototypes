@@ -2,7 +2,6 @@
   "name": "OptiView 27\" 4K HDR Monitor",
   "category": "Monitors",
   "brand": "OptiView",
-  "price": "699.99",
   "compare_at_price": "866.99",
   "stock": 48,
   "status": "active",
@@ -65,5 +64,6 @@
         }
       ]
     }
-  ]
+  ],
+  "price_range": "699.99"
 }
