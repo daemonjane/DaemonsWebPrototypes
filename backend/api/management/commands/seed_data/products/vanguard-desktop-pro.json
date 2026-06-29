@@ -19,12 +19,12 @@
     {
       "name": "Silver / 1TB Storage",
       "price": "2499.99",
-      "stock": 8
+      "remaining_stock": 8
     },
     {
       "name": "Silver / 2TB Storage",
       "price": "2799.99",
-      "stock": 7
+      "remaining_stock": 7
     }
   ],
   "slugified_name": "vanguard-desktop-pro",
