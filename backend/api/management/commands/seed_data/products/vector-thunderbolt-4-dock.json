@@ -16,7 +16,7 @@
     {
       "name": "With 96W Charging",
       "price": "299.99",
-      "stock": 20
+      "remaining_stock": 20
     }
   ],
   "slugified_name": "vector-thunderbolt-4-dock",
