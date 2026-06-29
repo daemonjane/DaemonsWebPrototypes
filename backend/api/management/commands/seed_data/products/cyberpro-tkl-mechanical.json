@@ -29,5 +29,45 @@
       "stock": 25
     }
   ],
-  "slugified_name": "cyberpro-tkl-mechanical"
+  "slugified_name": "cyberpro-tkl-mechanical",
+  "sections": [
+    {
+      "name": "Layout",
+      "items": [
+        {
+          "name": "Size",
+          "value": "TKL (87 keys)"
+        },
+        {
+          "name": "Connection",
+          "value": "USB-C"
+        },
+        {
+          "name": "Switches",
+          "value": "Hot-swappable"
+        },
+        {
+          "name": "Keycaps",
+          "value": "PBT Double-shot"
+        }
+      ]
+    },
+    {
+      "name": "Features",
+      "items": [
+        {
+          "name": "RGB",
+          "value": "Per-key"
+        },
+        {
+          "name": "N-Key Rollover",
+          "value": "Yes"
+        },
+        {
+          "name": "Frame",
+          "value": "CNC Aluminum"
+        }
+      ]
+    }
+  ]
 }
