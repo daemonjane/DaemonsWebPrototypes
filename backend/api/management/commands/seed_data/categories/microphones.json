@@ -1,5 +1,6 @@
 {
   "name": "Microphones",
   "description": "USB and XLR microphones for creators",
-  "icon": "\ud83c\udf99\ufe0f"
+  "icon": "\ud83c\udf99\ufe0f",
+  "image": "https://placehold.co/800x600?text=Microphones"
 }
