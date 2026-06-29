@@ -2,7 +2,6 @@
   "name": "Forge Innovation Standing Desk",
   "category": "Desks",
   "brand": "Forge Innovation",
-  "price": "799.99",
   "compare_at_price": "968.99",
   "stock": 14,
   "status": "active",
@@ -29,5 +28,6 @@
       "stock": 6
     }
   ],
-  "slugified_name": "forge-standing-desk"
+  "slugified_name": "forge-standing-desk",
+  "price_range": "799.99"
 }
