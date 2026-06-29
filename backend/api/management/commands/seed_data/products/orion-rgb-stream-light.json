@@ -14,5 +14,12 @@
     "Streamer's Paradise",
     "RGB Everything"
   ],
-  "description": "Professional RGB streaming light with 280 CCT tunable LEDs, 96 CRI rating, and app control. The OrionTech Pro features a sturdy aluminum stand and diffuser dome."
+  "description": "Professional RGB streaming light with 280 CCT tunable LEDs, 96 CRI rating, and app control. The OrionTech Pro features a sturdy aluminum stand and diffuser dome.",
+  "variants": [
+    {
+      "name": "With Boom Arm Mount",
+      "price": "149.99",
+      "stock": 30
+    }
+  ]
 }
