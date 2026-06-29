@@ -3,7 +3,6 @@
   "category": "Smart Home",
   "brand": "Echo Innovations",
   "compare_at_price": "254.99",
-  "stock": 36,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Echo+Innovations+Smart+Speaker",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "echo-smart-speaker",
-  "price_range": "199.99"
+  "price_range": "199.99",
+  "remaining_stock": 36
 }
