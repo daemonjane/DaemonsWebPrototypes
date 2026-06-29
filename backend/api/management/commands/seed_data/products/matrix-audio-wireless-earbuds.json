@@ -2,7 +2,6 @@
   "name": "Matrix Audio Wireless Earbuds Pro",
   "category": "Headphones",
   "brand": "Matrix Audio",
-  "price": "199.99",
   "compare_at_price": "254.99",
   "stock": 48,
   "status": "active",
@@ -26,5 +25,6 @@
       "stock": 20
     }
   ],
-  "slugified_name": "matrix-audio-wireless-earbuds"
+  "slugified_name": "matrix-audio-wireless-earbuds",
+  "price_range": "199.99"
 }
