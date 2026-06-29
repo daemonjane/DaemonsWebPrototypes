@@ -1,0 +1,17 @@
+{
+  "name": "Nebula Works VR Headset Pro",
+  "slug": "nebula-vr-headset-pro",
+  "category": "VR / AR",
+  "brand": "Nebula Works",
+  "price": "999.99",
+  "compare_at_price": "1199.99",
+  "stock": 10,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Nebula+Works+VR+Headset",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "Content Creator Kit"
+  ]
+}
