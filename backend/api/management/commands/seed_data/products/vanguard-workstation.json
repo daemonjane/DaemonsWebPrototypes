@@ -29,5 +29,33 @@
       "stock": 4
     }
   ],
-  "slugified_name": "vanguard-workstation"
+  "slugified_name": "vanguard-workstation",
+  "sections": [
+    {
+      "name": "Processor",
+      "items": [
+        {
+          "name": "CPU",
+          "value": "AMD Threadripper 7980X"
+        },
+        {
+          "name": "Cores",
+          "value": "64C/128T"
+        }
+      ]
+    },
+    {
+      "name": "Memory",
+      "items": [
+        {
+          "name": "RAM",
+          "value": "128GB ECC DDR5"
+        },
+        {
+          "name": "Storage",
+          "value": "2TB NVMe Gen5 + 4TB HDD"
+        }
+      ]
+    }
+  ]
 }
