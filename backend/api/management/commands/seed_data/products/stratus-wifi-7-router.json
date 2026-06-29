@@ -16,7 +16,7 @@
     {
       "name": "Single Unit",
       "price": "499.99",
-      "stock": 20
+      "remaining_stock": 20
     }
   ],
   "slugified_name": "stratus-wifi-7-router",
