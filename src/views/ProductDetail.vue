@@ -61,10 +61,18 @@ async function fetchProduct() {
     console.warn('Osimart product fetch failed, checking local fallback', e)
   }
   const { products } = await import('../data/products')
-  const match = products.find(p => p.id === productId || p.uuid === productId)
+  const match = products.find(p => p.id === productId || p.uuid === productId || p.slugified_name === productId || p.name?.toLowerCase().replace(/\s+/g, '-') === productId)
   if (match) {
     fallbackMatch.value = match
-    product.value = { ...match, uuid: match.uuid || match.id, images: [], sections: [], variants: [], brand: null, collections: [], categoryName: match.category }
+    product.value = {
+      ...match,
+      uuid: match.uuid || match.id,
+      images: [], sections: [], variants: [],
+      brand: match.brand || null,
+      collections: match.collections || [],
+      categoryName: match.categoryName || match.category || 'Uncategorized',
+      stock: match.stock ?? 0,
+    }
   }
 }
 
