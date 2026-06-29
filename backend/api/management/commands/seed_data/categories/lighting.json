@@ -1,5 +1,6 @@
 {
   "name": "Lighting",
   "description": "RGB strips, studio lights, and ambient lighting",
-  "icon": "\ud83d\udca1"
+  "icon": "\ud83d\udca1",
+  "image": "https://placehold.co/800x600?text=Lighting"
 }
