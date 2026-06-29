@@ -16,7 +16,7 @@
     {
       "name": "Black / Stitched Edges",
       "price": "39.99",
-      "stock": 75
+      "remaining_stock": 75
     }
   ],
   "slugified_name": "cyberpro-desk-mat",
