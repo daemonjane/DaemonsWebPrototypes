@@ -1,0 +1,17 @@
+{
+  "name": "Matrix Audio Wireless Earbuds Pro",
+  "slug": "matrix-audio-wireless-earbuds",
+  "category": "Headphones",
+  "brand": "Matrix Audio",
+  "price": "199.99",
+  "compare_at_price": "249.99",
+  "stock": 40,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Matrix+Audio+Wireless+Earbuds",
+  "images": [],
+  "collections": [
+    "Compact & Portable",
+    "Premium Lifestyle"
+  ]
+}
