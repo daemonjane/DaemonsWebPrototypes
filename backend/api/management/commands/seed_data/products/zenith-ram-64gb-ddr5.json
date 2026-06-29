@@ -1,6 +1,5 @@
 {
   "name": "Zenith Computing RAM 64GB DDR5-6000",
-  "slug": "zenith-ram-64gb-ddr5",
   "category": "Memory (RAM)",
   "brand": "Zenith Computing",
   "price": "249.99",
@@ -26,5 +25,6 @@
       "price": "269.99",
       "stock": 15
     }
-  ]
+  ],
+  "slugified_name": "zenith-ram-64gb-ddr5"
 }
