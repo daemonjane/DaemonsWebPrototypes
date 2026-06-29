@@ -19,7 +19,7 @@
     {
       "name": "With WiFi 7 Module",
       "price": "599.99",
-      "stock": 15
+      "remaining_stock": 15
     }
   ],
   "slugified_name": "coreforge-z990-extreme",
