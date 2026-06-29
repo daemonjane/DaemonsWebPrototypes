@@ -1,6 +1,5 @@
 {
   "name": "Pinnacle Gear Dual Monitor Arm",
-  "slug": "pinnacle-monitor-arm-dual",
   "category": "Monitor Arms",
   "brand": "Pinnacle Gear",
   "price": "169.99",
@@ -21,5 +20,6 @@
       "price": "169.99",
       "stock": 15
     }
-  ]
+  ],
+  "slugified_name": "pinnacle-monitor-arm-dual"
 }
