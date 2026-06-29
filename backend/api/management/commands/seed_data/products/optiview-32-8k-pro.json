@@ -8,7 +8,9 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=OptiView+32\"+8K+Pro",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=OptiView+32+8K+Front"
+  ],
   "collections": [
     "Professional Studio",
     "Premium Lifestyle"
