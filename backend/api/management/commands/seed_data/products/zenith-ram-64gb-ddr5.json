@@ -16,12 +16,12 @@
     {
       "name": "RGB / CL30-36-36-76",
       "price": "249.99",
-      "stock": 25
+      "remaining_stock": 25
     },
     {
       "name": "Non-RGB / CL28-34-34-72",
       "price": "269.99",
-      "stock": 15
+      "remaining_stock": 15
     }
   ],
   "slugified_name": "zenith-ram-64gb-ddr5",
