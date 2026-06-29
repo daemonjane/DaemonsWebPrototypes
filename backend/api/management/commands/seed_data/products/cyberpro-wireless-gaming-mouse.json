@@ -19,12 +19,12 @@
     {
       "name": "Black",
       "price": "149.99",
-      "stock": 25
+      "remaining_stock": 25
     },
     {
       "name": "White",
       "price": "149.99",
-      "stock": 20
+      "remaining_stock": 20
     }
   ],
   "slugified_name": "cyberpro-wireless-gaming-mouse",
