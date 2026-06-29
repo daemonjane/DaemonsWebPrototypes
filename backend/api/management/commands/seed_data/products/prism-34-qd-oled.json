@@ -1,0 +1,17 @@
+{
+  "name": "Prism Displays 34\" QD-OLED",
+  "slug": "prism-34-qd-oled",
+  "category": "Monitors",
+  "brand": "Prism Displays",
+  "price": "1299.99",
+  "compare_at_price": "1499.99",
+  "stock": 12,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Prism+Displays+34\"+QD-OLED",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "Premium Lifestyle"
+  ]
+}
