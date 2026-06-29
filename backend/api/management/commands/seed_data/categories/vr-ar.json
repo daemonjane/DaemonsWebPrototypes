@@ -1,5 +1,6 @@
 {
   "name": "VR / AR",
   "description": "Virtual and augmented reality headsets",
-  "icon": "\ud83e\udd7d"
+  "icon": "\ud83e\udd7d",
+  "image": "https://placehold.co/800x600?text=VR+/+AR"
 }
