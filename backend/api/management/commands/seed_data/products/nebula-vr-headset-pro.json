@@ -3,7 +3,6 @@
   "category": "VR / AR",
   "brand": "Nebula Works",
   "compare_at_price": "1223.99",
-  "stock": 12,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Nebula+Works+VR+Headset",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "nebula-vr-headset-pro",
-  "price_range": "999.99"
+  "price_range": "999.99",
+  "remaining_stock": 12
 }
