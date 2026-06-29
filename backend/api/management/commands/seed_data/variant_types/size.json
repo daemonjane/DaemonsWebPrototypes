@@ -1,0 +1,10 @@
+{
+  "name": "Size",
+  "values": [
+    "Small",
+    "Medium",
+    "Large",
+    "XL",
+    "XXL"
+  ]
+}
