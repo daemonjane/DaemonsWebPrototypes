@@ -1,5 +1,6 @@
 {
   "name": "E-Readers",
   "description": "E-ink tablets and digital notebooks",
-  "icon": "\ud83d\udcd6"
+  "icon": "\ud83d\udcd6",
+  "image": "https://placehold.co/800x600?text=E-Readers"
 }
