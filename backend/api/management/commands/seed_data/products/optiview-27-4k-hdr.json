@@ -29,5 +29,41 @@
       "stock": 15
     }
   ],
-  "slugified_name": "optiview-27-4k-hdr"
+  "slugified_name": "optiview-27-4k-hdr",
+  "sections": [
+    {
+      "name": "Display",
+      "items": [
+        {
+          "name": "Size",
+          "value": "27 inch"
+        },
+        {
+          "name": "Resolution",
+          "value": "3840x2160"
+        },
+        {
+          "name": "Panel",
+          "value": "IPS"
+        },
+        {
+          "name": "Refresh Rate",
+          "value": "144Hz"
+        }
+      ]
+    },
+    {
+      "name": "Color",
+      "items": [
+        {
+          "name": "DCI-P3",
+          "value": "99%"
+        },
+        {
+          "name": "HDR",
+          "value": "DisplayHDR 600"
+        }
+      ]
+    }
+  ]
 }
