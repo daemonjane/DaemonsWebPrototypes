@@ -3,7 +3,6 @@
   "category": "GPUs",
   "brand": "QuantumEdge",
   "compare_at_price": "1937.99",
-  "stock": 9,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+RTX+5080+Ti",
@@ -69,5 +68,6 @@
       ]
     }
   ],
-  "price_range": "1599.99"
+  "price_range": "1599.99",
+  "remaining_stock": 9
 }
