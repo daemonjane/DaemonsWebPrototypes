@@ -29,5 +29,41 @@
       "stock": 8
     }
   ],
-  "slugified_name": "titan-gaming-chair-pro"
+  "slugified_name": "titan-gaming-chair-pro",
+  "sections": [
+    {
+      "name": "Dimensions",
+      "items": [
+        {
+          "name": "Weight Capacity",
+          "value": "400 lbs"
+        },
+        {
+          "name": "Seat Width",
+          "value": "22 inch"
+        },
+        {
+          "name": "Recline",
+          "value": "180 degrees"
+        }
+      ]
+    },
+    {
+      "name": "Materials",
+      "items": [
+        {
+          "name": "Upholstery",
+          "value": "Full-grain leather"
+        },
+        {
+          "name": "Armrests",
+          "value": "4D adjustable"
+        },
+        {
+          "name": "Base",
+          "value": "Aluminum alloy"
+        }
+      ]
+    }
+  ]
 }
