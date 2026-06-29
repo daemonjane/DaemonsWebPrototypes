@@ -1,6 +1,5 @@
 {
   "name": "Flux Technologies Programmable Keypad",
-  "slug": "flux-programmable-keypad",
   "category": "Keyboards",
   "brand": "Flux Technologies",
   "price": "89.99",
@@ -26,5 +25,6 @@
       "price": "94.99",
       "stock": 30
     }
-  ]
+  ],
+  "slugified_name": "flux-programmable-keypad"
 }
