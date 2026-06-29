@@ -1,0 +1,17 @@
+{
+  "name": "QuantumEdge RTX 5080 Ti",
+  "slug": "quantumedge-rtx-5080-ti",
+  "category": "GPUs",
+  "brand": "QuantumEdge",
+  "price": "1599.99",
+  "compare_at_price": "1899.99",
+  "stock": 8,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=QuantumEdge+RTX+5080+Ti",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "Extreme Overclocking"
+  ]
+}
