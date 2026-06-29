@@ -1,6 +1,5 @@
 {
   "name": "ApexGear Ergonomic Mouse",
-  "slug": "apexgear-ergo-mouse",
   "category": "Mice",
   "brand": "ApexGear",
   "price": "79.99",
@@ -21,5 +20,6 @@
       "price": "79.99",
       "stock": 35
     }
-  ]
+  ],
+  "slugified_name": "apexgear-ergo-mouse"
 }
