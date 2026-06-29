@@ -1,5 +1,6 @@
 {
   "name": "Networking",
   "description": "Routers, switches, mesh systems, and access points",
-  "icon": "\ud83c\udf10"
+  "icon": "\ud83c\udf10",
+  "image": "https://placehold.co/800x600?text=Networking"
 }
