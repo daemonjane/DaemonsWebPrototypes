@@ -3,7 +3,6 @@
   "category": "Cooling",
   "brand": "CoolFlow",
   "compare_at_price": "244.79",
-  "stock": 33,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CoolFlow+360mm+AIO+Liquid",
@@ -26,5 +25,6 @@
     }
   ],
   "slugified_name": "coolflow-360-aio",
-  "price_range": "199.99"
+  "price_range": "199.99",
+  "remaining_stock": 33
 }
