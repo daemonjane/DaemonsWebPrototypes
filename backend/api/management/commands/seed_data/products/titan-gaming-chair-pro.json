@@ -2,7 +2,6 @@
   "name": "Titan Hardware Gaming Chair Pro",
   "category": "Gaming Chairs",
   "brand": "Titan Hardware",
-  "price": "599.99",
   "compare_at_price": "764.99",
   "stock": 21,
   "status": "active",
@@ -65,5 +64,6 @@
         }
       ]
     }
-  ]
+  ],
+  "price_range": "599.99"
 }
