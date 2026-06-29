@@ -1,5 +1,6 @@
 {
   "name": "Security",
   "description": "Cameras, doorbells, and alarm systems",
-  "icon": "\ud83d\udd12"
+  "icon": "\ud83d\udd12",
+  "image": "https://placehold.co/800x600?text=Security"
 }
