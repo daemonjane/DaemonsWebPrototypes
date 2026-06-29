@@ -14,5 +14,12 @@
     "Work From Home Pro",
     "Ultimate Gaming Setup"
   ],
-  "description": "Heavy-duty dual monitor arm supporting up to 32-inch displays each. Features gas spring height adjustment, tool-less VESA mounting, and integrated cable management."
+  "description": "Heavy-duty dual monitor arm supporting up to 32-inch displays each. Features gas spring height adjustment, tool-less VESA mounting, and integrated cable management.",
+  "variants": [
+    {
+      "name": "Polar White",
+      "price": "169.99",
+      "stock": 15
+    }
+  ]
 }
