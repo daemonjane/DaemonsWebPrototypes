@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import AnimatedCounter from '../components/AnimatedCounter.vue'
 import AbstractArt from '../components/AbstractArt.vue'
+import { products as fallbackProducts } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 
@@ -11,7 +12,7 @@ const OSIMART_IMAGE_BASE = 'https://api.osimart.com'
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 const { items: recentlyViewed } = useRecentlyViewed()
 
-const products = ref([])
+const products = ref(fallbackProducts)
 const banners = ref([])
 const hero = ref(null)
 const store = ref(null)
@@ -93,6 +94,8 @@ onMounted(async () => {
       if (items.length > 0) {
         products.value = items.map(normalizeProduct)
       }
+    } else {
+      console.warn('Osimart products fetch failed, keeping local fallback data')
     }
     if (bannerRes.status === 'fulfilled') {
       banners.value = pick(bannerRes.value)
