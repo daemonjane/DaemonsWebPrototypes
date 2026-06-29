@@ -1,6 +1,5 @@
 {
   "name": "Vanguard Desktop Pro",
-  "slug": "vanguard-desktop-pro",
   "category": "Desktops",
   "brand": "Vanguard",
   "price": "2499.99",
@@ -26,5 +25,6 @@
       "price": "2799.99",
       "stock": 7
     }
-  ]
+  ],
+  "slugified_name": "vanguard-desktop-pro"
 }
