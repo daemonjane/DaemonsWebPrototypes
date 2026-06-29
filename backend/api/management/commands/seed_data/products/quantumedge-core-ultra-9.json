@@ -14,5 +14,12 @@
     "Content Creator Kit",
     "Premium Lifestyle"
   ],
-  "description": "Intel's flagship Arrow Lake processor with 24 cores, 5.7GHz boost, and integrated Arc graphics. The Core Ultra 9 285K delivers exceptional single-threaded and multi-threaded performance."
+  "description": "Intel's flagship Arrow Lake processor with 24 cores, 5.7GHz boost, and integrated Arc graphics. The Core Ultra 9 285K delivers exceptional single-threaded and multi-threaded performance.",
+  "variants": [
+    {
+      "name": "Retail Box",
+      "price": "699.99",
+      "stock": 20
+    }
+  ]
 }
