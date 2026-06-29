@@ -5,8 +5,7 @@ import ProductCard from '../components/ProductCard.vue'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 import EmptyState from '../components/EmptyState.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
-
-const OSIMART_IMAGE_BASE = 'https://api.osimart.com'
+import { resolveImage } from '../utils/images'
 const route = useRoute()
 
 const products = ref([])
@@ -39,7 +38,6 @@ onMounted(async () => {
 })
 
 function normalizeProduct(p) {
-  const imgPath = p.main_image?.path
   return {
     id: p.slugified_name || p.id,
     uuid: p.id,
@@ -48,7 +46,7 @@ function normalizeProduct(p) {
     brand: p.brand?.slugified_name || p.brand?.name || null,
     collection: p.collections?.[0]?.slugified_name || p.collections?.[0]?.name || null,
     price: parseFloat(p.price_range || '0'),
-    image: imgPath ? `${OSIMART_IMAGE_BASE}/${imgPath}` : '/assets/placeholder.svg',
+    image: resolveImage(p.main_image),
     description: stripHtml(p.description || ''),
     rating: 4.5,
     stock: p.remaining_stock ?? p.stock ?? 0,

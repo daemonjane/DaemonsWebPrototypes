@@ -6,8 +6,7 @@ import AbstractArt from '../components/AbstractArt.vue'
 import { products as fallbackProducts } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
-
-const OSIMART_IMAGE_BASE = 'https://api.osimart.com'
+import { resolveImage } from '../utils/images'
 
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 const { items: recentlyViewed } = useRecentlyViewed()
@@ -51,14 +50,13 @@ watch(banners, () => {
 })
 
 function normalizeProduct(p) {
-  const imgPath = p.main_image?.path
   return {
     id: p.slugified_name || p.id,
     uuid: p.id,
     name: p.name,
     category: p.categories?.[0]?.category?.slugified_name || 'uncategorized',
     price: parseFloat(p.price_range || '0'),
-    image: imgPath ? `${OSIMART_IMAGE_BASE}/${imgPath}` : '/assets/placeholder.svg',
+    image: resolveImage(p.main_image),
     description: stripHtml(p.description || ''),
     createdAt: p.created_at || p.date_created || null,
     rating: 4.5,
@@ -122,6 +120,7 @@ onMounted(async () => {
     if (collRes.status === 'fulfilled') {
       collections.value = pick(collRes.value)
     }
+    buildShowcase()
   } catch (e) {
     console.error('Osimart fetch failed', e)
   } finally {
@@ -203,6 +202,31 @@ const otherProducts = computed(() => {
 
 const showAllOther = ref(false)
 
+const showcaseItems = ref([])
+const showcaseIndex = ref(0)
+let showcaseTimer = null
+
+function buildShowcase() {
+  const items = []
+  for (const b of brands.value) {
+    items.push({ type: 'brand', name: b.name, logo: b.logo, id: b.id || b.name })
+  }
+  for (const p of products.value.slice(0, 12)) {
+    if (!items.some(i => i.type === 'product' && i.id === p.id)) {
+      items.push({ type: 'product', name: p.name, image: p.image, price: p.price, id: p.id })
+    }
+  }
+  showcaseItems.value = items.sort(() => Math.random() - 0.5)
+  clearInterval(showcaseTimer)
+  showcaseTimer = setInterval(() => {
+    if (showcaseItems.value.length) {
+      showcaseIndex.value = (showcaseIndex.value + 1) % showcaseItems.value.length
+    }
+  }, 1800)
+}
+
+onUnmounted(() => { clearInterval(showcaseTimer) })
+
 // Bundles
 const bundles = [
   { id: 'bundle-silent', name: 'Silent Operator Bundle', description: 'Vanguard Desktop + Cyber‑Pro Keyboard + Desk Mat', price: 2596, saved: 152, oldPrice: 2748 },
@@ -224,7 +248,7 @@ function quickAdd(product) {
     <section v-if="banners.length" class="relative overflow-hidden rounded-xl" role="region" aria-label="Promotional banners">
       <div class="flex transition-transform duration-500" :style="{ transform: `translateX(-${activeSlide * 100}%)` }">
         <div v-for="(banner, i) in banners" :key="banner.id || i" class="min-w-full relative">
-          <img :src="`https://api.osimart.com/${banner.image?.path || ''}`" :alt="banner.title || 'Banner'" class="w-full h-48 sm:h-72 object-cover" />
+          <img :src="resolveImage(banner.image)" :alt="banner.title || 'Banner'" class="w-full h-48 sm:h-72 object-cover" />
           <div v-if="banner.title" class="absolute inset-0 flex items-center justify-center bg-black/30">
             <h2 class="text-white text-2xl sm:text-4xl font-bold">{{ banner.title }}</h2>
           </div>
@@ -329,8 +353,8 @@ function quickAdd(product) {
           :to="'/shop?brand=' + (b.slugified_name || b.name)"
           class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 text-center group"
         >
-          <div v-if="b.logo?.path" class="h-12 flex items-center justify-center mb-2">
-            <img :src="`https://api.osimart.com/${b.logo.path}`" :alt="b.name" class="max-h-full max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
+          <div v-if="b.logo" class="h-12 flex items-center justify-center mb-2">
+            <img :src="resolveImage(b.logo)" :alt="b.name" class="max-h-full max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
           </div>
           <div v-else class="h-12 flex items-center justify-center mb-2">
             <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-lg">{{ (b.name || '?')[0] }}</div>
@@ -674,5 +698,37 @@ function quickAdd(product) {
         <ProductCard v-for="product in (showAllOther ? otherProducts : otherProducts.slice(0, 3))" :key="product.uuid || product.id" :product="product" />
       </div>
     </section>
+
+    <!-- Rotating showcase -->
+    <section v-if="showcaseItems.length" id="showcase" class="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 py-4" role="region" aria-label="Featured showcase">
+      <div class="relative flex items-center justify-center h-20 sm:h-24">
+        <transition name="showcase" mode="out-in">
+          <div v-if="currentShowcase" :key="currentShowcase.id + '-' + showcaseIndex" class="absolute inset-0 flex items-center justify-center gap-4 px-6">
+            <template v-if="currentShowcase.type === 'brand'">
+              <img v-if="currentShowcase.logo" :src="resolveImage(currentShowcase.logo)" :alt="currentShowcase.name" class="h-8 sm:h-10 w-auto object-contain opacity-60" />
+              <div v-else class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-lg font-bold">{{ (currentShowcase.name || '?')[0] }}</div>
+              <span class="text-slate-400 text-sm sm:text-base font-medium">{{ currentShowcase.name }}</span>
+            </template>
+            <template v-else>
+              <img :src="currentShowcase.image" :alt="currentShowcase.name" class="h-10 sm:h-14 w-auto object-contain rounded" />
+              <div class="text-left">
+                <p class="text-white text-sm sm:text-base font-medium truncate max-w-[200px] sm:max-w-xs">{{ currentShowcase.name }}</p>
+                <p class="text-cyan-400 text-xs font-mono">${{ currentShowcase.price?.toFixed(2) }}</p>
+              </div>
+            </template>
+          </div>
+        </transition>
+        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-1">
+          <span v-for="i in Math.min(showcaseItems.length, 20)" :key="i" class="w-1.5 h-1.5 rounded-full transition-all duration-300" :class="i - 1 === showcaseIndex ? 'bg-cyan-400 scale-125' : 'bg-slate-700'"></span>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
+
+<style scoped>
+.showcase-enter-active { transition: all 0.35s ease-out; }
+.showcase-leave-active { transition: all 0.25s ease-in; }
+.showcase-enter-from { opacity: 0; transform: translateY(12px); }
+.showcase-leave-to { opacity: 0; transform: translateY(-12px); }
+</style>
