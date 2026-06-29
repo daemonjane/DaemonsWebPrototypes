@@ -1,5 +1,6 @@
 {
   "name": "Motherboards",
   "description": "ATX, Micro-ATX, and Mini-ITX motherboards",
-  "icon": "\ud83d\udd27"
+  "icon": "\ud83d\udd27",
+  "image": "https://placehold.co/800x600?text=Motherboards"
 }
