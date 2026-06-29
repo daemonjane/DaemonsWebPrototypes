@@ -8,7 +8,9 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+AMD+Ryzen+9",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Ryzen+9+9950X+Top"
+  ],
   "collections": [
     "Extreme Overclocking",
     "Content Creator Kit"
