@@ -17,7 +17,8 @@
       "name": "With Wireless Subwoofer",
       "price": "449.99",
       "remaining_stock": 22,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "539.99"
     }
   ],
   "slugified_name": "matrix-soundbar-pro",

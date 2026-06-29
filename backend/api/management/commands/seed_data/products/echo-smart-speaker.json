@@ -17,7 +17,8 @@
       "name": "Charcoal / With Hub",
       "price": "199.99",
       "remaining_stock": 30,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "239.99"
     }
   ],
   "slugified_name": "echo-smart-speaker",

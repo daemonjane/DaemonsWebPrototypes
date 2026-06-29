@@ -17,7 +17,8 @@
       "name": "Polar White",
       "price": "169.99",
       "remaining_stock": 15,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "203.99"
     }
   ],
   "slugified_name": "pinnacle-monitor-arm-dual",

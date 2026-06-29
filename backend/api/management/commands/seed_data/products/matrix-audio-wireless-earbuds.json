@@ -17,13 +17,15 @@
       "name": "Matte Black",
       "price": "199.99",
       "remaining_stock": 20,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "239.99"
     },
     {
       "name": "Pearl White",
       "price": "199.99",
       "remaining_stock": 20,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "239.99"
     }
   ],
   "slugified_name": "matrix-audio-wireless-earbuds",

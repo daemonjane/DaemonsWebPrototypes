@@ -17,13 +17,15 @@
       "name": "Black / White Combs",
       "price": "79.99",
       "remaining_stock": 35,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "95.99"
     },
     {
       "name": "White / Black Combs",
       "price": "79.99",
       "remaining_stock": 25,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "95.99"
     }
   ],
   "slugified_name": "cablecraft-premium-sleeved",

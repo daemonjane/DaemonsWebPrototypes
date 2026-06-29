@@ -20,13 +20,15 @@
       "name": "Black / Brass Plate",
       "price": "249.99",
       "remaining_stock": 18,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "299.99"
     },
     {
       "name": "White / Aluminum Plate",
       "price": "259.99",
       "remaining_stock": 17,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "311.99"
     }
   ],
   "slugified_name": "vertex-systems-75-hotswap",

@@ -17,7 +17,8 @@
       "name": "Air Cooled / Triple Fan",
       "price": "1299.99",
       "remaining_stock": 12,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "1559.99"
     }
   ],
   "slugified_name": "quantumedge-radeon-9070-xtx",

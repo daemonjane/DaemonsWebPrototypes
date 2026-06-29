@@ -20,13 +20,15 @@
       "name": "Linear Switches / Black",
       "price": "179.99",
       "remaining_stock": 25,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "215.99"
     },
     {
       "name": "Tactile Switches / White",
       "price": "189.99",
       "remaining_stock": 25,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "227.99"
     }
   ],
   "slugified_name": "cyberpro-tkl-mechanical",

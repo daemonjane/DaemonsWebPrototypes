@@ -17,13 +17,15 @@
       "name": "Extended XL / 36x18",
       "price": "59.99",
       "remaining_stock": 25,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "71.99"
     },
     {
       "name": "Standard L / 18x16",
       "price": "49.99",
       "remaining_stock": 20,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "59.99"
     }
   ],
   "slugified_name": "flux-rgb-mouse-pad",

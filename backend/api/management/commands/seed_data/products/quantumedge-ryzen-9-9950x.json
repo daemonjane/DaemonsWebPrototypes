@@ -19,7 +19,8 @@
       "name": "Retail Box / With Cooler",
       "price": "749.99",
       "remaining_stock": 25,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "899.99"
     }
   ],
   "slugified_name": "quantumedge-ryzen-9-9950x",

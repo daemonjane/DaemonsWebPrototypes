@@ -17,7 +17,8 @@
       "name": "16.4ft / Addressable",
       "price": "49.99",
       "remaining_stock": 80,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "59.99"
     }
   ],
   "slugified_name": "flux-rgb-strip-kit",

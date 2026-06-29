@@ -19,7 +19,8 @@
       "name": "Black / 240Hz",
       "price": "1499.99",
       "remaining_stock": 10,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "1799.99"
     }
   ],
   "slugified_name": "apexgear-49-ultrawide",

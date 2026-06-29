@@ -17,13 +17,15 @@
       "name": "Black / No RGB",
       "price": "199.99",
       "remaining_stock": 14,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "239.99"
     },
     {
       "name": "White / RGB Fans",
       "price": "229.99",
       "remaining_stock": 14,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "275.99"
     }
   ],
   "slugified_name": "coolflow-360-aio",

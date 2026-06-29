@@ -17,7 +17,8 @@
       "name": "Single Unit",
       "price": "499.99",
       "remaining_stock": 20,
-      "weight": 1400
+      "weight": 1400,
+      "compare_at_price": "599.99"
     }
   ],
   "slugified_name": "stratus-wifi-7-router",
