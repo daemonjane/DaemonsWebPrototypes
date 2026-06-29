@@ -1,6 +1,5 @@
 {
   "name": "PowerCore UPS 1500VA Backup",
-  "slug": "powercore-ups-1500va",
   "category": "UPS & Power",
   "brand": "PowerCore",
   "price": "349.99",
@@ -21,5 +20,6 @@
       "price": "349.99",
       "stock": 18
     }
-  ]
+  ],
+  "slugified_name": "powercore-ups-1500va"
 }
