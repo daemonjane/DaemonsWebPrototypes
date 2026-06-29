@@ -1,5 +1,6 @@
 {
   "name": "Software",
   "description": "Operating systems, productivity suites, and creative tools",
-  "icon": "\ud83d\udcbf"
+  "icon": "\ud83d\udcbf",
+  "image": "https://placehold.co/800x600?text=Software"
 }
