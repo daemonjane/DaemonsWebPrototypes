@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Forge+Innovation+Standing+Desk",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Forge+Desk+Low",
+    "https://placehold.co/600x400?text=Forge+Desk+Standing"
+  ],
   "collections": [
     "Work From Home Pro",
     "Eco-Friendly Tech"
