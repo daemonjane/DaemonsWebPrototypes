@@ -14,5 +14,12 @@
     "Professional Studio",
     "Content Creator Kit"
   ],
-  "description": "Open-back reference headphones with 53mm beryllium-coated drivers. The Cascade Audio Studio Headphones deliver a flat frequency response perfect for critical mixing and mastering."
+  "description": "Open-back reference headphones with 53mm beryllium-coated drivers. The Cascade Audio Studio Headphones deliver a flat frequency response perfect for critical mixing and mastering.",
+  "variants": [
+    {
+      "name": "Balanced Cable Included",
+      "price": "399.99",
+      "stock": 18
+    }
+  ]
 }
