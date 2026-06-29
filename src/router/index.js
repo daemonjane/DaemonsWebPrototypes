@@ -20,10 +20,17 @@ const PrivacyPolicy = () => import(/* webpackChunkName: "legal" */ '../views/Pri
 const TermsOfService = () => import(/* webpackChunkName: "legal" */ '../views/TermsOfService.vue')
 const CookiesPolicy = () => import(/* webpackChunkName: "legal" */ '../views/CookiesPolicy.vue')
 const Profile = () => import(/* webpackChunkName: "profile" */ '../views/Profile.vue')
+const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+const AdminDashboard = () => import(/* webpackChunkName: "admin" */ '../views/AdminDashboard.vue')
+const Analytics = () => import(/* webpackChunkName: "analytics" */ '../views/Analytics.vue')
 
 const routes = [
   { path: '/', component: Home },
   { path: '/shop', component: Shop },
+  { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
+  { path: '/admin/dashboard', component: AdminDashboard, meta: { requiresAuth: true } },
+  { path: '/admin/analytics', component: Analytics, meta: { requiresAuth: true } },
+  { path: '/analytics', component: Analytics },
   { path: '/profile', component: Profile, meta: { requiresAuth: true } },
   { path: '/orders', component: OrderHistory, meta: { requiresAuth: true } },
   { path: '/product/:id', component: ProductDetail },
