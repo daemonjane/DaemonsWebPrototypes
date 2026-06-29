@@ -2,7 +2,6 @@
   "name": "Vector Systems Thunderbolt 4 Dock",
   "category": "Adapters & Docks",
   "brand": "Vector Systems",
-  "price": "299.99",
   "compare_at_price": "356.99",
   "stock": 24,
   "status": "active",
@@ -21,5 +20,6 @@
       "stock": 20
     }
   ],
-  "slugified_name": "vector-thunderbolt-4-dock"
+  "slugified_name": "vector-thunderbolt-4-dock",
+  "price_range": "299.99"
 }
