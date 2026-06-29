@@ -1,5 +1,6 @@
 {
   "name": "KVM Switches",
   "description": "Keyboard-video-mouse switches for multi-PC setups",
-  "icon": "\ud83d\udd04"
+  "icon": "\ud83d\udd04",
+  "image": "https://placehold.co/800x600?text=KVM+Switches"
 }
