@@ -1,6 +1,5 @@
 {
   "name": "CoreForge ATX Full Tower Case",
-  "slug": "coreforge-atx-full-tower",
   "category": "PC Cases",
   "brand": "CoreForge",
   "price": "199.99",
@@ -26,5 +25,6 @@
       "price": "219.99",
       "stock": 10
     }
-  ]
+  ],
+  "slugified_name": "coreforge-atx-full-tower"
 }
