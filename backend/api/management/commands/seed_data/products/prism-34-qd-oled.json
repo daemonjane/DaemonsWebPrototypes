@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Prism+Displays+34\"+QD-OLED",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Prism+34+Front",
+    "https://placehold.co/600x400?text=Prism+34+Curve"
+  ],
   "collections": [
     "Ultimate Gaming Setup",
     "Premium Lifestyle"
