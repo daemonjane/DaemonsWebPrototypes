@@ -1,0 +1,17 @@
+{
+  "name": "NovaTech Laptop Ultra 16",
+  "slug": "novatech-laptop-ultra-16",
+  "category": "Laptops",
+  "brand": "NovaTech",
+  "price": "2199.99",
+  "compare_at_price": "2499.99",
+  "stock": 25,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=NovaTech+Laptop+Ultra+16",
+  "images": [],
+  "collections": [
+    "Work From Home Pro",
+    "Content Creator Kit"
+  ]
+}
