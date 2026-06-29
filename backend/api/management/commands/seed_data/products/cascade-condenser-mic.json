@@ -1,0 +1,17 @@
+{
+  "name": "Cascade Audio Condenser Microphone",
+  "slug": "cascade-condenser-mic",
+  "category": "Microphones",
+  "brand": "Cascade Audio",
+  "price": "299.99",
+  "compare_at_price": "349.99",
+  "stock": 20,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Cascade+Audio+Condenser+Microphone",
+  "images": [],
+  "collections": [
+    "Streamer's Paradise",
+    "Content Creator Kit"
+  ]
+}
