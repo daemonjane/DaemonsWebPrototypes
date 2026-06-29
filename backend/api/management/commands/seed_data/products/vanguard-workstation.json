@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vanguard+Workstation",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Vanguard+Workstation+Front",
+    "https://placehold.co/600x400?text=Vanguard+Workstation+Internal"
+  ],
   "collections": [
     "Content Creator Kit",
     "Extreme Overclocking"
