@@ -1,0 +1,17 @@
+{
+  "name": "Vector Systems Thunderbolt 4 Dock",
+  "slug": "vector-thunderbolt-4-dock",
+  "category": "Adapters & Docks",
+  "brand": "Vector Systems",
+  "price": "299.99",
+  "compare_at_price": "349.99",
+  "stock": 20,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Vector+Systems+Thunderbolt+4",
+  "images": [],
+  "collections": [
+    "Work From Home Pro",
+    "Content Creator Kit"
+  ]
+}
