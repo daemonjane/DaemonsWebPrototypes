@@ -3,7 +3,6 @@
   "category": "Speakers",
   "brand": "Cascade Audio",
   "compare_at_price": "713.99",
-  "stock": 18,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Cascade+Audio+Studio+Monitors",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "cascade-studio-monitors",
-  "price_range": "599.99"
+  "price_range": "599.99",
+  "remaining_stock": 18
 }
