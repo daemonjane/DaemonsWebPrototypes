@@ -2,7 +2,6 @@
   "name": "OptiView 32\" 8K Pro Display",
   "category": "Monitors",
   "brand": "OptiView",
-  "price": "3999.99",
   "compare_at_price": "4691.99",
   "stock": 6,
   "status": "active",
@@ -23,5 +22,6 @@
       "stock": 5
     }
   ],
-  "slugified_name": "optiview-32-8k-pro"
+  "slugified_name": "optiview-32-8k-pro",
+  "price_range": "3999.99"
 }
