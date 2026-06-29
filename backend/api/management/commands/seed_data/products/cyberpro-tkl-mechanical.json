@@ -2,7 +2,6 @@
   "name": "CyberPro TKL Mechanical Keyboard",
   "category": "Keyboards",
   "brand": "CyberPro",
-  "price": "179.99",
   "compare_at_price": "224.39",
   "stock": 60,
   "status": "active",
@@ -69,5 +68,6 @@
         }
       ]
     }
-  ]
+  ],
+  "price_range": "179.99"
 }
