@@ -3,7 +3,6 @@
   "category": "Monitors",
   "brand": "OptiView",
   "compare_at_price": "866.99",
-  "stock": 48,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=OptiView+27\"+4K+HDR",
@@ -65,5 +64,6 @@
       ]
     }
   ],
-  "price_range": "699.99"
+  "price_range": "699.99",
+  "remaining_stock": 48
 }
