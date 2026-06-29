@@ -16,7 +16,7 @@
     {
       "name": "With USB Management",
       "price": "349.99",
-      "stock": 18
+      "remaining_stock": 18
     }
   ],
   "slugified_name": "powercore-ups-1500va",
