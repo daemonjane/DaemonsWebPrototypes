@@ -4,7 +4,6 @@
   "brand": "Vanguard",
   "compare_at_price": "5099.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vanguard+Workstation",
   "images": [
     "https://placehold.co/600x400?text=Vanguard+Workstation+Front",
@@ -71,5 +70,7 @@
   ],
   "meta_title": "Buy Vanguard Workstation | Daemon's Web Emporium",
   "meta_description": "Shop the Vanguard Workstation at Daemon's Web Emporium. Built for professionals who need uncompromising compute power. The Vanguard Workstation features dual Xeon processors, 1",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": true
 }

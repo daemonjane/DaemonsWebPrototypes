@@ -4,7 +4,6 @@
   "brand": "Stratus Networks",
   "compare_at_price": "611.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Stratus+Networks+WiFi+7",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy Stratus Networks WiFi 7 Tri-Band Router | Daemon's Web Emporium",
   "meta_description": "Shop the Stratus Networks WiFi 7 Tri-Band Router at Daemon's Web Emporium. Tri-band WiFi 7 router with speeds up to 19Gbps, dual 10GbE ports, and built-in VPN server. The Stratus Networks router ",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": true
 }

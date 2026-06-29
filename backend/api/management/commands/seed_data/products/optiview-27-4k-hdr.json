@@ -4,7 +4,6 @@
   "brand": "OptiView",
   "compare_at_price": "866.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=OptiView+27\"+4K+HDR",
   "images": [
     "https://placehold.co/600x400?text=OptiView+27+Angle",
@@ -79,5 +78,7 @@
   ],
   "meta_title": "Buy OptiView 27\" 4K HDR Monitor | Daemon's Web Emporium",
   "meta_description": "Shop the OptiView 27\" 4K HDR Monitor at Daemon's Web Emporium. The OptiView 27-inch 4K HDR monitor delivers stunning color accuracy with 99% DCI-P3 coverage and VESA DisplayHDR 600 ce",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

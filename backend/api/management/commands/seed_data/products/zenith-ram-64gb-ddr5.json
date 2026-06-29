@@ -4,7 +4,6 @@
   "brand": "Zenith Computing",
   "compare_at_price": "305.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Zenith+Computing+RAM+64GB",
   "images": [],
   "collections": [
@@ -40,5 +39,7 @@
   ],
   "meta_title": "Buy Zenith Computing RAM 64GB DDR5-6000 | Daemon's Web Emporium",
   "meta_description": "Shop the Zenith Computing RAM 64GB DDR5-6000 at Daemon's Web Emporium. High-performance DDR5-6000 CL30 memory kit with RGB lighting. The Zenith Computing 64GB kit features hand-screened Samsu",
-  "variant_type": "Capacity"
+  "variant_type": "Capacity",
+  "is_featured": true,
+  "is_new": true
 }

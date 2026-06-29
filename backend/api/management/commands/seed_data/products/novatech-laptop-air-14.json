@@ -4,7 +4,6 @@
   "brand": "NovaTech",
   "compare_at_price": "1631.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=NovaTech+Laptop+Air+14",
   "images": [
     "https://placehold.co/600x400?text=NovaTech+Air+14+Side"
@@ -74,5 +73,7 @@
   ],
   "meta_title": "Buy NovaTech Laptop Air 14 | Daemon's Web Emporium",
   "meta_description": "Shop the NovaTech Laptop Air 14 at Daemon's Web Emporium. Ultraportable meets ultra-capable. At just 2.2 pounds with a 14-hour battery, the NovaTech Laptop Air 14 is perfect for ",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": true
 }

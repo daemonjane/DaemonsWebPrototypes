@@ -4,7 +4,6 @@
   "brand": "ApexGear",
   "compare_at_price": "101.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=ApexGear+Ergonomic+Mouse",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy ApexGear Ergonomic Mouse | Daemon's Web Emporium",
   "meta_description": "Shop the ApexGear Ergonomic Mouse at Daemon's Web Emporium. Ergonomically designed for all-day comfort, the ApexGear Ergonomic Mouse features a 16K DPI sensor, silent switches, and",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

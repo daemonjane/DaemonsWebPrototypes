@@ -4,7 +4,6 @@
   "brand": "SonicWave",
   "compare_at_price": "305.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=SonicWave+Wireless+Headset+Pro",
   "images": [
     "https://placehold.co/600x400?text=SonicWave+Headset+Side"
@@ -78,5 +77,7 @@
   ],
   "meta_title": "Buy SonicWave Wireless Headset Pro | Daemon's Web Emporium",
   "meta_description": "Shop the SonicWave Wireless Headset Pro at Daemon's Web Emporium. Lossless 2.4GHz wireless with 50mm graphene drivers, Dolby Atmos support, and a broadcast-quality noise-cancelling micro",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": true
 }

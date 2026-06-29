@@ -4,7 +4,6 @@
   "brand": "Vanguard",
   "compare_at_price": "2957.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vanguard+Desktop+Pro",
   "images": [
     "https://placehold.co/600x400?text=Vanguard+Desktop+Pro+Angle",
@@ -75,5 +74,7 @@
   ],
   "meta_title": "Buy Vanguard Desktop Pro | Daemon's Web Emporium",
   "meta_description": "Shop the Vanguard Desktop Pro at Daemon's Web Emporium. The Vanguard Desktop Pro is a premium performance powerhouse built for enthusiasts who demand the best. Featuring an all",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": true
 }

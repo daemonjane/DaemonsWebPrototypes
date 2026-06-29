@@ -4,7 +4,6 @@
   "brand": "Titan Hardware",
   "compare_at_price": "764.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Titan+Hardware+Gaming+Chair",
   "images": [
     "https://placehold.co/600x400?text=Titan+Chair+Front",
@@ -79,5 +78,7 @@
   ],
   "meta_title": "Buy Titan Hardware Gaming Chair Pro | Daemon's Web Emporium",
   "meta_description": "Shop the Titan Hardware Gaming Chair Pro at Daemon's Web Emporium. Premium gaming chair with full-grain leather, 4D armrests, magnetic memory foam head pillow, and a synchronized tilt mec",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

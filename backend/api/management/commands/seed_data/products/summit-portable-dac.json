@@ -4,7 +4,6 @@
   "brand": "Summit Electronics",
   "compare_at_price": "356.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Summit+Electronics+Portable+DAC/Amp",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy Summit Electronics Portable DAC/Amp | Daemon's Web Emporium",
   "meta_description": "Shop the Summit Electronics Portable DAC/Amp at Daemon's Web Emporium. Premium USB-C DAC/Amp with dual ESS ES9039Q2M chips, 4.4mm balanced output, and MQA support. The Summit Electronics Port",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": true
 }

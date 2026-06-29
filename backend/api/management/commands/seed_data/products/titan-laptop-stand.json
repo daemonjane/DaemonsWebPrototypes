@@ -4,7 +4,6 @@
   "brand": "Titan Hardware",
   "compare_at_price": "91.79",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Titan+Hardware+Adjustable+Laptop",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy Titan Hardware Adjustable Laptop Stand | Daemon's Web Emporium",
   "meta_description": "Shop the Titan Hardware Adjustable Laptop Stand at Daemon's Web Emporium. Adjustable aluminum laptop stand with ventilated design for optimal cooling. Supports laptops up to 17 inches and featur",
-  "variant_type": "Size"
+  "variant_type": "Size",
+  "is_featured": true,
+  "is_new": false
 }

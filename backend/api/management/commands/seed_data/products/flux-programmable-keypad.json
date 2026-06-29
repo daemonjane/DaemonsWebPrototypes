@@ -4,7 +4,6 @@
   "brand": "Flux Technologies",
   "compare_at_price": "112.19",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Flux+Technologies+Programmable+Keypad",
   "images": [],
   "collections": [
@@ -40,5 +39,7 @@
   ],
   "meta_title": "Buy Flux Technologies Programmable Keypad | Daemon's Web Emporium",
   "meta_description": "Shop the Flux Technologies Programmable Keypad at Daemon's Web Emporium. A 12-key programmable macro pad with hot-swappable switches and per-key RGB. Perfect for streamers, video editors, and p",
-  "variant_type": "Switch Type"
+  "variant_type": "Switch Type",
+  "is_featured": true,
+  "is_new": false
 }

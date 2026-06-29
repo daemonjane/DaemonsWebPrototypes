@@ -4,7 +4,6 @@
   "brand": "NovaTech",
   "compare_at_price": "2549.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=NovaTech+Laptop+Ultra+16",
   "images": [
     "https://placehold.co/600x400?text=NovaTech+Ultra+16+Lid",
@@ -79,5 +78,7 @@
   ],
   "meta_title": "Buy NovaTech Laptop Ultra 16 | Daemon's Web Emporium",
   "meta_description": "Shop the NovaTech Laptop Ultra 16 at Daemon's Web Emporium. The NovaTech Laptop Ultra 16 combines a stunning 16-inch 4K OLED display with desktop-class performance. Featuring the l",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": true
 }

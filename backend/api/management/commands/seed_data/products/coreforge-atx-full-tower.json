@@ -4,7 +4,6 @@
   "brand": "CoreForge",
   "compare_at_price": "254.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=CoreForge+ATX+Full+Tower",
   "images": [
     "https://placehold.co/600x400?text=CoreForge+Case+Front",
@@ -43,5 +42,7 @@
   ],
   "meta_title": "Buy CoreForge ATX Full Tower Case | Daemon's Web Emporium",
   "meta_description": "Shop the CoreForge ATX Full Tower Case at Daemon's Web Emporium. Spacious full-tower case with tempered glass panels, tool-less drive bays, and support for dual 360mm radiators. The Cor",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

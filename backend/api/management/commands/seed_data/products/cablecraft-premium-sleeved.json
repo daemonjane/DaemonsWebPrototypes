@@ -4,7 +4,6 @@
   "brand": "CableCraft",
   "compare_at_price": "101.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=CableCraft+Premium+Sleeved+Cable",
   "images": [],
   "collections": [
@@ -40,5 +39,7 @@
   ],
   "meta_title": "Buy CableCraft Premium Sleeved Cable Kit | Daemon's Web Emporium",
   "meta_description": "Shop the CableCraft Premium Sleeved Cable Kit at Daemon's Web Emporium. Complete set of premium paracord-sleeved PSU cables in your choice of color. Compatible with all modular PSUs and featur",
-  "variant_type": "Length"
+  "variant_type": "Length",
+  "is_featured": true,
+  "is_new": false
 }

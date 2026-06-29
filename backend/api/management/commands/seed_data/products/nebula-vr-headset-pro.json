@@ -4,7 +4,6 @@
   "brand": "Nebula Works",
   "compare_at_price": "1223.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Nebula+Works+VR+Headset",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy Nebula Works VR Headset Pro | Daemon's Web Emporium",
   "meta_description": "Shop the Nebula Works VR Headset Pro at Daemon's Web Emporium. Standalone VR headset with 4K per-eye resolution, inside-out tracking, and hand tracking. The Nebula Works VR Pro featur",
-  "variant_type": "Storage"
+  "variant_type": "Storage",
+  "is_featured": true,
+  "is_new": true
 }

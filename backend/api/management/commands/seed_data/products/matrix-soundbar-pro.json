@@ -4,7 +4,6 @@
   "brand": "Matrix Audio",
   "compare_at_price": "560.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Matrix+Audio+Soundbar+Pro",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy Matrix Audio Soundbar Pro | Daemon's Web Emporium",
   "meta_description": "Shop the Matrix Audio Soundbar Pro at Daemon's Web Emporium. Premium 3.1-channel soundbar with Dolby Atmos, DTS:X, and a wireless subwoofer. The Matrix Soundbar Pro features HDMI eA",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

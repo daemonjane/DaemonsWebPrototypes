@@ -4,7 +4,6 @@
   "brand": "Cascade Audio",
   "compare_at_price": "356.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Cascade+Audio+Condenser+Microphone",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy Cascade Audio Condenser Microphone | Daemon's Web Emporium",
   "meta_description": "Shop the Cascade Audio Condenser Microphone at Daemon's Web Emporium. Large-diaphragm condenser microphone with cardioid polar pattern, 192kHz/24-bit recording, and built-in pop filter. Perf",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

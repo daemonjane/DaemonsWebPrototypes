@@ -4,7 +4,6 @@
   "brand": "ApexGear",
   "compare_at_price": "1835.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=ApexGear+49\"+Super+Ultrawide",
   "images": [
     "https://placehold.co/600x400?text=ApexGear+49+Wide"
@@ -35,5 +34,7 @@
   ],
   "meta_title": "Buy ApexGear 49\" Super Ultrawide | Daemon's Web Emporium",
   "meta_description": "Shop the ApexGear 49\" Super Ultrawide at Daemon's Web Emporium. The ApexGear 49-inch Super Ultrawide replaces dual monitors with a single immersive 32:9 display. 240Hz refresh rate, 1m",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

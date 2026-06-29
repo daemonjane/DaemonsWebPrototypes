@@ -4,7 +4,6 @@
   "brand": "Forge Innovation",
   "compare_at_price": "968.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Forge+Innovation+Standing+Desk",
   "images": [
     "https://placehold.co/600x400?text=Forge+Desk+Low",
@@ -43,5 +42,7 @@
   ],
   "meta_title": "Buy Forge Innovation Standing Desk | Daemon's Web Emporium",
   "meta_description": "Shop the Forge Innovation Standing Desk at Daemon's Web Emporium. Electric height-adjustable standing desk with a 300lb capacity, bamboo desktop, and programmable memory presets. Feature",
-  "variant_type": "Size"
+  "variant_type": "Size",
+  "is_featured": true,
+  "is_new": false
 }

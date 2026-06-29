@@ -4,7 +4,6 @@
   "brand": "AetherLogic",
   "compare_at_price": "407.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=AetherLogic+Ergonomic+Split+Keyboard",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy AetherLogic Ergonomic Split Keyboard | Daemon's Web Emporium",
   "meta_description": "Shop the AetherLogic Ergonomic Split Keyboard at Daemon's Web Emporium. The AetherLogic Ergonomic Split Keyboard reduces wrist strain with its tented, split design. Fully programmable with QMK",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

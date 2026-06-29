@@ -4,7 +4,6 @@
   "brand": "CoreForge",
   "compare_at_price": "713.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=CoreForge+Z990+Extreme+Motherboard",
   "images": [
     "https://placehold.co/600x400?text=Z990+Board+Top",
@@ -36,5 +35,7 @@
   ],
   "meta_title": "Buy CoreForge Z990 Extreme Motherboard | Daemon's Web Emporium",
   "meta_description": "Shop the CoreForge Z990 Extreme Motherboard at Daemon's Web Emporium. Premium E-ATX motherboard with 28-phase VRM, PCIe 5.0 support, triple M.2 slots, and integrated 10GbE networking. Design",
-  "variant_type": "Model"
+  "variant_type": "Model",
+  "is_featured": true,
+  "is_new": false
 }

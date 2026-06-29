@@ -4,7 +4,6 @@
   "brand": "Nebula Works",
   "compare_at_price": "254.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Nebula+Works+4K+Webcam",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy Nebula Works 4K Webcam Pro | Daemon's Web Emporium",
   "meta_description": "Shop the Nebula Works 4K Webcam Pro at Daemon's Web Emporium. Professional 4K webcam with Sony STARVIS sensor, auto-framing, and dual noise-cancelling microphones. The Nebula Works 4",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": true
 }

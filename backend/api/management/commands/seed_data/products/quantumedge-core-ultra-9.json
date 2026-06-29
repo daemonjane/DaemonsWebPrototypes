@@ -4,7 +4,6 @@
   "brand": "QuantumEdge",
   "compare_at_price": "815.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+Intel+Core+Ultra",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy QuantumEdge Intel Core Ultra 9 285K | Daemon's Web Emporium",
   "meta_description": "Shop the QuantumEdge Intel Core Ultra 9 285K at Daemon's Web Emporium. Intel's flagship Arrow Lake processor with 24 cores, 5.7GHz boost, and integrated Arc graphics. The Core Ultra 9 285K de",
-  "variant_type": "Model"
+  "variant_type": "Model",
+  "is_featured": true,
+  "is_new": false
 }

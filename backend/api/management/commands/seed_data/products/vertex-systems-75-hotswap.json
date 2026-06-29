@@ -4,7 +4,6 @@
   "brand": "Vertex Systems",
   "compare_at_price": "305.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vertex+Systems+75%+Hotswap",
   "images": [
     "https://placehold.co/600x400?text=Vertex+75+Angle",
@@ -43,5 +42,7 @@
   ],
   "meta_title": "Buy Vertex Systems 75% Hotswap | Daemon's Web Emporium",
   "meta_description": "Shop the Vertex Systems 75% Hotswap at Daemon's Web Emporium. A premium 75% mechanical keyboard with gasket mount, PBT keycaps, and pre-lubed switches. The Vertex Systems 75% Hotswap",
-  "variant_type": "Switch Type"
+  "variant_type": "Switch Type",
+  "is_featured": true,
+  "is_new": true
 }

@@ -4,7 +4,6 @@
   "brand": "CyberPro",
   "compare_at_price": "224.39",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=CyberPro+TKL+Mechanical+Keyboard",
   "images": [
     "https://placehold.co/600x400?text=CyberPro+TKL+Angle",
@@ -83,5 +82,7 @@
   ],
   "meta_title": "Buy CyberPro TKL Mechanical Keyboard | Daemon's Web Emporium",
   "meta_description": "Shop the CyberPro TKL Mechanical Keyboard at Daemon's Web Emporium. The CyberPro TKL Mechanical Keyboard features hot-swappable switches, per-key RGB, and a CNC aluminum frame. With N-key ",
-  "variant_type": "Switch Type"
+  "variant_type": "Switch Type",
+  "is_featured": true,
+  "is_new": false
 }

@@ -4,7 +4,6 @@
   "brand": "QuantumEdge",
   "compare_at_price": "866.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+AMD+Ryzen+9",
   "images": [
     "https://placehold.co/600x400?text=Ryzen+9+9950X+Top"
@@ -35,5 +34,7 @@
   ],
   "meta_title": "Buy QuantumEdge AMD Ryzen 9 9950X | Daemon's Web Emporium",
   "meta_description": "Shop the QuantumEdge AMD Ryzen 9 9950X at Daemon's Web Emporium. 16 cores, 32 threads of Zen 5 performance. The QuantumEdge AMD Ryzen 9 9950X features a 5.8GHz boost clock, 80MB cache, ",
-  "variant_type": "Model"
+  "variant_type": "Model",
+  "is_featured": true,
+  "is_new": false
 }

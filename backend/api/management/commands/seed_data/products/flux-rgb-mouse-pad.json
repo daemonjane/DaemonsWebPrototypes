@@ -4,7 +4,6 @@
   "brand": "Flux Technologies",
   "compare_at_price": "76.49",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Flux+Technologies+RGB+Mouse",
   "images": [],
   "collections": [
@@ -40,5 +39,7 @@
   ],
   "meta_title": "Buy Flux Technologies RGB Mouse Pad XL | Daemon's Web Emporium",
   "meta_description": "Shop the Flux Technologies RGB Mouse Pad XL at Daemon's Web Emporium. Extra-large RGB mouse pad with a micro-textured surface for precise tracking, 15-zone lighting, and a braided USB cable.",
-  "variant_type": "Size"
+  "variant_type": "Size",
+  "is_featured": true,
+  "is_new": false
 }

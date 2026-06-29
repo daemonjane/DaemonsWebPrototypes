@@ -4,7 +4,6 @@
   "brand": "Cascade Audio",
   "compare_at_price": "509.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Cascade+Audio+Studio+Headphones",
   "images": [
     "https://placehold.co/600x400?text=Cascade+Phones+Angle"
@@ -58,5 +57,7 @@
   ],
   "meta_title": "Buy Cascade Audio Studio Headphones | Daemon's Web Emporium",
   "meta_description": "Shop the Cascade Audio Studio Headphones at Daemon's Web Emporium. Open-back reference headphones with 53mm beryllium-coated drivers. The Cascade Audio Studio Headphones deliver a flat fr",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

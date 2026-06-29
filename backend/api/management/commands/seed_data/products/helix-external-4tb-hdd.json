@@ -4,7 +4,6 @@
   "brand": "Helix Digital",
   "compare_at_price": "163.19",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=Helix+Digital+External+4TB",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy Helix Digital External 4TB HDD | Daemon's Web Emporium",
   "meta_description": "Shop the Helix Digital External 4TB HDD at Daemon's Web Emporium. Portable 4TB external HDD with USB 3.2 Gen 2, hardware encryption, and shock-resistant design. Reliable backup storage t",
-  "variant_type": "Capacity"
+  "variant_type": "Capacity",
+  "is_featured": true,
+  "is_new": false
 }

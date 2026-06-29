@@ -4,7 +4,6 @@
   "brand": "QuantumEdge",
   "compare_at_price": "1529.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+Radeon+9070+XTX",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy QuantumEdge Radeon 9070 XTX | Daemon's Web Emporium",
   "meta_description": "Shop the QuantumEdge Radeon 9070 XTX at Daemon's Web Emporium. AMD RDNA 4 flagship with 24GB GDDR6, hardware-accelerated ray tracing, and FSR 3. The QuantumEdge Radeon 9070 XTX offers",
-  "variant_type": "Model"
+  "variant_type": "Model",
+  "is_featured": true,
+  "is_new": false
 }

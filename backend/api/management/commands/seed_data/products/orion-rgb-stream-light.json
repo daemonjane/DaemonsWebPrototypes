@@ -4,7 +4,6 @@
   "brand": "OrionTech",
   "compare_at_price": "183.59",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=OrionTech+RGB+Streaming+Light",
   "images": [],
   "collections": [
@@ -33,5 +32,7 @@
   ],
   "meta_title": "Buy OrionTech RGB Streaming Light Pro | Daemon's Web Emporium",
   "meta_description": "Shop the OrionTech RGB Streaming Light Pro at Daemon's Web Emporium. Professional RGB streaming light with 280 CCT tunable LEDs, 96 CRI rating, and app control. The OrionTech Pro features a",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }

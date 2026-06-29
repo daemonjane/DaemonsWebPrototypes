@@ -4,7 +4,6 @@
   "brand": "QuantumEdge",
   "compare_at_price": "1937.99",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+RTX+5080+Ti",
   "images": [
     "https://placehold.co/600x400?text=RTX+5080+Ti+Front",
@@ -83,5 +82,7 @@
   ],
   "meta_title": "Buy QuantumEdge RTX 5080 Ti | Daemon's Web Emporium",
   "meta_description": "Shop the QuantumEdge RTX 5080 Ti at Daemon's Web Emporium. The ultimate graphics card featuring NVIDIA Blackwell architecture with 24GB GDDR7, 3rd-gen ray tracing cores, and DLSS ",
-  "variant_type": "Model"
+  "variant_type": "Model",
+  "is_featured": true,
+  "is_new": false
 }

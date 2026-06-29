@@ -4,7 +4,6 @@
   "brand": "CoolFlow",
   "compare_at_price": "244.79",
   "status": "active",
-  "featured": true,
   "main_image": "https://placehold.co/600x400?text=CoolFlow+360mm+AIO+Liquid",
   "images": [],
   "collections": [
@@ -40,5 +39,7 @@
   ],
   "meta_title": "Buy CoolFlow 360mm AIO Liquid Cooler | Daemon's Web Emporium",
   "meta_description": "Shop the CoolFlow 360mm AIO Liquid Cooler at Daemon's Web Emporium. High-performance 360mm AIO liquid cooler with a 3rd-gen pump design and three 120mm ARGB fans. The CoolFlow 360 keeps ev",
-  "variant_type": "Color"
+  "variant_type": "Color",
+  "is_featured": true,
+  "is_new": false
 }
