@@ -16,12 +16,12 @@
     {
       "name": "With Heatsink",
       "price": "349.99",
-      "stock": 20
+      "remaining_stock": 20
     },
     {
       "name": "Without Heatsink",
       "price": "329.99",
-      "stock": 15
+      "remaining_stock": 15
     }
   ],
   "slugified_name": "helix-nvme-2tb",
