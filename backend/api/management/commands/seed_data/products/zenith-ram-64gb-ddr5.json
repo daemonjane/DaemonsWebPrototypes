@@ -1,0 +1,17 @@
+{
+  "name": "Zenith Computing RAM 64GB DDR5-6000",
+  "slug": "zenith-ram-64gb-ddr5",
+  "category": "Memory (RAM)",
+  "brand": "Zenith Computing",
+  "price": "249.99",
+  "compare_at_price": "299.99",
+  "stock": 40,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Zenith+Computing+RAM+64GB",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "Extreme Overclocking"
+  ]
+}
