@@ -8,7 +8,9 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=NovaTech+Laptop+Air+14",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=NovaTech+Air+14+Side"
+  ],
   "collections": [
     "Student Starter Pack",
     "Compact & Portable"
