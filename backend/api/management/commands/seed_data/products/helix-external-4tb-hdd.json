@@ -1,0 +1,17 @@
+{
+  "name": "Helix Digital External 4TB HDD",
+  "slug": "helix-external-4tb-hdd",
+  "category": "External Storage",
+  "brand": "Helix Digital",
+  "price": "129.99",
+  "compare_at_price": "159.99",
+  "stock": 50,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Helix+Digital+External+4TB",
+  "images": [],
+  "collections": [
+    "Budget Build",
+    "Student Starter Pack"
+  ]
+}
