@@ -3,7 +3,6 @@
   "category": "Headphones",
   "brand": "SonicWave",
   "compare_at_price": "305.99",
-  "stock": 36,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=SonicWave+Wireless+Headset+Pro",
@@ -64,5 +63,6 @@
       ]
     }
   ],
-  "price_range": "249.99"
+  "price_range": "249.99",
+  "remaining_stock": 36
 }
