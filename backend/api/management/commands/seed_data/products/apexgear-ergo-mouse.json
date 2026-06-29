@@ -16,7 +16,7 @@
     {
       "name": "Black / Right Handed",
       "price": "79.99",
-      "stock": 35
+      "remaining_stock": 35
     }
   ],
   "slugified_name": "apexgear-ergo-mouse",
