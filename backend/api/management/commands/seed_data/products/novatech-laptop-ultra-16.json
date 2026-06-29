@@ -1,6 +1,5 @@
 {
   "name": "NovaTech Laptop Ultra 16",
-  "slug": "novatech-laptop-ultra-16",
   "category": "Laptops",
   "brand": "NovaTech",
   "price": "2199.99",
@@ -26,5 +25,6 @@
       "price": "2699.99",
       "stock": 10
     }
-  ]
+  ],
+  "slugified_name": "novatech-laptop-ultra-16"
 }
