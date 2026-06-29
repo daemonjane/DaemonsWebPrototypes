@@ -1,5 +1,6 @@
 {
   "name": "Speakers",
   "description": "Studio monitors, soundbars, and desktop speakers",
-  "icon": "\ud83d\udd0a"
+  "icon": "\ud83d\udd0a",
+  "image": "https://placehold.co/800x600?text=Speakers"
 }
