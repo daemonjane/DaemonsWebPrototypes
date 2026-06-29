@@ -28,5 +28,37 @@
       "stock": 12
     }
   ],
-  "slugified_name": "novatech-laptop-air-14"
+  "slugified_name": "novatech-laptop-air-14",
+  "sections": [
+    {
+      "name": "Display",
+      "items": [
+        {
+          "name": "Size",
+          "value": "14-inch OLED"
+        },
+        {
+          "name": "Resolution",
+          "value": "2880x1800"
+        },
+        {
+          "name": "Weight",
+          "value": "2.2 lbs"
+        }
+      ]
+    },
+    {
+      "name": "Battery",
+      "items": [
+        {
+          "name": "Capacity",
+          "value": "70Wh"
+        },
+        {
+          "name": "Life",
+          "value": "Up to 14 hours"
+        }
+      ]
+    }
+  ]
 }
