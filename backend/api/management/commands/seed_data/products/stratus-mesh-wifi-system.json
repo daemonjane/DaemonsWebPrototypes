@@ -14,5 +14,12 @@
     "Home Automation Hub",
     "Student Starter Pack"
   ],
-  "description": "Three-piece WiFi 7 mesh system covering up to 7,500 sq ft. Features seamless roaming, built-in antivirus, and parental controls for whole-home coverage."
+  "description": "Three-piece WiFi 7 mesh system covering up to 7,500 sq ft. Features seamless roaming, built-in antivirus, and parental controls for whole-home coverage.",
+  "variants": [
+    {
+      "name": "3-Pack",
+      "price": "599.99",
+      "stock": 15
+    }
+  ]
 }
