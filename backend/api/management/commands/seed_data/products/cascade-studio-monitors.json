@@ -14,5 +14,12 @@
     "Professional Studio",
     "Content Creator Kit"
   ],
-  "description": "Professional 5-inch studio monitors with aramid fiber woofers and silk dome tweeters. The Cascade Audio Studio Monitors deliver accurate sound reproduction for critical listening."
+  "description": "Professional 5-inch studio monitors with aramid fiber woofers and silk dome tweeters. The Cascade Audio Studio Monitors deliver accurate sound reproduction for critical listening.",
+  "variants": [
+    {
+      "name": "Pair / 5-inch",
+      "price": "599.99",
+      "stock": 15
+    }
+  ]
 }
