@@ -1,0 +1,17 @@
+{
+  "name": "Pulse Dynamics USB-C Hub 12-in-1",
+  "slug": "pulse-usbc-hub",
+  "category": "Adapters & Docks",
+  "brand": "Pulse Dynamics",
+  "price": "79.99",
+  "compare_at_price": "99.99",
+  "stock": 50,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Pulse+Dynamics+USB-C+Hub",
+  "images": [],
+  "collections": [
+    "Student Starter Pack",
+    "Compact & Portable"
+  ]
+}
