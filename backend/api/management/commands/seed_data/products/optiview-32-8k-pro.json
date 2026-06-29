@@ -18,7 +18,7 @@
     {
       "name": "With Hood / Calibration",
       "price": "3999.99",
-      "stock": 5
+      "remaining_stock": 5
     }
   ],
   "slugified_name": "optiview-32-8k-pro",
