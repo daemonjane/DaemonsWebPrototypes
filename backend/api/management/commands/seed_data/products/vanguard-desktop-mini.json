@@ -1,6 +1,5 @@
 {
   "name": "Vanguard Desktop Mini",
-  "slug": "vanguard-desktop-mini",
   "category": "Desktops",
   "brand": "Vanguard",
   "price": "1799.99",
@@ -26,5 +25,6 @@
       "price": "1999.99",
       "stock": 8
     }
-  ]
+  ],
+  "slugified_name": "vanguard-desktop-mini"
 }
