@@ -3,7 +3,6 @@
   "category": "Mice",
   "brand": "CyberPro",
   "compare_at_price": "183.59",
-  "stock": 54,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CyberPro+Wireless+Gaming+Mouse",
@@ -29,5 +28,6 @@
     }
   ],
   "slugified_name": "cyberpro-wireless-gaming-mouse",
-  "price_range": "149.99"
+  "price_range": "149.99",
+  "remaining_stock": 54
 }
