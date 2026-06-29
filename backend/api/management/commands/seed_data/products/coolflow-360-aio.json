@@ -2,7 +2,6 @@
   "name": "CoolFlow 360mm AIO Liquid Cooler",
   "category": "Cooling",
   "brand": "CoolFlow",
-  "price": "199.99",
   "compare_at_price": "244.79",
   "stock": 33,
   "status": "active",
@@ -26,5 +25,6 @@
       "stock": 14
     }
   ],
-  "slugified_name": "coolflow-360-aio"
+  "slugified_name": "coolflow-360-aio",
+  "price_range": "199.99"
 }
