@@ -2,7 +2,6 @@
   "name": "CoreForge Z990 Extreme Motherboard",
   "category": "Motherboards",
   "brand": "CoreForge",
-  "price": "599.99",
   "compare_at_price": "713.99",
   "stock": 18,
   "status": "active",
@@ -24,5 +23,6 @@
       "stock": 15
     }
   ],
-  "slugified_name": "coreforge-z990-extreme"
+  "slugified_name": "coreforge-z990-extreme",
+  "price_range": "599.99"
 }
