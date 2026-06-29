@@ -14,5 +14,17 @@
     "Work From Home Pro",
     "Eco-Friendly Tech"
   ],
-  "description": "Electric height-adjustable standing desk with a 300lb capacity, bamboo desktop, and programmable memory presets. Features anti-collision technology and whisper-quiet motors."
+  "description": "Electric height-adjustable standing desk with a 300lb capacity, bamboo desktop, and programmable memory presets. Features anti-collision technology and whisper-quiet motors.",
+  "variants": [
+    {
+      "name": "60x30 inch / Bamboo",
+      "price": "799.99",
+      "stock": 6
+    },
+    {
+      "name": "72x30 inch / Bamboo",
+      "price": "949.99",
+      "stock": 6
+    }
+  ]
 }
