@@ -14,5 +14,12 @@
     "Home Automation Hub",
     "Premium Lifestyle"
   ],
-  "description": "Premium smart speaker with room-filling 360-degree sound, built-in Zigbee hub, and a vibrant LED display. Features voice control for your entire smart home ecosystem."
+  "description": "Premium smart speaker with room-filling 360-degree sound, built-in Zigbee hub, and a vibrant LED display. Features voice control for your entire smart home ecosystem.",
+  "variants": [
+    {
+      "name": "Charcoal / With Hub",
+      "price": "199.99",
+      "stock": 30
+    }
+  ]
 }
