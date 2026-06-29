@@ -1,6 +1,5 @@
 {
   "name": "ApexGear 49\" Super Ultrawide",
-  "slug": "apexgear-49-ultrawide",
   "category": "Monitors",
   "brand": "ApexGear",
   "price": "1499.99",
@@ -21,5 +20,6 @@
       "price": "1499.99",
       "stock": 10
     }
-  ]
+  ],
+  "slugified_name": "apexgear-49-ultrawide"
 }
