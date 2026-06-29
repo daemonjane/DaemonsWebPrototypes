@@ -1,4 +1,6 @@
 {
   "name": "Stratus Networks",
-  "description": "Enterprise and consumer networking gear"
+  "description": "Enterprise and consumer networking gear",
+  "logo": "https://placehold.co/200x80?text=Stratus+Networks&font=raleway",
+  "banner": "https://placehold.co/1200x300?text=Stratus+Networks+Brand+Banner"
 }
