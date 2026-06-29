@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CyberPro+Wireless+Gaming+Mouse",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=CyberPro+Mouse+Top",
+    "https://placehold.co/600x400?text=CyberPro+Mouse+Bottom"
+  ],
   "collections": [
     "Ultimate Gaming Setup",
     "RGB Everything"
