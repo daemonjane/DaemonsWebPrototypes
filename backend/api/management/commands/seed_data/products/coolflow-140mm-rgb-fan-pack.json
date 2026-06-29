@@ -3,7 +3,6 @@
   "category": "Cooling",
   "brand": "CoolFlow",
   "compare_at_price": "112.19",
-  "stock": 72,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CoolFlow+140mm+RGB+Fan",
@@ -26,5 +25,6 @@
     }
   ],
   "slugified_name": "coolflow-140mm-rgb-fan-pack",
-  "price_range": "89.99"
+  "price_range": "89.99",
+  "remaining_stock": 72
 }
