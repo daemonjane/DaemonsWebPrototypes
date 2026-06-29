@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=NovaTech+Laptop+Ultra+16",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=NovaTech+Ultra+16+Lid",
+    "https://placehold.co/600x400?text=NovaTech+Ultra+16+Keyboard"
+  ],
   "collections": [
     "Work From Home Pro",
     "Content Creator Kit"
