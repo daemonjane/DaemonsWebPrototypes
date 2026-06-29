@@ -19,12 +19,12 @@
     {
       "name": "Silver / 32GB RAM",
       "price": "2199.99",
-      "stock": 15
+      "remaining_stock": 15
     },
     {
       "name": "Space Black / 64GB RAM",
       "price": "2699.99",
-      "stock": 10
+      "remaining_stock": 10
     }
   ],
   "slugified_name": "novatech-laptop-ultra-16",
