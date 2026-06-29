@@ -1,0 +1,10 @@
+{
+  "name": "Wireless Protocol",
+  "values": [
+    "Bluetooth 5.0",
+    "Bluetooth 5.3",
+    "2.4GHz",
+    "WiFi 6",
+    "WiFi 7"
+  ]
+}
