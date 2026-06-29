@@ -16,7 +16,7 @@
     {
       "name": "Charcoal / With Hub",
       "price": "199.99",
-      "stock": 30
+      "remaining_stock": 30
     }
   ],
   "slugified_name": "echo-smart-speaker",
