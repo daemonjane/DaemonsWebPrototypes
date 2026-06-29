@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vanguard+Desktop+Pro",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Vanguard+Desktop+Pro+Angle",
+    "https://placehold.co/600x400?text=Vanguard+Desktop+Pro+Rear"
+  ],
   "collections": [
     "Ultimate Gaming Setup",
     "Silent Operator"
