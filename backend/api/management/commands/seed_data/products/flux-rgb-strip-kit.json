@@ -14,5 +14,12 @@
     "RGB Everything",
     "Budget Build"
   ],
-  "description": "Addressable RGB LED strip kit with 16.4ft of LEDs, music sync mode, and smart home integration. Compatible with Alexa, Google Home, and Razer Chroma."
+  "description": "Addressable RGB LED strip kit with 16.4ft of LEDs, music sync mode, and smart home integration. Compatible with Alexa, Google Home, and Razer Chroma.",
+  "variants": [
+    {
+      "name": "16.4ft / Addressable",
+      "price": "49.99",
+      "stock": 80
+    }
+  ]
 }
