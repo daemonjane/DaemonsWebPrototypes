@@ -3,7 +3,6 @@
   "category": "GPUs",
   "brand": "QuantumEdge",
   "compare_at_price": "1529.99",
-  "stock": 14,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+Radeon+9070+XTX",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "quantumedge-radeon-9070-xtx",
-  "price_range": "1299.99"
+  "price_range": "1299.99",
+  "remaining_stock": 14
 }
