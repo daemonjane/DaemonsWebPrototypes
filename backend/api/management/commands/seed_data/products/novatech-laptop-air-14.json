@@ -3,7 +3,6 @@
   "category": "Laptops",
   "brand": "NovaTech",
   "compare_at_price": "1631.99",
-  "stock": 36,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=NovaTech+Laptop+Air+14",
@@ -60,5 +59,6 @@
       ]
     }
   ],
-  "price_range": "1399.99"
+  "price_range": "1399.99",
+  "remaining_stock": 36
 }
