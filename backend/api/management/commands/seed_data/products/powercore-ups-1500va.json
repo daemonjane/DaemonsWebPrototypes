@@ -3,7 +3,6 @@
   "category": "UPS & Power",
   "brand": "PowerCore",
   "compare_at_price": "407.99",
-  "stock": 21,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=PowerCore+UPS+1500VA+Backup",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "powercore-ups-1500va",
-  "price_range": "349.99"
+  "price_range": "349.99",
+  "remaining_stock": 21
 }
