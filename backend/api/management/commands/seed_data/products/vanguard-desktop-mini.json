@@ -8,7 +8,9 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vanguard+Desktop+Mini",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Vanguard+Mini+Side"
+  ],
   "collections": [
     "Compact & Portable",
     "Premium Lifestyle"
