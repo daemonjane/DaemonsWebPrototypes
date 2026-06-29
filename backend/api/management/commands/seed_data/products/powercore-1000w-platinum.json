@@ -1,0 +1,17 @@
+{
+  "name": "PowerCore 1000W Platinum PSU",
+  "slug": "powercore-1000w-platinum",
+  "category": "Power Supplies",
+  "brand": "PowerCore",
+  "price": "249.99",
+  "compare_at_price": "299.99",
+  "stock": 30,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=PowerCore+1000W+Platinum+PSU",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "Silent Operator"
+  ]
+}
