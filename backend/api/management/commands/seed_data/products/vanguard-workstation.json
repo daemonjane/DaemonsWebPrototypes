@@ -1,6 +1,5 @@
 {
   "name": "Vanguard Workstation",
-  "slug": "vanguard-workstation",
   "category": "Desktops",
   "brand": "Vanguard",
   "price": "4299.99",
@@ -26,5 +25,6 @@
       "price": "5499.99",
       "stock": 4
     }
-  ]
+  ],
+  "slugified_name": "vanguard-workstation"
 }
