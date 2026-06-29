@@ -2,7 +2,6 @@
   "name": "Prism Displays 34\" QD-OLED",
   "category": "Monitors",
   "brand": "Prism Displays",
-  "price": "1299.99",
   "compare_at_price": "1529.99",
   "stock": 14,
   "status": "active",
@@ -29,5 +28,6 @@
       "stock": 6
     }
   ],
-  "slugified_name": "prism-34-qd-oled"
+  "slugified_name": "prism-34-qd-oled",
+  "price_range": "1299.99"
 }
