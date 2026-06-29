@@ -29,5 +29,37 @@
       "stock": 7
     }
   ],
-  "slugified_name": "vanguard-desktop-pro"
+  "slugified_name": "vanguard-desktop-pro",
+  "sections": [
+    {
+      "name": "Processor",
+      "items": [
+        {
+          "name": "CPU",
+          "value": "AMD Ryzen 9 9950X"
+        },
+        {
+          "name": "Cores",
+          "value": "16C/32T"
+        },
+        {
+          "name": "Boost Clock",
+          "value": "5.7 GHz"
+        }
+      ]
+    },
+    {
+      "name": "Memory",
+      "items": [
+        {
+          "name": "RAM",
+          "value": "32GB DDR5-6000"
+        },
+        {
+          "name": "Storage",
+          "value": "1TB NVMe Gen5"
+        }
+      ]
+    }
+  ]
 }
