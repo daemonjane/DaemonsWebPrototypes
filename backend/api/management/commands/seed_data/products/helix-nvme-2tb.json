@@ -3,7 +3,6 @@
   "category": "External Storage",
   "brand": "Helix Digital",
   "compare_at_price": "407.99",
-  "stock": 42,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Helix+Digital+2TB+NVMe",
@@ -26,5 +25,6 @@
     }
   ],
   "slugified_name": "helix-nvme-2tb",
-  "price_range": "349.99"
+  "price_range": "349.99",
+  "remaining_stock": 42
 }
