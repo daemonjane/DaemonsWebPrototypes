@@ -16,7 +16,7 @@
     {
       "name": "USB 3.2 / Black",
       "price": "129.99",
-      "stock": 50
+      "remaining_stock": 50
     }
   ],
   "slugified_name": "helix-external-4tb-hdd",
