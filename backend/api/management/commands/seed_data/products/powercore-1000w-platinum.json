@@ -2,7 +2,6 @@
   "name": "PowerCore 1000W Platinum PSU",
   "category": "Power Supplies",
   "brand": "PowerCore",
-  "price": "249.99",
   "compare_at_price": "305.99",
   "stock": 36,
   "status": "active",
@@ -44,5 +43,6 @@
         }
       ]
     }
-  ]
+  ],
+  "price_range": "249.99"
 }
