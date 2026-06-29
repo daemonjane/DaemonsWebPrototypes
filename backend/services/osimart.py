@@ -184,6 +184,12 @@ class OsimartClient:
     def create_product(self, data):
         return self._post("products/", data)
 
+    def update_product(self, product_id, data):
+        return self._put(f"products/{product_id}/", data)
+
+    def delete_product(self, product_id):
+        return self._delete(f"products/{product_id}/")
+
     def get_home(self, params=None):
         url = self._api_url("home/")
         params = dict(params or {})

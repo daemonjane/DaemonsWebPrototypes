@@ -49,14 +49,20 @@ def osimart_banner_detail(request, banner_id):
 # ---------------------------------------------------------------------------
 # Products
 # ---------------------------------------------------------------------------
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 def osimart_products(request):
-    return _proxy_get("get_products", request)
+    if request.method == "GET":
+        return _proxy_get("get_products", request)
+    return _proxy_write("create_product", request.data)
 
 
-@api_view(["GET"])
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_product_detail(request, product_id):
-    return _proxy_get("get_product", request, 0, product_id)
+    if request.method == "GET":
+        return _proxy_get("get_product", request, 0, product_id)
+    if request.method == "DELETE":
+        return _proxy_write("delete_product", product_id)
+    return _proxy_write("update_product", product_id, request.data)
 
 
 # ---------------------------------------------------------------------------

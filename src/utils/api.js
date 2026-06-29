@@ -70,6 +70,9 @@ export const api = {
       return request('GET', `/api/osimart/products/${qs ? '?' + qs : ''}`)
     },
     productDetail: (id) => request('GET', `/api/osimart/products/${id}/`),
+    createProduct: (data) => request('POST', '/api/osimart/products/', data),
+    updateProduct: (id, data) => request('PUT', `/api/osimart/products/${id}/`, data),
+    deleteProduct: (id) => request('DELETE', `/api/osimart/products/${id}/`),
     categories: () => request('GET', '/api/osimart/categories/'),
     createCategory: (data) => request('POST', '/api/osimart/categories/', data),
     updateCategory: (id, data) => request('PUT', `/api/osimart/categories/${id}/`, data),

@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import OsimartProducts from './OsimartProducts.vue'
 import OsimartCategories from './OsimartCategories.vue'
 import OsimartBrands from './OsimartBrands.vue'
 import OsimartCollections from './OsimartCollections.vue'
@@ -11,6 +12,7 @@ import OsimartMedia from './OsimartMedia.vue'
 import OsimartStore from './OsimartStore.vue'
 
 const tabs = [
+  { id: 'products', label: 'Products', icon: '📦' },
   { id: 'categories', label: 'Categories', icon: '📁' },
   { id: 'brands', label: 'Brands', icon: '🏷️' },
   { id: 'collections', label: 'Collections', icon: '📚' },
@@ -21,7 +23,7 @@ const tabs = [
   { id: 'media', label: 'Media', icon: '🎨' },
   { id: 'store', label: 'Store Settings', icon: '⚙️' },
 ]
-const activeTab = ref('categories')
+const activeTab = ref('products')
 </script>
 
 <template>
@@ -31,7 +33,8 @@ const activeTab = ref('categories')
       <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id" class="px-4 py-2 text-sm rounded-t-md transition-colors whitespace-nowrap" :class="activeTab === t.id ? 'bg-slate-800 text-cyan-400 border-b-2 border-cyan-400' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'">{{ t.icon }} {{ t.label }}</button>
     </div>
     <div class="bg-slate-900/50 rounded-xl p-4 sm:p-6 border border-slate-800 min-h-[60vh]">
-      <OsimartCategories v-if="activeTab === 'categories'" />
+      <OsimartProducts v-if="activeTab === 'products'" />
+      <OsimartCategories v-else-if="activeTab === 'categories'" />
       <OsimartBrands v-else-if="activeTab === 'brands'" />
       <OsimartCollections v-else-if="activeTab === 'collections'" />
       <OsimartVariantTypes v-else-if="activeTab === 'variant-types'" />
