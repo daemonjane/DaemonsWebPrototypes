@@ -3,7 +3,6 @@
   "category": "Mouse Pads",
   "brand": "Flux Technologies",
   "compare_at_price": "76.49",
-  "stock": 54,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Flux+Technologies+RGB+Mouse",
@@ -26,5 +25,6 @@
     }
   ],
   "slugified_name": "flux-rgb-mouse-pad",
-  "price_range": "59.99"
+  "price_range": "59.99",
+  "remaining_stock": 54
 }
