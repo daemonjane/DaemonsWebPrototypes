@@ -11,7 +11,8 @@ import { resolveImage } from '../utils/images'
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 const { items: recentlyViewed } = useRecentlyViewed()
 
-const products = ref(fallbackProducts)
+const fallbackWithStock = fallbackProducts.map(p => ({ ...p, stock: 0 }))
+const products = ref(fallbackWithStock)
 const banners = ref([])
 const hero = ref(null)
 const store = ref(null)
@@ -60,7 +61,7 @@ function normalizeProduct(p) {
     description: stripHtml(p.description || ''),
     createdAt: p.created_at || p.date_created || null,
     rating: 4.5,
-    stock: p.remaining_stock ?? p.stock ?? 0,
+    stock: Math.max(0, Number(p.remaining_stock ?? p.stock ?? p.quantity ?? 0) || 0),
     specs: (p.sections || []).flatMap(s => (s.items || []).map(i => `${i.name}: ${i.value}`)),
   }
 }
