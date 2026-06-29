@@ -3,7 +3,6 @@
   "category": "CPUs",
   "brand": "QuantumEdge",
   "compare_at_price": "866.99",
-  "stock": 30,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+AMD+Ryzen+9",
@@ -23,5 +22,6 @@
     }
   ],
   "slugified_name": "quantumedge-ryzen-9-9950x",
-  "price_range": "749.99"
+  "price_range": "749.99",
+  "remaining_stock": 30
 }
