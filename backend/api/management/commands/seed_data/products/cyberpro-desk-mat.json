@@ -14,5 +14,12 @@
     "Work From Home Pro",
     "Ultimate Gaming Setup"
   ],
-  "description": "Extra-large desk mat (36x18 inches) with a smooth microfiber surface, stitched edges, and non-slip rubber base. Perfect for both gaming and productivity setups."
+  "description": "Extra-large desk mat (36x18 inches) with a smooth microfiber surface, stitched edges, and non-slip rubber base. Perfect for both gaming and productivity setups.",
+  "variants": [
+    {
+      "name": "Black / Stitched Edges",
+      "price": "39.99",
+      "stock": 75
+    }
+  ]
 }
