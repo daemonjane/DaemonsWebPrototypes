@@ -1,6 +1,5 @@
 {
   "name": "Matrix Audio Soundbar Pro",
-  "slug": "matrix-soundbar-pro",
   "category": "Speakers",
   "brand": "Matrix Audio",
   "price": "449.99",
@@ -21,5 +20,6 @@
       "price": "449.99",
       "stock": 22
     }
-  ]
+  ],
+  "slugified_name": "matrix-soundbar-pro"
 }
