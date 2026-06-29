@@ -2,7 +2,6 @@
   "name": "Stratus Networks Mesh WiFi 7 System",
   "category": "Networking",
   "brand": "Stratus Networks",
-  "price": "599.99",
   "compare_at_price": "713.99",
   "stock": 18,
   "status": "active",
@@ -21,5 +20,6 @@
       "stock": 15
     }
   ],
-  "slugified_name": "stratus-mesh-wifi-system"
+  "slugified_name": "stratus-mesh-wifi-system",
+  "price_range": "599.99"
 }
