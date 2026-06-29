@@ -1,0 +1,9 @@
+{
+  "name": "Switch Type",
+  "values": [
+    "Linear",
+    "Tactile",
+    "Clicky",
+    "Optical"
+  ]
+}
