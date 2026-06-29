@@ -2,7 +2,6 @@
   "name": "AetherLogic Ergonomic Split Keyboard",
   "category": "Keyboards",
   "brand": "AetherLogic",
-  "price": "349.99",
   "compare_at_price": "407.99",
   "stock": 24,
   "status": "active",
@@ -21,5 +20,6 @@
       "stock": 20
     }
   ],
-  "slugified_name": "aetherlogic-split-ergo"
+  "slugified_name": "aetherlogic-split-ergo",
+  "price_range": "349.99"
 }
