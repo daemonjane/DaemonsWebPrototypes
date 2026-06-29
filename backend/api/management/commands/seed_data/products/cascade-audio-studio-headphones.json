@@ -3,7 +3,6 @@
   "category": "Headphones",
   "brand": "Cascade Audio",
   "compare_at_price": "509.99",
-  "stock": 21,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Cascade+Audio+Studio+Headphones",
@@ -46,5 +45,6 @@
       ]
     }
   ],
-  "price_range": "399.99"
+  "price_range": "399.99",
+  "remaining_stock": 21
 }
