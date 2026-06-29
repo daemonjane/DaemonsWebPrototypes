@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CyberPro+TKL+Mechanical+Keyboard",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=CyberPro+TKL+Angle",
+    "https://placehold.co/600x400?text=CyberPro+TKL+RGB"
+  ],
   "collections": [
     "Ultimate Gaming Setup",
     "RGB Everything"
