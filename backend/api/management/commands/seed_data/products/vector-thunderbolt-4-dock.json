@@ -14,5 +14,12 @@
     "Work From Home Pro",
     "Content Creator Kit"
   ],
-  "description": "Thunderbolt 4 dock with 96W charging, dual 8K display output, 10GbE, and multiple USB-A/C ports. The Vector Systems dock is the ultimate laptop expansion solution."
+  "description": "Thunderbolt 4 dock with 96W charging, dual 8K display output, 10GbE, and multiple USB-A/C ports. The Vector Systems dock is the ultimate laptop expansion solution.",
+  "variants": [
+    {
+      "name": "With 96W Charging",
+      "price": "299.99",
+      "stock": 20
+    }
+  ]
 }
