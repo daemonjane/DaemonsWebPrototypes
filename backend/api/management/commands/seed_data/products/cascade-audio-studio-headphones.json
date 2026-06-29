@@ -1,6 +1,5 @@
 {
   "name": "Cascade Audio Studio Headphones",
-  "slug": "cascade-audio-studio-headphones",
   "category": "Headphones",
   "brand": "Cascade Audio",
   "price": "399.99",
@@ -21,5 +20,6 @@
       "price": "399.99",
       "stock": 18
     }
-  ]
+  ],
+  "slugified_name": "cascade-audio-studio-headphones"
 }
