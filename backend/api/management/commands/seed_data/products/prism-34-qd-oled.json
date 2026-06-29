@@ -19,12 +19,12 @@
     {
       "name": "Black / Flat",
       "price": "1299.99",
-      "stock": 6
+      "remaining_stock": 6
     },
     {
       "name": "White / Curved 1800R",
       "price": "1399.99",
-      "stock": 6
+      "remaining_stock": 6
     }
   ],
   "slugified_name": "prism-34-qd-oled",
