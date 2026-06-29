@@ -3,7 +3,6 @@
   "category": "Keyboards",
   "brand": "AetherLogic",
   "compare_at_price": "407.99",
-  "stock": 24,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=AetherLogic+Ergonomic+Split+Keyboard",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "aetherlogic-split-ergo",
-  "price_range": "349.99"
+  "price_range": "349.99",
+  "remaining_stock": 24
 }
