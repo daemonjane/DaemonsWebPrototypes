@@ -19,12 +19,12 @@
     {
       "name": "128GB RAM / 2TB SSD",
       "price": "4299.99",
-      "stock": 4
+      "remaining_stock": 4
     },
     {
       "name": "256GB RAM / 4TB SSD",
       "price": "5499.99",
-      "stock": 4
+      "remaining_stock": 4
     }
   ],
   "slugified_name": "vanguard-workstation",
