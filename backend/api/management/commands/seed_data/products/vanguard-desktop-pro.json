@@ -2,7 +2,6 @@
   "name": "Vanguard Desktop Pro",
   "category": "Desktops",
   "brand": "Vanguard",
-  "price": "2499.99",
   "compare_at_price": "2957.99",
   "stock": 18,
   "status": "active",
@@ -61,5 +60,6 @@
         }
       ]
     }
-  ]
+  ],
+  "price_range": "2499.99"
 }
