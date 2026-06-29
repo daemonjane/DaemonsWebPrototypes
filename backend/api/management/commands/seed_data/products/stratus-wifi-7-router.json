@@ -1,0 +1,17 @@
+{
+  "name": "Stratus Networks WiFi 7 Tri-Band Router",
+  "slug": "stratus-wifi-7-router",
+  "category": "Networking",
+  "brand": "Stratus Networks",
+  "price": "499.99",
+  "compare_at_price": "599.99",
+  "stock": 20,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Stratus+Networks+WiFi+7",
+  "images": [],
+  "collections": [
+    "Work From Home Pro",
+    "Home Automation Hub"
+  ]
+}
