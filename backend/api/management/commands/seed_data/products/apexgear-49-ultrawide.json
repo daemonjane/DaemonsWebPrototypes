@@ -14,5 +14,12 @@
     "Ultimate Gaming Setup",
     "Extreme Overclocking"
   ],
-  "description": "The ApexGear 49-inch Super Ultrawide replaces dual monitors with a single immersive 32:9 display. 240Hz refresh rate, 1ms response, and HDR1000 make this the definitive competitive gaming monitor."
+  "description": "The ApexGear 49-inch Super Ultrawide replaces dual monitors with a single immersive 32:9 display. 240Hz refresh rate, 1ms response, and HDR1000 make this the definitive competitive gaming monitor.",
+  "variants": [
+    {
+      "name": "Black / 240Hz",
+      "price": "1499.99",
+      "stock": 10
+    }
+  ]
 }
