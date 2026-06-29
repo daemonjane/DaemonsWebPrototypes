@@ -1,6 +1,5 @@
 {
   "name": "NovaTech Laptop Air 14",
-  "slug": "novatech-laptop-air-14",
   "category": "Laptops",
   "brand": "NovaTech",
   "price": "1399.99",
@@ -26,5 +25,6 @@
       "price": "1599.99",
       "stock": 12
     }
-  ]
+  ],
+  "slugified_name": "novatech-laptop-air-14"
 }
