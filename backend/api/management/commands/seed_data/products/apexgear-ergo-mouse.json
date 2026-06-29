@@ -14,5 +14,12 @@
     "Work From Home Pro",
     "Student Starter Pack"
   ],
-  "description": "Ergonomically designed for all-day comfort, the ApexGear Ergonomic Mouse features a 16K DPI sensor, silent switches, and adjustable palm support."
+  "description": "Ergonomically designed for all-day comfort, the ApexGear Ergonomic Mouse features a 16K DPI sensor, silent switches, and adjustable palm support.",
+  "variants": [
+    {
+      "name": "Black / Right Handed",
+      "price": "79.99",
+      "stock": 35
+    }
+  ]
 }
