@@ -103,6 +103,46 @@ class OsimartClient:
         except requests.RequestException as e:
             raise OsimartError(f"Osimart API error: {e}") from e
 
+    def _put(self, path, data=None):
+        url = self._api_url(path)
+        payload = dict(data or {})
+        payload.setdefault("store", self.store_id)
+        try:
+            resp = requests.put(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            if resp.status_code == 401:
+                self._access_token = None
+                resp = requests.put(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            resp.raise_for_status()
+            return resp.json()
+        except requests.RequestException as e:
+            raise OsimartError(f"Osimart API error: {e}") from e
+
+    def _patch(self, path, data=None):
+        url = self._api_url(path)
+        payload = dict(data or {})
+        payload.setdefault("store", self.store_id)
+        try:
+            resp = requests.patch(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            if resp.status_code == 401:
+                self._access_token = None
+                resp = requests.patch(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            resp.raise_for_status()
+            return resp.json()
+        except requests.RequestException as e:
+            raise OsimartError(f"Osimart API error: {e}") from e
+
+    def _delete(self, path):
+        url = self._api_url(path)
+        try:
+            resp = requests.delete(url, headers=self._get_headers(), timeout=self.timeout)
+            if resp.status_code == 401:
+                self._access_token = None
+                resp = requests.delete(url, headers=self._get_headers(), timeout=self.timeout)
+            resp.raise_for_status()
+            return resp.status_code == 204
+        except requests.RequestException as e:
+            raise OsimartError(f"Osimart API error: {e}") from e
+
     # ------------------------------------------------------------------
     # Image helpers
     # ------------------------------------------------------------------
@@ -167,8 +207,68 @@ class OsimartClient:
     def create_category(self, data):
         return self._post("categories/", data)
 
+    def update_category(self, category_id, data):
+        return self._put(f"categories/{category_id}/", data)
+
+    def delete_category(self, category_id):
+        return self._delete(f"categories/{category_id}/")
+
     def create_brand(self, data):
         return self._post("brands/", data)
 
+    def update_brand(self, brand_id, data):
+        return self._put(f"brands/{brand_id}/", data)
+
+    def delete_brand(self, brand_id):
+        return self._delete(f"brands/{brand_id}/")
+
+    def create_collection(self, data):
+        return self._post("collections/", data)
+
+    def update_collection(self, collection_id, data):
+        return self._put(f"collections/{collection_id}/", data)
+
+    def delete_collection(self, collection_id):
+        return self._delete(f"collections/{collection_id}/")
+
+    def update_banner(self, banner_id, data):
+        return self._put(f"banners/{banner_id}/", data)
+
+    def delete_banner(self, banner_id):
+        return self._delete(f"banners/{banner_id}/")
+
+    def get_announcement_bars(self, params=None):
+        return self._get("announcement-bars/", params)
+
+    def create_announcement_bar(self, data):
+        return self._post("announcement-bars/", data)
+
+    def update_announcement_bar(self, ann_id, data):
+        return self._put(f"announcement-bars/{ann_id}/", data)
+
+    def delete_announcement_bar(self, ann_id):
+        return self._delete(f"announcement-bars/{ann_id}/")
+
+    def get_customers(self, params=None):
+        return self._get("customers/", params)
+
+    def get_medias(self, params=None):
+        return self._get("medias/", params)
+
     def create_variant_type(self, data):
-        return self._post("variant-types/", data)
+        payload = {k: v for k, v in data.items() if k != "values"}
+        if "values" in data and data["values"]:
+            payload["possible_values"] = data["values"]
+        return self._post("variant-types/", payload)
+
+    def update_variant_type(self, vt_id, data):
+        payload = {k: v for k, v in data.items() if k != "values"}
+        if "values" in data and data["values"]:
+            payload["possible_values"] = data["values"]
+        return self._put(f"variant-types/{vt_id}/", payload)
+
+    def delete_variant_type(self, vt_id):
+        return self._delete(f"variant-types/{vt_id}/")
+
+    def update_store(self, data):
+        return self._put(f"stores/{self.store_id}/", data)
