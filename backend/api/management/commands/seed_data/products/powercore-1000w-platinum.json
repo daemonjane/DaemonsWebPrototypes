@@ -16,7 +16,7 @@
     {
       "name": "Black Sleeved Cables",
       "price": "249.99",
-      "stock": 18
+      "remaining_stock": 18
     }
   ],
   "slugified_name": "powercore-1000w-platinum",
