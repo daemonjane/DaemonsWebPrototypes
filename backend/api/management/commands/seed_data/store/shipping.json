@@ -1,0 +1,6 @@
+{
+  "free_shipping_threshold": 99.00,
+  "standard_shipping_rate": 9.99,
+  "expedited_shipping_rate": 19.99,
+  "international_shipping": true
+}
