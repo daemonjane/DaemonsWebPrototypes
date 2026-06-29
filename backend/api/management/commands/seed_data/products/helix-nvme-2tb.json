@@ -2,7 +2,6 @@
   "name": "Helix Digital 2TB NVMe Gen5 SSD",
   "category": "External Storage",
   "brand": "Helix Digital",
-  "price": "349.99",
   "compare_at_price": "407.99",
   "stock": 42,
   "status": "active",
@@ -26,5 +25,6 @@
       "stock": 15
     }
   ],
-  "slugified_name": "helix-nvme-2tb"
+  "slugified_name": "helix-nvme-2tb",
+  "price_range": "349.99"
 }
