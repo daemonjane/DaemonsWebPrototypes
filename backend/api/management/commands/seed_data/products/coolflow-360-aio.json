@@ -1,0 +1,17 @@
+{
+  "name": "CoolFlow 360mm AIO Liquid Cooler",
+  "slug": "coolflow-360-aio",
+  "category": "Cooling",
+  "brand": "CoolFlow",
+  "price": "199.99",
+  "compare_at_price": "239.99",
+  "stock": 28,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=CoolFlow+360mm+AIO+Liquid",
+  "images": [],
+  "collections": [
+    "Extreme Overclocking",
+    "Silent Operator"
+  ]
+}
