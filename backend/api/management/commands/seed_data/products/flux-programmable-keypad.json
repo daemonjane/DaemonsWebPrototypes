@@ -1,0 +1,17 @@
+{
+  "name": "Flux Technologies Programmable Keypad",
+  "slug": "flux-programmable-keypad",
+  "category": "Keyboards",
+  "brand": "Flux Technologies",
+  "price": "89.99",
+  "compare_at_price": "109.99",
+  "stock": 60,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Flux+Technologies+Programmable+Keypad",
+  "images": [],
+  "collections": [
+    "Budget Build",
+    "RGB Everything"
+  ]
+}
