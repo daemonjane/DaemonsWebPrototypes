@@ -16,12 +16,12 @@
     {
       "name": "Linear Switches",
       "price": "89.99",
-      "stock": 30
+      "remaining_stock": 30
     },
     {
       "name": "Tactile Switches",
       "price": "94.99",
-      "stock": 30
+      "remaining_stock": 30
     }
   ],
   "slugified_name": "flux-programmable-keypad",
