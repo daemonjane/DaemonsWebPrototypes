@@ -1,6 +1,5 @@
 {
   "name": "Nebula Works VR Headset Pro",
-  "slug": "nebula-vr-headset-pro",
   "category": "VR / AR",
   "brand": "Nebula Works",
   "price": "999.99",
@@ -21,5 +20,6 @@
       "price": "999.99",
       "stock": 6
     }
-  ]
+  ],
+  "slugified_name": "nebula-vr-headset-pro"
 }
