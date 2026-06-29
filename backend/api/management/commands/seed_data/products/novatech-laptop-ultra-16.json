@@ -2,7 +2,6 @@
   "name": "NovaTech Laptop Ultra 16",
   "category": "Laptops",
   "brand": "NovaTech",
-  "price": "2199.99",
   "compare_at_price": "2549.99",
   "stock": 30,
   "status": "active",
@@ -65,5 +64,6 @@
         }
       ]
     }
-  ]
+  ],
+  "price_range": "2199.99"
 }
