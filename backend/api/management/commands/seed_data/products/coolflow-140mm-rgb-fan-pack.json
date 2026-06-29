@@ -2,7 +2,6 @@
   "name": "CoolFlow 140mm RGB Fan 3-Pack",
   "category": "Cooling",
   "brand": "CoolFlow",
-  "price": "89.99",
   "compare_at_price": "112.19",
   "stock": 72,
   "status": "active",
@@ -26,5 +25,6 @@
       "stock": 25
     }
   ],
-  "slugified_name": "coolflow-140mm-rgb-fan-pack"
+  "slugified_name": "coolflow-140mm-rgb-fan-pack",
+  "price_range": "89.99"
 }
