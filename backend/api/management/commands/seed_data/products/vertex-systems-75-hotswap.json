@@ -2,7 +2,6 @@
   "name": "Vertex Systems 75% Hotswap",
   "category": "Keyboards",
   "brand": "Vertex Systems",
-  "price": "249.99",
   "compare_at_price": "305.99",
   "stock": 42,
   "status": "active",
@@ -29,5 +28,6 @@
       "stock": 17
     }
   ],
-  "slugified_name": "vertex-systems-75-hotswap"
+  "slugified_name": "vertex-systems-75-hotswap",
+  "price_range": "249.99"
 }
