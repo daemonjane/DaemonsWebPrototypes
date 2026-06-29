@@ -14,5 +14,17 @@
     "Ultimate Gaming Setup",
     "Premium Lifestyle"
   ],
-  "description": "Premium gaming chair with full-grain leather, 4D armrests, magnetic memory foam head pillow, and a synchronized tilt mechanism. Built for marathon gaming sessions."
+  "description": "Premium gaming chair with full-grain leather, 4D armrests, magnetic memory foam head pillow, and a synchronized tilt mechanism. Built for marathon gaming sessions.",
+  "variants": [
+    {
+      "name": "Black / Red Accents",
+      "price": "599.99",
+      "stock": 10
+    },
+    {
+      "name": "White / Cyan Accents",
+      "price": "649.99",
+      "stock": 8
+    }
+  ]
 }
