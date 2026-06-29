@@ -18,12 +18,12 @@
     {
       "name": "Midnight Blue / 16GB",
       "price": "1399.99",
-      "stock": 18
+      "remaining_stock": 18
     },
     {
       "name": "Starlight / 24GB",
       "price": "1599.99",
-      "stock": 12
+      "remaining_stock": 12
     }
   ],
   "slugified_name": "novatech-laptop-air-14",
