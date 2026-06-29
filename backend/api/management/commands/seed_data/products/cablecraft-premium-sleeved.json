@@ -3,7 +3,6 @@
   "category": "Cables",
   "brand": "CableCraft",
   "compare_at_price": "101.99",
-  "stock": 72,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CableCraft+Premium+Sleeved+Cable",
@@ -26,5 +25,6 @@
     }
   ],
   "slugified_name": "cablecraft-premium-sleeved",
-  "price_range": "79.99"
+  "price_range": "79.99",
+  "remaining_stock": 72
 }
