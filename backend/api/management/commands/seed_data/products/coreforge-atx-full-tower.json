@@ -19,12 +19,12 @@
     {
       "name": "Black / Tempered Glass",
       "price": "199.99",
-      "stock": 15
+      "remaining_stock": 15
     },
     {
       "name": "White / Mesh Panel",
       "price": "219.99",
-      "stock": 10
+      "remaining_stock": 10
     }
   ],
   "slugified_name": "coreforge-atx-full-tower",
