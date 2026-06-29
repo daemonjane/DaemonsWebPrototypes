@@ -28,5 +28,41 @@
       "stock": 12
     }
   ],
-  "slugified_name": "sonicwave-wireless-headset-pro"
+  "slugified_name": "sonicwave-wireless-headset-pro",
+  "sections": [
+    {
+      "name": "Audio",
+      "items": [
+        {
+          "name": "Drivers",
+          "value": "50mm Graphene"
+        },
+        {
+          "name": "Frequency Response",
+          "value": "20Hz-40kHz"
+        },
+        {
+          "name": "Impedance",
+          "value": "32 ohms"
+        }
+      ]
+    },
+    {
+      "name": "Battery",
+      "items": [
+        {
+          "name": "Life",
+          "value": "40 hours"
+        },
+        {
+          "name": "Charging",
+          "value": "USB-C"
+        },
+        {
+          "name": "Wireless",
+          "value": "2.4GHz + Bluetooth"
+        }
+      ]
+    }
+  ]
 }
