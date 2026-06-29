@@ -1,6 +1,5 @@
 {
   "name": "Nebula Works 4K Webcam Pro",
-  "slug": "nebula-4k-webcam-pro",
   "category": "Webcams",
   "brand": "Nebula Works",
   "price": "199.99",
@@ -21,5 +20,6 @@
       "price": "199.99",
       "stock": 35
     }
-  ]
+  ],
+  "slugified_name": "nebula-4k-webcam-pro"
 }
