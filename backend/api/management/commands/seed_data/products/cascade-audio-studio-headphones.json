@@ -18,7 +18,7 @@
     {
       "name": "Balanced Cable Included",
       "price": "399.99",
-      "stock": 18
+      "remaining_stock": 18
     }
   ],
   "slugified_name": "cascade-audio-studio-headphones",
