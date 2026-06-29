@@ -4,5 +4,8 @@
   "image": "https://placehold.co/1920x480?text=RGB+Special",
   "link": "/collections/rgb-everything",
   "label": "RGB",
-  "active": true
+  "active": true,
+  "display_order": 0,
+  "background_color": "#1e293b",
+  "text_color": "#ffffff"
 }

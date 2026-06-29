@@ -4,5 +4,8 @@
   "image": "https://placehold.co/1920x480?text=New+Arrivals+2026",
   "link": "/shop?sort=newest",
   "label": "New Arrivals",
-  "active": true
+  "active": true,
+  "display_order": 0,
+  "background_color": "#1e293b",
+  "text_color": "#ffffff"
 }
