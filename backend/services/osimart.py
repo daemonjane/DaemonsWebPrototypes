@@ -163,3 +163,12 @@ class OsimartClient:
 
     def get_variant_types(self, params=None):
         return self._get("variant-types/", params)
+
+    def create_category(self, data):
+        return self._post("categories/", data)
+
+    def create_brand(self, data):
+        return self._post("brands/", data)
+
+    def create_variant_type(self, data):
+        return self._post("variant-types/", data)
