@@ -14,5 +14,12 @@
     "Ultimate Gaming Setup",
     "Content Creator Kit"
   ],
-  "description": "Standalone VR headset with 4K per-eye resolution, inside-out tracking, and hand tracking. The Nebula Works VR Pro features a comfortable balanced design for extended use."
+  "description": "Standalone VR headset with 4K per-eye resolution, inside-out tracking, and hand tracking. The Nebula Works VR Pro features a comfortable balanced design for extended use.",
+  "variants": [
+    {
+      "name": "256GB Storage",
+      "price": "999.99",
+      "stock": 6
+    }
+  ]
 }
