@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CoreForge+Z990+Extreme+Motherboard",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Z990+Board+Top",
+    "https://placehold.co/600x400?text=Z990+Board+IO"
+  ],
   "collections": [
     "Extreme Overclocking",
     "Ultimate Gaming Setup"
