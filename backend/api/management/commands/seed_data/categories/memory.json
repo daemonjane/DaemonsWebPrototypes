@@ -1,5 +1,6 @@
 {
   "name": "Memory (RAM)",
   "description": "DDR4 and DDR5 memory modules",
-  "icon": "\ud83e\udde0"
+  "icon": "\ud83e\udde0",
+  "image": "https://placehold.co/800x600?text=Memory+(RAM)"
 }
