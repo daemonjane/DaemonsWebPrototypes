@@ -3,7 +3,6 @@
   "category": "Gaming Chairs",
   "brand": "Titan Hardware",
   "compare_at_price": "764.99",
-  "stock": 21,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Titan+Hardware+Gaming+Chair",
@@ -65,5 +64,6 @@
       ]
     }
   ],
-  "price_range": "599.99"
+  "price_range": "599.99",
+  "remaining_stock": 21
 }
