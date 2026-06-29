@@ -14,5 +14,17 @@
     "Ultimate Gaming Setup",
     "RGB Everything"
   ],
-  "description": "The CyberPro TKL Mechanical Keyboard features hot-swappable switches, per-key RGB, and a CNC aluminum frame. With N-key rollover and programmable macros, it's built for competitive gaming."
+  "description": "The CyberPro TKL Mechanical Keyboard features hot-swappable switches, per-key RGB, and a CNC aluminum frame. With N-key rollover and programmable macros, it's built for competitive gaming.",
+  "variants": [
+    {
+      "name": "Linear Switches / Black",
+      "price": "179.99",
+      "stock": 25
+    },
+    {
+      "name": "Tactile Switches / White",
+      "price": "189.99",
+      "stock": 25
+    }
+  ]
 }
