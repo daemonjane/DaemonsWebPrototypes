@@ -3,7 +3,6 @@
   "category": "Power Supplies",
   "brand": "PowerCore",
   "compare_at_price": "305.99",
-  "stock": 36,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=PowerCore+1000W+Platinum+PSU",
@@ -44,5 +43,6 @@
       ]
     }
   ],
-  "price_range": "249.99"
+  "price_range": "249.99",
+  "remaining_stock": 36
 }
