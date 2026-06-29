@@ -18,12 +18,12 @@
     {
       "name": "Gunmetal / 1TB",
       "price": "1799.99",
-      "stock": 12
+      "remaining_stock": 12
     },
     {
       "name": "White / 2TB",
       "price": "1999.99",
-      "stock": 8
+      "remaining_stock": 8
     }
   ],
   "slugified_name": "vanguard-desktop-mini",
