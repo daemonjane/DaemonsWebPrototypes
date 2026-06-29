@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+RTX+5080+Ti",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=RTX+5080+Ti+Front",
+    "https://placehold.co/600x400?text=RTX+5080+Ti+IO"
+  ],
   "collections": [
     "Ultimate Gaming Setup",
     "Extreme Overclocking"
