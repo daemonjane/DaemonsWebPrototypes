@@ -16,12 +16,12 @@
     {
       "name": "Black / No RGB",
       "price": "199.99",
-      "stock": 14
+      "remaining_stock": 14
     },
     {
       "name": "White / RGB Fans",
       "price": "229.99",
-      "stock": 14
+      "remaining_stock": 14
     }
   ],
   "slugified_name": "coolflow-360-aio",
