@@ -2,7 +2,6 @@
   "name": "Vanguard Desktop Mini",
   "category": "Desktops",
   "brand": "Vanguard",
-  "price": "1799.99",
   "compare_at_price": "2141.99",
   "stock": 24,
   "status": "active",
@@ -56,5 +55,6 @@
         }
       ]
     }
-  ]
+  ],
+  "price_range": "1799.99"
 }
