@@ -1,0 +1,17 @@
+{
+  "name": "QuantumEdge Intel Core Ultra 9 285K",
+  "slug": "quantumedge-core-ultra-9",
+  "category": "CPUs",
+  "brand": "QuantumEdge",
+  "price": "699.99",
+  "compare_at_price": "799.99",
+  "stock": 20,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=QuantumEdge+Intel+Core+Ultra",
+  "images": [],
+  "collections": [
+    "Content Creator Kit",
+    "Premium Lifestyle"
+  ]
+}
