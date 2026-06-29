@@ -1,0 +1,17 @@
+{
+  "name": "Matrix Audio Soundbar Pro",
+  "slug": "matrix-soundbar-pro",
+  "category": "Speakers",
+  "brand": "Matrix Audio",
+  "price": "449.99",
+  "compare_at_price": "549.99",
+  "stock": 22,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Matrix+Audio+Soundbar+Pro",
+  "images": [],
+  "collections": [
+    "Work From Home Pro",
+    "Home Automation Hub"
+  ]
+}
