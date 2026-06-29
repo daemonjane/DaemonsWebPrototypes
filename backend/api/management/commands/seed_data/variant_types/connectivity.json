@@ -1,0 +1,12 @@
+{
+  "name": "Connectivity",
+  "values": [
+    "USB-C",
+    "USB-A",
+    "Bluetooth",
+    "WiFi",
+    "HDMI",
+    "DisplayPort",
+    "Thunderbolt"
+  ]
+}
