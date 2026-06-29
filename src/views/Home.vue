@@ -3,7 +3,6 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import AnimatedCounter from '../components/AnimatedCounter.vue'
 import AbstractArt from '../components/AbstractArt.vue'
-import { products as fallbackProducts } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 
@@ -12,9 +11,18 @@ const OSIMART_IMAGE_BASE = 'https://api.osimart.com'
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 const { items: recentlyViewed } = useRecentlyViewed()
 
-const products = ref(fallbackProducts)
+const products = ref([])
 const banners = ref([])
+const hero = ref(null)
+const store = ref(null)
+const features = ref([])
+const metrics = ref([])
+const testimonials = ref([])
+const categories = ref([])
+const brands = ref([])
+const collections = ref([])
 const loading = ref(true)
+
 const activeSlide = ref(0)
 let slideTimer = null
 
@@ -64,24 +72,55 @@ function stripHtml(html) {
   return d.textContent || d.innerText || ''
 }
 
+function pick(arr) {
+  return Array.isArray(arr) ? arr : (arr?.results || [])
+}
+
 onMounted(async () => {
   try {
     const { api } = await import('../utils/api')
-    const [prodRes, bannerRes] = await Promise.allSettled([
+    const [prodRes, bannerRes, homeRes, storeRes, catRes, brandRes, collRes] = await Promise.allSettled([
       api.osimart.products({ limit: 50 }),
       api.osimart.banners(),
+      api.osimart.home(),
+      api.osimart.store(),
+      api.osimart.categories(),
+      api.osimart.brands(),
+      api.osimart.collections(),
     ])
     if (prodRes.status === 'fulfilled') {
-      const items = prodRes.value.results || prodRes.value || []
+      const items = pick(prodRes.value)
       if (items.length > 0) {
         products.value = items.map(normalizeProduct)
       }
     }
     if (bannerRes.status === 'fulfilled') {
-      banners.value = bannerRes.value.results || []
+      banners.value = pick(bannerRes.value)
+    }
+    if (homeRes.status === 'fulfilled') {
+      const h = homeRes.value
+      if (h.hero) hero.value = h.hero
+      if (h.features) features.value = Array.isArray(h.features) ? h.features : []
+      if (h.metrics) metrics.value = Array.isArray(h.metrics) ? h.metrics : []
+      if (h.testimonials) testimonials.value = Array.isArray(h.testimonials) ? h.testimonials : []
+    }
+    if (storeRes.status === 'fulfilled') {
+      store.value = storeRes.value
+      if (storeRes.value.metrics) {
+        metrics.value = Array.isArray(storeRes.value.metrics) ? storeRes.value.metrics : []
+      }
+    }
+    if (catRes.status === 'fulfilled') {
+      categories.value = pick(catRes.value)
+    }
+    if (brandRes.status === 'fulfilled') {
+      brands.value = pick(brandRes.value)
+    }
+    if (collRes.status === 'fulfilled') {
+      collections.value = pick(collRes.value)
     }
   } catch (e) {
-    console.error('Osimart fetch failed, using fallback data', e)
+    console.error('Osimart fetch failed', e)
   } finally {
     loading.value = false
   }
@@ -199,12 +238,12 @@ function quickAdd(product) {
       <div class="hero-glow"></div>
       <AbstractArt variant="hero" class="absolute inset-0 w-full h-full" />
       <div class="relative max-w-3xl space-y-5 sm:space-y-7">
-        <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">SYSTEM_READY</span>
-        <h1 id="hero-heading" class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">Your Command Station Awaits</h1>
-        <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto">Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.</p>
+        <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider">{{ hero?.badge || 'SYSTEM_READY' }}</span>
+        <h1 id="hero-heading" class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">{{ hero?.title || 'Your Command Station Awaits' }}</h1>
+        <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto">{{ hero?.subtitle || 'Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.' }}</p>
         <div class="flex flex-wrap justify-center gap-4 pt-4">
-          <router-link to="/shop" class="bg-cyan-600 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Start Building</router-link>
-          <router-link to="/insights" class="border border-slate-600 text-slate-300 px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Explore Membership</router-link>
+          <router-link :to="hero?.primary_cta?.link || '/shop'" class="bg-cyan-600 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.primary_cta?.label || 'Start Building' }}</router-link>
+          <router-link :to="hero?.secondary_cta?.link || '/insights'" class="border border-slate-600 text-slate-300 px-6 sm:px-7 py-3 sm:py-3.5 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.secondary_cta?.label || 'Explore Membership' }}</router-link>
         </div>
       </div>
     </section>
@@ -216,16 +255,28 @@ function quickAdd(product) {
 
     <!-- Metrics -->
     <section id="metrics" class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 py-6" aria-label="Company metrics">
-      <AnimatedCounter :target="10" suffix="K+" label="Products Shipped" :duration="1800" />
-      <AnimatedCounter :target="50" suffix="K+" label="Happy Customers" :duration="2000" />
-      <AnimatedCounter :target="99.9" suffix="%" label="Uptime SLA" :decimals="1" :duration="2200" />
-      <AnimatedCounter :target="24" suffix="/7" label="Support Response" :duration="1500" />
+      <template v-if="metrics.length">
+        <AnimatedCounter v-for="(m, i) in metrics" :key="i" :target="m.target" :suffix="m.suffix" :label="m.label" :duration="m.duration || 1800" :decimals="m.decimals" />
+      </template>
+      <template v-else>
+        <AnimatedCounter :target="10" suffix="K+" label="Products Shipped" :duration="1800" />
+        <AnimatedCounter :target="50" suffix="K+" label="Happy Customers" :duration="2000" />
+        <AnimatedCounter :target="99.9" suffix="%" label="Uptime SLA" :decimals="1" :duration="2200" />
+        <AnimatedCounter :target="24" suffix="/7" label="Support Response" :duration="1500" />
+      </template>
     </section>
 
     <!-- Features -->
     <section id="features" class="space-y-10 sm:space-y-12" role="region" aria-labelledby="features-heading">
-      <h2 id="features-heading" class="text-2xl sm:text-3xl font-bold text-white text-center">Why TechStore?</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+      <h2 id="features-heading" class="text-2xl sm:text-3xl font-bold text-white text-center">{{ store?.name ? store.name + ' Features' : 'Why TechStore?' }}</h2>
+      <div v-if="features.length" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+        <article v-for="(f, i) in features" :key="i" class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">{{ f.icon || '✦' }}</div>
+          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">{{ f.title }}</h3>
+          <p class="text-slate-400 text-sm">{{ f.description }}</p>
+        </article>
+      </div>
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
         <article class="bg-slate-900 rounded-xl p-6 sm:p-7 border border-slate-800 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
           <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">⚡</div>
           <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Verified Performance</h3>
@@ -244,11 +295,80 @@ function quickAdd(product) {
       </div>
     </section>
 
-    <!-- Testimonials -->
-    <!-- ... (unchanged) ... -->
-    <section id="testimonials" class="space-y-8 sm:space-y-10" role="region" aria-labelledby="testimonials-heading">
-      <h2 id="testimonials-heading" class="text-2xl sm:text-3xl font-bold text-white text-center">Trusted by Builders</h2>
+    <!-- Categories -->
+    <section v-if="categories.length" id="categories" class="space-y-6 sm:space-y-8" role="region" aria-labelledby="categories-heading">
+      <div class="flex items-center justify-between">
+        <h2 id="categories-heading" class="text-xl sm:text-2xl font-bold text-white">Shop by Category</h2>
+        <router-link to="/shop" class="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">View all →</router-link>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <router-link
+          v-for="c in categories" :key="c.id || c.slugified_name"
+          :to="'/shop?category=' + (c.slugified_name || c.name)"
+          class="flex items-center gap-2 px-4 py-2.5 bg-slate-900 rounded-xl border border-slate-800 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 group"
+        >
+          <span class="text-lg">{{ c.icon || '📦' }}</span>
+          <span class="text-sm text-slate-300 group-hover:text-white font-medium">{{ c.name }}</span>
+          <span class="text-xs text-slate-600">({{ c.product_count || c.products_count || 0 }})</span>
+        </router-link>
+      </div>
+    </section>
+
+    <!-- Brands -->
+    <section v-if="brands.length" id="brands" class="space-y-6 sm:space-y-8" role="region" aria-labelledby="brands-heading">
+      <div class="flex items-center justify-between">
+        <h2 id="brands-heading" class="text-xl sm:text-2xl font-bold text-white">Featured Brands</h2>
+        <router-link to="/shop" class="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">Browse all →</router-link>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <router-link
+          v-for="b in brands" :key="b.id || b.slugified_name"
+          :to="'/shop?brand=' + (b.slugified_name || b.name)"
+          class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 text-center group"
+        >
+          <div v-if="b.logo?.path" class="h-12 flex items-center justify-center mb-2">
+            <img :src="`https://api.osimart.com/${b.logo.path}`" :alt="b.name" class="max-h-full max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <div v-else class="h-12 flex items-center justify-center mb-2">
+            <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-lg">{{ (b.name || '?')[0] }}</div>
+          </div>
+          <span class="text-xs text-slate-400 group-hover:text-white font-medium block truncate">{{ b.name }}</span>
+        </router-link>
+      </div>
+    </section>
+
+    <!-- Collections -->
+    <section v-if="collections.length" id="collections" class="space-y-6 sm:space-y-8" role="region" aria-labelledby="collections-heading">
+      <div class="flex items-center justify-between">
+        <h2 id="collections-heading" class="text-xl sm:text-2xl font-bold text-white">Curated Collections</h2>
+      </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <router-link
+          v-for="c in collections" :key="c.id || c.slugified_name"
+          :to="'/shop?collection=' + (c.slugified_name || c.name)"
+          class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-5 border border-slate-800 hover:border-cyan-700 hover:-translate-y-0.5 transition-all duration-200 group"
+        >
+          <h3 class="text-white font-semibold group-hover:text-cyan-400 transition-colors">{{ c.name }}</h3>
+          <p v-if="c.description" class="text-xs text-slate-500 mt-1 line-clamp-2">{{ c.description }}</p>
+          <p class="text-xs text-cyan-400 mt-3">View collection →</p>
+        </router-link>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="space-y-8 sm:space-y-10" role="region" aria-labelledby="testimonials-heading">
+      <h2 id="testimonials-heading" class="text-2xl sm:text-3xl font-bold text-white text-center">{{ store?.testimonials_heading || 'Trusted by Builders' }}</h2>
+      <div v-if="testimonials.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-for="(t, i) in testimonials" :key="i" class="bg-slate-900 rounded-xl p-5 border border-slate-800 space-y-3 hover:border-slate-700 transition-all duration-300">
+          <div class="flex items-center gap-2 text-yellow-400 text-sm">{{ '★★★★★'.slice(0, t.rating || 5) }}{{ '☆☆☆☆☆'.slice(0, 5 - (t.rating || 5)) }}</div>
+          <p class="text-sm text-slate-400 leading-relaxed">"{{ t.text || t.content }}"</p>
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-800">
+            <div class="w-7 h-7 rounded-full flex items-center justify-center text-cyan-400 text-xs font-mono font-bold" :class="t.initials_bg || 'bg-cyan-900/40'">{{ (t.initials || (t.name || '').split(' ').map(w => w[0]).join('').slice(0, 2) || '??') }}</div>
+            <div><p class="text-xs text-white font-medium">{{ t.name }}</p><p class="text-[10px] text-slate-500">{{ t.role || 'Verified Buyer' }}</p></div>
+          </div>
+        </div>
+      </div>
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="bg-slate-900 rounded-xl p-5 border border-slate-800 space-y-3 hover:border-slate-700 transition-all duration-300">
           <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★★</div>
           <p class="text-sm text-slate-400 leading-relaxed">"The Vanguard desktop is an absolute beast. Silent, cool, and rips through 4K rendering like nothing."</p>

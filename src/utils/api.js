@@ -71,6 +71,10 @@ export const api = {
     categories: () => request('GET', '/api/osimart/categories/'),
     store: () => request('GET', '/api/osimart/store/'),
     home: () => request('GET', '/api/osimart/home/'),
+    brands: () => request('GET', '/api/osimart/brands/'),
+    collections: () => request('GET', '/api/osimart/collections/'),
+    quantityUnits: () => request('GET', '/api/osimart/quantity-units/'),
+    variantTypes: () => request('GET', '/api/osimart/variant-types/'),
   },
   search: (query, category = '') => {
     const params = new URLSearchParams()

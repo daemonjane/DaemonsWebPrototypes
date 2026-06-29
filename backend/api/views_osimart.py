@@ -61,3 +61,13 @@ def osimart_brands(request):
 @api_view(["GET"])
 def osimart_collections(request):
     return _proxy(request, "get_collections")
+
+
+@api_view(["GET"])
+def osimart_quantity_units(request):
+    return _proxy(request, "get_quantity_units")
+
+
+@api_view(["GET"])
+def osimart_variant_types(request):
+    return _proxy(request, "get_variant_types")

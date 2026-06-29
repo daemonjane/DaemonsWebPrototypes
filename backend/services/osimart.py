@@ -157,3 +157,9 @@ class OsimartClient:
             return resp.json()
         except requests.RequestException as e:
             raise OsimartError(f"Osimart API error: {e}") from e
+
+    def get_quantity_units(self, params=None):
+        return self._get("quantity-units/", params)
+
+    def get_variant_types(self, params=None):
+        return self._get("variant-types/", params)

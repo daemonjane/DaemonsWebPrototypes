@@ -40,4 +40,6 @@ urlpatterns = [
     path('osimart/home/', views_osimart.osimart_home, name='osimart-home'),
     path('osimart/brands/', views_osimart.osimart_brands, name='osimart-brands'),
     path('osimart/collections/', views_osimart.osimart_collections, name='osimart-collections'),
+    path('osimart/quantity-units/', views_osimart.osimart_quantity_units, name='osimart-quantity-units'),
+    path('osimart/variant-types/', views_osimart.osimart_variant_types, name='osimart-variant-types'),
 ]

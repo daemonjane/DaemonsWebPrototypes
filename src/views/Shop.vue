@@ -1,11 +1,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import ProductCard from '../components/ProductCard.vue'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 import EmptyState from '../components/EmptyState.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 
 const OSIMART_IMAGE_BASE = 'https://api.osimart.com'
+const route = useRoute()
 
 const products = ref([])
 const categories = ref([])
@@ -20,6 +22,15 @@ onMounted(async () => {
     ])
     products.value = (prodRes.results || prodRes || []).map(normalizeProduct)
     categories.value = Array.isArray(catRes) ? catRes : (catRes.results || [])
+    if (route.query.category) {
+      currentFilter.value = route.query.category
+    }
+    if (route.query.brand) {
+      currentBrand.value = route.query.brand
+    }
+    if (route.query.collection) {
+      currentCollection.value = route.query.collection
+    }
   } catch (e) {
     console.error('Failed to load Osimart data', e)
   } finally {
@@ -34,6 +45,8 @@ function normalizeProduct(p) {
     uuid: p.id,
     name: p.name,
     category: p.categories?.[0]?.category?.slugified_name || 'uncategorized',
+    brand: p.brand?.slugified_name || p.brand?.name || null,
+    collection: p.collections?.[0]?.slugified_name || p.collections?.[0]?.name || null,
     price: parseFloat(p.price_range || '0'),
     image: imgPath ? `${OSIMART_IMAGE_BASE}/${imgPath}` : '/assets/placeholder.svg',
     description: stripHtml(p.description || ''),
@@ -52,6 +65,8 @@ function stripHtml(html) {
 }
 
 const currentFilter = ref('all')
+const currentBrand = ref(null)
+const currentCollection = ref(null)
 const currentSort = ref('default')
 const searchQuery = ref('')
 const priceMin = ref(0)
@@ -63,6 +78,8 @@ const maxPrice = computed(() => Math.max(...products.value.map(p => p.price), 0)
 const filteredProducts = computed(() => {
   let list = products.value.filter(p => {
     if (currentFilter.value !== 'all' && p.category !== currentFilter.value) return false
+    if (currentBrand.value && p.brand !== currentBrand.value) return false
+    if (currentCollection.value && p.collection !== currentCollection.value) return false
     if (searchQuery.value && !p.name.toLowerCase().includes(searchQuery.value.toLowerCase())) return false
     if (p.price < priceMin.value || p.price > priceMax.value) return false
     return true
@@ -83,6 +100,8 @@ const categoryMeta = computed(() => {
 
 function resetFilters() {
   currentFilter.value = 'all'
+  currentBrand.value = null
+  currentCollection.value = null
   currentSort.value = 'default'
   searchQuery.value = ''
   priceMin.value = 0
