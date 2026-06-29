@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Titan+Hardware+Gaming+Chair",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Titan+Chair+Front",
+    "https://placehold.co/600x400?text=Titan+Chair+Side"
+  ],
   "collections": [
     "Ultimate Gaming Setup",
     "Premium Lifestyle"
