@@ -8,7 +8,10 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CoreForge+ATX+Full+Tower",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=CoreForge+Case+Front",
+    "https://placehold.co/600x400?text=CoreForge+Case+Internal"
+  ],
   "collections": [
     "Ultimate Gaming Setup",
     "RGB Everything"
