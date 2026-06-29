@@ -2,5 +2,8 @@
   "message": "Free Shipping on Orders Over $99",
   "subtitle": "Use code FREESHIP at checkout",
   "background_color": "#00ff88",
-  "active": true
+  "active": true,
+  "priority": 0,
+  "text_color": "#000000",
+  "link": "/shop"
 }

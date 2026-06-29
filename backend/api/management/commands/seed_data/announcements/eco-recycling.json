@@ -2,5 +2,8 @@
   "message": "E-Recycling Program",
   "subtitle": "Responsibly dispose of your old electronics",
   "background_color": "#44cc88",
-  "active": true
+  "active": true,
+  "priority": 0,
+  "text_color": "#000000",
+  "link": "/shop"
 }

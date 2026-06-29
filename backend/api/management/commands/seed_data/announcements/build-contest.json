@@ -2,5 +2,8 @@
   "message": "Build Contest Winners Announced",
   "subtitle": "Check out the winning custom PC builds",
   "background_color": "#44ff44",
-  "active": false
+  "active": false,
+  "priority": 0,
+  "text_color": "#000000",
+  "link": "/shop"
 }

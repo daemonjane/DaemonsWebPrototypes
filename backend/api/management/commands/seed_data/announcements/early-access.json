@@ -2,5 +2,8 @@
   "message": "Early Access: RTX 5080 Ti Pre-Orders",
   "subtitle": "Reserve your spot in the allocation queue",
   "background_color": "#ff8800",
-  "active": true
+  "active": true,
+  "priority": 0,
+  "text_color": "#000000",
+  "link": "/shop"
 }
