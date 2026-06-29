@@ -3,7 +3,6 @@
   "category": "Keyboards",
   "brand": "CyberPro",
   "compare_at_price": "224.39",
-  "stock": 60,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=CyberPro+TKL+Mechanical+Keyboard",
@@ -69,5 +68,6 @@
       ]
     }
   ],
-  "price_range": "179.99"
+  "price_range": "179.99",
+  "remaining_stock": 60
 }
