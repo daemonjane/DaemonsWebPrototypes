@@ -1,5 +1,6 @@
 {
   "name": "Audio",
   "description": "DACs, amps, and audio interfaces",
-  "icon": "\ud83c\udfb5"
+  "icon": "\ud83c\udfb5",
+  "image": "https://placehold.co/800x600?text=Audio"
 }
