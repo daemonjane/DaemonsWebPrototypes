@@ -3,7 +3,6 @@
   "category": "CPUs",
   "brand": "QuantumEdge",
   "compare_at_price": "815.99",
-  "stock": 24,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=QuantumEdge+Intel+Core+Ultra",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "quantumedge-core-ultra-9",
-  "price_range": "699.99"
+  "price_range": "699.99",
+  "remaining_stock": 24
 }
