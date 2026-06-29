@@ -1,6 +1,5 @@
 {
   "name": "Flux Technologies RGB Mouse Pad XL",
-  "slug": "flux-rgb-mouse-pad",
   "category": "Mouse Pads",
   "brand": "Flux Technologies",
   "price": "59.99",
@@ -26,5 +25,6 @@
       "price": "49.99",
       "stock": 20
     }
-  ]
+  ],
+  "slugified_name": "flux-rgb-mouse-pad"
 }
