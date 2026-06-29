@@ -1,6 +1,5 @@
 {
   "name": "Helix Digital External 4TB HDD",
-  "slug": "helix-external-4tb-hdd",
   "category": "External Storage",
   "brand": "Helix Digital",
   "price": "129.99",
@@ -21,5 +20,6 @@
       "price": "129.99",
       "stock": 50
     }
-  ]
+  ],
+  "slugified_name": "helix-external-4tb-hdd"
 }
