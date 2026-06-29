@@ -14,5 +14,17 @@
     "Work From Home Pro",
     "Content Creator Kit"
   ],
-  "description": "The NovaTech Laptop Ultra 16 combines a stunning 16-inch 4K OLED display with desktop-class performance. Featuring the latest mobile processor, 32GB RAM, and RTX 5080 graphics, it's the ultimate mobile workstation."
+  "description": "The NovaTech Laptop Ultra 16 combines a stunning 16-inch 4K OLED display with desktop-class performance. Featuring the latest mobile processor, 32GB RAM, and RTX 5080 graphics, it's the ultimate mobile workstation.",
+  "variants": [
+    {
+      "name": "Silver / 32GB RAM",
+      "price": "2199.99",
+      "stock": 15
+    },
+    {
+      "name": "Space Black / 64GB RAM",
+      "price": "2699.99",
+      "stock": 10
+    }
+  ]
 }
