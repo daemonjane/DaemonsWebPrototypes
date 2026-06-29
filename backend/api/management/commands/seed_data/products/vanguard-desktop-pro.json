@@ -1,0 +1,17 @@
+{
+  "name": "Vanguard Desktop Pro",
+  "slug": "vanguard-desktop-pro",
+  "category": "Desktops",
+  "brand": "Vanguard",
+  "price": "2499.99",
+  "compare_at_price": "2899.99",
+  "stock": 15,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Vanguard+Desktop+Pro",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "Silent Operator"
+  ]
+}
