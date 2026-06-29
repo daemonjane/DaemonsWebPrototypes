@@ -16,7 +16,7 @@
     {
       "name": "Polar White",
       "price": "169.99",
-      "stock": 15
+      "remaining_stock": 15
     }
   ],
   "slugified_name": "pinnacle-monitor-arm-dual",
