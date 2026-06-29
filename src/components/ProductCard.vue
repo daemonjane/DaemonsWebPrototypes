@@ -68,7 +68,7 @@ function handleAddToCart() {
 }
 
 function navigateToProduct() {
-  router.push(`/product/${props.product.id}`)
+  router.push(`/product/${props.product.uuid || props.product.id}`)
 }
 
 function openQuickView() {
@@ -82,7 +82,7 @@ function closeQuickView() {
 
 <template>
   <router-link
-    :to="`/product/${product.id}`"
+    :to="`/product/${product.uuid || product.id}`"
     class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-950/20"
   >
     <!-- Product image -->
