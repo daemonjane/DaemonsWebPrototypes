@@ -1,6 +1,5 @@
 {
   "name": "Cascade Audio Studio Monitors 5\"",
-  "slug": "cascade-studio-monitors",
   "category": "Speakers",
   "brand": "Cascade Audio",
   "price": "599.99",
@@ -21,5 +20,6 @@
       "price": "599.99",
       "stock": 15
     }
-  ]
+  ],
+  "slugified_name": "cascade-studio-monitors"
 }
