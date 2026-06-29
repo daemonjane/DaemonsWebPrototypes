@@ -16,7 +16,7 @@
     {
       "name": "USB-C / 4.4mm Balanced",
       "price": "299.99",
-      "stock": 22
+      "remaining_stock": 22
     }
   ],
   "slugified_name": "summit-portable-dac",
