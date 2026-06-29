@@ -1,0 +1,15 @@
+{
+  "name": "Color",
+  "values": [
+    "Black",
+    "White",
+    "Silver",
+    "Gunmetal",
+    "Red",
+    "Blue",
+    "Pink",
+    "Purple",
+    "Green",
+    "Gray"
+  ]
+}
