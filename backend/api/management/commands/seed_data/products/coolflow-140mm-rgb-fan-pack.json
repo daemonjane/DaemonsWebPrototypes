@@ -14,5 +14,17 @@
     "RGB Everything",
     "Silent Operator"
   ],
-  "description": "Three-pack of 140mm RGB fans with PWM control, daisy-chain design, and hydro-dynamic bearings. Each fan delivers 85 CFM of airflow at just 28dB."
+  "description": "Three-pack of 140mm RGB fans with PWM control, daisy-chain design, and hydro-dynamic bearings. Each fan delivers 85 CFM of airflow at just 28dB.",
+  "variants": [
+    {
+      "name": "3-Pack / PWM",
+      "price": "89.99",
+      "stock": 35
+    },
+    {
+      "name": "Single Fan",
+      "price": "32.99",
+      "stock": 25
+    }
+  ]
 }
