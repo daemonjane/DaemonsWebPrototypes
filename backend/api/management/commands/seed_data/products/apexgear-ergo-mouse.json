@@ -1,0 +1,17 @@
+{
+  "name": "ApexGear Ergonomic Mouse",
+  "slug": "apexgear-ergo-mouse",
+  "category": "Mice",
+  "brand": "ApexGear",
+  "price": "79.99",
+  "compare_at_price": "99.99",
+  "stock": 55,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=ApexGear+Ergonomic+Mouse",
+  "images": [],
+  "collections": [
+    "Work From Home Pro",
+    "Student Starter Pack"
+  ]
+}
