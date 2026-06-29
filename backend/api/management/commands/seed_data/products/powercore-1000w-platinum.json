@@ -21,5 +21,28 @@
       "stock": 18
     }
   ],
-  "slugified_name": "powercore-1000w-platinum"
+  "slugified_name": "powercore-1000w-platinum",
+  "sections": [
+    {
+      "name": "Specifications",
+      "items": [
+        {
+          "name": "Wattage",
+          "value": "1000W"
+        },
+        {
+          "name": "Efficiency",
+          "value": "80+ Platinum"
+        },
+        {
+          "name": "Modular",
+          "value": "Fully"
+        },
+        {
+          "name": "Fan",
+          "value": "135mm FDB"
+        }
+      ]
+    }
+  ]
 }
