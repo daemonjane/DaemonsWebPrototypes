@@ -18,7 +18,8 @@
     {
       "name": "Balanced Cable Included",
       "price": "399.99",
-      "remaining_stock": 18
+      "remaining_stock": 18,
+      "weight": 1400
     }
   ],
   "slugified_name": "cascade-audio-studio-headphones",
@@ -46,5 +47,14 @@
     }
   ],
   "price_range": "399.99",
-  "remaining_stock": 21
+  "remaining_stock": 21,
+  "weight": 1500,
+  "tags": [
+    "cascade-audio",
+    "headphones",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Cascade Audio Studio Headphones | Daemon's Web Emporium",
+  "meta_description": "Shop the Cascade Audio Studio Headphones at Daemon's Web Emporium. Open-back reference headphones with 53mm beryllium-coated drivers. The Cascade Audio Studio Headphones deliver a flat fr"
 }

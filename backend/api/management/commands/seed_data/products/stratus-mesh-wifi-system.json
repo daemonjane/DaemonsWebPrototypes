@@ -16,10 +16,20 @@
     {
       "name": "3-Pack",
       "price": "599.99",
-      "remaining_stock": 15
+      "remaining_stock": 15,
+      "weight": 1400
     }
   ],
   "slugified_name": "stratus-mesh-wifi-system",
   "price_range": "599.99",
-  "remaining_stock": 18
+  "remaining_stock": 18,
+  "weight": 1500,
+  "tags": [
+    "stratus-networks",
+    "networking",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Stratus Networks Mesh WiFi 7 System | Daemon's Web Emporium",
+  "meta_description": "Shop the Stratus Networks Mesh WiFi 7 System at Daemon's Web Emporium. Three-piece WiFi 7 mesh system covering up to 7,500 sq ft. Features seamless roaming, built-in antivirus, and parental c"
 }

@@ -16,10 +16,20 @@
     {
       "name": "16.4ft / Addressable",
       "price": "49.99",
-      "remaining_stock": 80
+      "remaining_stock": 80,
+      "weight": 1400
     }
   ],
   "slugified_name": "flux-rgb-strip-kit",
   "price_range": "49.99",
-  "remaining_stock": 96
+  "remaining_stock": 96,
+  "weight": 1500,
+  "tags": [
+    "flux-technologies",
+    "lighting",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Flux Technologies RGB Strip Kit | Daemon's Web Emporium",
+  "meta_description": "Shop the Flux Technologies RGB Strip Kit at Daemon's Web Emporium. Addressable RGB LED strip kit with 16.4ft of LEDs, music sync mode, and smart home integration. Compatible with Alexa, G"
 }

@@ -19,12 +19,14 @@
     {
       "name": "Silver / 1TB Storage",
       "price": "2499.99",
-      "remaining_stock": 8
+      "remaining_stock": 8,
+      "weight": 1400
     },
     {
       "name": "Silver / 2TB Storage",
       "price": "2799.99",
-      "remaining_stock": 7
+      "remaining_stock": 7,
+      "weight": 1400
     }
   ],
   "slugified_name": "vanguard-desktop-pro",
@@ -61,5 +63,14 @@
     }
   ],
   "price_range": "2499.99",
-  "remaining_stock": 18
+  "remaining_stock": 18,
+  "weight": 1500,
+  "tags": [
+    "vanguard",
+    "desktops",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Vanguard Desktop Pro | Daemon's Web Emporium",
+  "meta_description": "Shop the Vanguard Desktop Pro at Daemon's Web Emporium. The Vanguard Desktop Pro is a premium performance powerhouse built for enthusiasts who demand the best. Featuring an all"
 }

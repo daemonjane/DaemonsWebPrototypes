@@ -16,10 +16,20 @@
     {
       "name": "Single Unit",
       "price": "499.99",
-      "remaining_stock": 20
+      "remaining_stock": 20,
+      "weight": 1400
     }
   ],
   "slugified_name": "stratus-wifi-7-router",
   "price_range": "499.99",
-  "remaining_stock": 24
+  "remaining_stock": 24,
+  "weight": 1500,
+  "tags": [
+    "stratus-networks",
+    "networking",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Stratus Networks WiFi 7 Tri-Band Router | Daemon's Web Emporium",
+  "meta_description": "Shop the Stratus Networks WiFi 7 Tri-Band Router at Daemon's Web Emporium. Tri-band WiFi 7 router with speeds up to 19Gbps, dual 10GbE ports, and built-in VPN server. The Stratus Networks router "
 }

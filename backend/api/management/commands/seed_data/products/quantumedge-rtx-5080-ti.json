@@ -19,12 +19,14 @@
     {
       "name": "Air Cooled",
       "price": "1599.99",
-      "remaining_stock": 4
+      "remaining_stock": 4,
+      "weight": 1400
     },
     {
       "name": "Liquid Cooled",
       "price": "1899.99",
-      "remaining_stock": 4
+      "remaining_stock": 4,
+      "weight": 1400
     }
   ],
   "slugified_name": "quantumedge-rtx-5080-ti",
@@ -69,5 +71,14 @@
     }
   ],
   "price_range": "1599.99",
-  "remaining_stock": 9
+  "remaining_stock": 9,
+  "weight": 1500,
+  "tags": [
+    "quantumedge",
+    "gpus",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy QuantumEdge RTX 5080 Ti | Daemon's Web Emporium",
+  "meta_description": "Shop the QuantumEdge RTX 5080 Ti at Daemon's Web Emporium. The ultimate graphics card featuring NVIDIA Blackwell architecture with 24GB GDDR7, 3rd-gen ray tracing cores, and DLSS "
 }

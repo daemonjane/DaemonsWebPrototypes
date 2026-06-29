@@ -16,10 +16,20 @@
     {
       "name": "With Wireless Subwoofer",
       "price": "449.99",
-      "remaining_stock": 22
+      "remaining_stock": 22,
+      "weight": 1400
     }
   ],
   "slugified_name": "matrix-soundbar-pro",
   "price_range": "449.99",
-  "remaining_stock": 26
+  "remaining_stock": 26,
+  "weight": 1500,
+  "tags": [
+    "matrix-audio",
+    "speakers",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Matrix Audio Soundbar Pro | Daemon's Web Emporium",
+  "meta_description": "Shop the Matrix Audio Soundbar Pro at Daemon's Web Emporium. Premium 3.1-channel soundbar with Dolby Atmos, DTS:X, and a wireless subwoofer. The Matrix Soundbar Pro features HDMI eA"
 }

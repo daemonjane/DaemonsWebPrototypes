@@ -19,15 +19,26 @@
     {
       "name": "Black",
       "price": "149.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     },
     {
       "name": "White",
       "price": "149.99",
-      "remaining_stock": 20
+      "remaining_stock": 20,
+      "weight": 1400
     }
   ],
   "slugified_name": "cyberpro-wireless-gaming-mouse",
   "price_range": "149.99",
-  "remaining_stock": 54
+  "remaining_stock": 54,
+  "weight": 1500,
+  "tags": [
+    "cyberpro",
+    "mice",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy CyberPro Wireless Gaming Mouse | Daemon's Web Emporium",
+  "meta_description": "Shop the CyberPro Wireless Gaming Mouse at Daemon's Web Emporium. Ultra-light 54g wireless gaming mouse with 8KHz polling rate, PTFE feet, and 80-hour battery life. The CyberPro Wireless"
 }

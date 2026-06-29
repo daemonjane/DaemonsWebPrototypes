@@ -16,15 +16,26 @@
     {
       "name": "3-Pack / PWM",
       "price": "89.99",
-      "remaining_stock": 35
+      "remaining_stock": 35,
+      "weight": 1400
     },
     {
       "name": "Single Fan",
       "price": "32.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     }
   ],
   "slugified_name": "coolflow-140mm-rgb-fan-pack",
   "price_range": "89.99",
-  "remaining_stock": 72
+  "remaining_stock": 72,
+  "weight": 1500,
+  "tags": [
+    "coolflow",
+    "cooling",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy CoolFlow 140mm RGB Fan 3-Pack | Daemon's Web Emporium",
+  "meta_description": "Shop the CoolFlow 140mm RGB Fan 3-Pack at Daemon's Web Emporium. Three-pack of 140mm RGB fans with PWM control, daisy-chain design, and hydro-dynamic bearings. Each fan delivers 85 CFM "
 }

@@ -16,10 +16,20 @@
     {
       "name": "Pair / 5-inch",
       "price": "599.99",
-      "remaining_stock": 15
+      "remaining_stock": 15,
+      "weight": 1400
     }
   ],
   "slugified_name": "cascade-studio-monitors",
   "price_range": "599.99",
-  "remaining_stock": 18
+  "remaining_stock": 18,
+  "weight": 1500,
+  "tags": [
+    "cascade-audio",
+    "speakers",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Cascade Audio Studio Monitors 5\" | Daemon's Web Emporium",
+  "meta_description": "Shop the Cascade Audio Studio Monitors 5\" at Daemon's Web Emporium. Professional 5-inch studio monitors with aramid fiber woofers and silk dome tweeters. The Cascade Audio Studio Monitors "
 }

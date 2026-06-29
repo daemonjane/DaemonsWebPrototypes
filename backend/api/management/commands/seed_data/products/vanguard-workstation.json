@@ -19,12 +19,14 @@
     {
       "name": "128GB RAM / 2TB SSD",
       "price": "4299.99",
-      "remaining_stock": 4
+      "remaining_stock": 4,
+      "weight": 1400
     },
     {
       "name": "256GB RAM / 4TB SSD",
       "price": "5499.99",
-      "remaining_stock": 4
+      "remaining_stock": 4,
+      "weight": 1400
     }
   ],
   "slugified_name": "vanguard-workstation",
@@ -57,5 +59,14 @@
     }
   ],
   "price_range": "4299.99",
-  "remaining_stock": 9
+  "remaining_stock": 9,
+  "weight": 1500,
+  "tags": [
+    "vanguard",
+    "desktops",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Vanguard Workstation | Daemon's Web Emporium",
+  "meta_description": "Shop the Vanguard Workstation at Daemon's Web Emporium. Built for professionals who need uncompromising compute power. The Vanguard Workstation features dual Xeon processors, 1"
 }

@@ -16,10 +16,20 @@
     {
       "name": "With Shock Mount / Pop Filter",
       "price": "299.99",
-      "remaining_stock": 20
+      "remaining_stock": 20,
+      "weight": 1400
     }
   ],
   "slugified_name": "cascade-condenser-mic",
   "price_range": "299.99",
-  "remaining_stock": 24
+  "remaining_stock": 24,
+  "weight": 1500,
+  "tags": [
+    "cascade-audio",
+    "microphones",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Cascade Audio Condenser Microphone | Daemon's Web Emporium",
+  "meta_description": "Shop the Cascade Audio Condenser Microphone at Daemon's Web Emporium. Large-diaphragm condenser microphone with cardioid polar pattern, 192kHz/24-bit recording, and built-in pop filter. Perf"
 }

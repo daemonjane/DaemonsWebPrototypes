@@ -16,10 +16,20 @@
     {
       "name": "Charcoal / With Hub",
       "price": "199.99",
-      "remaining_stock": 30
+      "remaining_stock": 30,
+      "weight": 1400
     }
   ],
   "slugified_name": "echo-smart-speaker",
   "price_range": "199.99",
-  "remaining_stock": 36
+  "remaining_stock": 36,
+  "weight": 1500,
+  "tags": [
+    "echo-innovations",
+    "smart-home",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Echo Innovations Smart Speaker Pro | Daemon's Web Emporium",
+  "meta_description": "Shop the Echo Innovations Smart Speaker Pro at Daemon's Web Emporium. Premium smart speaker with room-filling 360-degree sound, built-in Zigbee hub, and a vibrant LED display. Features voice"
 }

@@ -19,15 +19,26 @@
     {
       "name": "Black / Tempered Glass",
       "price": "199.99",
-      "remaining_stock": 15
+      "remaining_stock": 15,
+      "weight": 1400
     },
     {
       "name": "White / Mesh Panel",
       "price": "219.99",
-      "remaining_stock": 10
+      "remaining_stock": 10,
+      "weight": 1400
     }
   ],
   "slugified_name": "coreforge-atx-full-tower",
   "price_range": "199.99",
-  "remaining_stock": 30
+  "remaining_stock": 30,
+  "weight": 1500,
+  "tags": [
+    "coreforge",
+    "pc-cases",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy CoreForge ATX Full Tower Case | Daemon's Web Emporium",
+  "meta_description": "Shop the CoreForge ATX Full Tower Case at Daemon's Web Emporium. Spacious full-tower case with tempered glass panels, tool-less drive bays, and support for dual 360mm radiators. The Cor"
 }

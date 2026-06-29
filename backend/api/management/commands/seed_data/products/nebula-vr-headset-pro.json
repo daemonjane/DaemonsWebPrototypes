@@ -16,10 +16,20 @@
     {
       "name": "256GB Storage",
       "price": "999.99",
-      "remaining_stock": 6
+      "remaining_stock": 6,
+      "weight": 1400
     }
   ],
   "slugified_name": "nebula-vr-headset-pro",
   "price_range": "999.99",
-  "remaining_stock": 12
+  "remaining_stock": 12,
+  "weight": 1500,
+  "tags": [
+    "nebula-works",
+    "vr-/-ar",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Nebula Works VR Headset Pro | Daemon's Web Emporium",
+  "meta_description": "Shop the Nebula Works VR Headset Pro at Daemon's Web Emporium. Standalone VR headset with 4K per-eye resolution, inside-out tracking, and hand tracking. The Nebula Works VR Pro featur"
 }

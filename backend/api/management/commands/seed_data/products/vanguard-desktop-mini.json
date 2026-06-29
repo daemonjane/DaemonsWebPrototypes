@@ -18,12 +18,14 @@
     {
       "name": "Gunmetal / 1TB",
       "price": "1799.99",
-      "remaining_stock": 12
+      "remaining_stock": 12,
+      "weight": 1400
     },
     {
       "name": "White / 2TB",
       "price": "1999.99",
-      "remaining_stock": 8
+      "remaining_stock": 8,
+      "weight": 1400
     }
   ],
   "slugified_name": "vanguard-desktop-mini",
@@ -56,5 +58,14 @@
     }
   ],
   "price_range": "1799.99",
-  "remaining_stock": 24
+  "remaining_stock": 24,
+  "weight": 1500,
+  "tags": [
+    "vanguard",
+    "desktops",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Vanguard Desktop Mini | Daemon's Web Emporium",
+  "meta_description": "Shop the Vanguard Desktop Mini at Daemon's Web Emporium. The Vanguard Desktop Mini packs serious power into a compact 11L chassis. Perfect for LAN parties and small desks, it fe"
 }

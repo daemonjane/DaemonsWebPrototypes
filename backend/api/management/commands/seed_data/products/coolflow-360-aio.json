@@ -16,15 +16,26 @@
     {
       "name": "Black / No RGB",
       "price": "199.99",
-      "remaining_stock": 14
+      "remaining_stock": 14,
+      "weight": 1400
     },
     {
       "name": "White / RGB Fans",
       "price": "229.99",
-      "remaining_stock": 14
+      "remaining_stock": 14,
+      "weight": 1400
     }
   ],
   "slugified_name": "coolflow-360-aio",
   "price_range": "199.99",
-  "remaining_stock": 33
+  "remaining_stock": 33,
+  "weight": 1500,
+  "tags": [
+    "coolflow",
+    "cooling",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy CoolFlow 360mm AIO Liquid Cooler | Daemon's Web Emporium",
+  "meta_description": "Shop the CoolFlow 360mm AIO Liquid Cooler at Daemon's Web Emporium. High-performance 360mm AIO liquid cooler with a 3rd-gen pump design and three 120mm ARGB fans. The CoolFlow 360 keeps ev"
 }

@@ -16,10 +16,20 @@
     {
       "name": "Black / Right Handed",
       "price": "79.99",
-      "remaining_stock": 35
+      "remaining_stock": 35,
+      "weight": 1400
     }
   ],
   "slugified_name": "apexgear-ergo-mouse",
   "price_range": "79.99",
-  "remaining_stock": 66
+  "remaining_stock": 66,
+  "weight": 1500,
+  "tags": [
+    "apexgear",
+    "mice",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy ApexGear Ergonomic Mouse | Daemon's Web Emporium",
+  "meta_description": "Shop the ApexGear Ergonomic Mouse at Daemon's Web Emporium. Ergonomically designed for all-day comfort, the ApexGear Ergonomic Mouse features a 16K DPI sensor, silent switches, and"
 }

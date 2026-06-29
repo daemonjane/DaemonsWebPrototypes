@@ -18,12 +18,14 @@
     {
       "name": "Midnight Blue / 16GB",
       "price": "1399.99",
-      "remaining_stock": 18
+      "remaining_stock": 18,
+      "weight": 1400
     },
     {
       "name": "Starlight / 24GB",
       "price": "1599.99",
-      "remaining_stock": 12
+      "remaining_stock": 12,
+      "weight": 1400
     }
   ],
   "slugified_name": "novatech-laptop-air-14",
@@ -60,5 +62,14 @@
     }
   ],
   "price_range": "1399.99",
-  "remaining_stock": 36
+  "remaining_stock": 36,
+  "weight": 1500,
+  "tags": [
+    "novatech",
+    "laptops",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy NovaTech Laptop Air 14 | Daemon's Web Emporium",
+  "meta_description": "Shop the NovaTech Laptop Air 14 at Daemon's Web Emporium. Ultraportable meets ultra-capable. At just 2.2 pounds with a 14-hour battery, the NovaTech Laptop Air 14 is perfect for "
 }

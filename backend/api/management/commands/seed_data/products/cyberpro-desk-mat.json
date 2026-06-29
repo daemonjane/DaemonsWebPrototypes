@@ -16,10 +16,20 @@
     {
       "name": "Black / Stitched Edges",
       "price": "39.99",
-      "remaining_stock": 75
+      "remaining_stock": 75,
+      "weight": 1400
     }
   ],
   "slugified_name": "cyberpro-desk-mat",
   "price_range": "39.99",
-  "remaining_stock": 90
+  "remaining_stock": 90,
+  "weight": 1500,
+  "tags": [
+    "cyberpro",
+    "mouse-pads",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy CyberPro Heavy Duty Desk Mat XL | Daemon's Web Emporium",
+  "meta_description": "Shop the CyberPro Heavy Duty Desk Mat XL at Daemon's Web Emporium. Extra-large desk mat (36x18 inches) with a smooth microfiber surface, stitched edges, and non-slip rubber base. Perfect "
 }

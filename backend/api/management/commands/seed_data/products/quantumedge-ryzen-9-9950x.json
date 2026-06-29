@@ -18,10 +18,20 @@
     {
       "name": "Retail Box / With Cooler",
       "price": "749.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     }
   ],
   "slugified_name": "quantumedge-ryzen-9-9950x",
   "price_range": "749.99",
-  "remaining_stock": 30
+  "remaining_stock": 30,
+  "weight": 1500,
+  "tags": [
+    "quantumedge",
+    "cpus",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy QuantumEdge AMD Ryzen 9 9950X | Daemon's Web Emporium",
+  "meta_description": "Shop the QuantumEdge AMD Ryzen 9 9950X at Daemon's Web Emporium. 16 cores, 32 threads of Zen 5 performance. The QuantumEdge AMD Ryzen 9 9950X features a 5.8GHz boost clock, 80MB cache, "
 }

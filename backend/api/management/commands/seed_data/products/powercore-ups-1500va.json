@@ -16,10 +16,20 @@
     {
       "name": "With USB Management",
       "price": "349.99",
-      "remaining_stock": 18
+      "remaining_stock": 18,
+      "weight": 1400
     }
   ],
   "slugified_name": "powercore-ups-1500va",
   "price_range": "349.99",
-  "remaining_stock": 21
+  "remaining_stock": 21,
+  "weight": 1500,
+  "tags": [
+    "powercore",
+    "ups-&-power",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy PowerCore UPS 1500VA Backup | Daemon's Web Emporium",
+  "meta_description": "Shop the PowerCore UPS 1500VA Backup at Daemon's Web Emporium. 1500VA UPS with pure sine wave output, 10 power outlets, and USB/network surge protection. Provides 30 minutes of runtim"
 }

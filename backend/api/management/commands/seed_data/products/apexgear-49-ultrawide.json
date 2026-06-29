@@ -18,10 +18,20 @@
     {
       "name": "Black / 240Hz",
       "price": "1499.99",
-      "remaining_stock": 10
+      "remaining_stock": 10,
+      "weight": 1400
     }
   ],
   "slugified_name": "apexgear-49-ultrawide",
   "price_range": "1499.99",
-  "remaining_stock": 12
+  "remaining_stock": 12,
+  "weight": 1500,
+  "tags": [
+    "apexgear",
+    "monitors",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy ApexGear 49\" Super Ultrawide | Daemon's Web Emporium",
+  "meta_description": "Shop the ApexGear 49\" Super Ultrawide at Daemon's Web Emporium. The ApexGear 49-inch Super Ultrawide replaces dual monitors with a single immersive 32:9 display. 240Hz refresh rate, 1m"
 }

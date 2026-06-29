@@ -16,15 +16,26 @@
     {
       "name": "RGB / CL30-36-36-76",
       "price": "249.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     },
     {
       "name": "Non-RGB / CL28-34-34-72",
       "price": "269.99",
-      "remaining_stock": 15
+      "remaining_stock": 15,
+      "weight": 1400
     }
   ],
   "slugified_name": "zenith-ram-64gb-ddr5",
   "price_range": "249.99",
-  "remaining_stock": 48
+  "remaining_stock": 48,
+  "weight": 1500,
+  "tags": [
+    "zenith-computing",
+    "memory-(ram)",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Zenith Computing RAM 64GB DDR5-6000 | Daemon's Web Emporium",
+  "meta_description": "Shop the Zenith Computing RAM 64GB DDR5-6000 at Daemon's Web Emporium. High-performance DDR5-6000 CL30 memory kit with RGB lighting. The Zenith Computing 64GB kit features hand-screened Samsu"
 }

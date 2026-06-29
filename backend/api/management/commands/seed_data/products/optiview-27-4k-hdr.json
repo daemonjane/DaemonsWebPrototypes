@@ -19,12 +19,14 @@
     {
       "name": "Standard Stand",
       "price": "699.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     },
     {
       "name": "Ergo Stand",
       "price": "849.99",
-      "remaining_stock": 15
+      "remaining_stock": 15,
+      "weight": 1400
     }
   ],
   "slugified_name": "optiview-27-4k-hdr",
@@ -65,5 +67,14 @@
     }
   ],
   "price_range": "699.99",
-  "remaining_stock": 48
+  "remaining_stock": 48,
+  "weight": 1500,
+  "tags": [
+    "optiview",
+    "monitors",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy OptiView 27\" 4K HDR Monitor | Daemon's Web Emporium",
+  "meta_description": "Shop the OptiView 27\" 4K HDR Monitor at Daemon's Web Emporium. The OptiView 27-inch 4K HDR monitor delivers stunning color accuracy with 99% DCI-P3 coverage and VESA DisplayHDR 600 ce"
 }

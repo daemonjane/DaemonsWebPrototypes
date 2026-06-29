@@ -16,10 +16,20 @@
     {
       "name": "Polar White",
       "price": "169.99",
-      "remaining_stock": 15
+      "remaining_stock": 15,
+      "weight": 1400
     }
   ],
   "slugified_name": "pinnacle-monitor-arm-dual",
   "price_range": "169.99",
-  "remaining_stock": 30
+  "remaining_stock": 30,
+  "weight": 1500,
+  "tags": [
+    "pinnacle-gear",
+    "monitor-arms",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Pinnacle Gear Dual Monitor Arm | Daemon's Web Emporium",
+  "meta_description": "Shop the Pinnacle Gear Dual Monitor Arm at Daemon's Web Emporium. Heavy-duty dual monitor arm supporting up to 32-inch displays each. Features gas spring height adjustment, tool-less VES"
 }

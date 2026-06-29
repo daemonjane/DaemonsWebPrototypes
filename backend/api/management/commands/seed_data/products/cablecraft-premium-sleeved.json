@@ -16,15 +16,26 @@
     {
       "name": "Black / White Combs",
       "price": "79.99",
-      "remaining_stock": 35
+      "remaining_stock": 35,
+      "weight": 1400
     },
     {
       "name": "White / Black Combs",
       "price": "79.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     }
   ],
   "slugified_name": "cablecraft-premium-sleeved",
   "price_range": "79.99",
-  "remaining_stock": 72
+  "remaining_stock": 72,
+  "weight": 1500,
+  "tags": [
+    "cablecraft",
+    "cables",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy CableCraft Premium Sleeved Cable Kit | Daemon's Web Emporium",
+  "meta_description": "Shop the CableCraft Premium Sleeved Cable Kit at Daemon's Web Emporium. Complete set of premium paracord-sleeved PSU cables in your choice of color. Compatible with all modular PSUs and featur"
 }

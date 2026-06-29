@@ -18,10 +18,20 @@
     {
       "name": "With Hood / Calibration",
       "price": "3999.99",
-      "remaining_stock": 5
+      "remaining_stock": 5,
+      "weight": 1400
     }
   ],
   "slugified_name": "optiview-32-8k-pro",
   "price_range": "3999.99",
-  "remaining_stock": 6
+  "remaining_stock": 6,
+  "weight": 1500,
+  "tags": [
+    "optiview",
+    "monitors",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy OptiView 32\" 8K Pro Display | Daemon's Web Emporium",
+  "meta_description": "Shop the OptiView 32\" 8K Pro Display at Daemon's Web Emporium. Professional-grade 8K resolution on a 32-inch IPS panel with true 10-bit color. The OptiView 32-inch 8K Pro Display is t"
 }

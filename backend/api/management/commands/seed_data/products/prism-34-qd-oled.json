@@ -19,15 +19,26 @@
     {
       "name": "Black / Flat",
       "price": "1299.99",
-      "remaining_stock": 6
+      "remaining_stock": 6,
+      "weight": 1400
     },
     {
       "name": "White / Curved 1800R",
       "price": "1399.99",
-      "remaining_stock": 6
+      "remaining_stock": 6,
+      "weight": 1400
     }
   ],
   "slugified_name": "prism-34-qd-oled",
   "price_range": "1299.99",
-  "remaining_stock": 14
+  "remaining_stock": 14,
+  "weight": 1500,
+  "tags": [
+    "prism-displays",
+    "monitors",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Prism Displays 34\" QD-OLED | Daemon's Web Emporium",
+  "meta_description": "Shop the Prism Displays 34\" QD-OLED at Daemon's Web Emporium. Experience true blacks and vibrant colors with the Prism Displays 34-inch QD-OLED ultrawide. With 175Hz refresh rate and"
 }

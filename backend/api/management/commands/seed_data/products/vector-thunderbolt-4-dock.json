@@ -16,10 +16,20 @@
     {
       "name": "With 96W Charging",
       "price": "299.99",
-      "remaining_stock": 20
+      "remaining_stock": 20,
+      "weight": 1400
     }
   ],
   "slugified_name": "vector-thunderbolt-4-dock",
   "price_range": "299.99",
-  "remaining_stock": 24
+  "remaining_stock": 24,
+  "weight": 1500,
+  "tags": [
+    "vector-systems",
+    "adapters-&-docks",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Vector Systems Thunderbolt 4 Dock | Daemon's Web Emporium",
+  "meta_description": "Shop the Vector Systems Thunderbolt 4 Dock at Daemon's Web Emporium. Thunderbolt 4 dock with 96W charging, dual 8K display output, 10GbE, and multiple USB-A/C ports. The Vector Systems dock"
 }

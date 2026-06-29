@@ -16,10 +16,20 @@
     {
       "name": "Silver Aluminum",
       "price": "69.99",
-      "remaining_stock": 40
+      "remaining_stock": 40,
+      "weight": 1400
     }
   ],
   "slugified_name": "titan-laptop-stand",
   "price_range": "69.99",
-  "remaining_stock": 48
+  "remaining_stock": 48,
+  "weight": 1500,
+  "tags": [
+    "titan-hardware",
+    "laptop-stands",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Titan Hardware Adjustable Laptop Stand | Daemon's Web Emporium",
+  "meta_description": "Shop the Titan Hardware Adjustable Laptop Stand at Daemon's Web Emporium. Adjustable aluminum laptop stand with ventilated design for optimal cooling. Supports laptops up to 17 inches and featur"
 }

@@ -19,12 +19,14 @@
     {
       "name": "Silver / 32GB RAM",
       "price": "2199.99",
-      "remaining_stock": 15
+      "remaining_stock": 15,
+      "weight": 1400
     },
     {
       "name": "Space Black / 64GB RAM",
       "price": "2699.99",
-      "remaining_stock": 10
+      "remaining_stock": 10,
+      "weight": 1400
     }
   ],
   "slugified_name": "novatech-laptop-ultra-16",
@@ -65,5 +67,14 @@
     }
   ],
   "price_range": "2199.99",
-  "remaining_stock": 30
+  "remaining_stock": 30,
+  "weight": 1500,
+  "tags": [
+    "novatech",
+    "laptops",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy NovaTech Laptop Ultra 16 | Daemon's Web Emporium",
+  "meta_description": "Shop the NovaTech Laptop Ultra 16 at Daemon's Web Emporium. The NovaTech Laptop Ultra 16 combines a stunning 16-inch 4K OLED display with desktop-class performance. Featuring the l"
 }

@@ -18,12 +18,14 @@
     {
       "name": "Black",
       "price": "249.99",
-      "remaining_stock": 18
+      "remaining_stock": 18,
+      "weight": 1400
     },
     {
       "name": "White",
       "price": "249.99",
-      "remaining_stock": 12
+      "remaining_stock": 12,
+      "weight": 1400
     }
   ],
   "slugified_name": "sonicwave-wireless-headset-pro",
@@ -64,5 +66,14 @@
     }
   ],
   "price_range": "249.99",
-  "remaining_stock": 36
+  "remaining_stock": 36,
+  "weight": 1500,
+  "tags": [
+    "sonicwave",
+    "headphones",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy SonicWave Wireless Headset Pro | Daemon's Web Emporium",
+  "meta_description": "Shop the SonicWave Wireless Headset Pro at Daemon's Web Emporium. Lossless 2.4GHz wireless with 50mm graphene drivers, Dolby Atmos support, and a broadcast-quality noise-cancelling micro"
 }

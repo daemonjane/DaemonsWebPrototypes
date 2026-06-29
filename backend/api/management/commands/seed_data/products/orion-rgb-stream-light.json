@@ -16,10 +16,20 @@
     {
       "name": "With Boom Arm Mount",
       "price": "149.99",
-      "remaining_stock": 30
+      "remaining_stock": 30,
+      "weight": 1400
     }
   ],
   "slugified_name": "orion-rgb-stream-light",
   "price_range": "149.99",
-  "remaining_stock": 36
+  "remaining_stock": 36,
+  "weight": 1500,
+  "tags": [
+    "oriontech",
+    "lighting",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy OrionTech RGB Streaming Light Pro | Daemon's Web Emporium",
+  "meta_description": "Shop the OrionTech RGB Streaming Light Pro at Daemon's Web Emporium. Professional RGB streaming light with 280 CCT tunable LEDs, 96 CRI rating, and app control. The OrionTech Pro features a"
 }

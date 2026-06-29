@@ -19,15 +19,26 @@
     {
       "name": "60x30 inch / Bamboo",
       "price": "799.99",
-      "remaining_stock": 6
+      "remaining_stock": 6,
+      "weight": 1400
     },
     {
       "name": "72x30 inch / Bamboo",
       "price": "949.99",
-      "remaining_stock": 6
+      "remaining_stock": 6,
+      "weight": 1400
     }
   ],
   "slugified_name": "forge-standing-desk",
   "price_range": "799.99",
-  "remaining_stock": 14
+  "remaining_stock": 14,
+  "weight": 1500,
+  "tags": [
+    "forge-innovation",
+    "desks",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Forge Innovation Standing Desk | Daemon's Web Emporium",
+  "meta_description": "Shop the Forge Innovation Standing Desk at Daemon's Web Emporium. Electric height-adjustable standing desk with a 300lb capacity, bamboo desktop, and programmable memory presets. Feature"
 }

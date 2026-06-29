@@ -16,15 +16,26 @@
     {
       "name": "Extended XL / 36x18",
       "price": "59.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     },
     {
       "name": "Standard L / 18x16",
       "price": "49.99",
-      "remaining_stock": 20
+      "remaining_stock": 20,
+      "weight": 1400
     }
   ],
   "slugified_name": "flux-rgb-mouse-pad",
   "price_range": "59.99",
-  "remaining_stock": 54
+  "remaining_stock": 54,
+  "weight": 1500,
+  "tags": [
+    "flux-technologies",
+    "mouse-pads",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Flux Technologies RGB Mouse Pad XL | Daemon's Web Emporium",
+  "meta_description": "Shop the Flux Technologies RGB Mouse Pad XL at Daemon's Web Emporium. Extra-large RGB mouse pad with a micro-textured surface for precise tracking, 15-zone lighting, and a braided USB cable."
 }

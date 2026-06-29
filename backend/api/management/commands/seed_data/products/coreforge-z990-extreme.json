@@ -19,10 +19,20 @@
     {
       "name": "With WiFi 7 Module",
       "price": "599.99",
-      "remaining_stock": 15
+      "remaining_stock": 15,
+      "weight": 1400
     }
   ],
   "slugified_name": "coreforge-z990-extreme",
   "price_range": "599.99",
-  "remaining_stock": 18
+  "remaining_stock": 18,
+  "weight": 1500,
+  "tags": [
+    "coreforge",
+    "motherboards",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy CoreForge Z990 Extreme Motherboard | Daemon's Web Emporium",
+  "meta_description": "Shop the CoreForge Z990 Extreme Motherboard at Daemon's Web Emporium. Premium E-ATX motherboard with 28-phase VRM, PCIe 5.0 support, triple M.2 slots, and integrated 10GbE networking. Design"
 }

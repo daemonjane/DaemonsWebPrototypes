@@ -16,15 +16,26 @@
     {
       "name": "Linear Switches",
       "price": "89.99",
-      "remaining_stock": 30
+      "remaining_stock": 30,
+      "weight": 1400
     },
     {
       "name": "Tactile Switches",
       "price": "94.99",
-      "remaining_stock": 30
+      "remaining_stock": 30,
+      "weight": 1400
     }
   ],
   "slugified_name": "flux-programmable-keypad",
   "price_range": "89.99",
-  "remaining_stock": 72
+  "remaining_stock": 72,
+  "weight": 1500,
+  "tags": [
+    "flux-technologies",
+    "keyboards",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy Flux Technologies Programmable Keypad | Daemon's Web Emporium",
+  "meta_description": "Shop the Flux Technologies Programmable Keypad at Daemon's Web Emporium. A 12-key programmable macro pad with hot-swappable switches and per-key RGB. Perfect for streamers, video editors, and p"
 }

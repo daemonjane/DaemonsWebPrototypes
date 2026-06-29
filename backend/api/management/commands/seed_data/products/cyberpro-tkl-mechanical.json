@@ -19,12 +19,14 @@
     {
       "name": "Linear Switches / Black",
       "price": "179.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     },
     {
       "name": "Tactile Switches / White",
       "price": "189.99",
-      "remaining_stock": 25
+      "remaining_stock": 25,
+      "weight": 1400
     }
   ],
   "slugified_name": "cyberpro-tkl-mechanical",
@@ -69,5 +71,14 @@
     }
   ],
   "price_range": "179.99",
-  "remaining_stock": 60
+  "remaining_stock": 60,
+  "weight": 1500,
+  "tags": [
+    "cyberpro",
+    "keyboards",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy CyberPro TKL Mechanical Keyboard | Daemon's Web Emporium",
+  "meta_description": "Shop the CyberPro TKL Mechanical Keyboard at Daemon's Web Emporium. The CyberPro TKL Mechanical Keyboard features hot-swappable switches, per-key RGB, and a CNC aluminum frame. With N-key "
 }

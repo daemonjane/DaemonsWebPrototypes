@@ -16,7 +16,8 @@
     {
       "name": "Black Sleeved Cables",
       "price": "249.99",
-      "remaining_stock": 18
+      "remaining_stock": 18,
+      "weight": 1400
     }
   ],
   "slugified_name": "powercore-1000w-platinum",
@@ -44,5 +45,14 @@
     }
   ],
   "price_range": "249.99",
-  "remaining_stock": 36
+  "remaining_stock": 36,
+  "weight": 1500,
+  "tags": [
+    "powercore",
+    "power-supplies",
+    "new-arrival",
+    "in-stock"
+  ],
+  "meta_title": "Buy PowerCore 1000W Platinum PSU | Daemon's Web Emporium",
+  "meta_description": "Shop the PowerCore 1000W Platinum PSU at Daemon's Web Emporium. Fully modular 1000W PSU with 80+ Platinum efficiency, Japanese capacitors, and a 135mm fluid dynamic bearing fan. The Po"
 }
