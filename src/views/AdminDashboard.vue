@@ -50,10 +50,16 @@ const DJANGO_ADMIN = '/admin/'
         <h1 class="text-2xl sm:text-3xl font-bold text-white">Admin Dashboard</h1>
         <p class="text-slate-400 text-sm mt-1">Manage your store from one place.</p>
       </div>
-      <a :href="DJANGO_ADMIN" target="_blank" class="text-xs bg-cyan-600 text-white px-4 py-2 rounded-md hover:bg-cyan-500 transition-colors inline-flex items-center gap-1.5">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        Django Admin
-      </a>
+      <div class="flex gap-2">
+        <router-link to="/admin/osimart" class="text-xs bg-cyan-600 text-white px-4 py-2 rounded-md hover:bg-cyan-500 transition-colors inline-flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          Osimart Admin
+        </router-link>
+        <a :href="DJANGO_ADMIN" target="_blank" class="text-xs bg-slate-700 text-slate-300 px-4 py-2 rounded-md hover:bg-slate-600 transition-colors inline-flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Django Admin
+        </a>
+      </div>
     </div>
 
     <div v-if="pending" class="text-center py-12">
