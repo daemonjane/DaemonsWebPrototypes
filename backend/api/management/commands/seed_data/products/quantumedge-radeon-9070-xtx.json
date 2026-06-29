@@ -1,6 +1,5 @@
 {
   "name": "QuantumEdge Radeon 9070 XTX",
-  "slug": "quantumedge-radeon-9070-xtx",
   "category": "GPUs",
   "brand": "QuantumEdge",
   "price": "1299.99",
@@ -21,5 +20,6 @@
       "price": "1299.99",
       "stock": 12
     }
-  ]
+  ],
+  "slugified_name": "quantumedge-radeon-9070-xtx"
 }
