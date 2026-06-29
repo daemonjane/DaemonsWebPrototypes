@@ -1,0 +1,11 @@
+{
+  "name": "Material",
+  "values": [
+    "Aluminum",
+    "Steel",
+    "Plastic",
+    "Carbon Fiber",
+    "Glass",
+    "Wood"
+  ]
+}
