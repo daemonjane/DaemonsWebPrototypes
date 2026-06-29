@@ -23,5 +23,28 @@
       "stock": 18
     }
   ],
-  "slugified_name": "cascade-audio-studio-headphones"
+  "slugified_name": "cascade-audio-studio-headphones",
+  "sections": [
+    {
+      "name": "Audio",
+      "items": [
+        {
+          "name": "Drivers",
+          "value": "53mm Beryllium"
+        },
+        {
+          "name": "Type",
+          "value": "Open-back"
+        },
+        {
+          "name": "Impedance",
+          "value": "32 ohms"
+        },
+        {
+          "name": "Sensitivity",
+          "value": "100dB"
+        }
+      ]
+    }
+  ]
 }
