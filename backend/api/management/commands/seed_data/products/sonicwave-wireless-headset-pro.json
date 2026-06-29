@@ -8,7 +8,9 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=SonicWave+Wireless+Headset+Pro",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=SonicWave+Headset+Side"
+  ],
   "collections": [
     "Ultimate Gaming Setup",
     "Streamer's Paradise"
