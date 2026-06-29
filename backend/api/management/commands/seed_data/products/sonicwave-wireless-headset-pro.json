@@ -1,6 +1,5 @@
 {
   "name": "SonicWave Wireless Headset Pro",
-  "slug": "sonicwave-wireless-headset-pro",
   "category": "Headphones",
   "brand": "SonicWave",
   "price": "249.99",
@@ -26,5 +25,6 @@
       "price": "249.99",
       "stock": 12
     }
-  ]
+  ],
+  "slugified_name": "sonicwave-wireless-headset-pro"
 }
