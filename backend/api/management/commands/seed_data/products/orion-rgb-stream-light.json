@@ -3,7 +3,6 @@
   "category": "Lighting",
   "brand": "OrionTech",
   "compare_at_price": "183.59",
-  "stock": 36,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=OrionTech+RGB+Streaming+Light",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "orion-rgb-stream-light",
-  "price_range": "149.99"
+  "price_range": "149.99",
+  "remaining_stock": 36
 }
