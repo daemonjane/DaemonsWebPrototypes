@@ -16,7 +16,7 @@
     {
       "name": "Silver Aluminum",
       "price": "69.99",
-      "stock": 40
+      "remaining_stock": 40
     }
   ],
   "slugified_name": "titan-laptop-stand",
