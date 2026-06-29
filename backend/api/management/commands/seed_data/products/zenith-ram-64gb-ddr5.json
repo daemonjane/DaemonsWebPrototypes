@@ -14,5 +14,17 @@
     "Ultimate Gaming Setup",
     "Extreme Overclocking"
   ],
-  "description": "High-performance DDR5-6000 CL30 memory kit with RGB lighting. The Zenith Computing 64GB kit features hand-screened Samsung B-die chips for tight timings and overclocking headroom."
+  "description": "High-performance DDR5-6000 CL30 memory kit with RGB lighting. The Zenith Computing 64GB kit features hand-screened Samsung B-die chips for tight timings and overclocking headroom.",
+  "variants": [
+    {
+      "name": "RGB / CL30-36-36-76",
+      "price": "249.99",
+      "stock": 25
+    },
+    {
+      "name": "Non-RGB / CL28-34-34-72",
+      "price": "269.99",
+      "stock": 15
+    }
+  ]
 }
