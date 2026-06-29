@@ -1,0 +1,17 @@
+{
+  "name": "PowerCore UPS 1500VA Backup",
+  "slug": "powercore-ups-1500va",
+  "category": "UPS & Power",
+  "brand": "PowerCore",
+  "price": "349.99",
+  "compare_at_price": "399.99",
+  "stock": 18,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=PowerCore+UPS+1500VA+Backup",
+  "images": [],
+  "collections": [
+    "Work From Home Pro",
+    "Server Rack Solutions"
+  ]
+}
