@@ -3,7 +3,6 @@
   "category": "Monitors",
   "brand": "OptiView",
   "compare_at_price": "4691.99",
-  "stock": 6,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=OptiView+32\"+8K+Pro",
@@ -23,5 +22,6 @@
     }
   ],
   "slugified_name": "optiview-32-8k-pro",
-  "price_range": "3999.99"
+  "price_range": "3999.99",
+  "remaining_stock": 6
 }
