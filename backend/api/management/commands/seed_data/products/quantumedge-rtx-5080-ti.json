@@ -1,6 +1,5 @@
 {
   "name": "QuantumEdge RTX 5080 Ti",
-  "slug": "quantumedge-rtx-5080-ti",
   "category": "GPUs",
   "brand": "QuantumEdge",
   "price": "1599.99",
@@ -26,5 +25,6 @@
       "price": "1899.99",
       "stock": 4
     }
-  ]
+  ],
+  "slugified_name": "quantumedge-rtx-5080-ti"
 }
