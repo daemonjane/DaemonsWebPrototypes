@@ -14,5 +14,17 @@
     "Budget Build",
     "RGB Everything"
   ],
-  "description": "A 12-key programmable macro pad with hot-swappable switches and per-key RGB. Perfect for streamers, video editors, and productivity power users."
+  "description": "A 12-key programmable macro pad with hot-swappable switches and per-key RGB. Perfect for streamers, video editors, and productivity power users.",
+  "variants": [
+    {
+      "name": "Linear Switches",
+      "price": "89.99",
+      "stock": 30
+    },
+    {
+      "name": "Tactile Switches",
+      "price": "94.99",
+      "stock": 30
+    }
+  ]
 }
