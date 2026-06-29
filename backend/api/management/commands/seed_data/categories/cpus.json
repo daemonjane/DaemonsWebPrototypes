@@ -1,5 +1,6 @@
 {
   "name": "CPUs",
   "description": "Desktop and workstation processors",
-  "icon": "\u26a1"
+  "icon": "\u26a1",
+  "image": "https://placehold.co/800x600?text=CPUs"
 }
