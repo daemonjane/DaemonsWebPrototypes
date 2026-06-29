@@ -19,12 +19,12 @@
     {
       "name": "Black / Red Accents",
       "price": "599.99",
-      "stock": 10
+      "remaining_stock": 10
     },
     {
       "name": "White / Cyan Accents",
       "price": "649.99",
-      "stock": 8
+      "remaining_stock": 8
     }
   ],
   "slugified_name": "titan-gaming-chair-pro",
