@@ -16,7 +16,7 @@
     {
       "name": "With Wireless Subwoofer",
       "price": "449.99",
-      "stock": 22
+      "remaining_stock": 22
     }
   ],
   "slugified_name": "matrix-soundbar-pro",
