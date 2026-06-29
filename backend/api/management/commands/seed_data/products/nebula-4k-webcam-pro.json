@@ -16,7 +16,7 @@
     {
       "name": "With Tripod / USB-C",
       "price": "199.99",
-      "stock": 35
+      "remaining_stock": 35
     }
   ],
   "slugified_name": "nebula-4k-webcam-pro",
