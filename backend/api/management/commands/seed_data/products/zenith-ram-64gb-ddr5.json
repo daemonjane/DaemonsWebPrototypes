@@ -3,7 +3,6 @@
   "category": "Memory (RAM)",
   "brand": "Zenith Computing",
   "compare_at_price": "305.99",
-  "stock": 48,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Zenith+Computing+RAM+64GB",
@@ -26,5 +25,6 @@
     }
   ],
   "slugified_name": "zenith-ram-64gb-ddr5",
-  "price_range": "249.99"
+  "price_range": "249.99",
+  "remaining_stock": 48
 }
