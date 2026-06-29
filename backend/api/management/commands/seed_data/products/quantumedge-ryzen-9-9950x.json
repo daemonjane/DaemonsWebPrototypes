@@ -2,7 +2,6 @@
   "name": "QuantumEdge AMD Ryzen 9 9950X",
   "category": "CPUs",
   "brand": "QuantumEdge",
-  "price": "749.99",
   "compare_at_price": "866.99",
   "stock": 30,
   "status": "active",
@@ -23,5 +22,6 @@
       "stock": 25
     }
   ],
-  "slugified_name": "quantumedge-ryzen-9-9950x"
+  "slugified_name": "quantumedge-ryzen-9-9950x",
+  "price_range": "749.99"
 }
