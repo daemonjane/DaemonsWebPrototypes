@@ -3,7 +3,6 @@
   "category": "Keyboards",
   "brand": "Vertex Systems",
   "compare_at_price": "305.99",
-  "stock": 42,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Vertex+Systems+75%+Hotswap",
@@ -29,5 +28,6 @@
     }
   ],
   "slugified_name": "vertex-systems-75-hotswap",
-  "price_range": "249.99"
+  "price_range": "249.99",
+  "remaining_stock": 42
 }
