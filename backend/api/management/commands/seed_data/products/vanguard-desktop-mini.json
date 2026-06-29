@@ -28,5 +28,33 @@
       "stock": 8
     }
   ],
-  "slugified_name": "vanguard-desktop-mini"
+  "slugified_name": "vanguard-desktop-mini",
+  "sections": [
+    {
+      "name": "Processor",
+      "items": [
+        {
+          "name": "CPU",
+          "value": "AMD Ryzen 7 9800X3D"
+        },
+        {
+          "name": "Cores",
+          "value": "8C/16T"
+        }
+      ]
+    },
+    {
+      "name": "Memory",
+      "items": [
+        {
+          "name": "RAM",
+          "value": "32GB DDR5-5600"
+        },
+        {
+          "name": "Storage",
+          "value": "1TB NVMe"
+        }
+      ]
+    }
+  ]
 }
