@@ -1,0 +1,17 @@
+{
+  "name": "QuantumEdge Radeon 9070 XTX",
+  "slug": "quantumedge-radeon-9070-xtx",
+  "category": "GPUs",
+  "brand": "QuantumEdge",
+  "price": "1299.99",
+  "compare_at_price": "1499.99",
+  "stock": 12,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=QuantumEdge+Radeon+9070+XTX",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "Budget Build"
+  ]
+}
