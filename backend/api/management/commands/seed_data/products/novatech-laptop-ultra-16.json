@@ -3,7 +3,6 @@
   "category": "Laptops",
   "brand": "NovaTech",
   "compare_at_price": "2549.99",
-  "stock": 30,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=NovaTech+Laptop+Ultra+16",
@@ -65,5 +64,6 @@
       ]
     }
   ],
-  "price_range": "2199.99"
+  "price_range": "2199.99",
+  "remaining_stock": 30
 }
