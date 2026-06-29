@@ -1,0 +1,17 @@
+{
+  "name": "CableCraft Premium Sleeved Cable Kit",
+  "slug": "cablecraft-premium-sleeved",
+  "category": "Cables",
+  "brand": "CableCraft",
+  "price": "79.99",
+  "compare_at_price": "99.99",
+  "stock": 60,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=CableCraft+Premium+Sleeved+Cable",
+  "images": [],
+  "collections": [
+    "Budget Build",
+    "RGB Everything"
+  ]
+}
