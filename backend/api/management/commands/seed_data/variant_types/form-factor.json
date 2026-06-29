@@ -1,0 +1,10 @@
+{
+  "name": "Form Factor",
+  "values": [
+    "ATX",
+    "Micro-ATX",
+    "Mini-ITX",
+    "E-ATX",
+    "XL-ATX"
+  ]
+}
