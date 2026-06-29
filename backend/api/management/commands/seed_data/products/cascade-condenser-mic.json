@@ -14,5 +14,12 @@
     "Streamer's Paradise",
     "Content Creator Kit"
   ],
-  "description": "Large-diaphragm condenser microphone with cardioid polar pattern, 192kHz/24-bit recording, and built-in pop filter. Perfect for podcasting, streaming, and voiceovers."
+  "description": "Large-diaphragm condenser microphone with cardioid polar pattern, 192kHz/24-bit recording, and built-in pop filter. Perfect for podcasting, streaming, and voiceovers.",
+  "variants": [
+    {
+      "name": "With Shock Mount / Pop Filter",
+      "price": "299.99",
+      "stock": 20
+    }
+  ]
 }
