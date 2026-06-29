@@ -1,6 +1,5 @@
 {
   "name": "Pulse Dynamics USB-C Hub 12-in-1",
-  "slug": "pulse-usbc-hub",
   "category": "Adapters & Docks",
   "brand": "Pulse Dynamics",
   "price": "79.99",
@@ -21,5 +20,6 @@
       "price": "79.99",
       "stock": 50
     }
-  ]
+  ],
+  "slugified_name": "pulse-usbc-hub"
 }
