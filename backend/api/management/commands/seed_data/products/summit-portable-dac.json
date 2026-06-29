@@ -1,6 +1,5 @@
 {
   "name": "Summit Electronics Portable DAC/Amp",
-  "slug": "summit-portable-dac",
   "category": "Audio",
   "brand": "Summit Electronics",
   "price": "299.99",
@@ -21,5 +20,6 @@
       "price": "299.99",
       "stock": 22
     }
-  ]
+  ],
+  "slugified_name": "summit-portable-dac"
 }
