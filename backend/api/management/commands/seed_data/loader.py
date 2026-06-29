@@ -21,6 +21,7 @@ class SeedLoader:
         self._load_products(verbosity)
         self._load_banners(verbosity)
         self._load_announcements(verbosity)
+        self._load_store_settings(verbosity)
 
     def _items(self, subdir):
         d = os.path.join(self.data_dir, subdir)
@@ -108,3 +109,15 @@ class SeedLoader:
                     print(f"  ✓ Announcement '{data.get('message', fname)[:40]}'")
             except OsimartError as e:
                 print(f"  ✗ {fname}: {e}")
+
+    def _load_store_settings(self, verbosity):
+        store_data = {}
+        for fname, data in self._items("store"):
+            store_data.update(data)
+        if store_data:
+            try:
+                self.client.update_store(store_data)
+                if verbosity >= 1:
+                    print(f"  ✓ Store settings updated ({len(store_data)} fields)")
+            except OsimartError as e:
+                print(f"  ✗ store settings: {e}")
