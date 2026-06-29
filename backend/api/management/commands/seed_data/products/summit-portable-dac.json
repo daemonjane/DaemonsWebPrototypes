@@ -1,0 +1,17 @@
+{
+  "name": "Summit Electronics Portable DAC/Amp",
+  "slug": "summit-portable-dac",
+  "category": "Audio",
+  "brand": "Summit Electronics",
+  "price": "299.99",
+  "compare_at_price": "349.99",
+  "stock": 22,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=Summit+Electronics+Portable+DAC/Amp",
+  "images": [],
+  "collections": [
+    "Professional Studio",
+    "Compact & Portable"
+  ]
+}
