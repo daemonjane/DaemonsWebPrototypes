@@ -19,12 +19,12 @@
     {
       "name": "Standard Stand",
       "price": "699.99",
-      "stock": 25
+      "remaining_stock": 25
     },
     {
       "name": "Ergo Stand",
       "price": "849.99",
-      "stock": 15
+      "remaining_stock": 15
     }
   ],
   "slugified_name": "optiview-27-4k-hdr",
