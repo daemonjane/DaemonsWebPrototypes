@@ -16,7 +16,7 @@
     {
       "name": "With Shock Mount / Pop Filter",
       "price": "299.99",
-      "stock": 20
+      "remaining_stock": 20
     }
   ],
   "slugified_name": "cascade-condenser-mic",
