@@ -1,6 +1,5 @@
 {
   "name": "QuantumEdge Intel Core Ultra 9 285K",
-  "slug": "quantumedge-core-ultra-9",
   "category": "CPUs",
   "brand": "QuantumEdge",
   "price": "699.99",
@@ -21,5 +20,6 @@
       "price": "699.99",
       "stock": 20
     }
-  ]
+  ],
+  "slugified_name": "quantumedge-core-ultra-9"
 }
