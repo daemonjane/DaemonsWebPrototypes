@@ -2,7 +2,6 @@
   "name": "Flux Technologies RGB Strip Kit",
   "category": "Lighting",
   "brand": "Flux Technologies",
-  "price": "49.99",
   "compare_at_price": "71.39",
   "stock": 96,
   "status": "active",
@@ -21,5 +20,6 @@
       "stock": 80
     }
   ],
-  "slugified_name": "flux-rgb-strip-kit"
+  "slugified_name": "flux-rgb-strip-kit",
+  "price_range": "49.99"
 }
