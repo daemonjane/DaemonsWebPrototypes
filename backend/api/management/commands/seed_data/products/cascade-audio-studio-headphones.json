@@ -8,7 +8,9 @@
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Cascade+Audio+Studio+Headphones",
-  "images": [],
+  "images": [
+    "https://placehold.co/600x400?text=Cascade+Phones+Angle"
+  ],
   "collections": [
     "Professional Studio",
     "Content Creator Kit"
