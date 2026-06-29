@@ -1,5 +1,6 @@
 {
   "name": "Webcams",
   "description": "HD and 4K webcams for streaming and conferencing",
-  "icon": "\ud83d\udcf9"
+  "icon": "\ud83d\udcf9",
+  "image": "https://placehold.co/800x600?text=Webcams"
 }
