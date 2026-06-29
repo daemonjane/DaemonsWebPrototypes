@@ -3,7 +3,6 @@
   "category": "Monitors",
   "brand": "ApexGear",
   "compare_at_price": "1835.99",
-  "stock": 12,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=ApexGear+49\"+Super+Ultrawide",
@@ -23,5 +22,6 @@
     }
   ],
   "slugified_name": "apexgear-49-ultrawide",
-  "price_range": "1499.99"
+  "price_range": "1499.99",
+  "remaining_stock": 12
 }
