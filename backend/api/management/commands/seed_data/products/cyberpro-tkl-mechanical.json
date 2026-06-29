@@ -1,0 +1,17 @@
+{
+  "name": "CyberPro TKL Mechanical Keyboard",
+  "slug": "cyberpro-tkl-mechanical",
+  "category": "Keyboards",
+  "brand": "CyberPro",
+  "price": "179.99",
+  "compare_at_price": "219.99",
+  "stock": 50,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=CyberPro+TKL+Mechanical+Keyboard",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "RGB Everything"
+  ]
+}
