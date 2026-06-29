@@ -14,5 +14,12 @@
     "Streamer's Paradise",
     "Work From Home Pro"
   ],
-  "description": "Professional 4K webcam with Sony STARVIS sensor, auto-framing, and dual noise-cancelling microphones. The Nebula Works 4K Webcam Pro delivers broadcast-quality video for streaming and conferencing."
+  "description": "Professional 4K webcam with Sony STARVIS sensor, auto-framing, and dual noise-cancelling microphones. The Nebula Works 4K Webcam Pro delivers broadcast-quality video for streaming and conferencing.",
+  "variants": [
+    {
+      "name": "With Tripod / USB-C",
+      "price": "199.99",
+      "stock": 35
+    }
+  ]
 }
