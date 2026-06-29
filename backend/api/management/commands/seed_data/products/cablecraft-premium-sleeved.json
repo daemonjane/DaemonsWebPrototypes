@@ -1,6 +1,5 @@
 {
   "name": "CableCraft Premium Sleeved Cable Kit",
-  "slug": "cablecraft-premium-sleeved",
   "category": "Cables",
   "brand": "CableCraft",
   "price": "79.99",
@@ -26,5 +25,6 @@
       "price": "79.99",
       "stock": 25
     }
-  ]
+  ],
+  "slugified_name": "cablecraft-premium-sleeved"
 }
