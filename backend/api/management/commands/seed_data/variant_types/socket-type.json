@@ -1,0 +1,10 @@
+{
+  "name": "Socket Type",
+  "values": [
+    "LGA1700",
+    "LGA1851",
+    "AM5",
+    "AM4",
+    "sTR5"
+  ]
+}
