@@ -3,7 +3,6 @@
   "category": "Webcams",
   "brand": "Nebula Works",
   "compare_at_price": "254.99",
-  "stock": 42,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Nebula+Works+4K+Webcam",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "nebula-4k-webcam-pro",
-  "price_range": "199.99"
+  "price_range": "199.99",
+  "remaining_stock": 42
 }
