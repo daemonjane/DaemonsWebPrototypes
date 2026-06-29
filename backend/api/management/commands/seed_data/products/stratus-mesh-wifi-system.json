@@ -16,7 +16,7 @@
     {
       "name": "3-Pack",
       "price": "599.99",
-      "stock": 15
+      "remaining_stock": 15
     }
   ],
   "slugified_name": "stratus-mesh-wifi-system",
