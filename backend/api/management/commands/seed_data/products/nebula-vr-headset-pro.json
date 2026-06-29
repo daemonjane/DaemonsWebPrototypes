@@ -16,7 +16,7 @@
     {
       "name": "256GB Storage",
       "price": "999.99",
-      "stock": 6
+      "remaining_stock": 6
     }
   ],
   "slugified_name": "nebula-vr-headset-pro",
