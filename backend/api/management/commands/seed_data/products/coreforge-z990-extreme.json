@@ -1,0 +1,17 @@
+{
+  "name": "CoreForge Z990 Extreme Motherboard",
+  "slug": "coreforge-z990-extreme",
+  "category": "Motherboards",
+  "brand": "CoreForge",
+  "price": "599.99",
+  "compare_at_price": "699.99",
+  "stock": 15,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=CoreForge+Z990+Extreme+Motherboard",
+  "images": [],
+  "collections": [
+    "Extreme Overclocking",
+    "Ultimate Gaming Setup"
+  ]
+}
