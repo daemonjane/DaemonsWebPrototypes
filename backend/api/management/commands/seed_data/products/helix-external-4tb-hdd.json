@@ -14,5 +14,12 @@
     "Budget Build",
     "Student Starter Pack"
   ],
-  "description": "Portable 4TB external HDD with USB 3.2 Gen 2, hardware encryption, and shock-resistant design. Reliable backup storage that fits in your pocket."
+  "description": "Portable 4TB external HDD with USB 3.2 Gen 2, hardware encryption, and shock-resistant design. Reliable backup storage that fits in your pocket.",
+  "variants": [
+    {
+      "name": "USB 3.2 / Black",
+      "price": "129.99",
+      "stock": 50
+    }
+  ]
 }
