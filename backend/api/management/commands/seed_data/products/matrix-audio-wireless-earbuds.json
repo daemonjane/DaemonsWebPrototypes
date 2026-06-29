@@ -3,7 +3,6 @@
   "category": "Headphones",
   "brand": "Matrix Audio",
   "compare_at_price": "254.99",
-  "stock": 48,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Matrix+Audio+Wireless+Earbuds",
@@ -26,5 +25,6 @@
     }
   ],
   "slugified_name": "matrix-audio-wireless-earbuds",
-  "price_range": "199.99"
+  "price_range": "199.99",
+  "remaining_stock": 48
 }
