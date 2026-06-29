@@ -18,12 +18,12 @@
     {
       "name": "Black",
       "price": "249.99",
-      "stock": 18
+      "remaining_stock": 18
     },
     {
       "name": "White",
       "price": "249.99",
-      "stock": 12
+      "remaining_stock": 12
     }
   ],
   "slugified_name": "sonicwave-wireless-headset-pro",
