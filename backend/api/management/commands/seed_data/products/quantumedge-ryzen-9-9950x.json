@@ -14,5 +14,12 @@
     "Extreme Overclocking",
     "Content Creator Kit"
   ],
-  "description": "16 cores, 32 threads of Zen 5 performance. The QuantumEdge AMD Ryzen 9 9950X features a 5.8GHz boost clock, 80MB cache, and supports both DDR5 and PCIe 5.0."
+  "description": "16 cores, 32 threads of Zen 5 performance. The QuantumEdge AMD Ryzen 9 9950X features a 5.8GHz boost clock, 80MB cache, and supports both DDR5 and PCIe 5.0.",
+  "variants": [
+    {
+      "name": "Retail Box / With Cooler",
+      "price": "749.99",
+      "stock": 25
+    }
+  ]
 }
