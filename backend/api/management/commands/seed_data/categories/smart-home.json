@@ -1,5 +1,6 @@
 {
   "name": "Smart Home",
   "description": "Smart speakers, hubs, and automation devices",
-  "icon": "\ud83c\udfe0"
+  "icon": "\ud83c\udfe0",
+  "image": "https://placehold.co/800x600?text=Smart+Home"
 }
