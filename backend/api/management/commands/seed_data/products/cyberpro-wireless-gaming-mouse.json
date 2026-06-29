@@ -1,6 +1,5 @@
 {
   "name": "CyberPro Wireless Gaming Mouse",
-  "slug": "cyberpro-wireless-gaming-mouse",
   "category": "Mice",
   "brand": "CyberPro",
   "price": "149.99",
@@ -26,5 +25,6 @@
       "price": "149.99",
       "stock": 20
     }
-  ]
+  ],
+  "slugified_name": "cyberpro-wireless-gaming-mouse"
 }
