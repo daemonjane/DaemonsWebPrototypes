@@ -19,12 +19,12 @@
     {
       "name": "60x30 inch / Bamboo",
       "price": "799.99",
-      "stock": 6
+      "remaining_stock": 6
     },
     {
       "name": "72x30 inch / Bamboo",
       "price": "949.99",
-      "stock": 6
+      "remaining_stock": 6
     }
   ],
   "slugified_name": "forge-standing-desk",
