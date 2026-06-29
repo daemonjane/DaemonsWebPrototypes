@@ -1,3 +1,4 @@
+"""Seed data loader for populating Osimart catalog from local JSON files."""
 import json
 import os
 
