@@ -23,6 +23,7 @@ const Profile = () => import(/* webpackChunkName: "profile" */ '../views/Profile
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
 const AdminDashboard = () => import(/* webpackChunkName: "admin" */ '../views/AdminDashboard.vue')
 const Analytics = () => import(/* webpackChunkName: "analytics" */ '../views/Analytics.vue')
+const OsimartAdmin = () => import(/* webpackChunkName: "admin" */ '../views/admin/OsimartAdmin.vue')
 
 const routes = [
   { path: '/', component: Home },
@@ -30,6 +31,7 @@ const routes = [
   { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
   { path: '/admin/dashboard', component: AdminDashboard, meta: { requiresAuth: true } },
   { path: '/admin/analytics', component: Analytics, meta: { requiresAuth: true } },
+  { path: '/admin/osimart', component: OsimartAdmin, meta: { requiresAuth: true } },
   { path: '/analytics', component: Analytics },
   { path: '/profile', component: Profile, meta: { requiresAuth: true } },
   { path: '/orders', component: OrderHistory, meta: { requiresAuth: true } },
