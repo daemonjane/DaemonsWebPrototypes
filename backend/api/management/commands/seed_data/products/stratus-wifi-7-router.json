@@ -1,6 +1,5 @@
 {
   "name": "Stratus Networks WiFi 7 Tri-Band Router",
-  "slug": "stratus-wifi-7-router",
   "category": "Networking",
   "brand": "Stratus Networks",
   "price": "499.99",
@@ -21,5 +20,6 @@
       "price": "499.99",
       "stock": 20
     }
-  ]
+  ],
+  "slugified_name": "stratus-wifi-7-router"
 }
