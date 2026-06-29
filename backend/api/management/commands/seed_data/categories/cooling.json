@@ -2,5 +2,6 @@
   "name": "Cooling",
   "description": "AIO liquid coolers, air coolers, and fans",
   "icon": "\u2744\ufe0f",
-  "image": "https://placehold.co/800x600?text=Cooling"
+  "image": "https://placehold.co/800x600?text=Cooling",
+  "slugified_name": "cooling"
 }

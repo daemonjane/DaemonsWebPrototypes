@@ -2,5 +2,6 @@
   "name": "Streaming",
   "description": "Stream decks, capture cards, and encoders",
   "icon": "\ud83d\udcf9",
-  "image": "https://placehold.co/800x600?text=Streaming"
+  "image": "https://placehold.co/800x600?text=Streaming",
+  "slugified_name": "streaming"
 }

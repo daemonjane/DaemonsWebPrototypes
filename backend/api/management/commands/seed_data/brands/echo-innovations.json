@@ -2,5 +2,6 @@
   "name": "Echo Innovations",
   "description": "Smart home and voice assistant devices",
   "logo": "https://placehold.co/200x80?text=Echo+Innovations&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Echo+Innovations+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Echo+Innovations+Brand+Banner",
+  "slugified_name": "echo-innovations"
 }

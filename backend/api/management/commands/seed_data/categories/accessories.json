@@ -2,5 +2,6 @@
   "name": "Accessories",
   "description": "General tech accessories and peripherals",
   "icon": "\ud83d\udce6",
-  "image": "https://placehold.co/800x600?text=Accessories"
+  "image": "https://placehold.co/800x600?text=Accessories",
+  "slugified_name": "accessories"
 }

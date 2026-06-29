@@ -1,4 +1,5 @@
 {
   "name": "Home Automation Hub",
-  "description": "Smart home devices and automation"
+  "description": "Smart home devices and automation",
+  "slugified_name": "home-automation"
 }

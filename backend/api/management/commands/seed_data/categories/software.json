@@ -2,5 +2,6 @@
   "name": "Software",
   "description": "Operating systems, productivity suites, and creative tools",
   "icon": "\ud83d\udcbf",
-  "image": "https://placehold.co/800x600?text=Software"
+  "image": "https://placehold.co/800x600?text=Software",
+  "slugified_name": "software"
 }

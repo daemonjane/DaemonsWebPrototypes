@@ -2,5 +2,6 @@
   "name": "Monitor Arms",
   "description": "Adjustable monitor and TV mounting arms",
   "icon": "\ud83e\uddbe",
-  "image": "https://placehold.co/800x600?text=Monitor+Arms"
+  "image": "https://placehold.co/800x600?text=Monitor+Arms",
+  "slugified_name": "monitor-arms"
 }

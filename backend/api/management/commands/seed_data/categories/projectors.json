@@ -2,5 +2,6 @@
   "name": "Projectors",
   "description": "Home theater and portable projectors",
   "icon": "\ud83d\udcfd\ufe0f",
-  "image": "https://placehold.co/800x600?text=Projectors"
+  "image": "https://placehold.co/800x600?text=Projectors",
+  "slugified_name": "projectors"
 }

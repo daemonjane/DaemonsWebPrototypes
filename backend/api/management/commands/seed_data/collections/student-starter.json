@@ -1,4 +1,5 @@
 {
   "name": "Student Starter Pack",
-  "description": "Essential tech for college and university"
+  "description": "Essential tech for college and university",
+  "slugified_name": "student-starter"
 }

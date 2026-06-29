@@ -2,5 +2,6 @@
   "name": "Pulse Dynamics",
   "description": "Connectivity solutions and mobile accessories",
   "logo": "https://placehold.co/200x80?text=Pulse+Dynamics&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Pulse+Dynamics+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Pulse+Dynamics+Brand+Banner",
+  "slugified_name": "pulse-dynamics"
 }

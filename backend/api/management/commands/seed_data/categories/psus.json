@@ -2,5 +2,6 @@
   "name": "Power Supplies",
   "description": "Reliable PSUs from 550W to 1600W",
   "icon": "\u26a1",
-  "image": "https://placehold.co/800x600?text=Power+Supplies"
+  "image": "https://placehold.co/800x600?text=Power+Supplies",
+  "slugified_name": "psus"
 }

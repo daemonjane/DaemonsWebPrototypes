@@ -2,5 +2,6 @@
   "name": "Matrix Audio",
   "description": "Wireless audio and earbud technology",
   "logo": "https://placehold.co/200x80?text=Matrix+Audio&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Matrix+Audio+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Matrix+Audio+Brand+Banner",
+  "slugified_name": "matrix-audio"
 }

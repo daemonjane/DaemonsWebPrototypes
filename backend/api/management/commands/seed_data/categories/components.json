@@ -2,5 +2,6 @@
   "name": "Components",
   "description": "Miscellaneous PC components and upgrades",
   "icon": "\ud83d\udd27",
-  "image": "https://placehold.co/800x600?text=Components"
+  "image": "https://placehold.co/800x600?text=Components",
+  "slugified_name": "components"
 }

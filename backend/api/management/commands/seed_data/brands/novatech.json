@@ -2,5 +2,6 @@
   "name": "NovaTech",
   "description": "Next-generation computing platforms",
   "logo": "https://placehold.co/200x80?text=NovaTech&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=NovaTech+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=NovaTech+Brand+Banner",
+  "slugified_name": "novatech"
 }

@@ -1,4 +1,5 @@
 {
   "name": "Silent Operator",
-  "description": "Quiet components for whisper-silent builds"
+  "description": "Quiet components for whisper-silent builds",
+  "slugified_name": "silent-operator"
 }

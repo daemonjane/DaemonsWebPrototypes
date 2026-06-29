@@ -2,5 +2,6 @@
   "name": "Monitors",
   "description": "High-resolution displays and monitors for every use case",
   "icon": "\ud83d\udda5\ufe0f",
-  "image": "https://placehold.co/800x600?text=Monitors"
+  "image": "https://placehold.co/800x600?text=Monitors",
+  "slugified_name": "monitors"
 }

@@ -2,5 +2,6 @@
   "name": "CoreForge",
   "description": "High-end PC components and chassis",
   "logo": "https://placehold.co/200x80?text=CoreForge&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=CoreForge+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=CoreForge+Brand+Banner",
+  "slugified_name": "coreforge"
 }

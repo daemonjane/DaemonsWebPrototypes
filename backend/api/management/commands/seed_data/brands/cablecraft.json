@@ -2,5 +2,6 @@
   "name": "CableCraft",
   "description": "Custom premium cable solutions",
   "logo": "https://placehold.co/200x80?text=CableCraft&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=CableCraft+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=CableCraft+Brand+Banner",
+  "slugified_name": "cablecraft"
 }

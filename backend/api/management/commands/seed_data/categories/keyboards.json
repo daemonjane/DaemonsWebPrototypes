@@ -2,5 +2,6 @@
   "name": "Keyboards",
   "description": "Mechanical, membrane, and ergonomic keyboards",
   "icon": "\u2328\ufe0f",
-  "image": "https://placehold.co/800x600?text=Keyboards"
+  "image": "https://placehold.co/800x600?text=Keyboards",
+  "slugified_name": "keyboards"
 }

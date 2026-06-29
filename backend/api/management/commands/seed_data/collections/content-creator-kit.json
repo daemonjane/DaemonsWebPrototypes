@@ -1,4 +1,5 @@
 {
   "name": "Content Creator Kit",
-  "description": "Tools for video, audio, and photo creators"
+  "description": "Tools for video, audio, and photo creators",
+  "slugified_name": "content-creator-kit"
 }

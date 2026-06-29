@@ -2,5 +2,6 @@
   "name": "Forge Innovation",
   "description": "Ergonomic workspace furniture",
   "logo": "https://placehold.co/200x80?text=Forge+Innovation&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Forge+Innovation+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Forge+Innovation+Brand+Banner",
+  "slugified_name": "forge-innovation"
 }

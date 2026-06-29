@@ -2,5 +2,6 @@
   "name": "Cascade Audio",
   "description": "Professional headphones, speakers, and microphones",
   "logo": "https://placehold.co/200x80?text=Cascade+Audio&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Cascade+Audio+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Cascade+Audio+Brand+Banner",
+  "slugified_name": "cascade-audio"
 }

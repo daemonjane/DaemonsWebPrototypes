@@ -2,5 +2,6 @@
   "name": "Desks",
   "description": "Standing desks, gaming desks, and workstations",
   "icon": "\ud83e\ude91",
-  "image": "https://placehold.co/800x600?text=Desks"
+  "image": "https://placehold.co/800x600?text=Desks",
+  "slugified_name": "desks"
 }

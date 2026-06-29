@@ -2,5 +2,6 @@
   "name": "Pinnacle Gear",
   "description": "Premium monitor arms and mounting solutions",
   "logo": "https://placehold.co/200x80?text=Pinnacle+Gear&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Pinnacle+Gear+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Pinnacle+Gear+Brand+Banner",
+  "slugified_name": "pinnacle-gear"
 }

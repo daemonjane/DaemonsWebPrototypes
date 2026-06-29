@@ -2,5 +2,6 @@
   "name": "External Storage",
   "description": "Portable SSDs, HDDs, and NAS drives",
   "icon": "\ud83d\udcbe",
-  "image": "https://placehold.co/800x600?text=External+Storage"
+  "image": "https://placehold.co/800x600?text=External+Storage",
+  "slugified_name": "external-storage"
 }

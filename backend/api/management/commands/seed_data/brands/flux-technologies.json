@@ -2,5 +2,6 @@
   "name": "Flux Technologies",
   "description": "RGB lighting and programmable accessories",
   "logo": "https://placehold.co/200x80?text=Flux+Technologies&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Flux+Technologies+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Flux+Technologies+Brand+Banner",
+  "slugified_name": "flux-technologies"
 }

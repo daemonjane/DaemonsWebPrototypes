@@ -2,5 +2,6 @@
   "name": "Nebula Works",
   "description": "Imaging and optics technology",
   "logo": "https://placehold.co/200x80?text=Nebula+Works&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Nebula+Works+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Nebula+Works+Brand+Banner",
+  "slugified_name": "nebula-works"
 }

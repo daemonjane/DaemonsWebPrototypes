@@ -1,4 +1,5 @@
 {
   "name": "Server Rack Solutions",
-  "description": "Rack-mountable hardware for homelabs"
+  "description": "Rack-mountable hardware for homelabs",
+  "slugified_name": "server-rack"
 }

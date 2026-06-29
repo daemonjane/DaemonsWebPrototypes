@@ -2,5 +2,6 @@
   "name": "Headphones",
   "description": "Over-ear, on-ear, and in-ear audio solutions",
   "icon": "\ud83c\udfa7",
-  "image": "https://placehold.co/800x600?text=Headphones"
+  "image": "https://placehold.co/800x600?text=Headphones",
+  "slugified_name": "headphones"
 }

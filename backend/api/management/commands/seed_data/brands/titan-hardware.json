@@ -2,5 +2,6 @@
   "name": "Titan Hardware",
   "description": "Heavy-duty gaming and simulation equipment",
   "logo": "https://placehold.co/200x80?text=Titan+Hardware&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=Titan+Hardware+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=Titan+Hardware+Brand+Banner",
+  "slugified_name": "titan-hardware"
 }

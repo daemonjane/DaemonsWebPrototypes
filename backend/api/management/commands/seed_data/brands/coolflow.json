@@ -2,5 +2,6 @@
   "name": "CoolFlow",
   "description": "Thermal management and cooling solutions",
   "logo": "https://placehold.co/200x80?text=CoolFlow&font=raleway",
-  "banner": "https://placehold.co/1200x300?text=CoolFlow+Brand+Banner"
+  "banner": "https://placehold.co/1200x300?text=CoolFlow+Brand+Banner",
+  "slugified_name": "coolflow"
 }
