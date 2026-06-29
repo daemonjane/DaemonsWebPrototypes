@@ -1,0 +1,17 @@
+{
+  "name": "OptiView 27\" 4K HDR Monitor",
+  "slug": "optiview-27-4k-hdr",
+  "category": "Monitors",
+  "brand": "OptiView",
+  "price": "699.99",
+  "compare_at_price": "849.99",
+  "stock": 40,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=OptiView+27\"+4K+HDR",
+  "images": [],
+  "collections": [
+    "Professional Studio",
+    "Content Creator Kit"
+  ]
+}
