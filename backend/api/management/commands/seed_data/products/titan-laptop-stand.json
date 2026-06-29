@@ -3,7 +3,6 @@
   "category": "Laptop Stands",
   "brand": "Titan Hardware",
   "compare_at_price": "91.79",
-  "stock": 48,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Titan+Hardware+Adjustable+Laptop",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "titan-laptop-stand",
-  "price_range": "69.99"
+  "price_range": "69.99",
+  "remaining_stock": 48
 }
