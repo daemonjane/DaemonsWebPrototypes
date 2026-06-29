@@ -1,0 +1,17 @@
+{
+  "name": "CoreForge ATX Full Tower Case",
+  "slug": "coreforge-atx-full-tower",
+  "category": "PC Cases",
+  "brand": "CoreForge",
+  "price": "199.99",
+  "compare_at_price": "249.99",
+  "stock": 25,
+  "status": "active",
+  "featured": true,
+  "main_image": "https://placehold.co/600x400?text=CoreForge+ATX+Full+Tower",
+  "images": [],
+  "collections": [
+    "Ultimate Gaming Setup",
+    "RGB Everything"
+  ]
+}
