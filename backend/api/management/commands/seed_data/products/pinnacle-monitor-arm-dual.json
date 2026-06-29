@@ -3,7 +3,6 @@
   "category": "Monitor Arms",
   "brand": "Pinnacle Gear",
   "compare_at_price": "203.99",
-  "stock": 30,
   "status": "active",
   "featured": true,
   "main_image": "https://placehold.co/600x400?text=Pinnacle+Gear+Dual+Monitor",
@@ -21,5 +20,6 @@
     }
   ],
   "slugified_name": "pinnacle-monitor-arm-dual",
-  "price_range": "169.99"
+  "price_range": "169.99",
+  "remaining_stock": 30
 }
