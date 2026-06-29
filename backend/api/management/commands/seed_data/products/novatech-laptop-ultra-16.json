@@ -29,5 +29,41 @@
       "stock": 10
     }
   ],
-  "slugified_name": "novatech-laptop-ultra-16"
+  "slugified_name": "novatech-laptop-ultra-16",
+  "sections": [
+    {
+      "name": "Display",
+      "items": [
+        {
+          "name": "Size",
+          "value": "16-inch OLED"
+        },
+        {
+          "name": "Resolution",
+          "value": "3840x2400"
+        },
+        {
+          "name": "Refresh Rate",
+          "value": "120Hz"
+        }
+      ]
+    },
+    {
+      "name": "Performance",
+      "items": [
+        {
+          "name": "CPU",
+          "value": "Core Ultra 9 285H"
+        },
+        {
+          "name": "RAM",
+          "value": "32GB LPDDR5X"
+        },
+        {
+          "name": "Storage",
+          "value": "1TB SSD"
+        }
+      ]
+    }
+  ]
 }
