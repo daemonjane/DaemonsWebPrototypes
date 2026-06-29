@@ -14,5 +14,12 @@
     "Ultimate Gaming Setup",
     "Budget Build"
   ],
-  "description": "AMD RDNA 4 flagship with 24GB GDDR6, hardware-accelerated ray tracing, and FSR 3. The QuantumEdge Radeon 9070 XTX offers stellar 4K gaming at a competitive price."
+  "description": "AMD RDNA 4 flagship with 24GB GDDR6, hardware-accelerated ray tracing, and FSR 3. The QuantumEdge Radeon 9070 XTX offers stellar 4K gaming at a competitive price.",
+  "variants": [
+    {
+      "name": "Air Cooled / Triple Fan",
+      "price": "1299.99",
+      "stock": 12
+    }
+  ]
 }
