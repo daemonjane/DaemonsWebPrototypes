@@ -3,16 +3,15 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import AnimatedCounter from '../components/AnimatedCounter.vue'
 import AbstractArt from '../components/AbstractArt.vue'
-import { products as fallbackProducts } from '../data/products'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 import { resolveImage } from '../utils/images'
+import { normalizeProduct, pick } from '../utils/product'
 
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 const { items: recentlyViewed } = useRecentlyViewed()
 
-const fallbackWithStock = fallbackProducts.map(p => ({ ...p, stock: 0 }))
-const products = ref(fallbackWithStock)
+const products = ref([])
 const banners = ref([])
 const hero = ref(null)
 const store = ref(null)
@@ -20,6 +19,7 @@ const features = ref([])
 const metrics = ref([])
 const testimonials = ref([])
 const categories = ref([])
+const categoryCounts = ref({})
 const brands = ref([])
 const collections = ref([])
 const loading = ref(true)
@@ -50,32 +50,6 @@ watch(banners, () => {
   startSlideTimer()
 })
 
-function normalizeProduct(p) {
-  return {
-    id: p.slugified_name || p.id,
-    uuid: p.id,
-    name: p.name,
-    category: p.categories?.[0]?.category?.slugified_name || 'uncategorized',
-    price: parseFloat(p.price_range || '0'),
-    image: resolveImage(p.main_image),
-    description: stripHtml(p.description || ''),
-    createdAt: p.created_at || p.date_created || null,
-    rating: 4.5,
-    stock: Math.max(0, Number(p.remaining_stock ?? p.stock ?? p.quantity ?? 0) || 0),
-    specs: (p.sections || []).flatMap(s => (s.items || []).map(i => `${i.name}: ${i.value}`)),
-  }
-}
-
-function stripHtml(html) {
-  const d = document.createElement('div')
-  d.innerHTML = html
-  return d.textContent || d.innerText || ''
-}
-
-function pick(arr) {
-  return Array.isArray(arr) ? arr : (arr?.results || [])
-}
-
 onMounted(async () => {
   try {
     const { api } = await import('../utils/api')
@@ -94,7 +68,7 @@ onMounted(async () => {
         products.value = items.map(normalizeProduct)
       }
     } else {
-      console.warn('Osimart products fetch failed, keeping local fallback data')
+      console.warn('Osimart products fetch failed')
     }
     if (bannerRes.status === 'fulfilled') {
       banners.value = pick(bannerRes.value)
@@ -115,6 +89,12 @@ onMounted(async () => {
     if (catRes.status === 'fulfilled') {
       categories.value = pick(catRes.value)
     }
+    const counts = {}
+    for (const p of products.value) {
+      const cat = p.category
+      counts[cat] = (counts[cat] || 0) + 1
+    }
+    categoryCounts.value = counts
     if (brandRes.status === 'fulfilled') {
       brands.value = pick(brandRes.value)
     }
@@ -205,6 +185,7 @@ const showAllOther = ref(false)
 
 const showcaseItems = ref([])
 const showcaseIndex = ref(0)
+const currentShowcase = computed(() => showcaseItems.value[showcaseIndex.value] || null)
 let showcaseTimer = null
 
 function buildShowcase() {
@@ -239,7 +220,7 @@ function addBundleToCart(bundle) {
 }
 
 function quickAdd(product) {
-  addItem({ id: product.id, name: product.name, price: product.price })
+  addItem({ id: product.id, uuid: product.uuid, name: product.name, price: product.price })
 }
 </script>
 
@@ -337,7 +318,7 @@ function quickAdd(product) {
         >
           <span class="text-lg">{{ c.icon || '📦' }}</span>
           <span class="text-sm text-slate-300 group-hover:text-white font-medium">{{ c.name }}</span>
-          <span class="text-xs text-slate-600">({{ c.product_count || c.products_count || 0 }})</span>
+          <span class="text-xs text-slate-600">({{ categoryCounts[c.slugified_name] || categoryCounts[c.name] || c.product_count || c.products_count || 0 }})</span>
         </router-link>
       </div>
     </section>

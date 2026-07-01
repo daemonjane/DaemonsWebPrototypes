@@ -104,6 +104,12 @@ async function placeOrder() {
       address: form.address,
       gift_card_code: giftCardApplied.value ? giftCardCode.value : '',
       gift_card_discount: giftCardApplied.value ? giftCardDiscount.value : null,
+      items: cart.value.map(i => ({
+        name: i.name,
+        price: i.price,
+        quantity: i.quantity,
+        item_type: i.type || 'product',
+      })),
     })
     await clearCart()
     addToast('Order placed successfully!', 3000, 'success')

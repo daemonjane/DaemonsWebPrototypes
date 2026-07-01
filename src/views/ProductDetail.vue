@@ -7,6 +7,7 @@ import { useFavorites } from '../composables/useFavorites'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import ProductCard from '../components/ProductCard.vue'
+import { normalizeProductDetail } from '../utils/product'
 import { resolveImage } from '../utils/images'
 
 const route = useRoute()
@@ -20,59 +21,17 @@ const selectedAddons = ref([])
 const quantity = ref(1)
 const selectedImage = ref(0)
 const relatedProducts = ref([])
-const fallbackMatch = ref(null)
-
 const { addItem } = useCart()
-
-function normalizeProduct(p) {
-  const images = []
-  if (p.main_image) images.push(p.main_image)
-  if (p.images) { for (const img of (Array.isArray(p.images) ? p.images : [])) { if (img !== p.main_image) images.push(img) } }
-  if (p.gallery) { for (const img of (Array.isArray(p.gallery) ? p.gallery : [])) { if (!images.includes(img)) images.push(img) } }
-
-  return {
-    id: p.slugified_name || p.id,
-    uuid: p.id,
-    name: p.name,
-    category: p.categories?.[0]?.category?.slugified_name || 'uncategorized',
-    categoryName: p.categories?.[0]?.category?.name || 'Uncategorized',
-    brand: p.brand || null,
-    collections: Array.isArray(p.collections) ? p.collections : [],
-    price: parseFloat(p.price_range || '0'),
-    image: resolveImage(p.main_image),
-    images,
-    description: p.description || '',
-    rating: p.rating || 4.5,
-    stock: p.remaining_stock ?? p.stock ?? 0,
-    sections: Array.isArray(p.sections) ? p.sections : [],
-    variants: Array.isArray(p.variants) ? p.variants : [],
-  }
-}
 
 async function fetchProduct() {
   try {
     const { api } = await import('../utils/api')
     const data = await api.osimart.productDetail(productId)
     if (data) {
-      product.value = normalizeProduct(data)
-      return
+      product.value = normalizeProductDetail(data)
     }
   } catch (e) {
-    console.warn('Osimart product fetch failed, checking local fallback', e)
-  }
-  const { products } = await import('../data/products')
-  const match = products.find(p => p.id === productId || p.uuid === productId || p.slugified_name === productId || p.name?.toLowerCase().replace(/\s+/g, '-') === productId)
-  if (match) {
-    fallbackMatch.value = match
-    product.value = {
-      ...match,
-      uuid: match.uuid || match.id,
-      images: [], sections: [], variants: [],
-      brand: match.brand || null,
-      collections: match.collections || [],
-      categoryName: match.categoryName || match.category || 'Uncategorized',
-      stock: match.stock ?? 0,
-    }
+    console.warn('Osimart product fetch failed', e)
   }
 }
 
@@ -92,7 +51,7 @@ async function fetchRelated() {
     const data = await api.osimart.products({ limit: 8, category: product.value?.category })
       const items = data.results || data || []
       if (product.value?.uuid) {
-        relatedProducts.value = items.filter(p => p.id !== product.value.uuid && p.slugified_name !== product.value.id).slice(0, 4).map(normalizeProduct)
+        relatedProducts.value = items.filter(p => p.id !== product.value.uuid && p.slugified_name !== product.value.id).slice(0, 4).map(normalizeProductDetail)
       }
   } catch {
     relatedProducts.value = []

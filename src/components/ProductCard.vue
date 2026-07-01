@@ -4,14 +4,13 @@
  * quick-view modal trigger, favorites toggle, and add-to-cart.
  *
  * @component
- * @prop {Object} product - The product data object from products.js
+ * @prop {Object} product - The product data object
  * @prop {boolean} [showFull=false] - If true, shows specs + quantity selector on hover
  */
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useFavorites } from '../composables/useFavorites'
-import { products } from '../data/products'
 import QuickViewModal from './QuickViewModal.vue'
 
 const props = defineProps({
@@ -31,9 +30,9 @@ const badge = computed(() => {
 })
 
 const categoryAvgPrices = {
-  desktop: products.filter(p => p.category === 'desktop').reduce((s, p) => s + p.price, 0) / Math.max(1, products.filter(p => p.category === 'desktop').length),
-  monitors: products.filter(p => p.category === 'monitors').reduce((s, p) => s + p.price, 0) / Math.max(1, products.filter(p => p.category === 'monitors').length),
-  peripherals: products.filter(p => p.category === 'peripherals').reduce((s, p) => s + p.price, 0) / Math.max(1, products.filter(p => p.category === 'peripherals').length),
+  'laptops-desktops': 1800,
+  'monitors-displays': 800,
+  peripherals: 120,
 }
 const priceCompare = computed(() => {
   const avg = categoryAvgPrices[props.product.category]
@@ -47,9 +46,8 @@ const priceCompare = computed(() => {
 const stockLevel = computed(() => {
   const s = Number(props.product.stock ?? 0)
   if (s === 0) return { level: 'out', label: 'Out of Stock', dot: 'bg-red-500', bar: 'w-0 bg-red-500' }
-  if (s <= 5) return { level: 'low', label: 'Low Stock', dot: 'bg-amber-400', bar: 'w-1/3 bg-amber-400' }
-  if (s <= 20) return { level: 'medium', label: `${s} in stock`, dot: 'bg-yellow-500', bar: 'w-2/3 bg-yellow-500' }
-  return { level: 'full', label: 'In Stock', dot: 'bg-emerald-400', bar: 'w-full bg-emerald-400' }
+  if (s <= 5) return { level: 'low', label: `Only ${s} left`, dot: 'bg-amber-400', bar: 'w-1/3 bg-amber-400' }
+  return { level: 'full', label: `${s} in stock`, dot: 'bg-emerald-400', bar: 'w-full bg-emerald-400' }
 })
 const { toggle: toggleFavorite, isFavorite } = useFavorites()
 const router = useRouter()
@@ -62,7 +60,7 @@ function decrement() { if (quantity.value > 1) quantity.value-- }
 
 function handleAddToCart() {
   addingToCart.value = true
-  addItem({ id: props.product.id, name: props.product.name, price: props.product.price }, quantity.value)
+  addItem({ id: props.product.id, uuid: props.product.uuid, name: props.product.name, price: props.product.price }, quantity.value)
   setTimeout(() => { addingToCart.value = false }, 600)
   quantity.value = 1
 }

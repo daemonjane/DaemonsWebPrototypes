@@ -144,6 +144,42 @@ class OsimartClient:
             raise OsimartError(f"Osimart API error: {e}") from e
 
     # ------------------------------------------------------------------
+    # Cart (store-level APIs — different base from dashboard)
+    # ------------------------------------------------------------------
+    def _store_api_url(self, path):
+        return f"{self.BASE_URL}/store/apis/{path.lstrip('/')}"
+
+    def get_cart(self, params=None):
+        url = self._store_api_url("cart/view")
+        params = dict(params or {})
+        params.setdefault("store", self.store_id)
+        try:
+            resp = requests.get(url, params=params, headers=self._get_headers(), timeout=self.timeout)
+            if resp.status_code == 401:
+                self._access_token = None
+                resp = requests.get(url, params=params, headers=self._get_headers(), timeout=self.timeout)
+            resp.raise_for_status()
+            return resp.json()
+        except requests.RequestException as e:
+            raise OsimartError(f"Osimart cart error: {e}") from e
+
+    def update_cart_item(self, item_id, action, data=None):
+        url = self._store_api_url("cart/update-item/")
+        payload = dict(data or {})
+        payload.setdefault("store", self.store_id)
+        payload["item_id"] = item_id
+        payload["action"] = action
+        try:
+            resp = requests.post(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            if resp.status_code == 401:
+                self._access_token = None
+                resp = requests.post(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            resp.raise_for_status()
+            return resp.json()
+        except requests.RequestException as e:
+            raise OsimartError(f"Osimart cart error: {e}") from e
+
+    # ------------------------------------------------------------------
     # Image helpers
     # ------------------------------------------------------------------
     def image_url(self, path):
@@ -281,3 +317,39 @@ class OsimartClient:
 
     def update_store(self, data):
         return self._put(f"stores/{self.store_id}/", data)
+
+    # ------------------------------------------------------------------
+    # Shipping zones
+    # ------------------------------------------------------------------
+    def get_shipping_zones(self, params=None):
+        return self._get("shipping-zones/", params)
+
+    def get_shipping_zone(self, zone_id, params=None):
+        return self._get(f"shipping-zones/{zone_id}/", params)
+
+    def create_shipping_zone(self, data):
+        return self._post("shipping-zones/", data)
+
+    def update_shipping_zone(self, zone_id, data):
+        return self._put(f"shipping-zones/{zone_id}/", data)
+
+    def delete_shipping_zone(self, zone_id):
+        return self._delete(f"shipping-zones/{zone_id}/")
+
+    # ------------------------------------------------------------------
+    # Order status choices (status definitions)
+    # ------------------------------------------------------------------
+    def get_order_status_choices(self, params=None):
+        return self._get("order-status-choices/", params)
+
+    def get_order_status_choice(self, status_id, params=None):
+        return self._get(f"order-status-choices/{status_id}/", params)
+
+    def create_order_status_choice(self, data):
+        return self._post("order-status-choices/", data)
+
+    def update_order_status_choice(self, status_id, data):
+        return self._put(f"order-status-choices/{status_id}/", data)
+
+    def delete_order_status_choice(self, status_id):
+        return self._delete(f"order-status-choices/{status_id}/")

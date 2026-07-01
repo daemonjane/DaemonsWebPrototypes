@@ -28,7 +28,6 @@ urlpatterns = [
     path('orders/<int:pk>/tracking/', views.order_tracking, name='order-tracking'),
     path('orders/checkout/', views.order_checkout, name='order-checkout'),
     path('products/<slug:slug>/addons/', views.product_addons, name='product-addons'),
-    path('products/search/', views.product_search, name='product-search'),
     path('version/', views.api_version, name='api-version'),
     path('newsletter/subscribe/', views.newsletter_subscribe, name='api-newsletter-subscribe'),
 
@@ -51,4 +50,10 @@ urlpatterns = [
     path('osimart/announcement-bars/<str:ann_id>/', views_osimart.osimart_announcement_bar_detail, name='osimart-announcement-bar-detail'),
     path('osimart/customers/', views_osimart.osimart_customers, name='osimart-customers'),
     path('osimart/medias/', views_osimart.osimart_medias, name='osimart-medias'),
+    path('osimart/shipping-zones/', views_osimart.osimart_shipping_zones, name='osimart-shipping-zones'),
+    path('osimart/shipping-zones/<str:zone_id>/', views_osimart.osimart_shipping_zone_detail, name='osimart-shipping-zone-detail'),
+    path('osimart/order-status-choices/', views_osimart.osimart_order_status_choices, name='osimart-order-status-choices'),
+    path('osimart/order-status-choices/<str:status_id>/', views_osimart.osimart_order_status_choice_detail, name='osimart-order-status-choice-detail'),
+    path('osimart/cart/view/', views_osimart.osimart_cart_view, name='osimart-cart-view'),
+    path('osimart/cart/update-item/', views_osimart.osimart_cart_update_item, name='osimart-cart-update-item'),
 ]

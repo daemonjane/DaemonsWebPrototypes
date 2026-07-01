@@ -67,7 +67,7 @@ function handleBackdropClick(e) {
 
 function handleAddToCart() {
   if (!props.product) return
-  addItem({ id: props.product.id, name: props.product.name, price: props.product.price }, quantity.value)
+  addItem({ id: props.product.id, uuid: props.product.uuid, name: props.product.name, price: props.product.price }, quantity.value)
   quantity.value = 1
 }
 </script>

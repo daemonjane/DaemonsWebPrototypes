@@ -1,4 +1,9 @@
-from rest_framework.decorators import api_view
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET, require_POST
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from services.osimart import OsimartClient, OsimartError
@@ -192,3 +197,75 @@ def osimart_medias(request):
     if request.method == "GET":
         return _proxy_get("get_medias", request)
     return _proxy_write("create_media", request.data)
+
+
+# ---------------------------------------------------------------------------
+# Shipping zones
+# ---------------------------------------------------------------------------
+@api_view(["GET", "POST"])
+def osimart_shipping_zones(request):
+    if request.method == "GET":
+        return _proxy_get("get_shipping_zones", request)
+    return _proxy_write("create_shipping_zone", request.data)
+
+
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+def osimart_shipping_zone_detail(request, zone_id):
+    if request.method == "GET":
+        return _proxy_get("get_shipping_zone", request, 0, zone_id)
+    if request.method == "DELETE":
+        return _proxy_write("delete_shipping_zone", zone_id)
+    return _proxy_write("update_shipping_zone", zone_id, request.data)
+
+
+# ---------------------------------------------------------------------------
+# Order status choices (status definitions)
+# ---------------------------------------------------------------------------
+@api_view(["GET", "POST"])
+def osimart_order_status_choices(request):
+    if request.method == "GET":
+        return _proxy_get("get_order_status_choices", request)
+    return _proxy_write("create_order_status_choice", request.data)
+
+
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+def osimart_order_status_choice_detail(request, status_id):
+    if request.method == "GET":
+        return _proxy_get("get_order_status_choice", request, 0, status_id)
+    if request.method == "DELETE":
+        return _proxy_write("delete_order_status_choice", status_id)
+    return _proxy_write("update_order_status_choice", status_id, request.data)
+
+
+# ---------------------------------------------------------------------------
+# Osimart Cart (store-level APIs)
+# ---------------------------------------------------------------------------
+@csrf_exempt
+@require_GET
+def osimart_cart_view(request):
+    try:
+        client = _get_client()
+        data = client.get_cart()
+        return JsonResponse(data, safe=False)
+    except OsimartError as e:
+        return JsonResponse({"error": str(e)}, status=502)
+
+
+@csrf_exempt
+@require_POST
+def osimart_cart_update_item(request):
+    import json
+    try:
+        body = json.loads(request.body) if request.body else {}
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON."}, status=400)
+    try:
+        client = _get_client()
+        item_id = body.get("item_id")
+        action = body.get("action")
+        if not item_id or not action:
+            return JsonResponse({"error": "item_id and action are required."}, status=400)
+        data = client.update_cart_item(item_id, action, body)
+        return JsonResponse(data, safe=False)
+    except OsimartError as e:
+        return JsonResponse({"error": str(e)}, status=502)

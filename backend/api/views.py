@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Cart, CartItem, Order, OrderItem, OrderTracking, Product, ProductAddon, TrackingHistory, Wishlist
+from .models import Cart, CartItem, Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
 from .serializers import CartSerializer, OrderSerializer
 from website.models import UserProfile
 
@@ -174,32 +174,15 @@ def cart_add(request):
 
     data = request.data
     cart = _get_cart(request.user)
-    product_slug = data.get("product_slug")
     item_type = data.get("item_type", "product")
     name = data.get("name", "")
     price = data.get("price", 0)
     quantity = int(data.get("quantity", 1))
     image = data.get("image", "")
 
-    product = None
-    if item_type == "product" and product_slug:
-        try:
-            product = Product.objects.get(slug=product_slug)
-            name = product.name
-            price = float(product.price)
-            image = product.image
-        except Product.DoesNotExist:
-            return Response({"error": "Product not found."}, status=404)
-    elif item_type == "addon" and product_slug:
-        try:
-            product = Product.objects.get(slug=product_slug)
-        except Product.DoesNotExist:
-            return Response({"error": "Product not found."}, status=404)
-
     existing = cart.items.filter(
         item_type=item_type,
         name=name,
-        product=product,
     ).first()
 
     if existing and item_type == "addon":
@@ -211,7 +194,6 @@ def cart_add(request):
     else:
         CartItem.objects.create(
             cart=cart,
-            product=product,
             name=name,
             price=price,
             quantity=quantity,
@@ -273,30 +255,19 @@ def cart_merge(request):
     local_items = data.get("items", [])
 
     for local in local_items:
-        product_slug = local.get("product_slug") or local.get("id")
         item_type = local.get("item_type") or local.get("type", "product")
         name = local.get("name", "")
         price = local.get("price", 0)
         quantity = int(local.get("quantity", 1))
         image = local.get("image", "")
 
-        product = None
-        if item_type == "product" and product_slug:
-            try:
-                product = Product.objects.get(slug=product_slug)
-                name = product.name
-                price = float(product.price)
-                image = product.image
-            except Product.DoesNotExist:
-                continue
-
-        existing = cart.items.filter(item_type=item_type, name=name, product=product).first()
+        existing = cart.items.filter(item_type=item_type, name=name).first()
         if existing:
             existing.quantity += quantity
             existing.save()
         else:
             CartItem.objects.create(
-                cart=cart, product=product, name=name, price=price,
+                cart=cart, name=name, price=price,
                 quantity=quantity, image=image, item_type=item_type,
             )
 
@@ -318,8 +289,7 @@ def wishlist_get(request):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     wishlist = _get_wishlist(request.user)
-    slugs = list(wishlist.products.values_list("slug", flat=True))
-    return Response({"product_slugs": slugs})
+    return Response({"product_slugs": wishlist.product_slugs})
 
 
 @api_view(['POST'])
@@ -332,19 +302,17 @@ def wishlist_toggle(request):
     if not slug:
         return Response({"error": "slug is required."}, status=400)
 
-    product = Product.objects.filter(slug=slug).first()
-    if not product:
-        return Response({"error": "Product not found."}, status=404)
-
     wishlist = _get_wishlist(request.user)
-    if wishlist.products.filter(slug=slug).exists():
-        wishlist.products.remove(product)
+    slugs = list(wishlist.product_slugs)
+    if slug in slugs:
+        slugs.remove(slug)
         added = False
     else:
-        wishlist.products.add(product)
+        slugs.append(slug)
         added = True
 
-    slugs = list(wishlist.products.values_list("slug", flat=True))
+    wishlist.product_slugs = slugs
+    wishlist.save(update_fields=["product_slugs"])
     return Response({"added": added, "product_slugs": slugs})
 
 
@@ -353,7 +321,7 @@ def wishlist_check(request, slug):
     if not request.user.is_authenticated:
         return Response({"error": "Not authenticated."}, status=401)
     wishlist = _get_wishlist(request.user)
-    return Response({"is_favorite": wishlist.products.filter(slug=slug).exists()})
+    return Response({"is_favorite": slug in wishlist.product_slugs})
 
 
 # ---------------------------------------------------------------------------
@@ -410,17 +378,27 @@ def order_checkout(request):
         gift_card_discount=gift_card_discount,
     )
 
-    for cart_item in cart_items:
-        OrderItem.objects.create(
-            order=order,
-            product=cart_item.product,
-            name=cart_item.name,
-            price=cart_item.price,
-            quantity=cart_item.quantity,
-            item_type=cart_item.item_type,
-        )
-
-    cart_items.delete()
+    items_data = data.get("items")
+    if items_data:
+        for item_data in items_data:
+            OrderItem.objects.create(
+                order=order,
+                name=item_data.get("name", ""),
+                price=item_data.get("price", 0),
+                quantity=item_data.get("quantity", 1),
+                item_type=item_data.get("item_type", "product"),
+            )
+    else:
+        for cart_item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=cart_item.product,
+                name=cart_item.name,
+                price=cart_item.price,
+                quantity=cart_item.quantity,
+                item_type=cart_item.item_type,
+            )
+        cart_items.delete()
 
     serializer = OrderSerializer(order)
     return Response(serializer.data, status=201)
@@ -471,12 +449,7 @@ def order_tracking(request, pk):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def product_addons(request, slug):
-    try:
-        product = Product.objects.get(slug=slug)
-    except Product.DoesNotExist:
-        return Response({"error": "Product not found."}, status=404)
-
-    addons = product.addons.filter(is_available=True)
+    addons = ProductAddon.objects.filter(product_slug=slug, is_available=True)
     data = [
         {
             "id": a.pk,
@@ -488,45 +461,6 @@ def product_addons(request, slug):
         for a in addons
     ]
     return Response({"addons": data})
-
-
-# ---------------------------------------------------------------------------
-# Products / Search
-# ---------------------------------------------------------------------------
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def product_search(request):
-    q = request.GET.get("q", "").strip()
-    category_slug = request.GET.get("category", "").strip()
-
-    products = Product.objects.select_related("category").all()
-    if q:
-        products = products.filter(
-            db_models.Q(name__icontains=q)
-            | db_models.Q(description__icontains=q)
-        )
-    if category_slug:
-        products = products.filter(category__slug=category_slug)
-
-    products = products.order_by("name")[:50]
-
-    data = [
-        {
-            "slug": p.slug,
-            "name": p.name,
-            "price": float(p.price),
-            "image": p.image,
-            "category": p.category.name,
-            "category_slug": p.category.slug,
-            "rating": p.rating,
-            "stock": p.stock,
-            "description": p.description[:200] if p.description else "",
-        }
-        for p in products
-    ]
-
-    return Response({"results": data, "count": len(data)})
 
 @api_view(['GET'])
 @permission_classes([AllowAny])

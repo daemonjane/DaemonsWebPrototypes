@@ -5,7 +5,8 @@ import ProductCard from '../components/ProductCard.vue'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 import EmptyState from '../components/EmptyState.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
-import { resolveImage } from '../utils/images'
+import { normalizeProduct, pick } from '../utils/product'
+
 const route = useRoute()
 
 const products = ref([])
@@ -19,7 +20,8 @@ onMounted(async () => {
       api.osimart.products({ limit: 50 }),
       api.osimart.categories(),
     ])
-    products.value = (prodRes.results || prodRes || []).map(normalizeProduct)
+    const items = pick(prodRes)
+    products.value = items.map(normalizeProduct)
     categories.value = Array.isArray(catRes) ? catRes : (catRes.results || [])
     if (route.query.category) {
       currentFilter.value = route.query.category
@@ -36,31 +38,6 @@ onMounted(async () => {
     loading.value = false
   }
 })
-
-function normalizeProduct(p) {
-  return {
-    id: p.slugified_name || p.id,
-    uuid: p.id,
-    name: p.name,
-    category: p.categories?.[0]?.category?.slugified_name || 'uncategorized',
-    brand: p.brand?.slugified_name || p.brand?.name || null,
-    collection: p.collections?.[0]?.slugified_name || p.collections?.[0]?.name || null,
-    price: parseFloat(p.price_range || '0'),
-    image: resolveImage(p.main_image),
-    description: stripHtml(p.description || ''),
-    rating: 4.5,
-    stock: p.remaining_stock ?? p.stock ?? 0,
-    specs: [],
-    badge: null,
-    badgeColor: null,
-  }
-}
-
-function stripHtml(html) {
-  const d = document.createElement('div')
-  d.innerHTML = html
-  return d.textContent || d.innerText || ''
-}
 
 const currentFilter = ref('all')
 const currentBrand = ref(null)

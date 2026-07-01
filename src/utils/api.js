@@ -32,6 +32,10 @@ export async function ensureCSRF() {
 }
 
 export const api = {
+  osimartCart: {
+    view: () => request('GET', '/api/osimart/cart/view/'),
+    updateItem: (data) => request('POST', '/api/osimart/cart/update-item/', data),
+  },
   register: (username, email, password) => request('POST', '/api/auth/register/', { username, email, password }),
   login: (username, password) => request('POST', '/api/auth/login/', { username, password }),
   logout: () => request('POST', '/api/auth/logout/'),
@@ -100,6 +104,14 @@ export const api = {
     customers: () => request('GET', '/api/osimart/customers/'),
     medias: () => request('GET', '/api/osimart/medias/'),
     createMedia: (data) => request('POST', '/api/osimart/medias/', data),
+    shippingZones: () => request('GET', '/api/osimart/shipping-zones/'),
+    createShippingZone: (data) => request('POST', '/api/osimart/shipping-zones/', data),
+    updateShippingZone: (id, data) => request('PUT', `/api/osimart/shipping-zones/${id}/`, data),
+    deleteShippingZone: (id) => request('DELETE', `/api/osimart/shipping-zones/${id}/`),
+    orderStatusChoices: () => request('GET', '/api/osimart/order-status-choices/'),
+    createOrderStatusChoice: (data) => request('POST', '/api/osimart/order-status-choices/', data),
+    updateOrderStatusChoice: (id, data) => request('PUT', `/api/osimart/order-status-choices/${id}/`, data),
+    deleteOrderStatusChoice: (id) => request('DELETE', `/api/osimart/order-status-choices/${id}/`),
   },
   search: (query, category = '') => {
     const params = new URLSearchParams()

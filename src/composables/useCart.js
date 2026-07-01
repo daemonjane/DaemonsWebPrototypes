@@ -5,51 +5,47 @@ const STORAGE_KEY = 'techstore_cart'
 let stored
 try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') } catch { stored = [] }
 const localCart = ref(stored)
-const serverCart = ref({ items: [], total_price: 0, total_items: 0 })
+const serverCart = ref(null)
 let useServer = false
 
 watch(localCart, (newVal) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(newVal))
 }, { deep: true })
 
-function serverToLocal(server) {
-  return (server.items || []).map(item => ({
-    id: item.product_slug || `item-${item.id}`,
-    name: item.name,
-    price: item.price,
-    quantity: item.quantity,
-    image: item.product_image || item.image,
-    type: item.item_type,
+function osimartItemToLocal(item) {
+  return {
+    id: item.item_id || item.product_id || item.id || `item-${Date.now()}`,
     _serverId: item.id,
-  }))
-}
-
-function localToServer(local) {
-  return local.map(item => ({
-    product_slug: item.type === 'product' ? item.id : undefined,
-    name: item.name,
-    price: item.price,
-    quantity: item.quantity,
-    image: item.image || '',
-    item_type: item.type || 'product',
-  }))
+    name: item.name || item.product_name || '',
+    price: parseFloat(item.price || item.unit_price || 0),
+    quantity: item.quantity || 1,
+    image: item.image || item.product_image || '',
+    type: item.item_type || item.type || 'product',
+  }
 }
 
 export function useCart() {
   const { addToast } = useToast()
 
   const cart = computed(() => {
-    if (useServer) return serverToLocal(serverCart.value)
+    if (useServer && serverCart.value) {
+      const raw = serverCart.value.items || serverCart.value.products || serverCart.value || []
+      return Array.isArray(raw) ? raw.map(osimartItemToLocal) : []
+    }
     return localCart.value
   })
 
   const totalItems = computed(() => {
-    if (useServer) return serverCart.value.total_items || 0
+    if (useServer && serverCart.value) {
+      return serverCart.value.total_items ?? serverCart.value.total_quantity ?? cart.value.reduce((s, i) => s + i.quantity, 0)
+    }
     return localCart.value.reduce((sum, item) => sum + item.quantity, 0)
   })
 
   const totalPrice = computed(() => {
-    if (useServer) return serverCart.value.total_price || 0
+    if (useServer && serverCart.value) {
+      return parseFloat(serverCart.value.total_price ?? serverCart.value.total ?? 0)
+    }
     return localCart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
   })
 
@@ -62,7 +58,7 @@ export function useCart() {
         return
       }
       const { api } = await import('../utils/api')
-      const data = await api.cart.get()
+      const data = await api.osimartCart.view()
       serverCart.value = data
       useServer = true
     } catch {
@@ -74,7 +70,7 @@ export function useCart() {
     if (!useServer) return
     try {
       const { api } = await import('../utils/api')
-      serverCart.value = await api.cart.get()
+      serverCart.value = await api.osimartCart.view()
     } catch {
       useServer = false
     }
@@ -84,12 +80,14 @@ export function useCart() {
     if (useServer) {
       try {
         const { api } = await import('../utils/api')
-        serverCart.value = await api.cart.add({
-          product_slug: product.id,
+        serverCart.value = await api.osimartCart.updateItem({
+          item_id: product.variantId || product.uuid || product.id,
+          action: 'add',
           quantity,
           name: product.name,
           price: product.price,
           image: product.image || '',
+          item_type: product.type || 'product',
         })
         addToast(`Added ${product.name} to cart`, 3000, 'success')
       } catch (e) {
@@ -113,13 +111,19 @@ export function useCart() {
         const item = cart.value.find(p => p.id === productId)
         if (!item) return
         const newQty = item.quantity + delta
+        const { api } = await import('../utils/api')
         if (newQty <= 0) {
-          const { api } = await import('../utils/api')
-          serverCart.value = await api.cart.removeItem(item._serverId)
+          serverCart.value = await api.osimartCart.updateItem({
+            item_id: item._serverId || productId,
+            action: 'remove',
+          })
           addToast('Removed from cart', 3000, 'error')
         } else {
-          const { api } = await import('../utils/api')
-          serverCart.value = await api.cart.updateItem(item._serverId, { quantity: newQty })
+          serverCart.value = await api.osimartCart.updateItem({
+            item_id: item._serverId || productId,
+            action: 'update_quantity',
+            quantity: newQty,
+          })
           addToast(`Updated quantity (${newQty})`, 3000, 'success')
         }
       } catch (e) {
@@ -144,7 +148,10 @@ export function useCart() {
         const item = cart.value.find(p => p.id === productId)
         if (!item) return
         const { api } = await import('../utils/api')
-        serverCart.value = await api.cart.removeItem(item._serverId)
+        serverCart.value = await api.osimartCart.updateItem({
+          item_id: item._serverId || productId,
+          action: 'remove',
+        })
         addToast('Removed from cart', 3000, 'error')
       } catch (e) {
         addToast(e.message, 3000, 'error')
@@ -158,8 +165,16 @@ export function useCart() {
   async function clearCart() {
     if (useServer) {
       try {
+        const items = cart.value
         const { api } = await import('../utils/api')
-        serverCart.value = await api.cart.clear()
+        for (const item of items) {
+          await api.osimartCart.updateItem({
+            item_id: item._serverId || item.id,
+            action: 'remove',
+          })
+        }
+        serverCart.value = await api.osimartCart.view()
+        addToast('Cart cleared', 2000, 'success')
       } catch (e) {
         addToast(e.message, 3000, 'error')
       }
@@ -170,32 +185,15 @@ export function useCart() {
   }
 
   async function addUpgrade(id, name, price) {
-    if (useServer) {
-      try {
-        const { api } = await import('../utils/api')
-        serverCart.value = await api.cart.add({ name, price, item_type: 'upgrade', quantity: 1 })
-        addToast(`Added ${name}`, 3000, 'success')
-      } catch (e) {
-        addToast(e.message, 3000, 'error')
-      }
-      return
-    }
-    localCart.value = localCart.value.filter(item => item.id !== id)
-    localCart.value.push({ id, name, price, quantity: 1, type: 'upgrade' })
-    addToast(`Added ${name}`, 3000, 'success')
+    const item = { id, name, price, quantity: 1, type: 'upgrade' }
+    await addItem(item)
   }
 
   async function removeUpgrade(id, name) {
     if (useServer) {
       const item = cart.value.find(p => p.id === id)
-      if (item && item._serverId) {
-        try {
-          const { api } = await import('../utils/api')
-          serverCart.value = await api.cart.removeItem(item._serverId)
-        } catch {
-          // ignore
-        }
-      }
+      if (!item) return
+      await removeItem(item._serverId || id)
       return
     }
     localCart.value = localCart.value.filter(item => item.id !== id)
@@ -208,12 +206,22 @@ export function useCart() {
         const { api } = await import('../utils/api')
         const itemsToRemove = cart.value.filter(i => i.type === 'membership')
         for (const item of itemsToRemove) {
-          if (item._serverId) await api.cart.removeItem(item._serverId)
+          await api.osimartCart.updateItem({
+            item_id: item._serverId || item.id,
+            action: 'remove',
+          })
         }
         if (type) {
-          serverCart.value = await api.cart.add({ name, price, item_type: 'membership', quantity: 1 })
+          serverCart.value = await api.osimartCart.updateItem({
+            item_id: `membership-${type}`,
+            action: 'add',
+            name,
+            price,
+            quantity: 1,
+            item_type: 'membership',
+          })
         } else {
-          serverCart.value = await api.cart.get()
+          serverCart.value = await api.osimartCart.view()
         }
         addToast(type ? `Selected ${name}` : 'Membership removed', 3000, 'success')
       } catch (e) {
@@ -230,10 +238,24 @@ export function useCart() {
 
   async function mergeLocalIntoServer() {
     const items = localCart.value
-    if (items.length === 0) return
+    if (items.length === 0) {
+      useServer = true
+      return
+    }
     try {
       const { api } = await import('../utils/api')
-      serverCart.value = await api.cart.merge(items)
+      for (const item of items) {
+        await api.osimartCart.updateItem({
+          item_id: item.id,
+          action: 'add',
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image || '',
+          item_type: item.type || 'product',
+        })
+      }
+      serverCart.value = await api.osimartCart.view()
       localCart.value = []
       useServer = true
     } catch {
