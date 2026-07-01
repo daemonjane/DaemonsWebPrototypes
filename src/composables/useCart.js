@@ -1,4 +1,5 @@
 import { ref, computed, watch } from 'vue'
+import { resolveImage } from '../utils/images'
 import { useToast } from './useToast'
 
 const STORAGE_KEY = 'techstore_cart'
@@ -19,7 +20,7 @@ function osimartItemToLocal(item) {
     name: item.name || item.product_name || '',
     price: parseFloat(item.price || item.unit_price || 0),
     quantity: item.quantity || 1,
-    image: item.image || item.product_image || '',
+    image: resolveImage(item.image) || resolveImage(item.product_image) || '',
     type: item.item_type || item.type || 'product',
   }
 }
