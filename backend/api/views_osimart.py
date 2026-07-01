@@ -2,11 +2,22 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from services.osimart import OsimartClient, OsimartError
+
+
+def osimart_api_view(methods):
+    """Like @api_view but csrf_exempt + no auth — for osimart proxy views."""
+    def decorator(func):
+        func = permission_classes([AllowAny])(func)
+        func = authentication_classes([])(func)
+        func = api_view(methods)(func)
+        func._csrf_exempt = True
+        return func
+    return decorator
 
 
 def _get_client():
@@ -39,12 +50,12 @@ def _proxy_write(method_name, *args):
 # ---------------------------------------------------------------------------
 # Banners
 # ---------------------------------------------------------------------------
-@api_view(["GET"])
+@osimart_api_view(["GET"])
 def osimart_banners(request):
     return _proxy_get("get_banners", request)
 
 
-@api_view(["PUT", "DELETE"])
+@osimart_api_view(["PUT", "DELETE"])
 def osimart_banner_detail(request, banner_id):
     if request.method == "DELETE":
         return _proxy_write("delete_banner", banner_id)
@@ -54,14 +65,14 @@ def osimart_banner_detail(request, banner_id):
 # ---------------------------------------------------------------------------
 # Products
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_products(request):
     if request.method == "GET":
         return _proxy_get("get_products", request)
     return _proxy_write("create_product", request.data)
 
 
-@api_view(["GET", "PUT", "PATCH", "DELETE"])
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_product_detail(request, product_id):
     if request.method == "GET":
         return _proxy_get("get_product", request, 0, product_id)
@@ -73,14 +84,14 @@ def osimart_product_detail(request, product_id):
 # ---------------------------------------------------------------------------
 # Categories
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_categories(request):
     if request.method == "GET":
         return _proxy_get("get_categories", request)
     return _proxy_write("create_category", request.data)
 
 
-@api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["PUT", "PATCH", "DELETE"])
 def osimart_category_detail(request, category_id):
     if request.method == "DELETE":
         return _proxy_write("delete_category", category_id)
@@ -90,14 +101,14 @@ def osimart_category_detail(request, category_id):
 # ---------------------------------------------------------------------------
 # Brands
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_brands(request):
     if request.method == "GET":
         return _proxy_get("get_brands", request)
     return _proxy_write("create_brand", request.data)
 
 
-@api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["PUT", "PATCH", "DELETE"])
 def osimart_brand_detail(request, brand_id):
     if request.method == "DELETE":
         return _proxy_write("delete_brand", brand_id)
@@ -107,14 +118,14 @@ def osimart_brand_detail(request, brand_id):
 # ---------------------------------------------------------------------------
 # Collections
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_collections(request):
     if request.method == "GET":
         return _proxy_get("get_collections", request)
     return _proxy_write("create_collection", request.data)
 
 
-@api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["PUT", "PATCH", "DELETE"])
 def osimart_collection_detail(request, collection_id):
     if request.method == "DELETE":
         return _proxy_write("delete_collection", collection_id)
@@ -124,7 +135,7 @@ def osimart_collection_detail(request, collection_id):
 # ---------------------------------------------------------------------------
 # Store
 # ---------------------------------------------------------------------------
-@api_view(["GET", "PUT"])
+@osimart_api_view(["GET", "PUT"])
 def osimart_store(request):
     if request.method == "GET":
         return _proxy_get("get_store", request)
@@ -134,7 +145,7 @@ def osimart_store(request):
 # ---------------------------------------------------------------------------
 # Home (dashboard data)
 # ---------------------------------------------------------------------------
-@api_view(["GET"])
+@osimart_api_view(["GET"])
 def osimart_home(request):
     return _proxy_get("get_home", request)
 
@@ -142,7 +153,7 @@ def osimart_home(request):
 # ---------------------------------------------------------------------------
 # Quantity units
 # ---------------------------------------------------------------------------
-@api_view(["GET"])
+@osimart_api_view(["GET"])
 def osimart_quantity_units(request):
     return _proxy_get("get_quantity_units", request)
 
@@ -150,14 +161,14 @@ def osimart_quantity_units(request):
 # ---------------------------------------------------------------------------
 # Variant types
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_variant_types(request):
     if request.method == "GET":
         return _proxy_get("get_variant_types", request)
     return _proxy_write("create_variant_type", request.data)
 
 
-@api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["PUT", "PATCH", "DELETE"])
 def osimart_variant_type_detail(request, vt_id):
     if request.method == "DELETE":
         return _proxy_write("delete_variant_type", vt_id)
@@ -167,14 +178,14 @@ def osimart_variant_type_detail(request, vt_id):
 # ---------------------------------------------------------------------------
 # Announcement bars
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_announcement_bars(request):
     if request.method == "GET":
         return _proxy_get("get_announcement_bars", request)
     return _proxy_write("create_announcement_bar", request.data)
 
 
-@api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["PUT", "PATCH", "DELETE"])
 def osimart_announcement_bar_detail(request, ann_id):
     if request.method == "DELETE":
         return _proxy_write("delete_announcement_bar", ann_id)
@@ -184,7 +195,7 @@ def osimart_announcement_bar_detail(request, ann_id):
 # ---------------------------------------------------------------------------
 # Customers
 # ---------------------------------------------------------------------------
-@api_view(["GET"])
+@osimart_api_view(["GET"])
 def osimart_customers(request):
     return _proxy_get("get_customers", request)
 
@@ -192,7 +203,7 @@ def osimart_customers(request):
 # ---------------------------------------------------------------------------
 # Media
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_medias(request):
     if request.method == "GET":
         return _proxy_get("get_medias", request)
@@ -202,14 +213,14 @@ def osimart_medias(request):
 # ---------------------------------------------------------------------------
 # Shipping zones
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_shipping_zones(request):
     if request.method == "GET":
         return _proxy_get("get_shipping_zones", request)
     return _proxy_write("create_shipping_zone", request.data)
 
 
-@api_view(["GET", "PUT", "PATCH", "DELETE"])
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_shipping_zone_detail(request, zone_id):
     if request.method == "GET":
         return _proxy_get("get_shipping_zone", request, 0, zone_id)
@@ -221,14 +232,14 @@ def osimart_shipping_zone_detail(request, zone_id):
 # ---------------------------------------------------------------------------
 # Order status choices (status definitions)
 # ---------------------------------------------------------------------------
-@api_view(["GET", "POST"])
+@osimart_api_view(["GET", "POST"])
 def osimart_order_status_choices(request):
     if request.method == "GET":
         return _proxy_get("get_order_status_choices", request)
     return _proxy_write("create_order_status_choice", request.data)
 
 
-@api_view(["GET", "PUT", "PATCH", "DELETE"])
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_order_status_choice_detail(request, status_id):
     if request.method == "GET":
         return _proxy_get("get_order_status_choice", request, 0, status_id)
