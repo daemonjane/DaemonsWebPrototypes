@@ -121,13 +121,13 @@ export function useCart() {
         if (newQty <= 0) {
           serverCart.value = await api.osimartCart.updateItem({
             item_id: item._serverId || productId,
-            action: 'remove',
+            action: 'remove_all',
           })
           addToast('Removed from cart', 3000, 'error')
         } else {
           serverCart.value = await api.osimartCart.updateItem({
             item_id: item._serverId || productId,
-            action: 'update_quantity',
+            action: 'add',
             quantity: newQty,
           })
           addToast(`Updated quantity (${newQty})`, 3000, 'success')
@@ -156,7 +156,7 @@ export function useCart() {
         const { api } = await import('../utils/api')
         serverCart.value = await api.osimartCart.updateItem({
           item_id: item._serverId || productId,
-          action: 'remove',
+          action: 'remove_all',
         })
         addToast('Removed from cart', 3000, 'error')
       } catch (e) {
@@ -176,7 +176,7 @@ export function useCart() {
         for (const item of items) {
           await api.osimartCart.updateItem({
             item_id: item._serverId || item.id,
-            action: 'remove',
+            action: 'remove_all',
           })
         }
         serverCart.value = await api.osimartCart.view()
@@ -214,7 +214,7 @@ export function useCart() {
         for (const item of itemsToRemove) {
           await api.osimartCart.updateItem({
             item_id: item._serverId || item.id,
-            action: 'remove',
+            action: 'remove_all',
           })
         }
         if (type) {
