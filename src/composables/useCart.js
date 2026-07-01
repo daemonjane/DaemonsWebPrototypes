@@ -249,11 +249,12 @@ export function useCart() {
       useServer = true
       return
     }
-    try {
-      const { api } = await import('../utils/api')
-      for (const item of items) {
+    let hasErrors = false
+    const { api } = await import('../utils/api')
+    for (const item of items) {
+      try {
         await api.osimartCart.updateItem({
-          item_id: item.id,
+          item_id: item.variantId || item.uuid || item.id,
           action: 'add',
           name: item.name,
           price: item.price,
@@ -261,12 +262,15 @@ export function useCart() {
           image: item.image || '',
           item_type: item.type || 'product',
         })
+      } catch {
+        hasErrors = true
       }
-      serverCart.value = await api.osimartCart.view()
-      localCart.value = []
-      useServer = true
-    } catch {
-      useServer = false
+    }
+    serverCart.value = await api.osimartCart.view()
+    localCart.value = []
+    useServer = true
+    if (hasErrors) {
+      addToast('Some items could not be merged', 4000, 'warning')
     }
   }
 
