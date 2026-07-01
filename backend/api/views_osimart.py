@@ -15,7 +15,7 @@ def osimart_api_view(methods):
         func = permission_classes([AllowAny])(func)
         func = authentication_classes([])(func)
         func = api_view(methods)(func)
-        func._csrf_exempt = True
+        func.csrf_exempt = True
         return func
     return decorator
 
