@@ -60,7 +60,7 @@ function decrement() { if (quantity.value > 1) quantity.value-- }
 
 function handleAddToCart() {
   addingToCart.value = true
-  addItem({ id: props.product.id, uuid: props.product.uuid, name: props.product.name, price: props.product.price }, quantity.value)
+  addItem({ id: props.product.id, uuid: props.product.uuid, variantId: props.product.variantId, name: props.product.name, price: props.product.price }, quantity.value)
   setTimeout(() => { addingToCart.value = false }, 600)
   quantity.value = 1
 }

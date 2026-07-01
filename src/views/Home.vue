@@ -220,7 +220,7 @@ function addBundleToCart(bundle) {
 }
 
 function quickAdd(product) {
-  addItem({ id: product.id, uuid: product.uuid, name: product.name, price: product.price })
+  addItem({ id: product.id, uuid: product.uuid, variantId: product.variantId, name: product.name, price: product.price })
 }
 </script>
 

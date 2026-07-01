@@ -29,14 +29,20 @@ export function useCart() {
 
   const cart = computed(() => {
     if (useServer && serverCart.value) {
-      const raw = serverCart.value.items || serverCart.value.products || serverCart.value || []
-      return Array.isArray(raw) ? raw.map(osimartItemToLocal) : []
+      const raw = serverCart.value.cart || serverCart.value.items || serverCart.value.products || serverCart.value || {}
+      if (Array.isArray(raw)) return raw.map(osimartItemToLocal)
+      if (raw && typeof raw === 'object') return Object.values(raw).map(osimartItemToLocal)
+      return []
     }
     return localCart.value
   })
 
   const totalItems = computed(() => {
     if (useServer && serverCart.value) {
+      const raw = serverCart.value.cart || {}
+      if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+        return Object.values(raw).reduce((s, i) => s + (i.quantity || 1), 0)
+      }
       return serverCart.value.total_items ?? serverCart.value.total_quantity ?? cart.value.reduce((s, i) => s + i.quantity, 0)
     }
     return localCart.value.reduce((sum, item) => sum + item.quantity, 0)

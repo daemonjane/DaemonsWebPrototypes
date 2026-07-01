@@ -68,7 +68,7 @@ function handleAddItem() {
   if (!product.value) return
   addingToCart.value = true
   for (let i = 0; i < quantity.value; i++) {
-    addItem({ id: product.value.uuid || product.value.id, name: product.value.name, price: product.value.price })
+    addItem({ id: product.value.uuid || product.value.id, uuid: product.value.uuid, variantId: product.value.variantId, name: product.value.name, price: product.value.price })
   }
   for (const addon of selectedAddons.value) {
     addItem({ id: `addon-${addon.id}`, name: addon.name, price: addon.price })
