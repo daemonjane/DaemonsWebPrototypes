@@ -50,7 +50,7 @@ onMounted(load)
     <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
       <div v-for="item in items" :key="item.id" class="bg-slate-800/50 rounded-lg border border-slate-800 overflow-hidden group">
         <div class="aspect-square bg-slate-800 overflow-hidden">
-          <img :src="resolveImage(item)" :alt="item.path || 'Media'" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+          <img :src="resolveImage(item.path || item.image || '')" :alt="item.path || 'Media'" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
         </div>
         <div class="p-2">
           <p class="text-[10px] text-slate-500 truncate">{{ item.path?.split('/').pop() || '—' }}</p>
