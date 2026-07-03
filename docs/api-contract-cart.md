@@ -435,5 +435,95 @@ This divergence is critical: cart endpoints live under `/store/apis/` while ever
 | Body | `{store, item_id, action, quantity?, name?, price?, image?, item_type?}` |
 | Auth | `Authorization: Bearer {jwt}` |
 | Actions | `add` (set qty), `remove` (requires qty param), `remove_all` (no param) |
-| Response | Updated cart object
+| Response | Updated cart object |
+
+## 8. Data Flows
+
+### 8.1 Add Item
+
+```
+ProductCard.addItem(product, qty)
+  └─ useCart.addItem(product, qty)
+
+  [server mode]
+    POST /api/osimart/cart/update-item/
+    body: {item_id, action:"add", quantity, name, price, image, item_type}
+    → Django proxy → OsimartClient → POST api.osimart.com/store/apis/cart/update-item/
+    ← serverCart.value = response
+
+  [local mode]
+    localCart.value push/merge → localStorage write
+```
+
+### 8.2 Remove Item
+
+```
+useCart.removeItem(productId)
+  → find item by id in cart.value
+
+  [server mode]
+    POST body: {item_id, action:"remove_all"}
+    → Django proxy → OsimartClient → api.osimart.com
+    ← serverCart.value = response
+
+  [local mode]
+    localCart.value = localCart.value.filter(...)
+```
+
+### 8.3 Update Quantity
+
+```
+useCart.updateQuantity(productId, delta)
+  → newQty = item.quantity + delta
+
+  [server mode]
+    if newQty <= 0: POST {action:"remove_all"}
+    if newQty > 0:  POST {action:"add", quantity: newQty}
+    → Django proxy → OsimartClient → api.osimart.com
+    ← serverCart.value = response
+
+  [local mode]
+    item.quantity += delta; if <=0 → filter out
+```
+
+### 8.4 Clear Cart
+
+```
+useCart.clearCart()
+
+  [server mode]
+    for each item → POST {action:"remove_all"}
+    GET /api/osimart/cart/view/ (refresh)
+    ← serverCart.value = response
+
+  [local mode]
+    localCart.value = []
+```
+
+### 8.5 Merge Local → Server (login)
+
+```
+useUser.refresh() → syncCart()
+  └─ useCart.mergeLocalIntoServer()
+    for each local item:
+      POST {item_id: variantId||uuid||id, action:"add", ...}
+      catch → hasErrors=true (per-item isolation)
+    GET /api/osimart/cart/view/
+    localCart.value = []
+    useServer = true
+```
+
+### 8.6 Membership
+
+```
+useCart.setMembership(type, name, price)
+  [server mode]
+    for each membership item → POST {action:"remove_all"}
+    if type: POST {item_id:"membership-{type}", action:"add",
+                   item_type:"membership", ...}
+    else: GET /api/osimart/cart/view/ (refresh)
+
+  [local mode]
+    filter out memberships, push new if type
+```
 
