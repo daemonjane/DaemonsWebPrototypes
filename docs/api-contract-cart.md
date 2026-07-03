@@ -608,5 +608,23 @@ Guide for swapping from Django proxy + local cart → direct Osimart API integra
 - `totalItems` computed: handle object-cart format (`Object.values(raw).reduce(...)`)
 - `totalPrice` computed: `parseFloat(serverCart.value.total_price)`
 - `osimartItemToLocal()` resolves relative images via `resolveImage()` → prepends `https://api.osimart.com/`
+
+### 9.6 Cart Persistence: DB → Osimart Storage
+
+| Current (Django) | Future (Osimart) |
+|------------------|------------------|
+| Cart stored in PostgreSQL `Cart`/`CartItem` tables | Cart stored on Osimart server, keyed by store + customer |
+| One cart per user (OneToOneField) | Cart linked to store + customer (no local DB) |
+| Items have FK to local `Product` table | Items reference products by variant UUID only |
+| `cart_merge` merges localStorage → Django DB | `mergeLocalIntoServer` uploads to Osimart server |
+| `Cart`/`CartItem` models can be dropped entirely | No local cart models needed |
+
+**Changes needed:**
+- Remove `Cart` and `CartItem` Django models + migrations
+- Remove `CartSerializer`, `CartItemSerializer`
+- Remove local cart views (`cart_get`, `cart_add`, `cart_item_detail`, `cart_clear`, `cart_merge`)
+- Remove local cart URL patterns from `urls.py`
+- Keep `localCart` ref + localStorage for anonymous users
+- Server mode always calls Osimart API directly
 ```
 
