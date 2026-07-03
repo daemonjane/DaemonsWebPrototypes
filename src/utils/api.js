@@ -21,7 +21,7 @@ async function request(method, path, body) {
   if (body) opts.body = JSON.stringify(body)
   const res = await fetch(`${BASE}${path}`, opts)
   const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`)
+  if (!res.ok) throw new Error(data.detail || data.error || `Request failed (${res.status})`)
   return data
 }
 

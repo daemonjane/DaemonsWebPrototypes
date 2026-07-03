@@ -109,26 +109,33 @@ async function save() {
   saving.value = true
   try {
     const api = await getApi()
+    const images = form.value.images
+      ? form.value.images.split('\n').map(s => s.trim()).filter(Boolean)
+      : []
+    const variants = form.value.variants.length
+      ? form.value.variants.map(v => {
+          const vp = { name: v.name, price: v.price }
+          if (v.remaining_stock != null) vp.remaining_stock = Number(v.remaining_stock)
+          else if (v.stock != null) vp.remaining_stock = Number(v.stock)
+          if (v.values?.length) vp.values = v.values
+          if (v.id) vp.id = v.id
+          return vp
+        })
+      : undefined
     const payload = {
-      name: form.value.name,
-      slugified_name: form.value.slug || form.value.name.toLowerCase().replace(/\s+/g, '-'),
-      description: form.value.description,
-      price_range: form.value.price,
+      name: form.value.name || undefined,
+      description: form.value.description || undefined,
+      price_range: form.value.price || undefined,
       compare_at_price: form.value.compare_at_price || undefined,
-      remaining_stock: form.value.stock ? Number(form.value.stock) : 0,
+      remaining_stock: form.value.stock ? Number(form.value.stock) : undefined,
       main_image: form.value.main_image || undefined,
-      images: form.value.images ? form.value.images.split('\n').map(s => s.trim()).filter(Boolean) : [],
+      images: images.length ? images : undefined,
       category_id: form.value.category_id || undefined,
       brand_id: form.value.brand_id || undefined,
       collection_ids: form.value.collection_ids.length ? form.value.collection_ids : undefined,
-      status: form.value.status,
-      featured: form.value.featured,
-      variants: form.value.variants.length ? form.value.variants.map(v => ({
-        name: v.name,
-        price: v.price,
-        remaining_stock: v.remaining_stock ?? v.stock ?? 0,
-        values: v.values || [],
-      })) : undefined,
+      status: form.value.status || undefined,
+      featured: form.value.featured ? 1 : 0,
+      variants,
     }
     Object.keys(payload).forEach(k => { if (payload[k] === undefined) delete payload[k] })
 
