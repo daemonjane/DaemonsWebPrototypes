@@ -183,3 +183,37 @@ File: `src/composables/useCart.js`
 | `setMembership(type, name, price)` | `type: String|null`, `name, price` | `Promise<void>` | POST per removal + POST add | Replace all memberships with new one |
 | `mergeLocalIntoServer()` | none | `Promise<void>` | POST per local item + GET refresh | Upload local cart to osimart, clear local |
 
+### 3.2 Computed Properties
+
+| Property | Type | Server Mode | Local Mode |
+|----------|------|-------------|------------|
+| `cart` | `Array<Object>` | `Object.values(serverCart.value.cart).map(osimartItemToLocal)` | `localCart.value` |
+| `totalItems` | `Number` | Sum of `quantity` from server cart object, fallback `total_items`/`total_quantity` | `reduce` sum of `quantity` |
+| `totalPrice` | `Number` | `parseFloat(serverCart.value.total_price \|\| serverCart.value.total \|\| 0)` | `reduce` sum of `price * quantity` |
+
+### 3.3 Module-level Helper: `osimartItemToLocal(item)`
+
+File: `src/composables/useCart.js:16-26`
+
+Maps osimart API response item → local cart shape:
+
+| Local Field | Source |
+|------------|--------|
+| `id` | `item.item_id \|\| item.product_id \|\| item.id \|\| \`item-${Date.now()}\`` |
+| `_serverId` | `item.id` (raw osimart key) |
+| `name` | `item.name \|\| item.product_name \|\| ''` |
+| `price` | `parseFloat(item.price \|\| item.unit_price \|\| 0)` |
+| `quantity` | `item.quantity \|\| 1` |
+| `image` | `resolveImage(item.image) \|\| resolveImage(item.product_image) \|\| ''` |
+| `type` | `item.item_type \|\| item.type \|\| 'product'` |
+
+`resolveImage()` prepends `https://api.osimart.com/` to relative paths.
+
+### 3.4 Module State
+
+| Variable | Type | Default | Description |
+|----------|------|---------|-------------|
+| `localCart` | `ref<Array>` | `localStorage['techstore_cart']` or `[]` | Local cart items, persisted to localStorage on change |
+| `serverCart` | `ref<Object\|null>` | `null` | Raw osimart cart response |
+| `useServer` | `Boolean` | `false` | Whether to use osimart server (true) or localStorage (false) |
+
