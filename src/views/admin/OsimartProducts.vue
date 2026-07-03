@@ -93,8 +93,10 @@ function openEdit(item) {
     price: item.price_range || '',
     compare_at_price: item.compare_at_price || '',
     stock: item.remaining_stock ?? item.stock ?? '',
-    main_image: item.main_image || '',
-    images: Array.isArray(item.images) ? item.images.join('\n') : '',
+    main_image: typeof item.main_image === 'object' ? (item.main_image.id || item.main_image.path || '') : (item.main_image || ''),
+    images: Array.isArray(item.images)
+      ? item.images.map(i => typeof i === 'object' ? (i.path || i.image || i.id || '') : String(i)).join('\n')
+      : '',
     category_id: item.categories?.[0]?.category?.id || '',
     brand_id: item.brand?.id || '',
     collection_ids: (item.collections || []).map(c => c.id || c.collection?.id).filter(Boolean),
@@ -128,7 +130,9 @@ async function save() {
       price_range: form.value.price || undefined,
       compare_at_price: form.value.compare_at_price || undefined,
       remaining_stock: form.value.stock ? Number(form.value.stock) : undefined,
-      main_image: form.value.main_image || undefined,
+      main_image: typeof form.value.main_image === 'object'
+        ? (form.value.main_image.id || form.value.main_image.path || undefined)
+        : (form.value.main_image || undefined),
       images: images.length ? images : undefined,
       category_id: form.value.category_id || undefined,
       brand_id: form.value.brand_id || undefined,
