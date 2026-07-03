@@ -6,7 +6,10 @@ import requests
 
 
 class OsimartError(Exception):
-    pass
+    def __init__(self, message, status_code=502, response_body=None):
+        super().__init__(message)
+        self.status_code = status_code
+        self.response_body = response_body
 
 
 class OsimartClient:
@@ -87,7 +90,9 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except requests.RequestException as e:
-            raise OsimartError(f"Osimart API error: {e}") from e
+            code = e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
+            body = e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     def _post(self, path, data=None):
         url = self._api_url(path)
@@ -101,35 +106,39 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except requests.RequestException as e:
-            raise OsimartError(f"Osimart API error: {e}") from e
+            code = e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
+            body = e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     def _put(self, path, data=None):
         url = self._api_url(path)
         payload = dict(data or {})
-        payload.setdefault("store", self.store_id)
         try:
-            resp = requests.put(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            resp = requests.put(url, json=payload, params={"store": self.store_id}, headers=self._get_headers(), timeout=self.timeout)
             if resp.status_code == 401:
                 self._access_token = None
-                resp = requests.put(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+                resp = requests.put(url, json=payload, params={"store": self.store_id}, headers=self._get_headers(), timeout=self.timeout)
             resp.raise_for_status()
             return resp.json()
         except requests.RequestException as e:
-            raise OsimartError(f"Osimart API error: {e}") from e
+            code = e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
+            body = e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     def _patch(self, path, data=None):
         url = self._api_url(path)
         payload = dict(data or {})
-        payload.setdefault("store", self.store_id)
         try:
-            resp = requests.patch(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+            resp = requests.patch(url, json=payload, params={"store": self.store_id}, headers=self._get_headers(), timeout=self.timeout)
             if resp.status_code == 401:
                 self._access_token = None
-                resp = requests.patch(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
+                resp = requests.patch(url, json=payload, params={"store": self.store_id}, headers=self._get_headers(), timeout=self.timeout)
             resp.raise_for_status()
             return resp.json()
         except requests.RequestException as e:
-            raise OsimartError(f"Osimart API error: {e}") from e
+            code = e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
+            body = e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     def _delete(self, path):
         url = self._api_url(path)
@@ -141,7 +150,9 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.status_code == 204
         except requests.RequestException as e:
-            raise OsimartError(f"Osimart API error: {e}") from e
+            code = e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
+            body = e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     # ------------------------------------------------------------------
     # Cart (store-level APIs — different base from dashboard)
@@ -161,7 +172,9 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except requests.RequestException as e:
-            raise OsimartError(f"Osimart cart error: {e}") from e
+            code = e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
+            body = e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            raise OsimartError(f"Osimart cart error: {e}", status_code=code, response_body=body) from e
 
     def update_cart_item(self, item_id, action, data=None):
         url = self._store_api_url("cart/update-item/")
@@ -177,7 +190,9 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except requests.RequestException as e:
-            raise OsimartError(f"Osimart cart error: {e}") from e
+            code = e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
+            body = e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            raise OsimartError(f"Osimart cart error: {e}", status_code=code, response_body=body) from e
 
     # ------------------------------------------------------------------
     # Image helpers
