@@ -217,3 +217,43 @@ Maps osimart API response item → local cart shape:
 | `serverCart` | `ref<Object\|null>` | `null` | Raw osimart cart response |
 | `useServer` | `Boolean` | `false` | Whether to use osimart server (true) or localStorage (false) |
 
+## 4. API Client Contract (api.js)
+
+File: `src/utils/api.js`
+
+### 4.1 `request()` Helper (lines 9-26)
+
+| Property | Value |
+|----------|-------|
+| Signature | `async function request(method, path, body?)` |
+| CSRF | Adds `X-CSRFToken` for POST/PUT/PATCH/DELETE |
+| Auth | `credentials: 'same-origin'` (session cookie) |
+| Content-Type | `application/json` |
+| Error | Parses JSON error body, throws `Error(data.error)` |
+| Base | `''` (proxied by Vite → Django) |
+
+### 4.2 `api.osimartCart` (lines 35-38)
+
+| Method | Signature | HTTP | Path |
+|--------|-----------|------|------|
+| `view()` | `() => request('GET', ...)` | GET | `/api/osimart/cart/view/` |
+| `updateItem(data)` | `(data) => request('POST', ...)` | POST | `/api/osimart/cart/update-item/` |
+
+### 4.3 `api.cart` — Legacy Local (lines 46-53)
+
+| Method | Signature | HTTP | Path |
+|--------|-----------|------|------|
+| `get()` | `() => request('GET', ...)` | GET | `/api/cart/` |
+| `add(data)` | `(data) => request('POST', ...)` | POST | `/api/cart/add/` |
+| `updateItem(itemId, data)` | `(itemId, data) => request('PATCH', ...)` | PATCH | `/api/cart/item/${itemId}/` |
+| `removeItem(itemId)` | `(itemId) => request('DELETE', ...)` | DELETE | `/api/cart/item/${itemId}/` |
+| `clear()` | `() => request('POST', ...)` | POST | `/api/cart/clear/` |
+| `merge(items)` | `(items) => request('POST', ...)` | POST | `/api/cart/merge/` |
+
+### 4.4 CSRF
+
+- `getCSRFToken()` reads `csrftoken` cookie
+- `ensureCSRF()` calls GET `/api/auth/csrf/` if missing (main.js startup)
+- Unsafe methods send `X-CSRFToken` header
+- Osimart proxy views (`/api/osimart/cart/*`) use `@csrf_exempt` → CSRF not needed
+
