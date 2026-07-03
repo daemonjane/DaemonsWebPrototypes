@@ -34,7 +34,10 @@ def _proxy_get(method_name, request, cache_seconds=60, *args):
         resp["Cache-Control"] = f"public, max-age={cache_seconds}"
         return resp
     except OsimartError as e:
-        return Response({"error": str(e)}, status=502)
+        err = {"error": str(e)}
+        if e.response_body:
+            err["detail"] = e.response_body
+        return Response(err, status=e.status_code)
 
 
 def _proxy_write(method_name, *args):
@@ -44,7 +47,10 @@ def _proxy_write(method_name, *args):
         data = method(*args)
         return Response(data)
     except OsimartError as e:
-        return Response({"error": str(e)}, status=502)
+        err = {"error": str(e)}
+        if e.response_body:
+            err["detail"] = e.response_body
+        return Response(err, status=e.status_code)
 
 
 # ---------------------------------------------------------------------------
