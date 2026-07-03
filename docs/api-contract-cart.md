@@ -591,5 +591,22 @@ Guide for swapping from Django proxy + local cart → direct Osimart API integra
 - `removeItem` → `action: "remove_all"`
 - `clearCart` → loop `action: "remove_all"`
 - `remove` action not used (requires quantity param)
+
+### 9.5 Response Shape: Array → Object
+
+| Current (Django CartSerializer) | Future (Osimart) |
+|--------------------------------|------------------|
+| `items: [...]` (array) | `cart: {<uuid>: {...}}` (object keyed by variant UUID) |
+| `total_price: 99.98` (number) | `total_price: "99.98"` (string) |
+| `total_items: 2` (integer) | `total_items: 3`, `total_quantity: 3` (extra field) |
+| Item `id: 10` (integer PK) | Item id = key in `cart` object (variant UUID) |
+| `price: "49.99"` (string from Decimal) | `price: "49.99"`, `unit_price: "49.99"` (string) |
+| `image: "https://..."` (full URL) | `image: "static/images/..."` (relative path) |
+
+**Changes needed (already applied):**
+- `cart` computed: detect if response `cart` is object → `Object.values(raw).map(normalize)` vs array → `.map(normalize)` (handles both via `Array.isArray` check)
+- `totalItems` computed: handle object-cart format (`Object.values(raw).reduce(...)`)
+- `totalPrice` computed: `parseFloat(serverCart.value.total_price)`
+- `osimartItemToLocal()` resolves relative images via `resolveImage()` → prepends `https://api.osimart.com/`
 ```
 
