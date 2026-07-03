@@ -641,5 +641,36 @@ Guide for swapping from Django proxy + local cart → direct Osimart API integra
 - Remove `ensureCSRF()` call for cart (keep for auth)
 - Remove `@csrf_exempt` decorators (proxy views go away)
 - Django's `CsrfViewMiddleware` still needed for non-cart views
+
+### 9.8 Middleware / Django Proxy Layer Removal
+
+| Current | Future |
+|---------|--------|
+| Vite proxies `/api` → `localhost:8000` | Vite proxy still needed for non-cart APIs |
+| Django `views_osimart.py` proxies cart to Osimart | Entire `views_osimart.py` cart views removed |
+| `OsimartClient.get_cart()` + `update_cart_item()` server-side | `OsimartClient` cart methods removed (keep for other resources) |
+| `_store_api_url()` base path divergence | No longer needed |
+
+**Changes needed:**
+- Remove `osimart_cart_view` and `osimart_cart_update_item` from `views_osimart.py`
+- Remove cart URL patterns from `urls.py`
+- Remove `get_cart()` and `update_cart_item()` from `OsimartClient`
+- Remove `_store_api_url()` helper (only used by cart)
+- Keep Vite proxy for auth, wishlist, orders, etc.
+
+### 9.9 Migration Summary Table
+
+| File | What to Remove | What to Add/Change |
+|------|---------------|-------------------|
+| `src/utils/api.js` | `api.cart` object (6 methods) | `api.osimartCart` → direct URL + Bearer auth |
+| `src/utils/api.js` | CSRF header from cart requests | `Authorization: Bearer` header for cart |
+| `src/composables/useCart.js` | `localCart` logic (keep for anonymous) | Updated server mode → direct API calls |
+| `backend/api/views.py` | `cart_get`, `cart_add`, `cart_item_detail`, `cart_clear`, `cart_merge` (5 views) | None |
+| `backend/api/views_osimart.py` | `osimart_cart_view`, `osimart_cart_update_item` | None |
+| `backend/api/urls.py` | 5 local cart routes + 2 proxy routes | None |
+| `backend/api/models.py` | `Cart`, `CartItem` models | None |
+| `backend/api/serializers.py` | `CartSerializer`, `CartItemSerializer` | None |
+| `backend/services/osimart.py` | `get_cart()`, `update_cart_item()`, `_store_api_url()` | None |
+| `src/composables/useUser.js` | `syncCart()` → remove `mergeLocalIntoServer()` call | None — user login still needs to init cart |
 ```
 
