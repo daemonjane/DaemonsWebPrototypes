@@ -412,3 +412,28 @@ File: `backend/services/osimart.py`
 
 This divergence is critical: cart endpoints live under `/store/apis/` while everything else lives under `/dashboard/apis/`.
 
+## 7. External Osimart API
+
+### 7.1 `GET /store/apis/cart/view`
+
+| Property | Value |
+|----------|-------|
+| Host | `https://api.osimart.com` |
+| Path | `/store/apis/cart/view` |
+| Method | GET |
+| Query | `?store={store_id}` |
+| Auth | `Authorization: Bearer {jwt}` |
+| Response | `{cart: {<uuid>: {...}}, total_price, total_items, total_quantity}` |
+
+### 7.2 `POST /store/apis/cart/update-item/`
+
+| Property | Value |
+|----------|-------|
+| Host | `https://api.osimart.com` |
+| Path | `/store/apis/cart/update-item/` |
+| Method | POST |
+| Body | `{store, item_id, action, quantity?, name?, price?, image?, item_type?}` |
+| Auth | `Authorization: Bearer {jwt}` |
+| Actions | `add` (set qty), `remove` (requires qty param), `remove_all` (no param) |
+| Response | Updated cart object
+
