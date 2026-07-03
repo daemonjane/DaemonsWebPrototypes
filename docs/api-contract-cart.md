@@ -331,3 +331,27 @@ File: `backend/api/views.py` (local), `backend/api/views_osimart.py` (proxy)
 | `_get_cart(user)` | `views.py:152` | `Cart.objects.get_or_create(user=user)` |
 | `_cart_json(cart)` | `views.py:157` | Re-fetches cart from DB, serializes via `CartSerializer` |
 
+### 5.8 Osimart Proxy Views — Overview
+
+| URL | Method | View Function | Auth | CSRF | File:Line |
+|-----|--------|---------------|------|------|-----------|
+| `/api/osimart/cart/view/` | GET | `osimart_cart_view` | None (proxied) | `@csrf_exempt` | `views_osimart.py:254` |
+| `/api/osimart/cart/update-item/` | POST | `osimart_cart_update_item` | None (proxied) | `@csrf_exempt` | `views_osimart.py:265` |
+
+### 5.9 `osimart_cart_view` — GET `/api/osimart/cart/view/`
+
+| Property | Value |
+|----------|-------|
+| Decorators | `@require_GET`, `@csrf_exempt` |
+| Logic | `client = _get_client()` → `data = client.get_cart()` → `JsonResponse(data)` |
+| Response | Raw osimart API response (object cart format) |
+
+### 5.10 `osimart_cart_update_item` — POST `/api/osimart/cart/update-item/`
+
+| Property | Value |
+|----------|-------|
+| Decorators | `@require_POST`, `@csrf_exempt` |
+| Body | `{item_id, action, quantity?, name?, price?, image?, item_type?, store?}` |
+| Logic | Parses `item_id` + `action` from body, calls `client.update_cart_item(item_id, action, body)` |
+| Response | Raw osimart API response |
+
