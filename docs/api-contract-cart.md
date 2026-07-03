@@ -525,5 +525,24 @@ useCart.setMembership(type, name, price)
 
   [local mode]
     filter out memberships, push new if type
+
+## 9. Migration Path
+
+Guide for swapping from Django proxy + local cart → direct Osimart API integration.
+
+### 9.1 Auth: Session → Bearer Token
+
+| Current | Future |
+|---------|--------|
+| Django session cookie + CSRF | JWT Bearer token in `Authorization` header |
+| CSRF token from `/api/auth/csrf/` | No CSRF needed |
+| `credentials: 'same-origin'` | No credentials (cross-origin) |
+| OsimartClient handles login/refresh server-side | Frontend must obtain and manage JWT |
+
+**Changes needed:**
+- Remove CSRF `getCSRFToken()` + `ensureCSRF()` for cart calls
+- Remove `credentials: 'same-origin'` for cart requests
+- Add `Authorization: Bearer {token}` header from stored JWT
+- Implement token refresh on 401 in frontend
 ```
 
