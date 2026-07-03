@@ -41,7 +41,11 @@ async function save() {
 
 function edit(item) {
   editing.value = item.id
-  form.value = { title: item.title || '', link: item.link || '', image: item.image || '' }
+  form.value = {
+    title: item.title || '',
+    link: item.link || '',
+    image: typeof item.image === 'object' ? (item.image.path || item.image.image || item.image.id || '') : (item.image || ''),
+  }
 }
 
 async function remove(id) {
@@ -78,7 +82,7 @@ onMounted(load)
     <div v-else class="grid gap-2">
       <div v-for="item in items" :key="item.id" class="flex items-center gap-3 bg-slate-800/30 rounded-lg px-4 py-3 border border-slate-800">
         <div class="w-16 h-10 rounded bg-slate-800 overflow-hidden shrink-0">
-          <img v-if="item.image" :src="item.image" class="w-full h-full object-cover" />
+          <img v-if="item.image" :src="typeof item.image === 'object' ? item.image.path || item.image.image || '' : item.image" class="w-full h-full object-cover" />
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-sm text-white font-medium truncate">{{ item.title || 'Untitled' }}</p>
