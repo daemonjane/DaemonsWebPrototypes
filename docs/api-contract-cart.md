@@ -544,5 +544,20 @@ Guide for swapping from Django proxy + local cart → direct Osimart API integra
 - Remove `credentials: 'same-origin'` for cart requests
 - Add `Authorization: Bearer {token}` header from stored JWT
 - Implement token refresh on 401 in frontend
+
+### 9.2 Base URL: Proxy → Direct
+
+| Current | Future |
+|---------|--------|
+| `/api/osimart/cart/view/` (proxied by Vite → Django) | `https://api.osimart.com/store/apis/cart/view` |
+| Django proxy view (`views_osimart.py`) | Removed entirely |
+| OsimartClient server-side | Removed entirely |
+
+**Changes needed:**
+- `api.js BASE` changes from `''` → `'https://api.osimart.com'`
+- Or create separate `osimartBase` for cart calls only
+- Remove Django proxy URL patterns from `urls.py`
+- Remove proxy views from `views_osimart.py`
+- Remove `OsimartClient` cart methods from `services/osimart.py`
 ```
 
