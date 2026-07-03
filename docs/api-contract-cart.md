@@ -710,6 +710,53 @@ There is no `/api/osimart/products/?search=` integration in the frontend. The ol
 | 6 | `mergeLocalIntoServer` per-item error isolation | `35de866f` |
 | 7 | All 23 osimart proxy views `@csrf_exempt` via `osimart_api_view` helper | `5e0be97d` |
 
+## 12. Environment Variables
+
+| Variable | Source | Used By | Default |
+|----------|--------|---------|---------|
+| `OSIMART_API_BASE_URL` | `.env` | `OsimartClient.BASE_URL` | `https://api.osimart.com` |
+| `OSIMART_STORE_ID` | `.env` | `OsimartClient.STORE_ID` | — |
+| `OSIMART_EMAIL` | `.env` | `OsimartClient._login()` | — |
+| `OSIMART_PASSWORD` | `.env` | `OsimartClient._login()` | — |
+
+All four must be set for Osimart cart to work. The email/password authenticate once at startup; the JWT token is reused and auto-refreshed on 401.
+
+## 13. Related Files Index
+
+| Purpose | File |
+|---------|------|
+| Cart composable (frontend state mgmt) | `src/composables/useCart.js` |
+| API client (HTTP calls) | `src/utils/api.js` |
+| Local Django cart views | `backend/api/views.py` (lines 152-274) |
+| Osimart proxy cart views | `backend/api/views_osimart.py` (lines 254-282) |
+| OsimartClient cart methods | `backend/services/osimart.py` (lines 146-180) |
+| URL routing | `backend/api/urls.py` (lines 18-22, 57-58) |
+| Cart/CartItem models | `backend/api/models.py` (lines 193-238) |
+| Cart serializers | `backend/api/serializers.py` (lines 8-37) |
+| Free shipping composable | `src/composables/useFreeShipping.js` |
+| User composable (cart sync) | `src/composables/useUser.js` (lines 26-35) |
+| Image URL resolver | `src/utils/images.js` |
+| Vite proxy config | `vite.config.js` |
+| Osimart credentials | `backend/.env` |
+
+## 14. Testing Checklist
+
+- [ ] Add item to cart (logged in) → appears in osimart cart
+- [ ] Add item to cart (anonymous) → appears in localStorage
+- [ ] Update quantity (increment/decrement) → osimart `add` action sets correct qty
+- [ ] Remove item from cart → `remove_all` action
+- [ ] Clear cart → all items removed one by one
+- [ ] Login with local cart items → `mergeLocalIntoServer` uploads all
+- [ ] Login with empty cart → `useServer = true`, no errors
+- [ ] Reload page while logged in → cart re-fetched from osimart
+- [ ] Logout → fallback to local cart mode
+- [ ] CSRF not required for `GET /api/osimart/cart/view/`
+- [ ] CSRF not required for `POST /api/osimart/cart/update-item/`
+- [ ] Admin save operations (store, banners, products) → no 403
+- [ ] Image URLs render correctly (relative paths resolved)
+- [ ] `totalItems` badge in Header matches actual cart count
+- [ ] `totalPrice` in cart drawer matches sum of items
+
 ### 9.9 Migration Summary Table
 
 | File | What to Remove | What to Add/Change |
