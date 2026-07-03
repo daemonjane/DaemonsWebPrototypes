@@ -164,3 +164,22 @@ Key differences from Django serialized cart:
 - Images are **relative paths**, not full URLs
 - `product_id` is separate from the item key
 
+## 3. Frontend Contract (useCart.js)
+
+File: `src/composables/useCart.js`
+
+### 3.1 Exported Functions
+
+| Function | Parameters | Returns | API Call | Description |
+|----------|-----------|---------|----------|-------------|
+| `init()` | none | `Promise<void>` | GET `/api/osimart/cart/view/` | Check user login, fetch server cart, set mode |
+| `refresh()` | none | `Promise<void>` | GET `/api/osimart/cart/view/` | Re-fetch server cart (no-op if local mode) |
+| `addItem(product, quantity=1)` | `product: Object`, `quantity: Number` | `Promise<void>` | POST `/api/osimart/cart/update-item/` | Add item with `action:'add'` or push to local |
+| `updateQuantity(productId, delta)` | `productId: String`, `delta: Number` | `Promise<void>` | POST `/api/osimart/cart/update-item/` | Increment/decrement; remove if <=0 |
+| `removeItem(productId)` | `productId: String` | `Promise<void>` | POST `/api/osimart/cart/update-item/` | Remove item with `action:'remove_all'` |
+| `clearCart()` | none | `Promise<void>` | POST per item + GET refresh | Remove all items one by one |
+| `addUpgrade(id, name, price)` | `id, name, price` | `Promise<void>` | Delegates to `addItem` | Wraps upgrade as product with `type:'upgrade'` |
+| `removeUpgrade(id, name)` | `id, name` | `Promise<void>` | Delegates to `removeItem` | Removes upgrade item |
+| `setMembership(type, name, price)` | `type: String|null`, `name, price` | `Promise<void>` | POST per removal + POST add | Replace all memberships with new one |
+| `mergeLocalIntoServer()` | none | `Promise<void>` | POST per local item + GET refresh | Upload local cart to osimart, clear local |
+
