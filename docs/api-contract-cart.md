@@ -272,3 +272,62 @@ File: `backend/api/views.py` (local), `backend/api/views_osimart.py` (proxy)
 | `/api/cart/clear/` | POST | `cart_clear` | Session required | Yes | `views.py:237` |
 | `/api/cart/merge/` | POST | `cart_merge` | Session required | Yes | `views.py:247` |
 
+### 5.2 `cart_get` — GET `/api/cart/`
+
+| Property | Value |
+|----------|-------|
+| Decorators | `@api_view(['GET'])` |
+| Auth | `request.user.is_authenticated` → 401 |
+| Logic | `_get_cart(user)` → `CartSerializer` |
+| Response | Full cart JSON with items array, totals |
+| Error | `{"error": "Not authenticated."}` (401) |
+
+### 5.3 `cart_add` — POST `/api/cart/add/`
+
+| Property | Value |
+|----------|-------|
+| Decorators | `@api_view(['POST'])` |
+| Auth | `request.user.is_authenticated` → 401 |
+| Body | `{item_type? (default "product"), name, price, quantity? (default 1), image?}` |
+| Logic | If same `item_type`+`name` exists: increment qty. Addon duplicates return 409. Else create new `CartItem`. |
+| Response | Full cart JSON |
+| Errors | `{"error": "Not authenticated."}` (401), `{"error": "Add-on already in cart."}` (409) |
+
+### 5.4 `cart_item_detail` — PATCH/DELETE `/api/cart/item/<int:id>/`
+
+| Property | Value |
+|----------|-------|
+| Decorators | `@api_view(['PATCH', 'DELETE'])` |
+| Auth | `request.user.is_authenticated` → 401 |
+| PATCH Body | `{quantity?, price?, name?}` — quantity clamped at 0 |
+| PATCH Logic | Update fields. If quantity ≤ 0 → delete item. |
+| DELETE | Removes item, returns full cart |
+| Response | Full cart JSON |
+| Errors | `{"error": "Not authenticated."}` (401), `{"error": "Item not found."}` (404) |
+
+### 5.5 `cart_clear` — POST `/api/cart/clear/`
+
+| Property | Value |
+|----------|-------|
+| Decorators | `@api_view(['POST'])` |
+| Auth | `request.user.is_authenticated` → 401 |
+| Logic | `cart.items.all().delete()` |
+| Response | Full cart JSON (empty items array) |
+
+### 5.6 `cart_merge` — POST `/api/cart/merge/`
+
+| Property | Value |
+|----------|-------|
+| Decorators | `@api_view(['POST'])` |
+| Auth | `request.user.is_authenticated` → 401 |
+| Body | `{items: [{item_type, name, price, quantity, image}]}` |
+| Logic | For each item: if exists with same `item_type`+`name` → increment qty, else create new `CartItem` |
+| Response | Full cart JSON |
+
+### 5.7 Helper Functions
+
+| Function | Location | Purpose |
+|----------|----------|---------|
+| `_get_cart(user)` | `views.py:152` | `Cart.objects.get_or_create(user=user)` |
+| `_cart_json(cart)` | `views.py:157` | Re-fetches cart from DB, serializes via `CartSerializer` |
+
