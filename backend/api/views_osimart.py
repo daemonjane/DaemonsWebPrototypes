@@ -1,3 +1,5 @@
+import logging
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
@@ -7,6 +9,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from services.osimart import OsimartClient, OsimartError
+
+logger = logging.getLogger(__name__)
 
 
 def osimart_api_view(methods):
@@ -38,6 +42,9 @@ def _proxy_get(method_name, request, cache_seconds=60, *args):
         if e.response_body:
             err["detail"] = e.response_body
         return Response(err, status=e.status_code)
+    except Exception as e:
+        logger.exception("Unhandled error in _proxy_get(%s)", method_name)
+        return Response({"error": str(e), "detail": f"Unhandled error: {e}"}, status=502)
 
 
 def _proxy_write(method_name, *args):
@@ -51,6 +58,9 @@ def _proxy_write(method_name, *args):
         if e.response_body:
             err["detail"] = e.response_body
         return Response(err, status=e.status_code)
+    except Exception as e:
+        logger.exception("Unhandled error in _proxy_write(%s)", method_name)
+        return Response({"error": str(e), "detail": f"Unhandled error: {e}"}, status=502)
 
 
 # ---------------------------------------------------------------------------
