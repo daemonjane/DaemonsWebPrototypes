@@ -355,3 +355,60 @@ File: `backend/api/views.py` (local), `backend/api/views_osimart.py` (proxy)
 | Logic | Parses `item_id` + `action` from body, calls `client.update_cart_item(item_id, action, body)` |
 | Response | Raw osimart API response |
 
+## 6. OsimartClient Service
+
+File: `backend/services/osimart.py`
+
+### 6.1 Class Overview
+
+| Property | Value |
+|----------|-------|
+| Class | `OsimartClient` |
+| BASE_URL | `os.environ.get("OSIMART_API_BASE_URL", "https://api.osimart.com")` |
+| STORE_ID | `os.environ.get("OSIMART_STORE_ID", "")` |
+| Auth | JWT Bearer token from `POST /auth/login/` with email+password |
+| Token Lifetime | 30 min default; auto-refresh on 401 via `_refresh()` or re-login |
+
+### 6.2 Auth Flow
+
+| Method | Lines | Purpose |
+|--------|-------|---------|
+| `_login()` | 37-52 | `POST {BASE_URL}/auth/login/` with `OSIMART_EMAIL`/`OSIMART_PASSWORD` → stores access_token |
+| `_refresh()` | 54-60 | `POST {BASE_URL}/auth/token/refresh/` with stored refresh_token |
+| `_ensure_token()` | 30-35 | Checks if token expired; calls `_refresh()` or `_login()` |
+| `_get_headers()` | 65-70 | Calls `_ensure_token()` → returns `Authorization: Bearer {token}` + Content-Type |
+
+### 6.3 `get_cart()` — GET `/store/apis/cart/view`
+
+| Property | Value |
+|----------|-------|
+| Lines | 152-163 |
+| URL | `{BASE_URL}/store/apis/cart/view` |
+| Method | GET |
+| Params | `?store={STORE_ID}` appended |
+| 401 Retry | Clears token, retries once |
+| Error | Raises `OsimartError` on failure |
+| Response | Raw JSON (object cart format) |
+
+### 6.4 `update_cart_item()` — POST `/store/apis/cart/update-item/`
+
+| Property | Value |
+|----------|-------|
+| Lines | 166-180 |
+| URL | `{BASE_URL}/store/apis/cart/update-item/` |
+| Method | POST |
+| Payload | `{store: STORE_ID, item_id, action, ...data}` |
+| Fields | `item_id` (required), `action` (required: `add`/`remove`/`remove_all`), rest forwarded from `data` |
+| 401 Retry | Clears token, retries once |
+| Error | Raises `OsimartError` on failure |
+| Response | Raw JSON (updated cart) |
+
+### 6.5 URL Base Divergence
+
+| Helper | Base Path | Used For |
+|--------|-----------|----------|
+| `_store_api_url(path)` | `{BASE_URL}/store/apis/{path}` | Cart only |
+| `_api_url(path)` | `{BASE_URL}/dashboard/apis/{path}` | All other resources (products, banners, categories, etc.) |
+
+This divergence is critical: cart endpoints live under `/store/apis/` while everything else lives under `/dashboard/apis/`.
+
