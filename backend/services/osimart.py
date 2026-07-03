@@ -113,6 +113,7 @@ class OsimartClient:
     def _put(self, path, data=None):
         url = self._api_url(path)
         payload = dict(data or {})
+        payload.setdefault("store", self.store_id)
         try:
             resp = requests.put(url, json=payload, params={"store": self.store_id}, headers=self._get_headers(), timeout=self.timeout)
             if resp.status_code == 401:
@@ -128,6 +129,7 @@ class OsimartClient:
     def _patch(self, path, data=None):
         url = self._api_url(path)
         payload = dict(data or {})
+        payload.setdefault("store", self.store_id)
         try:
             resp = requests.patch(url, json=payload, params={"store": self.store_id}, headers=self._get_headers(), timeout=self.timeout)
             if resp.status_code == 401:
@@ -236,7 +238,7 @@ class OsimartClient:
         return self._post("products/", data)
 
     def update_product(self, product_id, data):
-        return self._put(f"products/{product_id}/", data)
+        return self._patch(f"products/{product_id}/", data)
 
     def delete_product(self, product_id):
         return self._delete(f"products/{product_id}/")
