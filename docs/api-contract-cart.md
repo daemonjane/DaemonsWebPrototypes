@@ -559,5 +559,19 @@ Guide for swapping from Django proxy + local cart → direct Osimart API integra
 - Remove Django proxy URL patterns from `urls.py`
 - Remove proxy views from `views_osimart.py`
 - Remove `OsimartClient` cart methods from `services/osimart.py`
+
+### 9.3 Item ID: Auto-increment → Variant UUID
+
+| Current | Future |
+|---------|--------|
+| Item identified by auto-increment `int` PK (`CartItem.id`) | Item identified by **ProductVariant UUID** string |
+| `item_id` param in update calls is integer | `item_id` must be a valid variant UUID |
+| Product FK stored in `CartItem.product` | No FK — items exist only on Osimart |
+
+**Changes needed:**
+- Ensure all `addItem` calls pass `product.variantId` (already done via `variantId || uuid || id` fallback)
+- Remove `CartItem.product` FK dependency
+- Remove `CartItem` → `CartItemSerializer` FK joins (`product_slug`, `product_image`)
+- `useCart.removeItem` / `updateQuantity` must use item's variant UUID, not local index
 ```
 
