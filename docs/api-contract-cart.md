@@ -257,3 +257,18 @@ File: `src/utils/api.js`
 - Unsafe methods send `X-CSRFToken` header
 - Osimart proxy views (`/api/osimart/cart/*`) use `@csrf_exempt` → CSRF not needed
 
+## 5. Backend Django Views
+
+File: `backend/api/views.py` (local), `backend/api/views_osimart.py` (proxy)
+
+### 5.1 Local Cart Views — Overview
+
+| URL | Method | View Function | Auth | CSRF | File:Line |
+|-----|--------|---------------|------|------|-----------|
+| `/api/cart/` | GET | `cart_get` | Session required | Yes | `views.py:163` |
+| `/api/cart/add/` | POST | `cart_add` | Session required | Yes | `views.py:170` |
+| `/api/cart/item/<int:id>/` | PATCH | `cart_item_detail` | Session required | Yes | `views.py:207` |
+| `/api/cart/item/<int:id>/` | DELETE | `cart_item_detail` | Session required | Yes | `views.py:207` |
+| `/api/cart/clear/` | POST | `cart_clear` | Session required | Yes | `views.py:237` |
+| `/api/cart/merge/` | POST | `cart_merge` | Session required | Yes | `views.py:247` |
+
