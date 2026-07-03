@@ -93,7 +93,9 @@ function openEdit(item) {
     price: item.price_range || '',
     compare_at_price: item.compare_at_price || '',
     stock: item.remaining_stock ?? item.stock ?? '',
-    main_image: typeof item.main_image === 'object' ? (item.main_image.id || item.main_image.path || '') : (item.main_image || ''),
+    main_image: item.main_image
+      ? (typeof item.main_image === 'object' ? (item.main_image.id || item.main_image.path || '') : item.main_image)
+      : '',
     images: Array.isArray(item.images)
       ? item.images.map(i => typeof i === 'object' ? (i.path || i.image || i.id || '') : String(i)).join('\n')
       : '',
@@ -272,7 +274,7 @@ onMounted(load)
             <div class="md:col-span-2">
               <label class="text-xs text-slate-500 font-medium block mb-1">Main Image</label>
               <div class="flex gap-3 items-start">
-                <img v-if="form.main_image" :src="productImage({main_image: form.main_image})" class="w-16 h-16 rounded-lg object-cover bg-slate-800 shrink-0 border border-slate-700" />
+                <img v-if="form.main_image && (form.main_image.startsWith('static') || form.main_image.startsWith('http') || /\.\w{3,4}$/.test(form.main_image))" :src="`https://api.osimart.com/${form.main_image.replace(/^\//, '')}`" class="w-16 h-16 rounded-lg object-cover bg-slate-800 shrink-0 border border-slate-700" />
                 <input v-model="form.main_image" placeholder="UUID or path" class="flex-1 bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-white" />
               </div>
             </div>
