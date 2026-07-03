@@ -573,5 +573,23 @@ Guide for swapping from Django proxy + local cart → direct Osimart API integra
 - Remove `CartItem.product` FK dependency
 - Remove `CartItem` → `CartItemSerializer` FK joins (`product_slug`, `product_image`)
 - `useCart.removeItem` / `updateQuantity` must use item's variant UUID, not local index
+
+### 9.4 Action Strings: REST → Osimart Verbs
+
+| Current (Local REST) | Future (Osimart) |
+|----------------------|-------------------|
+| PATCH `/api/cart/item/{id}/` body `{quantity}` | POST `/cart/update-item/` body `{action: "add", quantity}` |
+| DELETE `/api/cart/item/{id}/` | POST `/cart/update-item/` body `{action: "remove_all"}` |
+| POST `/api/cart/clear/` | N POSTs with `action: "remove_all"` |
+| PATCH body `{quantity: n}` sets exact qty | `action: "add"` also sets exact qty (NOT increment) |
+
+**Critical:** Osimart `add` action **sets** the quantity to the given value, it does NOT increment. This is already handled in `useCart.js` — `addItem` sends the desired quantity directly, not `existing.qty + delta`.
+
+**Changes needed (already applied):**
+- `addItem` → `action: "add", quantity`
+- `updateQuantity` → `action: "add"` (set new qty) or `action: "remove_all"` (<=0)
+- `removeItem` → `action: "remove_all"`
+- `clearCart` → loop `action: "remove_all"`
+- `remove` action not used (requires quantity param)
 ```
 
