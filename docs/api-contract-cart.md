@@ -82,6 +82,22 @@ File: `backend/api/models.py:193-205`
 | `created_at` | DateTimeField | `auto_now_add=True` |
 | `updated_at` | DateTimeField | `auto_now=True` |
 
+### 2.2 Django CartItem
+
+File: `backend/api/models.py:208-238`
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | AutoField (PK) | Auto-generated |
+| `cart` | ForeignKey → Cart | `related_name="items"`, CASCADE |
+| `product` | ForeignKey → Product | `SET_NULL`, nullable (for upgrades/addons) |
+| `name` | CharField(200) | Display name |
+| `price` | DecimalField(8,2) | Unit price at time of add |
+| `quantity` | PositiveIntegerField | Default 1 |
+| `image` | CharField(500) | URL, blankable |
+| `item_type` | CharField(20) | Choices: product, upgrade, membership, addon |
+| `created_at` | DateTimeField | `auto_now_add=True` |
+
 1. Architecture Overview
 2. Data Models
 3. Frontend Contract (useCart.js)
