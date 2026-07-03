@@ -626,5 +626,20 @@ Guide for swapping from Django proxy + local cart → direct Osimart API integra
 - Remove local cart URL patterns from `urls.py`
 - Keep `localCart` ref + localStorage for anonymous users
 - Server mode always calls Osimart API directly
+
+### 9.7 CSRF Removal
+
+| Current | Future |
+|---------|--------|
+| `ensureCSRF()` called on app startup | No CSRF needed |
+| `X-CSRFToken` header sent on all unsafe methods | Must NOT send CSRF header (Bearer auth instead) |
+| `@csrf_exempt` on proxy views | Proxy views removed entirely |
+| Django CSRF middleware required for login/register | Keep CSRF only for auth endpoints, remove for cart |
+
+**Changes needed:**
+- Remove `getCSRFToken()` call from `request()` for cart-specific requests (or use separate `osimartRequest()` helper without CSRF)
+- Remove `ensureCSRF()` call for cart (keep for auth)
+- Remove `@csrf_exempt` decorators (proxy views go away)
+- Django's `CsrfViewMiddleware` still needed for non-cart views
 ```
 
