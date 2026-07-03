@@ -177,9 +177,12 @@ function removeVariant(idx) {
 }
 
 function productImage(p) {
-  if (p.main_image) return p.main_image
-  if (p.images?.length) return p.images[0]
-  return null
+  const img = p.main_image || p.images?.[0]
+  if (!img) return null
+  const path = typeof img === 'object' ? (img.path || img.image || '') : img
+  if (!path) return null
+  if (path.startsWith('http')) return path
+  return `https://api.osimart.com/${path.replace(/^\//, '')}`
 }
 
 onMounted(load)
@@ -267,12 +270,18 @@ onMounted(load)
               </select>
             </div>
             <div class="md:col-span-2">
-              <label class="text-xs text-slate-500 font-medium block mb-1">Main Image URL</label>
-              <input v-model="form.main_image" placeholder="https://..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-white" />
+              <label class="text-xs text-slate-500 font-medium block mb-1">Main Image</label>
+              <div class="flex gap-3 items-start">
+                <img v-if="form.main_image" :src="productImage({main_image: form.main_image})" class="w-16 h-16 rounded-lg object-cover bg-slate-800 shrink-0 border border-slate-700" />
+                <input v-model="form.main_image" placeholder="UUID or path" class="flex-1 bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-white" />
+              </div>
             </div>
             <div class="md:col-span-2">
-              <label class="text-xs text-slate-500 font-medium block mb-1">Additional Images (one URL per line)</label>
-              <textarea v-model="form.images" rows="3" placeholder="https://..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-white"></textarea>
+              <label class="text-xs text-slate-500 font-medium block mb-1">Additional Images (one per line)</label>
+              <div v-if="form.images" class="flex flex-wrap gap-2 mb-2">
+                <img v-for="(img, i) in form.images.split('\n').filter(Boolean)" :key="i" :src="`https://api.osimart.com/${img.replace(/^\//, '')}`" class="w-12 h-12 rounded object-cover bg-slate-800 border border-slate-700" />
+              </div>
+              <textarea v-model="form.images" rows="3" placeholder="Paths or UUIDs, one per line" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-white"></textarea>
             </div>
             <div class="md:col-span-2 flex items-center gap-2">
               <input v-model="form.featured" type="checkbox" id="featured-check" class="rounded border-slate-700 bg-slate-800 text-cyan-500 accent-cyan-500" />
