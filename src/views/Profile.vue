@@ -88,7 +88,7 @@ function cancel() {
         </div>
         <div v-if="user?.is_staff || user?.is_superuser" class="pt-4 border-t border-slate-800">
           <router-link to="/dashboard/" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-semibold py-2 px-4 rounded-lg transition-colors">
-            Admin Dashboard
+            Dashboard
           </router-link>
         </div>
       </div>

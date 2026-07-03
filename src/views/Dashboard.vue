@@ -41,7 +41,7 @@ onMounted(async () => {
       </div>
       <div class="flex gap-2">
         <router-link to="/profile" class="text-xs bg-slate-800 text-slate-300 px-4 py-2 rounded-md hover:bg-slate-700 transition-colors">Edit Profile</router-link>
-        <router-link v-if="isStaff()" to="/admin/dashboard" class="text-xs bg-cyan-800 text-cyan-200 px-4 py-2 rounded-md hover:bg-cyan-700 transition-colors">Admin</router-link>
+        <router-link v-if="isStaff()" to="/admin/osimart" class="text-xs bg-cyan-800 text-cyan-200 px-4 py-2 rounded-md hover:bg-cyan-700 transition-colors">Admin</router-link>
       </div>
     </div>
 
