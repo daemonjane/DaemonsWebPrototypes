@@ -658,6 +658,58 @@ Guide for swapping from Django proxy + local cart → direct Osimart API integra
 - Remove `_store_api_url()` helper (only used by cart)
 - Keep Vite proxy for auth, wishlist, orders, etc.
 
+## 10. Known Issues & Gaps
+
+### 10.1 Variant Selection
+
+All products use the first variant (`variants[0].id`) because there is no variant picker UI. Items added to cart always get the first variant's UUID.
+
+**Impact:** If a product has size/color variants, the user cannot choose which one to buy.
+
+**Resolution:** Add variant selection to `ProductDetail.vue` before calling `addItem`.
+
+### 10.2 Anonymous Cart Limit
+
+Anonymous users' cart is stored in `localStorage` only. If they clear browser data, the cart is lost.
+
+**Impact:** No server-side persistence for non-logged-in users.
+
+**Resolution:** Optional — could save anon cart to IndexedDB or use `sessionStorage` as fallback.
+
+### 10.3 No Search Endpoint
+
+There is no `/api/osimart/products/?search=` integration in the frontend. The old `api.search()` hits the local Django search endpoint which may not have Osimart products.
+
+**Impact:** Search doesn't work for Osimart-sourced products.
+
+**Resolution:** Wire up `api.osimart.products({search: query})` in a search view.
+
+### 10.4 No Order Creation
+
+`Checkout.vue` sends items to the local `order_checkout` Django view, not to Osimart's order API.
+
+**Impact:** Orders created in Django are not synced to Osimart.
+
+**Resolution:** Add an `api.osimart.createOrder(data)` proxy endpoint, or call Osimart directly.
+
+### 10.5 FreeShipping composable references legacy cart
+
+`useFreeShipping.js` reads `useCart().totalPrice` which works for both modes. But the threshold check logic is unknown.
+
+**Impact:** None expected, but verify behavior when switching cart backends.
+
+## 11. Recent Fixes (3 Jul 2026)
+
+| # | Fix | Commit |
+|---|-----|--------|
+| 1 | `item_id` must be ProductVariant UUID, not Product UUID/slug | `67727782` |
+| 2 | `@csrf_exempt` (no underscore) for Django 6.0 compat | `3a50d1f2` |
+| 3 | Pass `variantId` through all `addItem` callers | `d4818335` |
+| 4 | Action strings: `add` (set qty) not `update_quantity`, `remove_all` not `remove` | `b72d3a9a` |
+| 5 | Cart item image URL resolution via `resolveImage()` | `863ba2dd` |
+| 6 | `mergeLocalIntoServer` per-item error isolation | `35de866f` |
+| 7 | All 23 osimart proxy views `@csrf_exempt` via `osimart_api_view` helper | `5e0be97d` |
+
 ### 9.9 Migration Summary Table
 
 | File | What to Remove | What to Add/Change |
