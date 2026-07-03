@@ -69,6 +69,19 @@ Django (localhost:8000)        │
 | Django local | `views.py` | Session | CSRF middleware |
 | Osimart external | `api.osimart.com` | Bearer JWT | None |
 
+## 2. Data Models
+
+### 2.1 Django Cart
+
+File: `backend/api/models.py:193-205`
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | AutoField (PK) | Auto-generated |
+| `user` | OneToOneField → User | One cart per user |
+| `created_at` | DateTimeField | `auto_now_add=True` |
+| `updated_at` | DateTimeField | `auto_now=True` |
+
 1. Architecture Overview
 2. Data Models
 3. Frontend Contract (useCart.js)
