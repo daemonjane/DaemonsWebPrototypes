@@ -227,6 +227,27 @@ function quickAdd(product) {
   addItem({ id: product.id, uuid: product.uuid, variantId: product.variantId, name: product.name, price: product.price })
 }
 
+// ───── Hero cursor spotlight ─────
+function onHeroMouse(e) {
+  const hero = document.getElementById('hero')
+  if (!hero) return
+  const rect = hero.getBoundingClientRect()
+  const x = ((e.clientX - rect.left) / rect.width) * 100
+  const y = ((e.clientY - rect.top) / rect.height) * 100
+  hero.style.setProperty('--spot-x', `${x}%`)
+  hero.style.setProperty('--spot-y', `${y}%`)
+}
+
+// ───── Card spotglow effect ─────
+function onSpotglowMove(e) {
+  const card = e.currentTarget
+  const rect = card.getBoundingClientRect()
+  const x = ((e.clientX - rect.left) / rect.width) * 100
+  const y = ((e.clientY - rect.top) / rect.height) * 100
+  card.style.setProperty('--sx', `${x}%`)
+  card.style.setProperty('--sy', `${y}%`)
+}
+
 // ───── Parallax on hero ─────
 const heroY = ref(0)
 let parallaxRaf = null
@@ -351,9 +372,10 @@ function onMagneticLeave(e) {
 
     <template v-if="!loading">
     <!-- ───── Hero ───── -->
-    <section id="hero" class="relative flex flex-col items-center text-center py-12 sm:py-20 lg:py-28 overflow-hidden mb-20 sm:mb-28"
+    <section id="hero" @mousemove="onHeroMouse" class="relative flex flex-col items-center text-center py-12 sm:py-20 lg:py-28 overflow-hidden mb-20 sm:mb-28"
               role="region" aria-labelledby="hero-heading">
       <div class="hero-glow"></div>
+      <div class="hero-spotlight" :style="{ background: `radial-gradient(600px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(6,182,212,0.08), transparent 60%)` }"></div>
       <AbstractArt variant="hero" class="absolute inset-0 w-full h-full" />
       <div class="relative max-w-4xl space-y-6 sm:space-y-8" :style="{ transform: `translateY(${heroY}px)` }">
         <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider border border-cyan-800/30 reveal" data-reveal-delay="0">{{ hero?.badge || 'SYSTEM_READY' }}</span>
@@ -392,24 +414,24 @@ function onMagneticLeave(e) {
       </div>
       <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 reveal" data-reveal-stagger="100">
         <template v-if="features.length">
-          <article v-for="(f, i) in features" :key="i" class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+          <article v-for="(f, i) in features" :key="i" @mousemove="onSpotglowMove" class="spotglow bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
             <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">{{ f.icon || '✦' }}</div>
             <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">{{ f.title }}</h3>
             <p class="text-slate-400 text-sm leading-relaxed">{{ f.description }}</p>
           </article>
         </template>
         <template v-else>
-          <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+          <article @mousemove="onSpotglowMove" class="spotglow bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
             <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">⚡</div>
             <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Verified Performance</h3>
             <p class="text-slate-400 text-sm leading-relaxed">Every component undergoes a 12‑hour stress test before it leaves the lab.</p>
           </article>
-          <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+          <article @mousemove="onSpotglowMove" class="spotglow bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
             <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📦</div>
             <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Direct Vendor Sourcing</h3>
             <p class="text-slate-400 text-sm leading-relaxed">No middlemen. Authentic parts straight from the production line to your door.</p>
           </article>
-          <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+          <article @mousemove="onSpotglowMove" class="spotglow bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
             <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📊</div>
             <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Optimal Price-to-Quality</h3>
             <p class="text-slate-400 text-sm leading-relaxed">Real‑time market analysis ensures you always get the best value per dollar.</p>
@@ -434,8 +456,8 @@ function onMagneticLeave(e) {
         <router-link
           v-for="c in categories" :key="c.id || c.slugified_name"
           :to="'/shop?category=' + (c.slugified_name || c.name)"
-          @mousemove="onTilt" @mouseleave="onTiltLeave"
-          class="tilt-card bg-slate-900/70 rounded-xl p-5 border border-slate-800/80 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 text-center group"
+          @mousemove="onTilt; onSpotglowMove(e)" @mouseleave="onTiltLeave"
+          class="tilt-card spotglow bg-slate-900/70 rounded-xl p-5 border border-slate-800/80 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 text-center group"
         >
           <div class="w-10 h-10 mx-auto bg-cyan-900/20 rounded-xl flex items-center justify-center text-cyan-400 text-xl mb-3 group-hover:scale-110 transition-transform duration-200">{{ c.icon || '📦' }}</div>
           <span class="text-sm text-slate-300 group-hover:text-white font-medium block">{{ c.name }}</span>
