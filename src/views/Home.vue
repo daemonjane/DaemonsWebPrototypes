@@ -1,13 +1,16 @@
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import AnimatedCounter from '../components/AnimatedCounter.vue'
 import AbstractArt from '../components/AbstractArt.vue'
 import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
+import { useScrollReveal } from '../composables/useScrollReveal'
 import { resolveImage } from '../utils/images'
 import OptimizedImage from '../components/OptimizedImage.vue'
 import { normalizeProduct, pick } from '../utils/product'
+
+const { observe } = useScrollReveal(0.06)
 
 const { addItem, addUpgrade, removeUpgrade, setMembership } = useCart()
 const { items: recentlyViewed } = useRecentlyViewed()
@@ -223,17 +226,72 @@ function addBundleToCart(bundle) {
 function quickAdd(product) {
   addItem({ id: product.id, uuid: product.uuid, variantId: product.variantId, name: product.name, price: product.price })
 }
+
+// ───── Parallax on hero ─────
+const heroY = ref(0)
+let parallaxRaf = null
+
+function onHeroScroll() {
+  const heroEl = document.getElementById('hero')
+  if (!heroEl) return
+  const rect = heroEl.getBoundingClientRect()
+  const speed = 0.15
+  heroY.value = rect.top * speed
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', onHeroScroll, { passive: true })
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', onHeroScroll)
+})
+
+// ───── Tilt effect on category cards ─────
+function onTilt(e) {
+  const card = e.currentTarget
+  const rect = card.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const y = e.clientY - rect.top
+  const centerX = rect.width / 2
+  const centerY = rect.height / 2
+  const rotateX = ((y - centerY) / centerY) * -6
+  const rotateY = ((x - centerX) / centerX) * 6
+  card.style.setProperty('--rx', `${rotateX}deg`)
+  card.style.setProperty('--ry', `${rotateY}deg`)
+}
+
+function onTiltLeave(e) {
+  const card = e.currentTarget
+  card.style.setProperty('--rx', '0deg')
+  card.style.setProperty('--ry', '0deg')
+}
+
+// ───── Magnetic effect on buttons ─────
+function onMagneticMove(e) {
+  const btn = e.currentTarget
+  const rect = btn.getBoundingClientRect()
+  const x = e.clientX - rect.left - rect.width / 2
+  const y = e.clientY - rect.top - rect.height / 2
+  const strength = 0.3
+  btn.style.setProperty('--mx', `${x * strength}px`)
+  btn.style.setProperty('--my', `${y * strength}px`)
+}
+function onMagneticLeave(e) {
+  const btn = e.currentTarget
+  btn.style.setProperty('--mx', '0px')
+  btn.style.setProperty('--my', '0px')
+}
 </script>
 
 <template>
-  <div class="space-y-0">
+  <div>
     <!-- ───── Banners carousel ───── -->
     <section v-if="banners.length" class="relative overflow-hidden rounded-xl mb-20 sm:mb-28" role="region" aria-label="Promotional banners">
-      <div class="flex transition-transform duration-500" :style="{ transform: `translateX(-${activeSlide * 100}%)` }">
+      <div class="flex transition-transform duration-700 ease-out" :style="{ transform: `translateX(-${activeSlide * 100}%)` }">
         <div v-for="(banner, i) in banners" :key="banner.id || i" class="min-w-full relative">
           <OptimizedImage :src="resolveImage(banner.image)" :alt="banner.title || 'Banner'" wrapperClass="w-full h-48 sm:h-72" :priority="i === 0" />
           <div v-if="banner.title" class="absolute inset-0 flex items-center justify-center bg-black/30">
-            <h2 class="text-white text-2xl sm:text-4xl font-bold">{{ banner.title }}</h2>
+            <h2 class="text-white text-2xl sm:text-4xl font-bold reveal" :class="{ revealed: true }" data-reveal-delay="200">{{ banner.title }}</h2>
           </div>
         </div>
       </div>
@@ -252,20 +310,20 @@ function quickAdd(product) {
               role="region" aria-labelledby="hero-heading">
       <div class="hero-glow"></div>
       <AbstractArt variant="hero" class="absolute inset-0 w-full h-full" />
-      <div class="relative max-w-4xl space-y-6 sm:space-y-8">
-        <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider border border-cyan-800/30">{{ hero?.badge || 'SYSTEM_READY' }}</span>
-        <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white leading-tight drop-shadow-lg tracking-tight">{{ hero?.title || 'Your Command Station Awaits' }}</h1>
-        <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">{{ hero?.subtitle || 'Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.' }}</p>
-        <div class="flex flex-wrap justify-center gap-4 pt-4">
-          <router-link :to="hero?.primary_cta?.link || '/shop'" class="bg-cyan-600 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.primary_cta?.label || 'Start Building' }}</router-link>
-          <router-link :to="hero?.secondary_cta?.link || '/insights'" class="border border-slate-600 text-slate-300 px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.secondary_cta?.label || 'Explore Membership' }}</router-link>
+      <div class="relative max-w-4xl space-y-6 sm:space-y-8" :style="{ transform: `translateY(${heroY}px)` }">
+        <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider border border-cyan-800/30 reveal" data-reveal-delay="0">{{ hero?.badge || 'SYSTEM_READY' }}</span>
+        <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white leading-tight drop-shadow-lg tracking-tight reveal" data-reveal-delay="100">{{ hero?.title || 'Your Command Station Awaits' }}</h1>
+        <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed reveal" data-reveal-delay="200">{{ hero?.subtitle || 'Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.' }}</p>
+        <div class="flex flex-wrap justify-center gap-4 pt-4 reveal" data-reveal-delay="300">
+          <router-link :to="hero?.primary_cta?.link || '/shop'" @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" class="magnetic-btn bg-cyan-600 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.primary_cta?.label || 'Start Building' }}</router-link>
+          <router-link :to="hero?.secondary_cta?.link || '/insights'" @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" class="magnetic-btn border border-slate-600 text-slate-300 px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.secondary_cta?.label || 'Explore Membership' }}</router-link>
         </div>
       </div>
     </section>
 
     <!-- ───── Full-bleed Metrics bar ───── -->
     <section id="metrics" class="relative -mx-4 sm:-mx-8 px-4 sm:px-8 py-12 sm:py-16 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900 border-y border-slate-800/60 mb-20 sm:mb-28" aria-label="Company metrics">
-      <div class="max-w-5xl mx-auto">
+      <div class="max-w-5xl mx-auto reveal" data-reveal-delay="0">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
           <template v-if="metrics.length">
             <AnimatedCounter v-for="(m, i) in metrics" :key="i" :target="m.target" :suffix="m.suffix" :label="m.label" :duration="m.duration || 1800" :decimals="m.decimals" />
@@ -280,160 +338,173 @@ function quickAdd(product) {
       </div>
     </section>
 
-    <!-- ───── Section divider ───── -->
-    <hr class="border-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent mb-20 sm:mb-28" />
-
     <!-- ───── Features ───── -->
-    <section id="features" class="max-w-5xl mx-auto space-y-10 sm:space-y-12 mb-20 sm:mb-28" role="region" aria-labelledby="features-heading">
-      <div class="text-center space-y-4">
-        <h2 id="features-heading" class="text-3xl sm:text-4xl font-bold text-white">{{ store?.name ? store.name + ' Features' : 'Why TechStore?' }}</h2>
+    <section id="features" class="max-w-5xl mx-auto mb-20 sm:mb-28" role="region" aria-labelledby="features-heading">
+      <div class="text-center space-y-3 mb-10 sm:mb-12 reveal" data-reveal-delay="0">
+        <span class="inline-block text-cyan-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-cyan-900/20 border border-cyan-800/30">Why Us</span>
+        <h2 id="features-heading" class="text-3xl sm:text-4xl font-bold text-gradient-cyan">{{ store?.name ? store.name : 'TechStore' }}</h2>
         <p class="text-slate-400 max-w-lg mx-auto">Every component sourced, tested, and tuned for peak performance.</p>
       </div>
-      <div v-if="features.length" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-        <article v-for="(f, i) in features" :key="i" class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
-          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">{{ f.icon || '✦' }}</div>
-          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">{{ f.title }}</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">{{ f.description }}</p>
-        </article>
-      </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-        <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
-          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">⚡</div>
-          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Verified Performance</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">Every component undergoes a 12‑hour stress test before it leaves the lab.</p>
-        </article>
-        <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
-          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📦</div>
-          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Direct Vendor Sourcing</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">No middlemen. Authentic parts straight from the production line to your door.</p>
-        </article>
-        <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
-          <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📊</div>
-          <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Optimal Price-to-Quality</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">Real‑time market analysis ensures you always get the best value per dollar.</p>
-        </article>
+      <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 reveal" data-reveal-stagger="100">
+        <template v-if="features.length">
+          <article v-for="(f, i) in features" :key="i" class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+            <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">{{ f.icon || '✦' }}</div>
+            <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">{{ f.title }}</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">{{ f.description }}</p>
+          </article>
+        </template>
+        <template v-else>
+          <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+            <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">⚡</div>
+            <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Verified Performance</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Every component undergoes a 12‑hour stress test before it leaves the lab.</p>
+          </article>
+          <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+            <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📦</div>
+            <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Direct Vendor Sourcing</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">No middlemen. Authentic parts straight from the production line to your door.</p>
+          </article>
+          <article class="bg-slate-900/70 rounded-xl p-7 sm:p-8 border border-slate-800/80 space-y-4 text-center hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-950/20 transition-all duration-300">
+            <div class="w-12 h-12 mx-auto bg-cyan-900/30 rounded-full flex items-center justify-center text-cyan-400 text-xl">📊</div>
+            <h3 class="text-lg sm:text-xl font-semibold text-cyan-400">Optimal Price-to-Quality</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Real‑time market analysis ensures you always get the best value per dollar.</p>
+          </article>
+        </template>
       </div>
     </section>
 
-    <!-- ───── Section divider ───── -->
-    <hr class="border-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent mb-20 sm:mb-28" />
+    <!-- ───── Divider ───── -->
+    <div class="section-divider mb-20 sm:mb-28 max-w-xl mx-auto"></div>
 
     <!-- ───── Categories ───── -->
-    <section v-if="categories.length" id="categories" class="space-y-8 sm:space-y-10 mb-20 sm:mb-28" role="region" aria-labelledby="categories-heading">
-      <div class="flex items-center justify-between">
-        <h2 id="categories-heading" class="text-2xl sm:text-3xl font-bold text-white">Shop by Category</h2>
+    <section v-if="categories.length" id="categories" class="mb-20 sm:mb-28" role="region" aria-labelledby="categories-heading">
+      <div class="flex items-center justify-between mb-8 sm:mb-10 reveal" data-reveal-delay="0">
+        <div>
+          <span class="inline-block text-cyan-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-cyan-900/20 border border-cyan-800/30 mb-3">Browse</span>
+          <h2 id="categories-heading" class="text-2xl sm:text-3xl font-bold text-gradient-cyan">Shop by Category</h2>
+        </div>
         <router-link to="/shop" class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">View all →</router-link>
       </div>
-      <div class="flex flex-wrap gap-3">
+      <div :ref="(el) => el && observe(el)" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 reveal" data-reveal-stagger="60">
         <router-link
           v-for="c in categories" :key="c.id || c.slugified_name"
           :to="'/shop?category=' + (c.slugified_name || c.name)"
-          class="flex items-center gap-2 px-4 py-2.5 bg-slate-900/70 rounded-xl border border-slate-800/80 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 group"
+          @mousemove="onTilt" @mouseleave="onTiltLeave"
+          class="tilt-card bg-slate-900/70 rounded-xl p-5 border border-slate-800/80 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 text-center group"
         >
-          <span class="text-lg">{{ c.icon || '📦' }}</span>
-          <span class="text-sm text-slate-300 group-hover:text-white font-medium">{{ c.name }}</span>
-          <span class="text-xs text-slate-600">({{ categoryCounts[c.slugified_name] || categoryCounts[c.name] || c.product_count || c.products_count || 0 }})</span>
+          <div class="w-10 h-10 mx-auto bg-cyan-900/20 rounded-xl flex items-center justify-center text-cyan-400 text-xl mb-3 group-hover:scale-110 transition-transform duration-200">{{ c.icon || '📦' }}</div>
+          <span class="text-sm text-slate-300 group-hover:text-white font-medium block">{{ c.name }}</span>
+          <span class="text-xs text-slate-600 mt-1 block">{{ categoryCounts[c.slugified_name] || categoryCounts[c.name] || c.product_count || c.products_count || 0 }} items</span>
         </router-link>
       </div>
     </section>
 
-    <!-- ───── Brands ───── -->
-    <section v-if="brands.length" id="brands" class="space-y-8 sm:space-y-10 mb-20 sm:mb-28" role="region" aria-labelledby="brands-heading">
-      <div class="flex items-center justify-between">
-        <h2 id="brands-heading" class="text-2xl sm:text-3xl font-bold text-white">Featured Brands</h2>
+    <!-- ───── Brands (marquee) ───── -->
+    <section v-if="brands.length" id="brands" class="mb-20 sm:mb-28" role="region" aria-labelledby="brands-heading">
+      <div class="flex items-center justify-between mb-6 reveal" data-reveal-delay="0">
+        <h2 id="brands-heading" class="text-lg font-semibold text-white flex items-center gap-2">
+          <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+          Featured Brands
+        </h2>
         <router-link to="/shop" class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">Browse all →</router-link>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        <router-link
-          v-for="b in brands" :key="b.id || b.slugified_name"
-          :to="'/shop?brand=' + (b.slugified_name || b.name)"
-          class="bg-slate-900/70 rounded-xl p-4 border border-slate-800/80 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 text-center group"
-        >
-          <div v-if="b.logo" class="h-12 flex items-center justify-center mb-2">
-            <OptimizedImage :src="resolveImage(b.logo)" :alt="b.name" wrapperClass="h-12 flex items-center justify-center" imgClass="max-h-full max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
-          </div>
-          <div v-else class="h-12 flex items-center justify-center mb-2">
-            <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-lg">{{ (b.name || '?')[0] }}</div>
-          </div>
-          <span class="text-xs text-slate-400 group-hover:text-white font-medium block truncate">{{ b.name }}</span>
-        </router-link>
+      <div class="overflow-hidden rounded-xl bg-slate-900/40 border border-slate-800/60 py-4 reveal" data-reveal-delay="100">
+        <div class="marquee-track">
+          <template v-for="b in brands" :key="b.id || b.slugified_name">
+            <router-link
+              :to="'/shop?brand=' + (b.slugified_name || b.name)"
+              class="flex-shrink-0 w-32 text-center group"
+            >
+              <div v-if="b.logo" class="h-10 flex items-center justify-center mb-1">
+                <OptimizedImage :src="resolveImage(b.logo)" :alt="b.name" wrapperClass="h-10 flex items-center justify-center" imgClass="max-h-full max-w-full object-contain opacity-60 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div v-else class="h-10 flex items-center justify-center mb-1">
+                <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-sm">{{ (b.name || '?')[0] }}</div>
+              </div>
+              <span class="text-xs text-slate-500 group-hover:text-white font-medium block truncate">{{ b.name }}</span>
+            </router-link>
+          </template>
+          <template v-for="b in brands" :key="b.id + '-dup'">
+            <router-link
+              :to="'/shop?brand=' + (b.slugified_name || b.name)"
+              class="flex-shrink-0 w-32 text-center group"
+            >
+              <div v-if="b.logo" class="h-10 flex items-center justify-center mb-1">
+                <OptimizedImage :src="resolveImage(b.logo)" :alt="b.name" wrapperClass="h-10 flex items-center justify-center" imgClass="max-h-full max-w-full object-contain opacity-60 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div v-else class="h-10 flex items-center justify-center mb-1">
+                <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-sm">{{ (b.name || '?')[0] }}</div>
+              </div>
+              <span class="text-xs text-slate-500 group-hover:text-white font-medium block truncate">{{ b.name }}</span>
+            </router-link>
+          </template>
+        </div>
       </div>
     </section>
-
-    <!-- ───── Collections ───── -->
-    <section v-if="collections.length" id="collections" class="space-y-8 sm:space-y-10 mb-20 sm:mb-28" role="region" aria-labelledby="collections-heading">
-      <div class="flex items-center justify-between">
-        <h2 id="collections-heading" class="text-2xl sm:text-3xl font-bold text-white">Curated Collections</h2>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <router-link
-          v-for="c in collections" :key="c.id || c.slugified_name"
-          :to="'/shop?collection=' + (c.slugified_name || c.name)"
-          class="bg-gradient-to-br from-slate-900/70 to-slate-800/70 rounded-xl p-6 border border-slate-800/80 hover:border-cyan-700 hover:-translate-y-0.5 transition-all duration-200 group"
-        >
-          <h3 class="text-white font-semibold group-hover:text-cyan-400 transition-colors">{{ c.name }}</h3>
-          <p v-if="c.description" class="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">{{ c.description }}</p>
-          <p class="text-xs text-cyan-400 mt-3">View collection →</p>
-        </router-link>
-      </div>
-    </section>
-
-    <!-- ───── Section divider ───── -->
-    <hr class="border-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent mb-20 sm:mb-28" />
 
     <!-- ───── Testimonials ───── -->
-    <section id="testimonials" class="max-w-5xl mx-auto space-y-10 sm:space-y-12 mb-20 sm:mb-28" role="region" aria-labelledby="testimonials-heading">
-      <div class="text-center space-y-4">
-        <h2 id="testimonials-heading" class="text-3xl sm:text-4xl font-bold text-white">{{ store?.testimonials_heading || 'Trusted by Builders' }}</h2>
+    <section id="testimonials" class="max-w-5xl mx-auto mb-20 sm:mb-28" role="region" aria-labelledby="testimonials-heading">
+      <div class="text-center space-y-3 mb-10 sm:mb-12 reveal" data-reveal-delay="0">
+        <span class="inline-block text-cyan-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-cyan-900/20 border border-cyan-800/30">Social Proof</span>
+        <h2 id="testimonials-heading" class="text-3xl sm:text-4xl font-bold text-gradient-cyan">{{ store?.testimonials_heading || 'Trusted by Builders' }}</h2>
         <p class="text-slate-400 max-w-lg mx-auto">Real stories from real customers who built their dream rigs with us.</p>
       </div>
-      <div v-if="testimonials.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="(t, i) in testimonials" :key="i" class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 space-y-4 hover:border-slate-700 transition-all duration-300">
-          <div class="flex items-center gap-2 text-yellow-400 text-sm">{{ '★★★★★'.slice(0, t.rating || 5) }}{{ '☆☆☆☆☆'.slice(0, 5 - (t.rating || 5)) }}</div>
-          <p class="text-sm text-slate-400 leading-relaxed">"{{ t.text || t.content }}"</p>
-          <div class="flex items-center gap-2 pt-3 border-t border-slate-800">
-            <div class="w-8 h-8 rounded-full flex items-center justify-center text-cyan-400 text-xs font-mono font-bold" :class="t.initials_bg || 'bg-cyan-900/40'">{{ (t.initials || (t.name || '').split(' ').map(w => w[0]).join('').slice(0, 2) || '??') }}</div>
-            <div><p class="text-xs text-white font-medium">{{ t.name }}</p><p class="text-[10px] text-slate-500">{{ t.role || 'Verified Buyer' }}</p></div>
+      <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal" data-reveal-stagger="120">
+        <template v-if="testimonials.length">
+          <div v-for="(t, i) in testimonials" :key="i" class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 space-y-4 hover:border-slate-700 transition-all duration-300">
+            <div class="flex items-center gap-2 text-yellow-400 text-sm">{{ '★★★★★'.slice(0, t.rating || 5) }}{{ '☆☆☆☆☆'.slice(0, 5 - (t.rating || 5)) }}</div>
+            <p class="text-sm text-slate-400 leading-relaxed">"{{ t.text || t.content }}"</p>
+            <div class="flex items-center gap-2 pt-3 border-t border-slate-800">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center text-cyan-400 text-xs font-mono font-bold" :class="t.initials_bg || 'bg-cyan-900/40'">{{ (t.initials || (t.name || '').split(' ').map(w => w[0]).join('').slice(0, 2) || '??') }}</div>
+              <div><p class="text-xs text-white font-medium">{{ t.name }}</p><p class="text-[10px] text-slate-500">{{ t.role || 'Verified Buyer' }}</p></div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 space-y-4 hover:border-slate-700 transition-all duration-300">
-          <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★★</div>
-          <p class="text-sm text-slate-400 leading-relaxed">"The Vanguard desktop is an absolute beast. Silent, cool, and rips through 4K rendering like nothing."</p>
-          <div class="flex items-center gap-2 pt-3 border-t border-slate-800">
-            <div class="w-8 h-8 rounded-full bg-cyan-900/40 flex items-center justify-center text-cyan-400 text-xs font-mono font-bold">MK</div>
-            <div><p class="text-xs text-white font-medium">Marcus K.</p><p class="text-[10px] text-slate-500">Verified Buyer</p></div>
+        </template>
+        <template v-else>
+          <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 space-y-4 hover:border-slate-700 transition-all duration-300">
+            <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★★</div>
+            <p class="text-sm text-slate-400 leading-relaxed">"The Vanguard desktop is an absolute beast. Silent, cool, and rips through 4K rendering like nothing."</p>
+            <div class="flex items-center gap-2 pt-3 border-t border-slate-800">
+              <div class="w-8 h-8 rounded-full bg-cyan-900/40 flex items-center justify-center text-cyan-400 text-xs font-mono font-bold">MK</div>
+              <div><p class="text-xs text-white font-medium">Marcus K.</p><p class="text-[10px] text-slate-500">Verified Buyer</p></div>
+            </div>
           </div>
-        </div>
-        <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 space-y-4 hover:border-slate-700 transition-all duration-300">
-          <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★★</div>
-          <p class="text-sm text-slate-400 leading-relaxed">"Quick shipping, well-packaged, and the QD-OLED monitor exceeded every expectation. Colors are unreal."</p>
-          <div class="flex items-center gap-2 pt-3 border-t border-slate-800">
-            <div class="w-8 h-8 rounded-full bg-fuchsia-900/40 flex items-center justify-center text-fuchsia-400 text-xs font-mono font-bold">SL</div>
-            <div><p class="text-xs text-white font-medium">Sarah L.</p><p class="text-[10px] text-slate-500">Verified Buyer</p></div>
+          <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 space-y-4 hover:border-slate-700 transition-all duration-300">
+            <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★★</div>
+            <p class="text-sm text-slate-400 leading-relaxed">"Quick shipping, well-packaged, and the QD-OLED monitor exceeded every expectation. Colors are unreal."</p>
+            <div class="flex items-center gap-2 pt-3 border-t border-slate-800">
+              <div class="w-8 h-8 rounded-full bg-fuchsia-900/40 flex items-center justify-center text-fuchsia-400 text-xs font-mono font-bold">SL</div>
+              <div><p class="text-xs text-white font-medium">Sarah L.</p><p class="text-[10px] text-slate-500">Verified Buyer</p></div>
+            </div>
           </div>
-        </div>
-        <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 space-y-4 hover:border-slate-700 transition-all duration-300 sm:col-span-2 lg:col-span-1">
-          <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★☆</div>
-          <p class="text-sm text-slate-400 leading-relaxed">"Great selection of components. The market insights helped me time my GPU purchase perfectly. Saved $200."</p>
-          <div class="flex items-center gap-2 pt-3 border-t border-slate-800">
-            <div class="w-8 h-8 rounded-full bg-emerald-900/40 flex items-center justify-center text-emerald-400 text-xs font-mono font-bold">DJ</div>
-            <div><p class="text-xs text-white font-medium">Daemon J.</p><p class="text-[10px] text-slate-500">Insights Member</p></div>
+          <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 space-y-4 hover:border-slate-700 transition-all duration-300 sm:col-span-2 lg:col-span-1">
+            <div class="flex items-center gap-2 text-yellow-400 text-sm">★★★★☆</div>
+            <p class="text-sm text-slate-400 leading-relaxed">"Great selection of components. The market insights helped me time my GPU purchase perfectly. Saved $200."</p>
+            <div class="flex items-center gap-2 pt-3 border-t border-slate-800">
+              <div class="w-8 h-8 rounded-full bg-emerald-900/40 flex items-center justify-center text-emerald-400 text-xs font-mono font-bold">DJ</div>
+              <div><p class="text-xs text-white font-medium">Daemon J.</p><p class="text-[10px] text-slate-500">Insights Member</p></div>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
     </section>
 
+    <!-- ───── Divider ───── -->
+    <div class="section-divider mb-20 sm:mb-28 max-w-xl mx-auto"></div>
+
     <!-- ───── Recently Viewed ───── -->
-    <section v-if="recentlyViewed.length > 0" id="recently-viewed" class="space-y-6 sm:space-y-8 mb-20 sm:mb-28" role="region" aria-labelledby="recently-viewed-heading">
-      <h2 id="recently-viewed-heading" class="text-lg sm:text-xl font-semibold text-white flex items-center gap-2">
-        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        Recently Viewed
-      </h2>
-      <div class="relative group/scroll">
+    <section v-if="recentlyViewed.length > 0" id="recently-viewed" class="mb-20 sm:mb-28" role="region" aria-labelledby="recently-viewed-heading">
+      <div class="reveal" data-reveal-delay="0">
+        <h2 id="recently-viewed-heading" class="text-lg sm:text-xl font-semibold text-white flex items-center gap-2 mb-6">
+          <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Recently Viewed
+        </h2>
+      </div>
+      <div class="relative group/scroll reveal" data-reveal-delay="100">
         <button @click="scrollRecently('left')" aria-label="Scroll left" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-slate-900/90 border border-slate-700 rounded-full flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-700 transition-all opacity-0 group-hover/scroll:opacity-100 -ml-4">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         </button>
@@ -459,34 +530,33 @@ function quickAdd(product) {
       </div>
     </section>
 
-    <!-- ───── Section divider ───── -->
-    <hr class="border-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent mb-20 sm:mb-28" />
-
     <!-- ───── Featured Products ───── -->
-    <section id="products" class="space-y-10 sm:space-y-12 mb-20 sm:mb-28" role="region" aria-labelledby="products-heading">
-      <div class="text-center space-y-4">
-        <h2 id="products-heading" class="text-3xl sm:text-4xl font-bold text-white">Core Systems & Gear</h2>
+    <section id="products" class="mb-20 sm:mb-28" role="region" aria-labelledby="products-heading">
+      <div class="text-center space-y-3 mb-10 sm:mb-12 reveal" data-reveal-delay="0">
+        <span class="inline-block text-cyan-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-cyan-900/20 border border-cyan-800/30">Featured</span>
+        <h2 id="products-heading" class="text-3xl sm:text-4xl font-bold text-gradient-cyan">Core Systems & Gear</h2>
         <p class="text-slate-400 flex items-center justify-center gap-2">
           <span class="flex h-2 w-2 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
           </span>
           <strong>Next Verified Allocation Drop:</strong>
-          <span class="text-cyan-300 font-mono" aria-live="polite">{{ countdownText }}</span>
+          <span class="text-cyan-300 font-mono glow-pulse inline-block rounded px-2" aria-live="polite">{{ countdownText }}</span>
         </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 reveal" data-reveal-stagger="100">
         <ProductCard v-for="product in featuredProducts" :key="product.uuid || product.id" :product="product" />
       </div>
     </section>
 
     <!-- ───── Bundles ───── -->
-    <section id="bundles" class="max-w-5xl mx-auto space-y-10 sm:space-y-12 mb-20 sm:mb-28" role="region" aria-labelledby="bundles-heading">
-      <div class="text-center space-y-4">
-        <h2 id="bundles-heading" class="text-3xl sm:text-4xl font-bold text-white">Complete Your Spacestation</h2>
+    <section id="bundles" class="max-w-5xl mx-auto mb-20 sm:mb-28" role="region" aria-labelledby="bundles-heading">
+      <div class="text-center space-y-3 mb-10 sm:mb-12 reveal" data-reveal-delay="0">
+        <span class="inline-block text-cyan-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-cyan-900/20 border border-cyan-800/30">Bundle & Save</span>
+        <h2 id="bundles-heading" class="text-3xl sm:text-4xl font-bold text-gradient-cyan">Complete Your Spacestation</h2>
         <p class="text-slate-400 max-w-xl mx-auto">Hand‑picked combos that save you money. Bundle pricing adjusts with demand.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+      <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 reveal" data-reveal-stagger="150">
         <div class="bg-gradient-to-br from-slate-900/80 to-slate-800/80 rounded-xl p-6 border border-slate-700 flex flex-col space-y-5 hover:border-cyan-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-900/20 transition-all duration-300">
           <div class="flex items-center gap-3">
             <span class="bg-cyan-600 text-black text-xs px-3 py-1 rounded-full font-bold">SAVE $152</span>
@@ -498,7 +568,7 @@ function quickAdd(product) {
             <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$2,596</span>
             <small class="text-slate-500">One‑time purchase</small>
           </div>
-          <button @click="addBundleToCart(bundles[0])" class="mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
+          <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="addBundleToCart(bundles[0])" class="magnetic-btn mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
         </div>
         <div class="bg-gradient-to-br from-slate-900/80 to-slate-800/80 rounded-xl p-6 border border-slate-700 flex flex-col space-y-5 hover:border-cyan-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-900/20 transition-all duration-300">
           <div class="flex items-center gap-3">
@@ -511,67 +581,29 @@ function quickAdd(product) {
             <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$1,299</span>
             <small class="text-slate-500">Free shipping</small>
           </div>
-          <button @click="addBundleToCart(bundles[1])" class="mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
+          <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="addBundleToCart(bundles[1])" class="magnetic-btn mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
         </div>
       </div>
     </section>
 
-    <!-- ───── Section divider ───── -->
-    <hr class="border-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent mb-20 sm:mb-28" />
-
-    <!-- ───── Micro-upgrades ───── -->
-    <section id="micro-upgrades" class="max-w-5xl mx-auto space-y-10 sm:space-y-12 mb-20 sm:mb-28" role="region" aria-labelledby="upgrades-heading">
-      <div class="text-center space-y-4">
-        <h2 id="upgrades-heading" class="text-3xl sm:text-4xl font-bold text-white">Personalize & Protect</h2>
-        <p class="text-slate-400 max-w-2xl mx-auto">Small add‑ons that make your rig truly yours. They're so affordable you'll want them all.</p>
+    <!-- ───── Trending + New Arrivals ───── -->
+    <section id="discover" class="mb-20 sm:mb-28" role="region" aria-labelledby="discover-heading">
+      <div class="text-center space-y-3 mb-10 sm:mb-12 reveal" data-reveal-delay="0">
+        <span class="inline-block text-cyan-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-cyan-900/20 border border-cyan-800/30">Discover</span>
+        <h2 id="discover-heading" class="text-3xl sm:text-4xl font-bold text-gradient-cyan">Trending & New</h2>
+        <p class="text-slate-400 max-w-lg mx-auto">What the community is buying right now.</p>
       </div>
-      <form id="upgrades-form" @submit.prevent>
-        <fieldset class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <legend class="sr-only">Optional hardware upgrades and services</legend>
-          <!-- VIP Build -->
-          <div class="relative bg-slate-900/70 rounded-xl p-5 border border-slate-800/80 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
-            <input type="checkbox" id="vip-build" value="vip-build" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500" @change="onUpgradeChange">
-            <label for="vip-build" class="space-y-2 cursor-pointer flex-1 select-none">
-              <strong class="text-white block transition-colors peer-checked:text-cyan-400">Priority VIP Assembly & Test</strong>
-              <p class="text-slate-400 text-sm">Skip the queue. 24‑hour build + stress test.</p>
-              <span class="text-cyan-400 font-semibold text-sm">+$19.99</span>
-            </label>
-          </div>
-          <!-- Laser Engraving -->
-          <div class="relative bg-slate-900/70 rounded-xl p-5 border border-slate-800/80 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
-            <input type="checkbox" id="laser-engraving" value="laser-engraving" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500" @change="onUpgradeChange">
-            <label for="laser-engraving" class="space-y-2 cursor-pointer flex-1 select-none">
-              <strong class="text-white block transition-colors peer-checked:text-cyan-400">Bespoke Laser Engraving</strong>
-              <p class="text-slate-400 text-sm">Your handle etched into the chassis.</p>
-              <span class="text-cyan-400 font-semibold text-sm">+$14.99</span>
-              <div class="max-h-0 overflow-hidden transition-all duration-300 peer-checked:max-h-24 peer-checked:mt-3">
-                <span id="custom-engraving-text-label" class="text-xs text-slate-500 font-bold block">Engraving Text:</span>
-                <input type="text" id="custom-engraving-text" value="jxne" placeholder=" " required minlength="3" aria-labelledby="custom-engraving-text-label" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-slate-200 font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 [&:not(:placeholder-shown):invalid]:border-pink-500 [&:not(:placeholder-shown):invalid]:ring-pink-500/30 [&:not(:placeholder-shown):valid]:border-emerald-500 [&:not(:placeholder-shown):valid]:ring-emerald-500/30 transition-colors">
-              </div>
-            </label>
-          </div>
-          <!-- Insurance -->
-          <div class="relative bg-slate-900/70 rounded-xl p-5 border border-slate-800/80 flex gap-3 items-start transition-all duration-200 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/20">
-            <input type="checkbox" id="hardware-insurance" value="insurance" class="peer mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 accent-cyan-500" @change="onUpgradeChange">
-            <label for="hardware-insurance" class="space-y-2 cursor-pointer flex-1 select-none">
-              <strong class="text-white block transition-colors peer-checked:text-cyan-400">Overvoltage Protection Plan</strong>
-              <p class="text-slate-400 text-sm">12‑month accidental damage coverage.</p>
-              <span class="text-cyan-400 font-semibold text-sm">+$2.99/mo</span>
-            </label>
-          </div>
-        </fieldset>
-      </form>
 
-      <!-- Trending items -->
-      <div id="impulse-checkout-counter" class="bg-slate-900/70 rounded-xl p-5 sm:p-6 border border-slate-800/80" role="group" aria-labelledby="trending-heading">
-        <h3 id="trending-heading" class="text-lg sm:text-xl font-semibold text-white mb-5 flex items-center gap-2">
+      <!-- Trending -->
+      <div class="bg-slate-900/70 rounded-xl p-5 sm:p-6 border border-slate-800/80 mb-8 reveal" data-reveal-delay="50">
+        <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
           <span class="flex h-2 w-2 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
           </span>
-          ⚡ Trending Now!!!
+          Trending Now
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 reveal" data-reveal-stagger="80">
           <div v-for="product in trendingProducts" :key="product.uuid || product.id" class="group flex items-center justify-between bg-slate-800/80 rounded-lg p-3 transition-colors hover:bg-slate-700/80">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 overflow-hidden rounded shrink-0">
@@ -584,135 +616,103 @@ function quickAdd(product) {
             </div>
             <div class="flex items-center gap-2">
               <span class="text-slate-300 text-sm font-bold">${{ product.price.toFixed(2) }}</span>
-              <button @click="quickAdd(product)" class="bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
+              <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="quickAdd(product)" class="magnetic-btn bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
             </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- ───── Section divider ───── -->
-    <hr class="border-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent mb-20 sm:mb-28" />
-
-    <!-- ───── Insights Preview ───── -->
-    <section id="insights-preview" class="space-y-10 sm:space-y-12 mb-20 sm:mb-28" role="region" aria-labelledby="insights-preview-heading">
-      <div class="text-center space-y-4">
-        <h2 id="insights-preview-heading" class="text-3xl sm:text-4xl font-bold text-white flex items-center justify-center gap-2">
-          <span class="flex h-2 w-2 relative">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-          </span>
-          Market Pulse Preview
-        </h2>
-        <p class="text-slate-400 max-w-2xl mx-auto">Live component pricing, demand trends, and allocation forecasts — locked for members only. <br class="hidden sm:block">Subscribe to see the full data stream.</p>
-      </div>
-      <div class="relative group max-w-3xl mx-auto">
-        <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-[2px] rounded-xl border border-dashed border-cyan-800/50 transition-all duration-300 group-hover:bg-slate-950/70">
-          <span class="text-4xl mb-2">🔒</span>
-          <p class="text-white font-semibold text-sm sm:text-base mb-4">Unlock Real‑Time Market Data</p>
-          <router-link to="/insights" class="bg-cyan-600 text-white px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-cyan-500 active:scale-95 transition-all duration-150 shadow-lg shadow-cyan-900/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Subscribe to Unlock →</router-link>
-        </div>
-        <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 opacity-40 blur-sm select-none pointer-events-none">
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-            <div class="space-y-1">
-              <span class="text-xs text-slate-500 uppercase tracking-wider">RTX 5070 Stock</span>
-              <div class="text-2xl font-mono font-bold text-cyan-400">142 <span class="text-sm text-cyan-500">▲ +12%</span></div>
-            </div>
-            <div class="space-y-1">
-              <span class="text-xs text-slate-500 uppercase tracking-wider">Avg Price Trend</span>
-              <div class="text-2xl font-mono font-bold text-emerald-400">$1,249 <span class="text-sm text-emerald-500">▼ -2.4%</span></div>
-            </div>
-            <div class="space-y-1">
-              <span class="text-xs text-slate-500 uppercase tracking-wider">Demand Score</span>
-              <div class="text-2xl font-mono font-bold text-fuchsia-400">87/100 <span class="text-sm text-fuchsia-500">HIGH</span></div>
-            </div>
-          </div>
-          <div class="mt-6 h-16 bg-slate-800 rounded-lg flex items-center justify-center">
-            <span class="text-xs text-slate-600 font-mono tracking-widest">▲ ■ ▲ ■ ▼ ▲ ■ ▼ ▼ ■ ▲ ▼ ■ ▲ ■ ▼ ▲</span>
-          </div>
+      <!-- New Arrivals -->
+      <div class="reveal" data-reveal-delay="0">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+            </svg>
+            New Arrivals
+          </h3>
+          <router-link to="/shop" class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">View all →</router-link>
         </div>
       </div>
-    </section>
-
-    <!-- ───── Section divider ───── -->
-    <hr class="border-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent mb-20 sm:mb-28" />
-
-    <!-- ───── Membership Tiers ───── -->
-    <section id="insights-membership" class="max-w-5xl mx-auto space-y-10 sm:space-y-12 mb-20 sm:mb-28" role="region" aria-labelledby="membership-heading">
-      <div class="text-center space-y-4">
-        <h2 id="membership-heading" class="text-3xl sm:text-4xl font-bold text-white">Insights Membership</h2>
-        <p class="text-slate-400 max-w-2xl mx-auto">Know when to buy. Live market data, price alerts, and benchmarking tools.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
-        <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 flex flex-col space-y-4 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
-          <h3 class="text-lg sm:text-xl font-semibold text-white">Monthly Pass</h3>
-          <p class="text-slate-400 text-sm">Perfect for a one‑time build optimization.</p>
-          <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$9.99<span class="text-lg font-normal text-slate-500">/mo</span></span>
-          <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
-            <li>Real‑time price tracking</li>
-            <li>Efficiency score tools</li>
-            <li>Stock alerts</li>
-          </ul>
-          <button @click="selectMembership('monthly')" class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Monthly</button>
-        </div>
-        <div class="relative p-[2px] rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-fuchsia-500 md:scale-105 shadow-xl shadow-cyan-950/40 z-10 hover:shadow-2xl hover:shadow-cyan-900/50 transition-all duration-300">
-          <div class="h-full w-full bg-slate-900 rounded-[10px] p-6 flex flex-col space-y-4 relative">
-            <span class="absolute -top-3 right-4 bg-cyan-600 text-black text-xs px-3 py-1 rounded-full font-bold">BEST VALUE</span>
-            <h3 class="text-lg sm:text-xl font-semibold text-white">Annual Pro</h3>
-            <p class="text-slate-400 text-sm">For enthusiasts who upgrade continuously.</p>
-            <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$79.99<span class="text-lg font-normal text-slate-500">/yr</span></span>
-            <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
-              <li>Everything in Monthly</li>
-              <li>Historical price charts</li>
-              <li>Priority drop alerts</li>
-              <li>Save 30% vs. monthly</li>
-            </ul>
-            <button @click="selectMembership('annual')" class="mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Annually</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ───── Section divider ───── -->
-    <hr class="border-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent mb-20 sm:mb-28" />
-
-    <!-- ───── New Arrivals ───── -->
-    <section id="new-arrivals" class="space-y-8 sm:space-y-10 mb-20 sm:mb-28" role="region" aria-labelledby="new-arrivals-heading">
-      <div class="text-center space-y-4">
-        <span class="inline-block bg-emerald-900/40 text-emerald-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider border border-emerald-800/30">Just Landed</span>
-        <h2 id="new-arrivals-heading" class="text-3xl sm:text-4xl font-bold text-white">New Arrivals</h2>
-        <p class="text-slate-400 max-w-xl mx-auto">Fresh gear added to the catalogue. Verified and ready to ship.</p>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div :ref="(el) => el && observe(el)" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 reveal" data-reveal-stagger="80">
         <ProductCard v-for="product in newArrivals" :key="product.uuid || product.id" :product="product" />
       </div>
     </section>
 
-    <!-- ───── Complete Catalogue ───── -->
-    <section id="all-products" class="space-y-8 sm:space-y-10 mb-20 sm:mb-28" role="region" aria-labelledby="all-products-heading">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h2 id="all-products-heading" class="text-2xl sm:text-3xl font-bold text-white">Complete Catalogue</h2>
-          <p class="text-slate-400 text-sm sm:text-base mt-1">Every product we carry, from cables to complete systems.</p>
+    <!-- ───── Divider ───── -->
+    <div class="section-divider mb-20 sm:mb-28 max-w-xl mx-auto"></div>
+
+    <!-- ───── Membership (Insights + Tiers merged) ───── -->
+    <section id="membership" class="mb-20 sm:mb-28" role="region" aria-labelledby="membership-heading">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center space-y-3 mb-10 sm:mb-12 reveal" data-reveal-delay="0">
+          <span class="inline-block text-cyan-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-cyan-900/20 border border-cyan-800/30">Membership</span>
+          <h2 id="membership-heading" class="text-3xl sm:text-4xl font-bold text-gradient-cyan">Insights Membership</h2>
+          <p class="text-slate-400 max-w-2xl mx-auto">Know when to buy. Live market data, price alerts, and benchmarking tools.</p>
         </div>
-        <button
-          v-if="otherProducts.length > 3"
-          @click="showAllOther = !showAllOther"
-          class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium flex items-center gap-1"
-        >
-          {{ showAllOther ? 'Show less' : `Show all (${otherProducts.length})` }}
-          <svg class="w-3 h-3" :class="{ 'rotate-180': showAllOther }" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <ProductCard v-for="product in (showAllOther ? otherProducts : otherProducts.slice(0, 3))" :key="product.uuid || product.id" :product="product" />
+
+        <!-- Insights Preview -->
+        <div class="relative group max-w-3xl mx-auto mb-10 reveal" data-reveal-delay="50">
+          <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-[2px] rounded-xl border border-dashed border-cyan-800/50 transition-all duration-300 group-hover:bg-slate-950/70">
+            <span class="text-4xl mb-2 float-1">🔒</span>
+            <p class="text-white font-semibold text-sm sm:text-base mb-4">Unlock Real‑Time Market Data</p>
+            <router-link to="/insights" class="bg-cyan-600 text-white px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-cyan-500 active:scale-95 transition-all duration-150 shadow-lg shadow-cyan-900/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Subscribe to Unlock →</router-link>
+          </div>
+          <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 opacity-40 blur-sm select-none pointer-events-none">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+              <div class="space-y-1">
+                <span class="text-xs text-slate-500 uppercase tracking-wider">RTX 5070 Stock</span>
+                <div class="text-2xl font-mono font-bold text-cyan-400">142 <span class="text-sm text-cyan-500">▲ +12%</span></div>
+              </div>
+              <div class="space-y-1">
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Avg Price Trend</span>
+                <div class="text-2xl font-mono font-bold text-emerald-400">$1,249 <span class="text-sm text-emerald-500">▼ -2.4%</span></div>
+              </div>
+              <div class="space-y-1">
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Demand Score</span>
+                <div class="text-2xl font-mono font-bold text-fuchsia-400">87/100 <span class="text-sm text-fuchsia-500">HIGH</span></div>
+              </div>
+            </div>
+            <div class="mt-6 h-16 bg-slate-800 rounded-lg flex items-center justify-center">
+              <span class="text-xs text-slate-600 font-mono tracking-widest">▲ ■ ▲ ■ ▼ ▲ ■ ▼ ▼ ■ ▲ ▼ ■ ▲ ■ ▼ ▲</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tiers -->
+        <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto reveal" data-reveal-stagger="150">
+          <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 flex flex-col space-y-4 hover:border-slate-700 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+            <h3 class="text-lg sm:text-xl font-semibold text-white">Monthly Pass</h3>
+            <p class="text-slate-400 text-sm">Perfect for a one‑time build optimization.</p>
+            <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$9.99<span class="text-lg font-normal text-slate-500">/mo</span></span>
+            <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
+              <li>Real‑time price tracking</li>
+              <li>Efficiency score tools</li>
+              <li>Stock alerts</li>
+            </ul>
+            <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="selectMembership('monthly')" class="magnetic-btn mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Monthly</button>
+          </div>
+          <div class="relative p-[2px] rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-fuchsia-500 md:scale-105 shadow-xl shadow-cyan-950/40 z-10 hover:shadow-2xl hover:shadow-cyan-900/50 transition-all duration-300 animate-gradient">
+            <div class="h-full w-full bg-slate-900 rounded-[10px] p-6 flex flex-col space-y-4 relative">
+              <span class="absolute -top-3 right-4 bg-cyan-600 text-black text-xs px-3 py-1 rounded-full font-bold">BEST VALUE</span>
+              <h3 class="text-lg sm:text-xl font-semibold text-white">Annual Pro</h3>
+              <p class="text-slate-400 text-sm">For enthusiasts who upgrade continuously.</p>
+              <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$79.99<span class="text-lg font-normal text-slate-500">/yr</span></span>
+              <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
+                <li>Everything in Monthly</li>
+                <li>Historical price charts</li>
+                <li>Priority drop alerts</li>
+                <li>Save 30% vs. monthly</li>
+              </ul>
+              <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="selectMembership('annual')" class="magnetic-btn mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Annually</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ───── Rotating Showcase ───── -->
-    <section v-if="showcaseItems.length" id="showcase" class="relative -mx-4 sm:-mx-8 px-4 sm:px-8 py-6 overflow-hidden border-y border-slate-800/60 bg-slate-900/30 mb-20 sm:mb-28" role="region" aria-label="Featured showcase">
+    <section v-if="showcaseItems.length" id="showcase" class="relative -mx-4 sm:-mx-8 px-4 sm:px-8 py-6 overflow-hidden border-y border-slate-800/60 bg-slate-900/30" role="region" aria-label="Featured showcase">
       <div class="max-w-5xl mx-auto">
         <div class="relative flex items-center justify-center h-20 sm:h-24">
           <transition name="showcase" mode="out-in">
@@ -745,4 +745,16 @@ function quickAdd(product) {
 .showcase-leave-active { transition: all 0.25s ease-in; }
 .showcase-enter-from { opacity: 0; transform: translateY(12px); }
 .showcase-leave-to { opacity: 0; transform: translateY(-12px); }
+
+.tilt-card {
+  transform: perspective(600px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.15s ease-out, border-color 0.2s, background-color 0.2s;
+  will-change: transform;
+}
+
+.magnetic-btn {
+  transform: translate(var(--mx, 0), var(--my, 0));
+  transition: transform 0.15s ease-out, background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  will-change: transform;
+}
 </style>
