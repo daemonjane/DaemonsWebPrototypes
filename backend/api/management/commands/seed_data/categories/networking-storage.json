@@ -1,0 +1,7 @@
+{
+  "name": "Networking & Storage",
+  "description": "Routers, mesh WiFi, SSDs, HDDs, hubs, and docking stations",
+  "icon": "\ud83c\udf10",
+  "image": "https://placehold.co/800x600?text=Networking+%26+Storage",
+  "slugified_name": "networking-storage"
+}

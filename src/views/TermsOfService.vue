@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useToast } from '../composables/useToast'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const { addToast } = useToast()
 const accepted = ref(false)
@@ -14,6 +15,7 @@ function handleAccept() {
 
 <template>
   <div class="max-w-3xl mx-auto px-4 py-12">
+    <Breadcrumbs :crumbs="[{ label: 'Legal' }, { label: 'Terms of Service' }]" />
     <div class="mb-10">
       <span class="text-xs font-mono text-cyan-500 uppercase tracking-wider bg-cyan-950/30 px-2 py-1 rounded">Legal</span>
       <h1 class="text-3xl sm:text-4xl font-bold text-white mt-3">Terms of Service</h1>

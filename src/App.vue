@@ -10,12 +10,13 @@ import { useRouteLoading } from './composables/useRouteLoading'
 import { useSalesNotifications } from './composables/useSalesNotifications'
 import KeyboardShortcuts from './components/KeyboardShortcuts.vue'
 import BackgroundEffects from './components/BackgroundEffects.vue'
-import { useDocumentTitle } from './composables/useDocumentTitle'
+import CookieConsent from './components/CookieConsent.vue'
+import { useMeta } from './composables/useMeta'
 
 const route = useRoute()
 const { showSkeleton } = useRouteLoading()
 useSalesNotifications()
-useDocumentTitle()
+useMeta()
 const appError = ref(null)
 
 onErrorCaptured((err) => {
@@ -56,6 +57,7 @@ onErrorCaptured((err) => {
       <ScrollToTop />
       <ToastContainer />
       <KeyboardShortcuts />
+      <CookieConsent />
     </div>
   </div>
 </template>

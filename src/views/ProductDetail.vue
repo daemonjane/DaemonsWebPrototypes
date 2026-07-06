@@ -5,6 +5,7 @@ import { useCart } from '../composables/useCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 import { useFavorites } from '../composables/useFavorites'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
+import OptimizedImage from '../components/OptimizedImage.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import ProductCard from '../components/ProductCard.vue'
 import { normalizeProductDetail } from '../utils/product'
@@ -133,14 +134,18 @@ onMounted(async () => {
       <!-- Image gallery -->
       <div>
         <div class="overflow-hidden rounded-xl bg-slate-900 border border-slate-800">
-          <img :src="product.images.length ? resolveImage(product.images[selectedImage]) : product.image"
-               :alt="product.name" loading="lazy"
-               class="w-full h-72 sm:h-96 object-cover transition-transform duration-500 hover:scale-105" />
+          <OptimizedImage
+            :src="product.images.length ? resolveImage(product.images[selectedImage]) : product.image"
+            :alt="product.name"
+            wrapperClass="w-full h-72 sm:h-96"
+            imgClass="hover:scale-105 transition-transform duration-500"
+            :priority="true"
+          />
         </div>
         <div v-if="product.images.length > 1" class="flex gap-2 mt-3 overflow-x-auto pb-1">
           <button v-for="(img, i) in product.images" :key="i" @click="selectedImage = i"
                   :class="['w-16 h-16 rounded-lg border-2 overflow-hidden shrink-0 transition-all', selectedImage === i ? 'border-cyan-500' : 'border-slate-700 hover:border-slate-500']">
-            <img :src="resolveImage(img)" :alt="'View ' + (i + 1)" class="w-full h-full object-cover" />
+            <OptimizedImage :src="resolveImage(img)" :alt="'View ' + (i + 1)" wrapperClass="h-full w-full" />
           </button>
         </div>
       </div>

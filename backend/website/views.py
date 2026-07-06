@@ -51,13 +51,12 @@ def admin_dashboard(request):
     from django.db.models.functions import TruncDate
     from django.utils import timezone
 
-    from api.models import Category, Order, OrderItem, Product, Wishlist
+    from api.models import Category, Order, OrderItem, Wishlist
 
     now = timezone.now()
     thirty_days_ago = now - timedelta(days=30)
     fourteen_days_ago = now - timedelta(days=14)
 
-    product_count = Product.objects.count()
     category_count = Category.objects.count()
     order_count = Order.objects.count()
     task_count = Task.objects.count()
@@ -74,12 +73,6 @@ def admin_dashboard(request):
         s: Order.objects.filter(status=s).count()
         for s, _ in Order.Status.choices
     }
-
-    products_by_category = list(
-        Category.objects.annotate(count=Count("products"))
-        .values("name", "count")
-        .order_by("-count")
-    )
 
     daily_orders = list(
         Order.objects.filter(created_at__gte=fourteen_days_ago)
@@ -110,8 +103,8 @@ def admin_dashboard(request):
     order_status_labels = [s[1] for s in Order.Status.choices]
     order_status_data = [orders_by_status.get(s[0], 0) for s in Order.Status.choices]
 
-    cat_labels = [c["name"] for c in products_by_category]
-    cat_data = [c["count"] for c in products_by_category]
+    cat_labels = []
+    cat_data = []
 
     do_labels = [d["date"].strftime("%b %d") for d in daily_orders]
     do_data = [d["count"] for d in daily_orders]
@@ -127,7 +120,6 @@ def admin_dashboard(request):
     recent_tasks = Task.objects.prefetch_related("comments").order_by("-created_at")[:5]
 
     return render(request, "website/admin_dashboard.html", {
-        "product_count": product_count,
         "category_count": category_count,
         "order_count": order_count,
         "task_count": task_count,

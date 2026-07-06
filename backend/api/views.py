@@ -2,6 +2,12 @@ import time
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 from django.core.cache import cache
 from django.db import models as db_models
 from django.middleware.csrf import get_token
@@ -41,6 +47,68 @@ def health_check(request):
 # ---------------------------------------------------------------------------
 # Auth
 # ---------------------------------------------------------------------------
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def auth_password_reset_request(request):
+    """Send a password reset email with a token + uidb64 link."""
+    email = request.data.get("email", "").strip()
+    if not email:
+        return Response({"error": "Email is required."}, status=400)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({"message": "If that email is registered, a reset link has been sent."})
+
+    token = default_token_generator.make_token(user)
+    uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+    current_site = get_current_site(request)
+    protocol = "https" if request.is_secure() else "http"
+    reset_url = f"{protocol}://{current_site.domain}/reset-password/{uidb64}/{token}/"
+
+    subject = "Password Reset — TechStore"
+    message = render_to_string("registration/password_reset_email.html", {
+        "user": user,
+        "protocol": protocol,
+        "domain": current_site.domain,
+        "uid": uidb64,
+        "token": token,
+    })
+    html_message = f"""
+    <p>Hi {user.username},</p>
+    <p>Click the link below to reset your password:</p>
+    <p><a href="{reset_url}">{reset_url}</a></p>
+    <p>If you didn't request this, you can ignore this email.</p>
+    """
+    send_mail(subject, message, None, [email], html_message=html_message)
+
+    return Response({"message": "If that email is registered, a reset link has been sent."})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def auth_password_reset_confirm(request, uidb64, token):
+    """Confirm a password reset using uidb64 + token from the email link."""
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        return Response({"error": "Invalid reset link."}, status=400)
+
+    if not default_token_generator.check_token(user, token):
+        return Response({"error": "Invalid or expired reset link."}, status=400)
+
+    password = request.data.get("password", "")
+    if len(password) < 8:
+        return Response({"error": "Password must be at least 8 characters."}, status=400)
+
+    user.set_password(password)
+    user.save()
+    return Response({"message": "Password has been reset successfully."})
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

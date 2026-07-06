@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Cart, CartItem, Order, OrderItem, OrderTracking, Product, ProductAddon, TrackingHistory, Wishlist
+from .models import Cart, CartItem, Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -44,8 +44,6 @@ class ProductAddonSerializer(serializers.ModelSerializer):
 
 
 class WishlistSerializer(serializers.ModelSerializer):
-    product_slugs = serializers.SlugRelatedField(source="products", slug_field="slug", read_only=True, many=True)
-
     class Meta:
         model = Wishlist
         fields = ["id", "product_slugs", "created_at"]

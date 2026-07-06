@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const lastUpdated = 'June 15, 2026'
 const tocOpen = ref(false)
@@ -7,6 +8,7 @@ const tocOpen = ref(false)
 
 <template>
   <div class="max-w-3xl mx-auto px-4 py-12">
+    <Breadcrumbs :crumbs="[{ label: 'Privacy' }, { label: 'Privacy Policy' }]" />
     <!-- Header -->
     <div class="mb-10">
       <span class="text-xs font-mono text-cyan-500 uppercase tracking-wider bg-cyan-950/30 px-2 py-1 rounded">Legal</span>

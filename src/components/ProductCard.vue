@@ -12,6 +12,7 @@ import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useFavorites } from '../composables/useFavorites'
 import QuickViewModal from './QuickViewModal.vue'
+import OptimizedImage from './OptimizedImage.vue'
 
 const props = defineProps({
   product: { type: Object, required: true },
@@ -84,12 +85,12 @@ function closeQuickView() {
     class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex flex-col group transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-950/20"
   >
     <!-- Product image -->
-    <div class="block h-48 w-full bg-slate-800 overflow-hidden relative">
-      <img
+    <div class="h-48 w-full overflow-hidden relative">
+      <OptimizedImage
         :src="product.image"
         :alt="product.name"
-        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-        loading="lazy"
+        wrapperClass="h-full w-full"
+        imgClass="group-hover:scale-105 transition-transform duration-500 ease-out"
       />
       <span
         v-if="badge"

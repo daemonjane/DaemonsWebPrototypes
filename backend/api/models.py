@@ -239,10 +239,10 @@ class CartItem(models.Model):
 
 
 class Wishlist(models.Model):
-    """A user's wishlist of favorite products."""
+    """A user's wishlist of favorite product slugs."""
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="wishlist", verbose_name="user")
-    products = models.ManyToManyField(Product, related_name="wishlists", verbose_name="products")
+    product_slugs = models.JSONField("product slugs", default=list, help_text="List of product slug strings")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the wishlist was created")
 
     class Meta:
@@ -278,10 +278,7 @@ class OrderTracking(models.Model):
 class ProductAddon(models.Model):
     """Optional add-on / micro-transaction item for a product (e.g. cleaning kit, extended warranty)."""
 
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="addons", verbose_name="product",
-        help_text="The product this add-on belongs to",
-    )
+    product_slug = models.CharField("product slug", max_length=200, blank=True, default="", help_text="The product slug this add-on belongs to")
     name = models.CharField("name", max_length=200, help_text="Add-on display name (e.g. 'Cleaning Kit')")
     description = models.TextField("description", blank=True, help_text="Short description of what this add-on includes")
     price = models.DecimalField("price", max_digits=8, decimal_places=2, help_text="Additional cost in USD")
@@ -295,7 +292,7 @@ class ProductAddon(models.Model):
         verbose_name_plural = "Product Add-ons"
 
     def __str__(self):
-        return f"{self.name} (+${self.price}) for {self.product.name}"
+        return f"{self.name} (+${self.price})"
 
 
 class TrackingHistory(models.Model):

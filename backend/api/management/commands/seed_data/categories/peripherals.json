@@ -1,0 +1,7 @@
+{
+  "name": "Peripherals",
+  "description": "Keyboards, mice, mouse pads, webcams, and input devices",
+  "icon": "\u2328\ufe0f",
+  "image": "https://placehold.co/800x600?text=Peripherals",
+  "slugified_name": "peripherals"
+}

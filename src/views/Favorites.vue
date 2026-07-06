@@ -4,6 +4,7 @@ import { useFavorites } from '../composables/useFavorites'
 import ProductCard from '../components/ProductCard.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { normalizeProduct, pick } from '../utils/product'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const { ids, count, clear } = useFavorites()
 
@@ -31,6 +32,7 @@ onMounted(async () => {
 
 <template>
   <div>
+    <Breadcrumbs :crumbs="[{ label: 'Favorites' }]" />
     <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
       <div>
         <h1 class="text-3xl font-bold text-white">Favorites</h1>

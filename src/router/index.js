@@ -21,7 +21,6 @@ const TermsOfService = () => import(/* webpackChunkName: "legal" */ '../views/Te
 const CookiesPolicy = () => import(/* webpackChunkName: "legal" */ '../views/CookiesPolicy.vue')
 const Profile = () => import(/* webpackChunkName: "profile" */ '../views/Profile.vue')
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
-const AdminDashboard = () => import(/* webpackChunkName: "admin" */ '../views/AdminDashboard.vue')
 const Analytics = () => import(/* webpackChunkName: "analytics" */ '../views/Analytics.vue')
 const OsimartAdmin = () => import(/* webpackChunkName: "admin" */ '../views/admin/OsimartAdmin.vue')
 
@@ -40,6 +39,8 @@ const routes = [
   { path: '/favorites', component: FavoritesVue },
   { path: '/checkout', component: Checkout },
   { path: '/login', component: Login },
+  { path: '/forgot-password', component: () => import(/* webpackChunkName: "auth" */ '../views/ForgotPassword.vue') },
+  { path: '/reset-password/:uidb64/:token/', component: () => import(/* webpackChunkName: "auth" */ '../views/ResetPassword.vue') },
   { path: '/register', component: Register },
   { path: '/contact', component: Contact },
   { path: '/about', component: About },

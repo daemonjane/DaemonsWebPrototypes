@@ -113,10 +113,13 @@ export const api = {
     updateOrderStatusChoice: (id, data) => request('PUT', `/api/osimart/order-status-choices/${id}/`, data),
     deleteOrderStatusChoice: (id) => request('DELETE', `/api/osimart/order-status-choices/${id}/`),
   },
+  passwordReset: {
+    request: (email) => request('POST', '/api/auth/password-reset/', { email }),
+    confirm: (uidb64, token, password) => request('POST', `/api/auth/password-reset/${uidb64}/${token}/`, { password }),
+  },
   search: (query, category = '') => {
-    const params = new URLSearchParams()
-    if (query) params.set('q', query)
-    if (category) params.set('category', category)
-    return request('GET', `/api/products/search/?${params}`)
+    const params = { search: query, limit: 50 }
+    if (category) params.category = category
+    return request('GET', `/api/osimart/products/?${new URLSearchParams(params)}`)
   },
 }

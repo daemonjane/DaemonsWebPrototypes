@@ -4,13 +4,15 @@
  * Includes: logo, desktop + mobile nav, global search with dropdown, cart badge with count.
  * @component
  */
-import { ref, computed, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useFavorites } from '../composables/useFavorites'
 import { useTheme } from '../composables/useTheme'
 import { useUser } from '../composables/useUser'
-import { products } from '../data/products'
+import { resolveImage } from '../utils/images'
+import CartDrawer from './CartDrawer.vue'
+import OptimizedImage from './OptimizedImage.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -37,21 +39,43 @@ function themedToggle() {
   toggleTheme()
 }
 
+const cartOpen = ref(false)
 const mobileMenuOpen = ref(false)
 const searchQuery = ref('')
 const searchFocused = ref(false)
 
-const searchResults = computed(() => {
-  if (!searchQuery.value.trim()) return { grouped: {}, total: 0 }
-  const q = searchQuery.value.toLowerCase()
-  const matched = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
-  const grouped = {}
-  matched.forEach(p => {
-    const cat = p.category || 'other'
-    if (!grouped[cat]) grouped[cat] = []
-    if (grouped[cat].length < 4) grouped[cat].push(p)
-  })
-  return { grouped, total: matched.length }
+const searchResults = ref({ grouped: {}, total: 0 })
+let searchTimer = null
+
+watch(searchQuery, (val) => {
+  clearTimeout(searchTimer)
+  if (!val.trim()) {
+    searchResults.value = { grouped: {}, total: 0 }
+    return
+  }
+  searchTimer = setTimeout(async () => {
+    try {
+      const { api } = await import('../utils/api')
+      const res = await api.osimart.products({ search: val, limit: 12 })
+      const items = Array.isArray(res) ? res : (res?.results || [])
+      const grouped = {}
+      items.forEach(p => {
+        const cat = p.categories?.[0]?.category?.slugified_name || 'other'
+        if (!grouped[cat]) grouped[cat] = []
+        if (grouped[cat].length < 4) {
+          grouped[cat].push({
+            id: p.slugified_name || p.id,
+            name: p.name,
+            price: parseFloat(p.price_range || '0'),
+            image: resolveImage(p.main_image),
+          })
+        }
+      })
+      searchResults.value = { grouped, total: items.length }
+    } catch {
+      searchResults.value = { grouped: {}, total: 0 }
+    }
+  }, 300)
 })
 
 const navLinks = [
@@ -140,8 +164,8 @@ function closeSearch() {
                   class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 transition-colors text-sm"
                   @click="searchQuery = ''; searchFocused = false"
                 >
-                  <div class="w-8 h-8 rounded bg-slate-700 shrink-0 overflow-hidden">
-                    <img :src="result.image" :alt="result.name" loading="lazy" class="w-full h-full object-cover">
+                  <div class="w-8 h-8 rounded shrink-0 overflow-hidden">
+                    <OptimizedImage :src="result.image" :alt="result.name" wrapperClass="h-full w-full rounded" />
                   </div>
                   <div class="min-w-0">
                     <p class="text-slate-200 truncate">{{ result.name }}</p>
@@ -201,10 +225,10 @@ function closeSearch() {
           </button>
 
           <!-- Cart -->
-          <router-link
-            to="/checkout"
+          <button
+            @click="cartOpen = true"
             class="relative p-2 text-slate-400 hover:text-cyan-400 transition-colors"
-            aria-label="View cart"
+            aria-label="Open cart"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
@@ -216,7 +240,7 @@ function closeSearch() {
             >
               {{ totalItems }}
             </span>
-          </router-link>
+          </button>
 
           <!-- Mobile menu toggle -->
           <button
@@ -315,5 +339,7 @@ function closeSearch() {
         </div>
       </nav>
     </transition>
+
+    <CartDrawer v-model:open="cartOpen" />
   </header>
 </template>

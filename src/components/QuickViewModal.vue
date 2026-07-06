@@ -9,6 +9,7 @@
  */
 import { ref, watch, nextTick } from 'vue'
 import { useCart } from '../composables/useCart'
+import OptimizedImage from './OptimizedImage.vue'
 
 const props = defineProps({
   product: { type: Object, default: null }
@@ -111,7 +112,7 @@ function handleAddToCart() {
           <div class="grid md:grid-cols-2 gap-0">
             <!-- Image -->
             <div class="bg-slate-800 flex items-center justify-center p-6 min-h-[250px]">
-              <img :src="product.image" :alt="product.name" loading="lazy" class="w-full h-full object-contain max-h-[300px]">
+              <OptimizedImage :src="product.image" :alt="product.name" wrapperClass="w-full h-full max-h-[300px]" imgClass="object-contain" />
             </div>
 
             <!-- Details -->

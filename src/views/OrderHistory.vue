@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const orders = ref([])
 const loading = ref(true)
@@ -36,6 +37,7 @@ function statusColor(status) {
 
 <template>
   <div class="max-w-4xl mx-auto px-4 py-8">
+    <Breadcrumbs :crumbs="[{ label: 'Order History' }]" />
     <h1 class="text-3xl font-bold mb-6">Order History</h1>
 
     <div v-if="loading" class="text-center py-12 text-slate-400">Loading orders...</div>

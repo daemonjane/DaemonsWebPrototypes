@@ -1,18 +1,31 @@
 import { onMounted, onUnmounted } from 'vue'
 import { useToast } from './useToast'
-import { products } from '../data/products'
 
 let interval = null
+
+const productNames = [
+  'Vanguard Desktop',
+  '34" QD‑OLED Monitor',
+  'Cyber‑Pro Keyboard',
+  'Gaming Mouse',
+  'Wireless Headset',
+  'NVMe SSD 2TB',
+  'Stream Deck',
+  'Gaming Chair',
+  'CPU Cooler',
+  'Sleeved Cables',
+  'Microphone',
+  'Ultrawide Monitor',
+]
 
 export function useSalesNotifications() {
   const { addToast } = useToast()
 
   function triggerRandomSale() {
-    const pool = products.filter(p => p.stock === undefined || p.stock > 0)
-    const product = pool[Math.floor(Math.random() * pool.length)]
+    const name = productNames[Math.floor(Math.random() * productNames.length)]
     const names = ['Alex', 'Jordan', 'Casey', 'Morgan', 'Riley', 'Sam', 'Quinn', 'Taylor', 'Avery', 'Drew']
-    const name = names[Math.floor(Math.random() * names.length)]
-    addToast(`${name} just purchased ${product.name}`, 3000, 'default')
+    const person = names[Math.floor(Math.random() * names.length)]
+    addToast(`${person} just purchased ${name}`, 3000, 'default')
   }
 
   function start() {

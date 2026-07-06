@@ -8,66 +8,10 @@ from .models import BackInStockRequest, Cart, CartItem, Category, ContactMessage
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["name", "slug", "product_count"]
+    list_display = ["name", "slug"]
     search_fields = ["name"]
     prepopulated_fields = {"slug": ("name",)}
     list_per_page = 25
-
-    @admin.display(description="Products")
-    def product_count(self, obj):
-        return obj.products.count()
-
-
-class ProductAddonInline(admin.TabularInline):
-    model = ProductAddon
-    extra = 1
-    fields = ["name", "price", "description", "is_available"]
-
-
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ["name", "category", "price", "rating", "stock", "addon_count", "image_preview", "created_at"]
-    list_filter = ["category", "rating", "stock"]
-    search_fields = ["name", "description", "slug"]
-    save_on_top = True
-    prepopulated_fields = {"slug": ("name",)}
-    date_hierarchy = "created_at"
-    inlines = [ProductAddonInline]
-    readonly_fields = ["created_at", "updated_at", "image_preview", "description_preview"]
-    fieldsets = [
-        (None, {"fields": ["slug", "name", "category"]}),
-        ("Pricing & Stock", {"fields": ["price", "stock", "rating"]}),
-        ("Description", {"fields": ["description", "description_preview"]}),
-        ("Media", {"fields": ["image", "image_preview"]}),
-        ("Specifications", {"fields": ["specs"]}),
-        ("Timestamps", {"fields": ["created_at", "updated_at"], "classes": ["collapse"]}),
-    ]
-
-    @admin.display(description="Image")
-    def image_preview(self, obj):
-        if obj.image:
-            return format_html(
-                '<img src="{}" class="field-image_preview" alt="{}" />', obj.image, obj.name
-            )
-        return mark_safe('<span class="text-slate-600">No image</span>')
-
-    @admin.display(description="Add-ons")
-    def addon_count(self, obj):
-        count = obj.addons.count()
-        if count:
-            return format_html(
-                '<span style="color:#06b6d4;">{} add-on{}</span>', count, "s" if count != 1 else ""
-            )
-        return mark_safe('<span class="text-slate-600">—</span>')
-
-    @admin.display(description="Preview")
-    def description_preview(self, obj):
-        if obj.description:
-            return format_html(
-                '<div class="field-description_preview">{}</div>',
-                obj.description[:300] + "..." if len(obj.description) > 300 else obj.description,
-            )
-        return mark_safe('<span class="text-slate-600">—</span>')
 
 
 class OrderItemInline(admin.TabularInline):
@@ -156,19 +100,11 @@ class SubscriptionAdmin(admin.ModelAdmin):
 
 @admin.register(BackInStockRequest)
 class BackInStockRequestAdmin(admin.ModelAdmin):
-    list_display = ["email", "product_link", "created_at"]
+    list_display = ["email", "product", "created_at"]
     search_fields = ["email", "product__name"]
     date_hierarchy = "created_at"
     readonly_fields = ["created_at"]
     list_per_page = 25
-
-    def product_link(self, obj):
-        return format_html(
-            '<a href="{}">{}</a>',
-            f"/admin/api/product/{obj.product.pk}/change/",
-            obj.product.name,
-        )
-    product_link.short_description = "product"
 
 
 @admin.register(OrderTracking)
@@ -199,9 +135,9 @@ class TrackingHistoryAdmin(admin.ModelAdmin):
 
 @admin.register(ProductAddon)
 class ProductAddonAdmin(admin.ModelAdmin):
-    list_display = ["name", "product", "price", "is_available", "created_at"]
-    list_filter = ["is_available", "product__category"]
-    search_fields = ["name", "description", "product__name"]
+    list_display = ["name", "product_slug", "price", "is_available", "created_at"]
+    list_filter = ["is_available"]
+    search_fields = ["name", "description", "product_slug"]
 
 
 @admin.register(ContactMessage)
@@ -262,9 +198,8 @@ class WishlistAdmin(admin.ModelAdmin):
     list_display = ["user", "product_count", "created_at"]
     search_fields = ["user__username", "user__email"]
     date_hierarchy = "created_at"
-    filter_horizontal = ["products"]
-    readonly_fields = ["created_at"]
+    readonly_fields = ["created_at", "product_slugs"]
 
     @admin.display(description="Products")
     def product_count(self, obj):
-        return obj.products.count()
+        return len(obj.product_slugs)

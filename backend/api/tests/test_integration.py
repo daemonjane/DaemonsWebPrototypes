@@ -1,0 +1,223 @@
+"""Integration tests for API views — cart, wishlist, orders, auth, addons."""
+
+from django.test import TestCase, override_settings
+
+
+@override_settings(DEBUG=True)
+class AuthAPITests(TestCase):
+    def test_register_success(self):
+        resp = self.client.post("/api/auth/register/", {"username": "newuser", "email": "new@example.com", "password": "Pass123!"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 201)
+        data = resp.json()
+        self.assertEqual(data["username"], "newuser")
+        self.assertEqual(data["email"], "new@example.com")
+        self.assertFalse(data["is_staff"])
+        self.assertIn("profile", data)
+
+    def test_register_duplicate_username(self):
+        self.client.post("/api/auth/register/", {"username": "dup", "email": "a@example.com", "password": "Pass123!"}, content_type="application/json")
+        resp = self.client.post("/api/auth/register/", {"username": "dup", "email": "b@example.com", "password": "Pass123!"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 409)
+
+    def test_register_duplicate_email(self):
+        self.client.post("/api/auth/register/", {"username": "user1", "email": "same@example.com", "password": "Pass123!"}, content_type="application/json")
+        resp = self.client.post("/api/auth/register/", {"username": "user2", "email": "same@example.com", "password": "Pass123!"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 409)
+
+    def test_register_missing_fields(self):
+        resp = self.client.post("/api/auth/register/", {"username": "", "email": "", "password": ""}, content_type="application/json")
+        self.assertEqual(resp.status_code, 400)
+
+    def test_login_success(self):
+        self.client.post("/api/auth/register/", {"username": "loginuser", "email": "login@example.com", "password": "Pass123!"}, content_type="application/json")
+        resp = self.client.post("/api/auth/login/", {"username": "loginuser", "password": "Pass123!"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["username"], "loginuser")
+
+    def test_login_bad_password(self):
+        resp = self.client.post("/api/auth/login/", {"username": "nonexistent", "password": "wrong"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 401)
+
+    def test_profile_requires_auth(self):
+        resp = self.client.get("/api/auth/profile/")
+        self.assertEqual(resp.status_code, 401)
+
+    def test_profile_authenticated(self):
+        self.client.post("/api/auth/register/", {"username": "prouser", "email": "pro@example.com", "password": "Pass123!"}, content_type="application/json")
+        resp = self.client.get("/api/auth/profile/")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["username"], "prouser")
+
+    def test_profile_update(self):
+        self.client.post("/api/auth/register/", {"username": "upduser", "email": "upd@example.com", "password": "Pass123!"}, content_type="application/json")
+        resp = self.client.patch("/api/auth/profile/", {"bio": "Hello world", "location": "NYC", "phone": "+123"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        profile = resp.json()["profile"]
+        self.assertEqual(profile["bio"], "Hello world")
+        self.assertEqual(profile["location"], "NYC")
+        self.assertEqual(profile["phone"], "+123")
+
+    def test_logout(self):
+        self.client.post("/api/auth/register/", {"username": "logoutuser", "email": "lo@example.com", "password": "Pass123!"}, content_type="application/json")
+        resp = self.client.post("/api/auth/logout/")
+        self.assertEqual(resp.status_code, 200)
+        resp2 = self.client.get("/api/auth/profile/")
+        self.assertEqual(resp2.status_code, 401)
+
+
+def _login(client):
+    client.post("/api/auth/register/", {"username": "testuser", "email": "test@example.com", "password": "Pass123!"}, content_type="application/json", secure=True)
+
+
+@override_settings(DEBUG=True)
+class CartAPITests(TestCase):
+    def test_cart_requires_auth(self):
+        resp = self.client.get("/api/cart/")
+        self.assertEqual(resp.status_code, 401)
+
+    def test_cart_get_creates_empty_cart(self):
+        _login(self.client)
+        resp = self.client.get("/api/cart/")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["items"], [])
+        self.assertEqual(resp.json()["total_items"], 0)
+
+    def test_cart_add_product(self):
+        _login(self.client)
+        resp = self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 2}, content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertEqual(data["total_items"], 2)
+        self.assertEqual(len(data["items"]), 1)
+        self.assertEqual(data["items"][0]["name"], "Test Product")
+
+    def test_cart_add_increments_quantity(self):
+        _login(self.client)
+        self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 1}, content_type="application/json")
+        resp = self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 3}, content_type="application/json")
+        self.assertEqual(resp.json()["items"][0]["quantity"], 4)
+
+    def test_cart_add_upgrade(self):
+        _login(self.client)
+        resp = self.client.post("/api/cart/add/", {"name": "VIP Build", "price": 99.99, "item_type": "upgrade"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["items"][0]["item_type"], "upgrade")
+
+    def test_cart_update_quantity(self):
+        _login(self.client)
+        add = self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 1}, content_type="application/json")
+        item_id = add.json()["items"][0]["id"]
+        resp = self.client.patch(f"/api/cart/item/{item_id}/", {"quantity": 5}, content_type="application/json")
+        self.assertEqual(resp.json()["items"][0]["quantity"], 5)
+
+    def test_cart_remove_item(self):
+        _login(self.client)
+        add = self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 1}, content_type="application/json")
+        item_id = add.json()["items"][0]["id"]
+        resp = self.client.delete(f"/api/cart/item/{item_id}/")
+        self.assertEqual(resp.json()["items"], [])
+
+    def test_cart_clear(self):
+        _login(self.client)
+        self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 2}, content_type="application/json")
+        resp = self.client.post("/api/cart/clear/")
+        self.assertEqual(resp.json()["items"], [])
+
+    def test_cart_merge(self):
+        _login(self.client)
+        resp = self.client.post("/api/cart/merge/", {"items": [{"name": "Test Product", "price": 99.99, "quantity": 3}]}, content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["total_items"], 3)
+
+
+@override_settings(DEBUG=True)
+class WishlistAPITests(TestCase):
+    def test_wishlist_requires_auth(self):
+        resp = self.client.get("/api/wishlist/")
+        self.assertEqual(resp.status_code, 401)
+
+    def test_wishlist_toggle_add(self):
+        _login(self.client)
+        resp = self.client.post("/api/wishlist/toggle/", {"slug": "test-product"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.json()["added"])
+        self.assertIn("test-product", resp.json()["product_slugs"])
+
+    def test_wishlist_toggle_remove(self):
+        _login(self.client)
+        self.client.post("/api/wishlist/toggle/", {"slug": "test-product"}, content_type="application/json")
+        resp = self.client.post("/api/wishlist/toggle/", {"slug": "test-product"}, content_type="application/json")
+        self.assertFalse(resp.json()["added"])
+        self.assertNotIn("test-product", resp.json()["product_slugs"])
+
+    def test_wishlist_check_favorite(self):
+        _login(self.client)
+        self.client.post("/api/wishlist/toggle/", {"slug": "test-product"}, content_type="application/json")
+        resp = self.client.get("/api/wishlist/check/test-product/")
+        self.assertTrue(resp.json()["is_favorite"])
+
+    def test_wishlist_check_not_favorite(self):
+        _login(self.client)
+        resp = self.client.get("/api/wishlist/check/test-product/")
+        self.assertFalse(resp.json()["is_favorite"])
+
+    def test_wishlist_get(self):
+        _login(self.client)
+        self.client.post("/api/wishlist/toggle/", {"slug": "test-product"}, content_type="application/json")
+        resp = self.client.get("/api/wishlist/")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("test-product", resp.json()["product_slugs"])
+
+
+@override_settings(DEBUG=True)
+class OrderAPITests(TestCase):
+    def test_order_list_requires_auth(self):
+        resp = self.client.get("/api/orders/")
+        self.assertEqual(resp.status_code, 403)
+
+    def test_order_checkout_requires_auth(self):
+        resp = self.client.post("/api/orders/checkout/", {}, content_type="application/json")
+        self.assertEqual(resp.status_code, 401)
+
+    def test_checkout_empty_cart(self):
+        _login(self.client)
+        resp = self.client.post("/api/orders/checkout/", {"address": "123 Street"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 400)
+
+    def test_checkout_success(self):
+        _login(self.client)
+        self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 2}, content_type="application/json")
+        resp = self.client.post("/api/orders/checkout/", {"name": "Test User", "email": "test@example.com", "address": "123 Main St"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 201)
+        data = resp.json()
+        self.assertEqual(data["status"], "placed")
+        self.assertEqual(len(data["items"]), 1)
+        self.assertEqual(data["items"][0]["name"], "Test Product")
+        cart_resp = self.client.get("/api/cart/")
+        self.assertEqual(cart_resp.json()["items"], [])
+
+    def test_checkout_missing_address(self):
+        _login(self.client)
+        self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 1}, content_type="application/json")
+        resp = self.client.post("/api/orders/checkout/", {}, content_type="application/json")
+        self.assertEqual(resp.status_code, 400)
+
+    def test_order_list(self):
+        _login(self.client)
+        self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 1}, content_type="application/json")
+        self.client.post("/api/orders/checkout/", {"address": "123 Main St"}, content_type="application/json")
+        resp = self.client.get("/api/orders/")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.json()), 1)
+
+    def test_order_detail(self):
+        _login(self.client)
+        self.client.post("/api/cart/add/", {"name": "Test Product", "price": 99.99, "quantity": 1}, content_type="application/json")
+        checkout = self.client.post("/api/orders/checkout/", {"address": "123 Main St"}, content_type="application/json")
+        order_id = checkout.json()["id"]
+        resp = self.client.get(f"/api/orders/{order_id}/")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["id"], order_id)
+
+
+

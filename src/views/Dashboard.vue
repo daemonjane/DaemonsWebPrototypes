@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useUser } from '../composables/useUser'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 import EmptyState from '../components/EmptyState.vue'
+import OptimizedImage from '../components/OptimizedImage.vue'
 
 const router = useRouter()
 const { user, isAuthenticated, isStaff, refresh } = useUser()
@@ -102,8 +103,8 @@ onMounted(async () => {
         </div>
         <div v-if="favorites.length" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <router-link v-for="p in favorites" :key="p.id" :to="`/product/${p.slug || p.id}`" class="bg-slate-900 rounded-lg border border-slate-800 overflow-hidden hover:border-cyan-700 transition-all duration-200 group">
-            <div class="h-20 bg-slate-800 overflow-hidden">
-              <img :src="p.image || '/assets/placeholder.svg'" :alt="p.name" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="h-20 overflow-hidden">
+              <OptimizedImage :src="p.image || '/assets/placeholder.svg'" :alt="p.name" wrapperClass="h-full w-full" imgClass="group-hover:scale-105 transition-transform duration-500" />
             </div>
             <div class="p-2">
               <p class="text-xs text-slate-200 truncate">{{ p.name }}</p>
@@ -119,8 +120,8 @@ onMounted(async () => {
         <h2 class="text-lg font-semibold text-white">Recently Viewed</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <router-link v-for="item in recentlyViewed.slice(0, 4)" :key="item.id" :to="`/product/${item.id}`" class="bg-slate-900 rounded-lg border border-slate-800 overflow-hidden hover:border-cyan-700 transition-all duration-200 group">
-            <div class="h-20 bg-slate-800 overflow-hidden">
-              <img :src="item.image" :alt="item.name" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="h-20 overflow-hidden">
+              <OptimizedImage :src="item.image" :alt="item.name" wrapperClass="h-full w-full" imgClass="group-hover:scale-105 transition-transform duration-500" />
             </div>
             <div class="p-2">
               <p class="text-xs text-slate-200 truncate">{{ item.name }}</p>

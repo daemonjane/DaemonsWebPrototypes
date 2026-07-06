@@ -1,5 +1,4 @@
 import { ref, computed } from 'vue'
-import { products } from '../data/products'
 
 const STORAGE_KEY = 'techstore_favorites'
 let stored
@@ -17,10 +16,6 @@ export function useFavorites() {
     if (useServer) return serverSlugs.value
     return localIds.value
   })
-
-  const items = computed(() =>
-    ids.value.map(id => products.find(p => p.id === id)).filter(Boolean)
-  )
 
   const count = computed(() => ids.value.length)
 
@@ -87,5 +82,5 @@ export function useFavorites() {
     persist()
   }
 
-  return { ids, items, count, init, toggle, isFavorite, clear }
+  return { ids, count, init, toggle, isFavorite, clear }
 }

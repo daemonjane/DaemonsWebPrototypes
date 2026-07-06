@@ -2,6 +2,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUser } from '../composables/useUser'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const router = useRouter()
 const { user, isAuthenticated, refresh } = useUser()
@@ -53,6 +54,7 @@ function cancel() {
 
 <template>
   <div class="max-w-2xl mx-auto">
+    <Breadcrumbs :crumbs="[{ label: 'Profile' }]" />
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 sm:p-8">
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-white">My Profile</h1>

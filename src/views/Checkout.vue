@@ -7,6 +7,7 @@ import EmptyState from '../components/EmptyState.vue'
 import StepperIndicator from '../components/StepperIndicator.vue'
 import { useToast } from '../composables/useToast'
 import FreeShippingBar from '../components/FreeShippingBar.vue'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const { cart, totalPrice, clearCart } = useCart()
 const router = useRouter()
@@ -124,6 +125,7 @@ async function placeOrder() {
 
 <template>
   <div class="max-w-4xl mx-auto px-4 py-8">
+    <Breadcrumbs :crumbs="[{ label: 'Checkout' }]" />
     <h1 class="text-3xl font-bold mb-6">Checkout</h1>
     <EmptyState v-if="!cart.length" icon="cart" title="Your cart is empty" message="Add some products before checking out." action-label="Browse Shop" action-to="/shop" />
 

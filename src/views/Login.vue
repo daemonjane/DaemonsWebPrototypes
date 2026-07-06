@@ -2,6 +2,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUser } from '../composables/useUser'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const router = useRouter()
 const { refresh } = useUser()
@@ -19,8 +20,9 @@ async function login() {
   }
   pending.value = true
   try {
-    const { api } = await import('../utils/api')
+    const { api, ensureCSRF } = await import('../utils/api')
     await api.login(username.value, password.value)
+    await ensureCSRF()
     await refresh()
     router.push('/')
   } catch (e) {
@@ -32,9 +34,13 @@ async function login() {
 </script>
 
 <template>
-  <div class="flex items-center justify-center min-h-[60vh]">
-    <div class="bg-slate-900 p-8 rounded-2xl border border-slate-700 w-full max-w-md">
-      <h1 class="text-2xl font-bold text-center mb-6">Sign In</h1>
+  <div>
+    <div class="max-w-md mx-auto px-4 pt-4">
+      <Breadcrumbs :crumbs="[{ label: 'Sign In' }]" />
+    </div>
+    <div class="flex items-center justify-center min-h-[60vh]">
+      <div class="bg-slate-900 p-8 rounded-2xl border border-slate-700 w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center mb-6">Sign In</h1>
 
       <form @submit.prevent="login" novalidate>
         <p v-if="errors.form" class="mb-4 p-3 rounded-lg bg-pink-950/30 border border-pink-700/50 text-pink-300 text-sm" role="alert">{{ errors.form }}</p>
@@ -78,9 +84,10 @@ async function login() {
           <router-link to="/register" class="text-cyan-400 hover:underline">Register</router-link>
         </p>
         <p>
-          <span class="text-slate-600 cursor-not-allowed">Forgot password? <span class="text-[10px] text-slate-700">(coming soon)</span></span>
+          <router-link to="/forgot-password" class="text-cyan-400 hover:underline">Forgot password?</router-link>
         </p>
       </div>
     </div>
+  </div>
   </div>
 </template>

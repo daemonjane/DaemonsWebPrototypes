@@ -4,11 +4,13 @@
  * @view
  */
 import { useRouter } from 'vue-router'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 const router = useRouter()
 </script>
 
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
+    <Breadcrumbs :crumbs="[{ label: 'Market Insights' }]" />
     <div class="text-center mb-10">
       <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider mb-4">LIVE DATA STREAM</span>
       <h1 class="text-3xl sm:text-4xl font-bold text-white">Market Pulse</h1>

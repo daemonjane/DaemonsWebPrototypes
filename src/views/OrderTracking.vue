@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -54,6 +55,7 @@ function currentIndex(history) {
 
 <template>
   <div class="max-w-2xl mx-auto px-4 py-12">
+    <Breadcrumbs :crumbs="[{ label: 'Order Tracking' }]" />
     <h1 class="text-3xl font-bold text-white mb-2">Order Tracking</h1>
     <p class="text-slate-400 mb-8 text-sm">Enter your order number to view the current status and delivery timeline.</p>
 

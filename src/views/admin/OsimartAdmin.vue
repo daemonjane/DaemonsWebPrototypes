@@ -10,6 +10,8 @@ import OsimartAnnouncements from './OsimartAnnouncements.vue'
 import OsimartCustomers from './OsimartCustomers.vue'
 import OsimartMedia from './OsimartMedia.vue'
 import OsimartStore from './OsimartStore.vue'
+import OsimartShippingZones from './OsimartShippingZones.vue'
+import OsimartOrderStatuses from './OsimartOrderStatuses.vue'
 
 const tabs = [
   { id: 'products', label: 'Products', icon: '📦' },
@@ -21,6 +23,8 @@ const tabs = [
   { id: 'announcements', label: 'Announcements', icon: '📢' },
   { id: 'customers', label: 'Customers', icon: '👥' },
   { id: 'media', label: 'Media', icon: '🎨' },
+  { id: 'shipping-zones', label: 'Shipping Zones', icon: '🚚' },
+  { id: 'order-statuses', label: 'Order Statuses', icon: '🔄' },
   { id: 'store', label: 'Store Settings', icon: '⚙️' },
 ]
 const activeTab = ref('products')
@@ -42,6 +46,8 @@ const activeTab = ref('products')
       <OsimartAnnouncements v-else-if="activeTab === 'announcements'" />
       <OsimartCustomers v-else-if="activeTab === 'customers'" />
       <OsimartMedia v-else-if="activeTab === 'media'" />
+      <OsimartShippingZones v-else-if="activeTab === 'shipping-zones'" />
+      <OsimartOrderStatuses v-else-if="activeTab === 'order-statuses'" />
       <OsimartStore v-else-if="activeTab === 'store'" />
     </div>
   </div>
