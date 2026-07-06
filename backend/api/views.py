@@ -418,27 +418,25 @@ def order_detail(request, pk):
 
 @api_view(['POST'])
 def order_checkout(request):
-    if not request.user.is_authenticated:
-        return Response({"error": "Please sign in to place an order."}, status=401)
-
     data = request.data
-    cart = _get_cart(request.user)
-    cart_items = cart.items.all()
-    if not cart_items:
-        return Response({"error": "Cart is empty."}, status=400)
-
-    name = data.get("name", request.user.get_full_name() or request.user.username)
-    email = data.get("email", request.user.email)
+    name = data.get("name", "")
+    email = data.get("email", "")
     address = data.get("address", "")
 
+    if not name or not email:
+        return Response({"error": "Name and email are required."}, status=400)
     if not address:
         return Response({"error": "Shipping address is required."}, status=400)
+
+    items_data = data.get("items")
+    if not items_data:
+        return Response({"error": "Cart is empty."}, status=400)
 
     gift_card_code = data.get("gift_card_code", "")
     gift_card_discount = data.get("gift_card_discount")
 
     order = Order.objects.create(
-        user=request.user,
+        user=request.user if request.user.is_authenticated else None,
         email=email,
         name=name,
         address=address,
@@ -446,27 +444,14 @@ def order_checkout(request):
         gift_card_discount=gift_card_discount,
     )
 
-    items_data = data.get("items")
-    if items_data:
-        for item_data in items_data:
-            OrderItem.objects.create(
-                order=order,
-                name=item_data.get("name", ""),
-                price=item_data.get("price", 0),
-                quantity=item_data.get("quantity", 1),
-                item_type=item_data.get("item_type", "product"),
-            )
-    else:
-        for cart_item in cart_items:
-            OrderItem.objects.create(
-                order=order,
-                product=cart_item.product,
-                name=cart_item.name,
-                price=cart_item.price,
-                quantity=cart_item.quantity,
-                item_type=cart_item.item_type,
-            )
-        cart_items.delete()
+    for item_data in items_data:
+        OrderItem.objects.create(
+            order=order,
+            name=item_data.get("name", ""),
+            price=item_data.get("price", 0),
+            quantity=item_data.get("quantity", 1),
+            item_type=item_data.get("item_type", "product"),
+        )
 
     serializer = OrderSerializer(order)
     return Response(serializer.data, status=201)
