@@ -389,11 +389,11 @@ function onMagneticLeave(e) {
       <div class="hero-glow"></div>
       <div class="hero-spotlight" :style="{ background: `radial-gradient(600px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(6,182,212,0.08), transparent 60%)` }"></div>
       <AbstractArt variant="hero" class="absolute inset-0 w-full h-full" />
-      <div class="relative max-w-4xl space-y-6 sm:space-y-8" :style="{ transform: `translateY(${heroY}px)` }">
-        <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider border border-cyan-800/30 reveal" data-reveal-delay="0">{{ hero?.badge || 'SYSTEM_READY' }}</span>
-        <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white leading-tight drop-shadow-lg tracking-tight reveal" data-reveal-delay="100">{{ hero?.title || 'Your Command Station Awaits' }}</h1>
-        <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed reveal" data-reveal-delay="200">{{ hero?.subtitle || 'Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.' }}</p>
-        <div class="flex flex-wrap justify-center gap-4 pt-4 reveal" data-reveal-delay="300">
+      <div :ref="(el) => el && observe(el)" class="relative max-w-4xl space-y-6 sm:space-y-8 reveal" data-reveal-stagger="120" :style="{ transform: `translateY(${heroY}px)` }">
+        <span class="inline-block bg-cyan-900/40 text-cyan-300 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider border border-cyan-800/30">{{ hero?.badge || 'SYSTEM_READY' }}</span>
+        <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white leading-tight drop-shadow-lg tracking-tight">{{ hero?.title || 'Your Command Station Awaits' }}</h1>
+        <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">{{ hero?.subtitle || 'Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.' }}</p>
+        <div class="flex flex-wrap justify-center gap-4 pt-4">
           <router-link :to="hero?.primary_cta?.link || '/shop'" @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple" class="magnetic-btn ripple-btn bg-cyan-600 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.primary_cta?.label || 'Start Building' }}</router-link>
           <router-link :to="hero?.secondary_cta?.link || '/insights'" @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple" class="magnetic-btn ripple-btn border border-slate-600 text-slate-300 px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.secondary_cta?.label || 'Explore Membership' }}</router-link>
         </div>
