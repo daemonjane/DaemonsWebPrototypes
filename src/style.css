@@ -169,6 +169,55 @@ a, button {
   transform: translateY(0);
 }
 
+/* ===== Animated link underline ===== */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: #06b6d4;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* ===== Ripple effect on buttons ===== */
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+.ripple-btn {
+  position: relative;
+  overflow: hidden;
+}
+.ripple-btn .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+  pointer-events: none;
+  animation: ripple 0.5s ease-out forwards;
+}
+
+/* ===== Scale bounce for changing text (countdown) ===== */
+@keyframes scaleBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.scale-bounce {
+  animation: scaleBounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 /* ===== Marquee (Brands auto-scroll) ===== */
 @keyframes marquee {
   from { transform: translateX(0); }

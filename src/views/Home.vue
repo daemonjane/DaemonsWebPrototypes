@@ -238,6 +238,18 @@ function onHeroMouse(e) {
   hero.style.setProperty('--spot-y', `${y}%`)
 }
 
+// ───── Ripple effect on buttons ─────
+function onRipple(e) {
+  const btn = e.currentTarget
+  const rect = btn.getBoundingClientRect()
+  const ripple = document.createElement('span')
+  ripple.className = 'ripple'
+  ripple.style.left = `${e.clientX - rect.left}px`
+  ripple.style.top = `${e.clientY - rect.top}px`
+  btn.appendChild(ripple)
+  ripple.addEventListener('animationend', () => ripple.remove())
+}
+
 // ───── Card spotglow effect ─────
 function onSpotglowMove(e) {
   const card = e.currentTarget
@@ -382,8 +394,8 @@ function onMagneticLeave(e) {
         <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white leading-tight drop-shadow-lg tracking-tight reveal" data-reveal-delay="100">{{ hero?.title || 'Your Command Station Awaits' }}</h1>
         <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed reveal" data-reveal-delay="200">{{ hero?.subtitle || 'Build the ultimate workspace from the comfort of your home. We ship the finest hardware, custom‑tuned for silence and power.' }}</p>
         <div class="flex flex-wrap justify-center gap-4 pt-4 reveal" data-reveal-delay="300">
-          <router-link :to="hero?.primary_cta?.link || '/shop'" @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" class="magnetic-btn bg-cyan-600 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.primary_cta?.label || 'Start Building' }}</router-link>
-          <router-link :to="hero?.secondary_cta?.link || '/insights'" @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" class="magnetic-btn border border-slate-600 text-slate-300 px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.secondary_cta?.label || 'Explore Membership' }}</router-link>
+          <router-link :to="hero?.primary_cta?.link || '/shop'" @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple" class="magnetic-btn ripple-btn bg-cyan-600 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold shadow-lg shadow-cyan-900/30 hover:bg-cyan-500 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.primary_cta?.label || 'Start Building' }}</router-link>
+          <router-link :to="hero?.secondary_cta?.link || '/insights'" @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple" class="magnetic-btn ripple-btn border border-slate-600 text-slate-300 px-8 sm:px-10 py-3.5 sm:py-4 rounded-md font-semibold hover:border-cyan-500 hover:text-cyan-400 active:scale-95 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">{{ hero?.secondary_cta?.label || 'Explore Membership' }}</router-link>
         </div>
       </div>
     </section>
@@ -450,7 +462,7 @@ function onMagneticLeave(e) {
           <span class="inline-block text-cyan-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-cyan-900/20 border border-cyan-800/30 mb-3">Browse</span>
           <h2 id="categories-heading" class="text-2xl sm:text-3xl font-bold text-gradient-cyan">Shop by Category</h2>
         </div>
-        <router-link to="/shop" class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">View all →</router-link>
+        <router-link to="/shop" class="link-underline text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">View all →</router-link>
       </div>
       <div :ref="(el) => el && observe(el)" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 reveal" data-reveal-stagger="60">
         <router-link
@@ -475,7 +487,7 @@ function onMagneticLeave(e) {
           </svg>
           Featured Brands
         </h2>
-        <router-link to="/shop" class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">Browse all →</router-link>
+        <router-link to="/shop" class="link-underline text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">Browse all →</router-link>
       </div>
       <div class="overflow-hidden rounded-xl bg-slate-900/40 border border-slate-800/60 py-4 reveal" data-reveal-delay="100">
         <div class="marquee-track">
@@ -608,7 +620,7 @@ function onMagneticLeave(e) {
             <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
           </span>
           <strong>Next Verified Allocation Drop:</strong>
-          <span class="text-cyan-300 font-mono glow-pulse inline-block rounded px-2" aria-live="polite">{{ countdownText }}</span>
+          <span class="text-cyan-300 font-mono glow-pulse scale-bounce inline-block rounded px-2" aria-live="polite" :key="countdownText">{{ countdownText }}</span>
         </p>
       </div>
       <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 reveal" data-reveal-stagger="100">
@@ -635,7 +647,7 @@ function onMagneticLeave(e) {
             <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$2,596</span>
             <small class="text-slate-500">One‑time purchase</small>
           </div>
-          <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="addBundleToCart(bundles[0])" class="magnetic-btn mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
+          <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple($event); addBundleToCart(bundles[0])" class="magnetic-btn ripple-btn mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
         </div>
         <div class="bg-gradient-to-br from-slate-900/80 to-slate-800/80 rounded-xl p-6 border border-slate-700 flex flex-col space-y-5 hover:border-cyan-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-900/20 transition-all duration-300">
           <div class="flex items-center gap-3">
@@ -648,7 +660,7 @@ function onMagneticLeave(e) {
             <span class="text-2xl sm:text-3xl font-bold text-cyan-400">$1,299</span>
             <small class="text-slate-500">Free shipping</small>
           </div>
-          <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="addBundleToCart(bundles[1])" class="magnetic-btn mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
+          <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple($event); addBundleToCart(bundles[1])" class="magnetic-btn ripple-btn mt-auto bg-cyan-600 text-white px-5 sm:px-6 py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Add Bundle to Cart</button>
         </div>
       </div>
     </section>
@@ -683,7 +695,7 @@ function onMagneticLeave(e) {
             </div>
             <div class="flex items-center gap-2">
               <span class="text-slate-300 text-sm font-bold">${{ product.price.toFixed(2) }}</span>
-              <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="quickAdd(product)" class="magnetic-btn bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
+              <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple($event); quickAdd(product)" class="magnetic-btn ripple-btn bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
             </div>
           </div>
         </div>
@@ -698,7 +710,7 @@ function onMagneticLeave(e) {
             </svg>
             New Arrivals
           </h3>
-          <router-link to="/shop" class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">View all →</router-link>
+          <router-link to="/shop" class="link-underline text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">View all →</router-link>
         </div>
       </div>
       <div :ref="(el) => el && observe(el)" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 reveal" data-reveal-stagger="80">
@@ -723,7 +735,7 @@ function onMagneticLeave(e) {
           <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-[2px] rounded-xl border border-dashed border-cyan-800/50 transition-all duration-300 group-hover:bg-slate-950/70">
             <span class="text-4xl mb-2 float-1">🔒</span>
             <p class="text-white font-semibold text-sm sm:text-base mb-4">Unlock Real‑Time Market Data</p>
-            <router-link to="/insights" class="bg-cyan-600 text-white px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-cyan-500 active:scale-95 transition-all duration-150 shadow-lg shadow-cyan-900/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Subscribe to Unlock →</router-link>
+            <router-link to="/insights" @click="onRipple" class="ripple-btn bg-cyan-600 text-white px-5 py-2.5 rounded-md font-semibold text-sm hover:bg-cyan-500 active:scale-95 transition-all duration-150 shadow-lg shadow-cyan-900/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Subscribe to Unlock →</router-link>
           </div>
           <div class="bg-slate-900/70 rounded-xl p-6 border border-slate-800/80 opacity-40 blur-sm select-none pointer-events-none">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
@@ -757,7 +769,7 @@ function onMagneticLeave(e) {
               <li>Efficiency score tools</li>
               <li>Stock alerts</li>
             </ul>
-            <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="selectMembership('monthly')" class="magnetic-btn mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Monthly</button>
+            <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple($event); selectMembership('monthly')" class="magnetic-btn ripple-btn mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Monthly</button>
           </div>
           <div class="relative p-[2px] rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-fuchsia-500 md:scale-105 shadow-xl shadow-cyan-950/40 z-10 hover:shadow-2xl hover:shadow-cyan-900/50 transition-all duration-300 animate-gradient">
             <div class="h-full w-full bg-slate-900 rounded-[10px] p-6 flex flex-col space-y-4 relative">
@@ -771,7 +783,7 @@ function onMagneticLeave(e) {
                 <li>Priority drop alerts</li>
                 <li>Save 30% vs. monthly</li>
               </ul>
-              <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="selectMembership('annual')" class="magnetic-btn mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Annually</button>
+              <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple($event); selectMembership('annual')" class="magnetic-btn ripple-btn mt-auto bg-cyan-600 text-white py-3 rounded-md font-semibold w-full hover:bg-cyan-500 active:scale-95 active:shadow-inner transition-all duration-150">Subscribe Annually</button>
             </div>
           </div>
         </div>
