@@ -14,8 +14,13 @@ from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 from rest_framework.response import Response
+
+
+class IsStaffOrAdminOnly(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated and request.user.is_staff)
 
 from .models import Cart, CartItem, Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
 from .serializers import CartSerializer, OrderSerializer
@@ -395,6 +400,29 @@ def wishlist_check(request, slug):
 # ---------------------------------------------------------------------------
 # Orders
 # ---------------------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsStaffOrAdminOnly])
+def admin_order_list(request):
+    orders = Order.objects.all().prefetch_related("items").order_by("-created_at")
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated, IsStaffOrAdminOnly])
+def admin_order_update_status(request, pk):
+    try:
+        order = Order.objects.get(pk=pk)
+    except Order.DoesNotExist:
+        return Response({"error": "Order not found."}, status=404)
+    new_status = request.data.get("status")
+    if new_status not in dict(Order.STATUS_CHOICES):
+        return Response({"error": f"Invalid status. Choices: {dict(Order.STATUS_CHOICES)}"}, status=400)
+    order.status = new_status
+    order.save(update_fields=["status"])
+    serializer = OrderSerializer(order)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
