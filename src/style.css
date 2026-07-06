@@ -204,6 +204,22 @@ a, button {
   animation: gradientShift 4s ease infinite;
 }
 
+/* ===== Shimmer skeleton loading ===== */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, rgba(30,41,59,0.6) 25%, rgba(51,65,85,0.4) 50%, rgba(30,41,59,0.6) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: 0.5rem;
+}
+html:not(.dark) .skeleton {
+  background: linear-gradient(90deg, rgba(226,232,240,0.6) 25%, rgba(203,213,225,0.4) 50%, rgba(226,232,240,0.6) 75%);
+  background-size: 800px 100%;
+}
+
 /* ===== Gradient text ===== */
 .text-gradient-cyan {
   background: linear-gradient(135deg, #06b6d4, #34d399, #06b6d4);

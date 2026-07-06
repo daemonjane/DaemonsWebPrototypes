@@ -305,6 +305,51 @@ function onMagneticLeave(e) {
       <p class="text-slate-400 text-sm max-w-lg mx-auto px-4">Browse our latest collection — premium hardware sourced directly from verified vendors.</p>
     </section>
 
+    <!-- ───── Loading skeleton ───── -->
+    <template v-if="loading">
+      <section class="mb-20 sm:mb-28">
+        <div class="max-w-4xl mx-auto text-center space-y-6 py-12 sm:py-20 lg:py-28">
+          <div class="skeleton w-32 h-6 mx-auto"></div>
+          <div class="skeleton w-3/4 h-14 mx-auto"></div>
+          <div class="skeleton w-2/3 h-6 mx-auto"></div>
+          <div class="flex justify-center gap-4 pt-4">
+            <div class="skeleton w-36 h-12"></div>
+            <div class="skeleton w-36 h-12"></div>
+          </div>
+        </div>
+      </section>
+      <section class="mb-20 sm:mb-28">
+        <div class="max-w-5xl mx-auto">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
+            <div v-for="i in 4" :key="i" class="text-center space-y-2">
+              <div class="skeleton w-20 h-8 mx-auto"></div>
+              <div class="skeleton w-24 h-4 mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="mb-20 sm:mb-28 max-w-5xl mx-auto">
+        <div class="text-center space-y-3 mb-10">
+          <div class="skeleton w-16 h-6 mx-auto"></div>
+          <div class="skeleton w-48 h-10 mx-auto"></div>
+          <div class="skeleton w-72 h-5 mx-auto"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+          <div v-for="i in 3" :key="i" class="skeleton h-48"></div>
+        </div>
+      </section>
+      <section class="mb-20 sm:mb-28">
+        <div class="flex items-center justify-between mb-8">
+          <div><div class="skeleton w-16 h-6 mb-2"></div><div class="skeleton w-48 h-8"></div></div>
+          <div class="skeleton w-20 h-5"></div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div v-for="i in 6" :key="i" class="skeleton h-32"></div>
+        </div>
+      </section>
+    </template>
+
+    <template v-if="!loading">
     <!-- ───── Hero ───── -->
     <section id="hero" class="relative flex flex-col items-center text-center py-12 sm:py-20 lg:py-28 overflow-hidden mb-20 sm:mb-28"
               role="region" aria-labelledby="hero-heading">
@@ -737,6 +782,7 @@ function onMagneticLeave(e) {
         </div>
       </div>
     </section>
+    </template>
   </div>
 </template>
 
