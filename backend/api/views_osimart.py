@@ -174,8 +174,10 @@ def osimart_banners(request):
     return _proxy_get("get_banners", request)
 
 
-@osimart_api_view(["PUT", "DELETE"])
+@osimart_api_view(["GET", "PUT", "DELETE"])
 def osimart_banner_detail(request, banner_id):
+    if request.method == "GET":
+        return _proxy_get("get_banner", request, 0, banner_id)
     if request.method == "DELETE":
         return _proxy_write("delete_banner", banner_id)
     return _proxy_write("update_banner", banner_id, request.data)
