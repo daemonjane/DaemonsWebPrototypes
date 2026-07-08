@@ -160,9 +160,11 @@ def _proxy_write(method_name, *args):
 # ---------------------------------------------------------------------------
 # Banners
 # ---------------------------------------------------------------------------
-@osimart_api_view(["GET"])
+@osimart_api_view(["GET", "POST"])
 def osimart_banners(request):
-    return _proxy_get("get_banners", request)
+    if request.method == "GET":
+        return _proxy_get("get_banners", request)
+    return _proxy_write("create_banner", request.data)
 
 
 @osimart_api_view(["GET", "PUT", "DELETE"])

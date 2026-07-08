@@ -29,7 +29,7 @@ async function save() {
     if (editing.value) {
       await api.osimart.updateBanner(editing.value, form.value)
     } else {
-      alert('Use PUT with an existing banner ID')
+      await api.osimart.createBanner(form.value)
     }
     form.value = { title: '', link: '', image: '' }
     editing.value = null
@@ -75,6 +75,7 @@ onMounted(load)
       <input v-model="form.link" placeholder="Link URL" class="flex-1 min-w-[180px] bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white" />
       <input v-model="form.image" placeholder="Image path" class="flex-1 min-w-[180px] bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white" />
       <button v-if="editing" type="submit" class="bg-cyan-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-cyan-500">Update</button>
+      <button v-else type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-emerald-500">Create</button>
       <button v-if="editing" type="button" @click="cancel" class="bg-slate-700 text-slate-300 px-4 py-2 rounded text-sm hover:bg-slate-600">Cancel</button>
     </form>
     <div v-if="loading" class="text-slate-500 text-sm py-8 text-center">Loading...</div>
