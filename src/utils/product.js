@@ -10,6 +10,22 @@ export function pick(arr) {
   return Array.isArray(arr) ? arr : (arr?.results || [])
 }
 
+function calcStock(p) {
+  const direct = Number(p.remaining_stock ?? p.stock ?? p.quantity ?? p.tracked_stock ?? 0)
+  if (direct > 0) return direct
+  if (!Array.isArray(p.variants) || p.variants.length === 0) return 0
+  let total = 0
+  for (const v of p.variants) {
+    if (Array.isArray(v.locations_stock)) {
+      for (const loc of v.locations_stock) {
+        total += Number(loc.stock ?? 0)
+      }
+    }
+    total += Number(v.tracked_stock ?? 0)
+  }
+  return total
+}
+
 export function normalizeProduct(p) {
   return {
     id: p.slugified_name || p.id,
@@ -26,7 +42,7 @@ export function normalizeProduct(p) {
     description: stripHtml(p.description || ''),
     createdAt: p.created_at || p.date_created || null,
     rating: 4.5,
-    stock: Math.max(0, Number(p.remaining_stock ?? p.stock ?? p.quantity ?? 0) || 0),
+    stock: calcStock(p),
     specs: (p.sections || []).flatMap(s => (s.items || []).map(i => `${i.name}: ${i.value}`)),
     badge: null,
     badgeColor: null,
