@@ -384,6 +384,9 @@ class OsimartClient:
     def delete_announcement_bar(self, ann_id):
         return self._delete(f"announcement-bars/{ann_id}/")
 
+    def get_announcement_bar(self, ann_id):
+        return self._get(f"announcement-bars/{ann_id}/")
+
     def get_customers(self, params=None):
         return self._get("customers/", params)
 
