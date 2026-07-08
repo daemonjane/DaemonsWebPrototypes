@@ -294,6 +294,9 @@ class OsimartClient:
     def get_collections(self, params=None):
         return self._get("collections/", params)
 
+    def get_collection(self, collection_id):
+        return self._get(f"collections/{collection_id}/")
+
     def get_store(self, store_id=None, params=None):
         sid = store_id or self.store_id
         return self._get(f"stores/{sid}/", params)
