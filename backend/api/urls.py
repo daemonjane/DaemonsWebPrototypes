@@ -36,6 +36,9 @@ urlpatterns = [
     path('version/', views.api_version, name='api-version'),
     path('newsletter/subscribe/', views.newsletter_subscribe, name='api-newsletter-subscribe'),
     path('back-in-stock/', views.back_in_stock_subscribe, name='api-back-in-stock'),
+    path('payments/config/', views.payment_config, name='payment-config'),
+    path('payments/create-intent/', views.create_payment_intent, name='payment-create-intent'),
+    path('payments/confirm/', views.confirm_payment, name='payment-confirm'),
 
     path('osimart/banners/', views_osimart.osimart_banners, name='osimart-banners'),
     path('osimart/banners/<str:banner_id>/', views_osimart.osimart_banner_detail, name='osimart-banner-detail'),
