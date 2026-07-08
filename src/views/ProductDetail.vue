@@ -229,7 +229,10 @@ onMounted(async () => {
                     @click="selectVariant(v)"
                     :class="['px-4 py-2 rounded-lg text-sm border transition-all', selectedVariant?.id === v.id || selectedVariant?.name === v.name ? 'bg-cyan-950/30 border-cyan-600 text-cyan-300' : 'bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500']">
               {{ v.name || v.value }}
-              <span class="ml-1 text-[10px]" :class="variantStock(v) === 0 ? 'text-red-400' : 'text-emerald-400'">({{ variantStock(v) }})</span>
+              <span class="ml-1.5 inline-flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full" :class="variantStock(v) === 0 ? 'bg-red-500' : variantStock(v) <= 5 ? 'bg-amber-400' : 'bg-emerald-400'"></span>
+                <span class="text-[10px]" :class="variantStock(v) === 0 ? 'text-red-400' : 'text-emerald-400'">{{ variantStock(v) }}</span>
+              </span>
             </button>
           </div>
         </div>
