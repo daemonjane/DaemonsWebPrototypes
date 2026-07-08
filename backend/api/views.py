@@ -1,5 +1,6 @@
 import time
 
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
@@ -479,12 +480,9 @@ def order_list(request):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
-def order_detail(request, pk):
-    if not request.user.is_authenticated:
-        return Response({"error": "Not authenticated."}, status=401)
+def _order_detail(request, pk):
     try:
-        order = Order.objects.get(pk=pk, user=request.user)
+        order = Order.objects.get(pk=pk)
     except Order.DoesNotExist:
         return Response({"error": "Order not found."}, status=404)
     serializer = OrderSerializer(order)
@@ -492,6 +490,8 @@ def order_detail(request, pk):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
 def order_checkout(request):
     data = request.data
     name = data.get("name", "")
@@ -507,6 +507,20 @@ def order_checkout(request):
     if not items_data:
         return Response({"error": "Cart is empty."}, status=400)
 
+    payment_intent_id = data.get("payment_intent_id", "")
+
+    if settings.STRIPE_SECRET_KEY:
+        if not payment_intent_id:
+            return Response({"error": "Payment is required."}, status=400)
+        import stripe
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+            if intent.status != "succeeded":
+                return Response({"error": f"Payment not confirmed (status: {intent.status})."}, status=400)
+        except stripe.error.StripeError as e:
+            return Response({"error": str(e)}, status=400)
+
     gift_card_code = data.get("gift_card_code", "")
     gift_card_discount = data.get("gift_card_discount")
 
@@ -517,6 +531,8 @@ def order_checkout(request):
         address=address,
         gift_card_code=gift_card_code,
         gift_card_discount=gift_card_discount,
+        payment_intent_id=payment_intent_id,
+        payment_status="paid" if payment_intent_id else "pending",
     )
 
     for item_data in items_data:
@@ -533,15 +549,25 @@ def order_checkout(request):
 
 
 # ---------------------------------------------------------------------------
-# Tracking
+# Orders
 # ---------------------------------------------------------------------------
 
 @api_view(['GET'])
-def order_tracking(request, pk):
-    if not request.user.is_authenticated:
-        return Response({"error": "Not authenticated."}, status=401)
+@permission_classes([AllowAny])
+def order_detail(request, pk):
     try:
-        order = Order.objects.get(pk=pk, user=request.user)
+        order = Order.objects.get(pk=pk)
+    except Order.DoesNotExist:
+        return Response({"error": "Order not found."}, status=404)
+    serializer = OrderSerializer(order)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def order_tracking(request, pk):
+    try:
+        order = Order.objects.get(pk=pk)
     except Order.DoesNotExist:
         return Response({"error": "Order not found."}, status=404)
 
@@ -588,7 +614,7 @@ def product_addons(request, slug):
         }
     for a in addons
     ]
-return Response({"addons": data})
+    return Response({"addons": data})
 
 
 @api_view(['POST'])
@@ -596,17 +622,17 @@ return Response({"addons": data})
 @csrf_exempt
 def back_in_stock_subscribe(request):
     from .serializers import BackInStockSerializer
-    from .models import Product, BackInStockRequest
+    from .models import BackInStockRequest
     serializer = BackInStockSerializer(data=request.data)
     if not serializer.is_valid():
         return Response({"error": "Invalid request.", "details": serializer.errors}, status=400)
     slug = serializer.validated_data["product_slug"]
     email = serializer.validated_data["email"]
-    try:
-        product = Product.objects.get(slug=slug)
-    except Product.DoesNotExist:
-        return Response({"error": "Product not found."}, status=404)
-    _, created = BackInStockRequest.objects.get_or_create(product=product, email=email)
+    product_name = serializer.validated_data.get("product_name", "")
+    _, created = BackInStockRequest.objects.get_or_create(
+        product_slug=slug, email=email,
+        defaults={"product_name": product_name},
+    )
     if created:
         return Response({"message": "We'll notify you when this product is back in stock!"}, status=201)
     return Response({"message": "You're already subscribed for this product."})
@@ -638,3 +664,75 @@ def newsletter_subscribe(request):
         subscription.save()
         return Response({"message": "Subscription reactivated."})
     return Response({"message": "Already subscribed."})
+
+
+# ---------------------------------------------------------------------------
+# Stripe Payments
+# ---------------------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def payment_config(request):
+    return Response({
+        "publishable_key": settings.STRIPE_PUBLISHABLE_KEY,
+        "mode": "live" if settings.STRIPE_SECRET_KEY else "demo",
+    })
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def create_payment_intent(request):
+    amount = request.data.get("amount")
+    if not amount:
+        return Response({"error": "Amount is required."}, status=400)
+
+    if not settings.STRIPE_SECRET_KEY:
+        return Response({
+            "client_secret": None,
+            "mode": "demo",
+            "message": "Demo mode — no real payment will be processed.",
+        })
+
+    import stripe
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=int(round(float(amount) * 100)),
+            currency="usd",
+            automatic_payment_methods={"enabled": True},
+        )
+        return Response({
+            "client_secret": intent.client_secret,
+            "mode": "live",
+        })
+    except stripe.error.StripeError as e:
+        return Response({"error": str(e)}, status=400)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def confirm_payment(request):
+    payment_intent_id = request.data.get("payment_intent_id")
+    if not payment_intent_id:
+        return Response({"error": "Payment intent ID is required."}, status=400)
+
+    if not settings.STRIPE_SECRET_KEY:
+        return Response({
+            "status": "succeeded",
+            "mode": "demo",
+        })
+
+    import stripe
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    try:
+        intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+        return Response({
+            "status": intent.status,
+            "mode": "live",
+        })
+    except stripe.error.StripeError as e:
+        return Response({"error": str(e)}, status=400)
