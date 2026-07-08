@@ -139,13 +139,6 @@ def auth_register(request):
 
     user = User.objects.create_user(username=username, email=email, password=password)
     UserProfile.objects.create(user=user)
-
-    try:
-        client = OsimartClient()
-        client.create_customer({"email": email, "password": password, "name": username, "store": client.store_id})
-    except OsimartError:
-        pass
-
     login(request, user)
     return Response(_user_data(user), status=201)
 

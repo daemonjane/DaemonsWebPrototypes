@@ -329,22 +329,60 @@ def osimart_announcement_bar_detail(request, ann_id):
 
 
 # ---------------------------------------------------------------------------
-# Customers
+# Customers (local – replaces remote Osimart proxy)
 # ---------------------------------------------------------------------------
-@osimart_api_view(["GET", "POST"])
+import math
+from django.contrib.auth import get_user_model
+from api.models import Order
+
+User = get_user_model()
+
+@api_view(["GET", "POST"])
 def osimart_customers(request):
     if request.method == "GET":
-        return _proxy_get("get_customers", request)
-    return _proxy_write("create_customer", request.data)
+        page = int(request.GET.get("page", 1))
+        page_size = int(request.GET.get("page_size", 20))
+        qs = User.objects.filter(is_staff=False).order_by("-date_joined")
+        total = qs.count()
+        total_pages = max(1, math.ceil(total / page_size))
+        start = (page - 1) * page_size
+        end = start + page_size
+        results = []
+        for u in qs[start:end]:
+            results.append({
+                "id": u.id,
+                "name": u.username,
+                "email": u.email,
+                "orders_count": Order.objects.filter(user=u).count(),
+                "created_at": u.date_joined.isoformat(),
+            })
+        return Response({
+            "count": total,
+            "next": f"?page={page + 1}" if page < total_pages else None,
+            "previous": f"?page={page - 1}" if page > 1 else None,
+            "results": results,
+        })
+    return Response({"error": "Creating customers via admin panel is not supported."}, status=400)
 
 
-@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
+@api_view(["GET", "DELETE"])
 def osimart_customer_detail(request, customer_id):
-    if request.method == "GET":
-        return _proxy_get("get_customer", request, 0, customer_id)
+    try:
+        u = User.objects.get(pk=customer_id)
+    except User.DoesNotExist:
+        return Response({"error": "Customer not found."}, status=404)
     if request.method == "DELETE":
-        return _proxy_write("delete_customer", customer_id)
-    return _proxy_write("update_customer", customer_id, request.data)
+        if u == request.user:
+            return Response({"error": "Cannot delete yourself."}, status=403)
+        u.delete()
+        return Response({"status": "deleted"})
+    return Response({
+        "id": u.id,
+        "name": u.username,
+        "email": u.email,
+        "orders_count": Order.objects.filter(user=u).count(),
+        "created_at": u.date_joined.isoformat(),
+    })
 
 
 # ---------------------------------------------------------------------------
