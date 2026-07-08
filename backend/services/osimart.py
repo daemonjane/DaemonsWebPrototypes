@@ -384,6 +384,9 @@ class OsimartClient:
     def get_customers(self, params=None):
         return self._get("customers/", params)
 
+    def get_customer(self, customer_id):
+        return self._get(f"customers/{customer_id}/")
+
     def create_customer(self, data):
         return self._post("customers/", data)
 
