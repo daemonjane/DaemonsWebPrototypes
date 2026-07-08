@@ -39,7 +39,7 @@ async function subscribeBIS() {
     const res = await fetch('/api/back-in-stock/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ product_slug: productId, email: bisEmail.value }),
+      body: JSON.stringify({ product_slug: productId, email: bisEmail.value, product_name: product.name }),
     })
     const data = await res.json()
     if (!res.ok) throw new Error(data.error || 'Request failed')

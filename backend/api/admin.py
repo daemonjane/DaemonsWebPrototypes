@@ -100,8 +100,8 @@ class SubscriptionAdmin(admin.ModelAdmin):
 
 @admin.register(BackInStockRequest)
 class BackInStockRequestAdmin(admin.ModelAdmin):
-    list_display = ["email", "product", "created_at"]
-    search_fields = ["email", "product__name"]
+    list_display = ["email", "product_slug", "created_at"]
+    search_fields = ["email", "product_slug", "product_name"]
     date_hierarchy = "created_at"
     readonly_fields = ["created_at"]
     list_per_page = 25
