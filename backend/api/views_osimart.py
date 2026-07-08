@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -11,6 +12,53 @@ from rest_framework.response import Response
 from services.osimart import OsimartClient, OsimartError
 
 logger = logging.getLogger(__name__)
+
+
+def _simplify_product(p):
+    """Osimart GET returns expanded nested objects, but PUT expects simplified formats."""
+    out = dict(p)
+    out.pop("id", None)
+    if "main_image" in out:
+        img = out["main_image"]
+        out["main_image"] = img.get("id", "") if isinstance(img, dict) else img
+    if "gallery" in out and isinstance(out["gallery"], list):
+        simplified = []
+        for g in out["gallery"]:
+            if not isinstance(g, dict): simplified.append(g); continue
+            entry = dict(g)
+            media = entry.get("media", {})
+            entry["media"] = media.get("id", "") if isinstance(media, dict) else media
+            simplified.append(entry)
+        out["gallery"] = simplified
+    if "categories" in out and isinstance(out["categories"], list):
+        simplified = []
+        for c in out["categories"]:
+            cat = c.get("category", {})
+            cat_id = cat.get("id", "") if isinstance(cat, dict) else cat
+            simplified.append({"category": cat_id})
+        out["categories"] = simplified
+    if "variants" in out and isinstance(out["variants"], list):
+        simplified = []
+        for v in out["variants"]:
+            v_out = dict(v)
+            v_out.pop("id", None)
+            v_out.pop("product", None)
+            v_out.pop("fulfillment_locations", None)
+            if "resources" in v_out and isinstance(v_out["resources"], list):
+                v_out["resources"] = [r.get("id", "") if isinstance(r, dict) else r for r in v_out["resources"]]
+            simplified.append(v_out)
+        out["variants"] = simplified
+    if "brand" in out and isinstance(out["brand"], dict):
+        out["brand"] = out["brand"].get("id", "")
+    if "quantity_unit" in out and isinstance(out["quantity_unit"], dict):
+        out["quantity_unit"] = out["quantity_unit"].get("id", "")
+    for key in ["collections", "resources", "sections", "catalogs"]:
+        if key in out and isinstance(out[key], list):
+            try:
+                out[key] = [item.get("id", "") if isinstance(item, dict) else item for item in out[key]]
+            except (TypeError, AttributeError):
+                pass
+    return out
 
 
 def osimart_api_view(methods):
@@ -28,6 +76,29 @@ def _get_client():
     return OsimartClient()
 
 
+def _is_uuid(value):
+    try:
+        uuid.UUID(value)
+        return True
+    except (ValueError, AttributeError):
+        return False
+
+
+def _resolve_product_id(client, product_id):
+    """If product_id is not a UUID, look it up by slugified_name."""
+    if _is_uuid(product_id):
+        return product_id
+    try:
+        products = client.get_products(params={"limit": 100})
+        results = products.get("results", [])
+        for p in results:
+            if p.get("slugified_name") == product_id:
+                return p["id"]
+    except Exception:
+        pass
+    return product_id
+
+
 def _proxy_get(method_name, request, cache_seconds=60, *args):
     try:
         client = _get_client()
@@ -41,7 +112,8 @@ def _proxy_get(method_name, request, cache_seconds=60, *args):
         err = {"error": str(e)}
         if e.response_body:
             err["detail"] = e.response_body
-        return Response(err, status=e.status_code)
+        status = e.status_code if isinstance(e.status_code, int) else 502
+        return Response(err, status=status)
     except Exception as e:
         logger.exception("Unhandled error in _proxy_get(%s)", method_name)
         return Response({"error": str(e), "detail": f"Unhandled error: {e}"}, status=502)
@@ -57,7 +129,8 @@ def _proxy_write(method_name, *args):
         err = {"error": str(e)}
         if e.response_body:
             err["detail"] = e.response_body
-        return Response(err, status=e.status_code)
+        status = e.status_code if isinstance(e.status_code, int) else 502
+        return Response(err, status=status)
     except Exception as e:
         logger.exception("Unhandled error in _proxy_write(%s)", method_name)
         return Response({"error": str(e), "detail": f"Unhandled error: {e}"}, status=502)
@@ -91,10 +164,21 @@ def osimart_products(request):
 @osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_product_detail(request, product_id):
     if request.method == "GET":
-        return _proxy_get("get_product", request, 0, product_id)
+        client = _get_client()
+        resolved = _resolve_product_id(client, product_id)
+        return _proxy_get("get_product", request, 0, resolved)
     if request.method == "DELETE":
         return _proxy_write("delete_product", product_id)
-    return _proxy_write("update_product", product_id, request.data)
+    client = _get_client()
+    resolved = _resolve_product_id(client, product_id)
+    try:
+        existing = client.get_product(resolved)
+    except OsimartError:
+        existing = {}
+    merged = _simplify_product(existing)
+    merged.update(request.data)
+    merged.setdefault("store", client.store_id)
+    return _proxy_write("update_product", resolved, merged)
 
 
 # ---------------------------------------------------------------------------
