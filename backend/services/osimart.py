@@ -288,6 +288,9 @@ class OsimartClient:
     def get_brands(self, params=None):
         return self._get("brands/", params)
 
+    def get_brand(self, brand_id):
+        return self._get(f"brands/{brand_id}/")
+
     def get_collections(self, params=None):
         return self._get("collections/", params)
 
