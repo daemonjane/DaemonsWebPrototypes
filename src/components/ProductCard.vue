@@ -29,6 +29,7 @@ const badge = computed(() => {
   if (newIds.includes(props.product.id)) return { label: 'NEW', class: 'bg-emerald-600 text-white' }
   if (bestSellerIds.includes(props.product.id)) return { label: 'BEST SELLER', class: 'bg-amber-600 text-white' }
   if (props.product.price > 1000) return { label: 'PREMIUM', class: 'bg-fuchsia-600 text-white' }
+  if (!props.product.price || props.product.price <= 0) return { label: 'COMING SOON', class: 'bg-slate-600 text-white' }
   return null
 })
 
@@ -134,7 +135,8 @@ function closeQuickView() {
       </div>
       <p class="text-slate-400 text-sm mt-1 line-clamp-2">{{ product.description }}</p>
       <div class="mt-2 flex items-center gap-2">
-        <span class="text-2xl font-bold text-cyan-400">${{ Number(product.price || 0).toFixed(2) }}</span>
+        <span v-if="product.price > 0" class="text-2xl font-bold text-cyan-400">${{ Number(product.price).toFixed(2) }}</span>
+        <span v-else class="text-sm text-slate-500 font-mono">Price TBD</span>
         <span v-if="priceCompare" class="group relative text-xs font-mono" :class="priceCompare.class">
           {{ priceCompare.icon }}
           <span class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-slate-800 text-slate-300 text-[10px] px-2 py-1 rounded border border-slate-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">{{ priceCompare.label }}</span>
@@ -192,7 +194,8 @@ function closeQuickView() {
 
       <!-- Compact add-to-cart (other pages) -->
       <div v-else class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between gap-2">
-        <span class="text-lg font-bold text-white">${{ Number(product.price || 0).toFixed(2) }}</span>
+        <span v-if="product.price > 0" class="text-lg font-bold text-white">${{ Number(product.price).toFixed(2) }}</span>
+        <span v-else class="text-xs text-slate-500 font-mono">Price TBD</span>
         <div class="flex gap-1.5">
           <button
             @click.stop="openQuickView"
