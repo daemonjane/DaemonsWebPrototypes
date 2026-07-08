@@ -306,8 +306,10 @@ def osimart_variant_types(request):
     return _proxy_write("create_variant_type", request.data)
 
 
-@osimart_api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_variant_type_detail(request, vt_id):
+    if request.method == "GET":
+        return _proxy_get("get_variant_type", request, 0, vt_id)
     if request.method == "DELETE":
         return _proxy_write("delete_variant_type", vt_id)
     return _proxy_write("update_variant_type", vt_id, request.data)
