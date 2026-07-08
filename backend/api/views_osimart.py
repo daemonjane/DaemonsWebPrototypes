@@ -14,51 +14,80 @@ from services.osimart import OsimartClient, OsimartError
 logger = logging.getLogger(__name__)
 
 
+def _simplify_main_image(out):
+    if "main_image" not in out:
+        return
+    img = out["main_image"]
+    out["main_image"] = img.get("id", "") if isinstance(img, dict) else img
+
+def _simplify_gallery(out):
+    if "gallery" not in out or not isinstance(out["gallery"], list):
+        return
+    simplified = []
+    for g in out["gallery"]:
+        if not isinstance(g, dict):
+            simplified.append(g)
+            continue
+        entry = dict(g)
+        media = entry.get("media", {})
+        entry["media"] = media.get("id", "") if isinstance(media, dict) else media
+        simplified.append(entry)
+    out["gallery"] = simplified
+
 def _simplify_product(p):
     """Osimart GET returns expanded nested objects, but PUT expects simplified formats."""
     out = dict(p)
     out.pop("id", None)
-    if "main_image" in out:
-        img = out["main_image"]
-        out["main_image"] = img.get("id", "") if isinstance(img, dict) else img
-    if "gallery" in out and isinstance(out["gallery"], list):
-        simplified = []
-        for g in out["gallery"]:
-            if not isinstance(g, dict): simplified.append(g); continue
-            entry = dict(g)
-            media = entry.get("media", {})
-            entry["media"] = media.get("id", "") if isinstance(media, dict) else media
-            simplified.append(entry)
-        out["gallery"] = simplified
-    if "categories" in out and isinstance(out["categories"], list):
-        simplified = []
-        for c in out["categories"]:
-            cat = c.get("category", {})
-            cat_id = cat.get("id", "") if isinstance(cat, dict) else cat
-            simplified.append({"category": cat_id})
-        out["categories"] = simplified
-    if "variants" in out and isinstance(out["variants"], list):
-        simplified = []
-        for v in out["variants"]:
-            v_out = dict(v)
-            v_out.pop("id", None)
-            v_out.pop("product", None)
-            v_out.pop("fulfillment_locations", None)
-            if "resources" in v_out and isinstance(v_out["resources"], list):
-                v_out["resources"] = [r.get("id", "") if isinstance(r, dict) else r for r in v_out["resources"]]
-            simplified.append(v_out)
-        out["variants"] = simplified
-    if "brand" in out and isinstance(out["brand"], dict):
-        out["brand"] = out["brand"].get("id", "")
-    if "quantity_unit" in out and isinstance(out["quantity_unit"], dict):
-        out["quantity_unit"] = out["quantity_unit"].get("id", "")
+    _simplify_main_image(out)
+    _simplify_gallery(out)
+    _simplify_categories(out)
+    _simplify_variants(out)
+    _simplify_brand(out)
+    _simplify_quantity_unit(out)
+    _simplify_id_lists(out)
+    return out
+
+def _simplify_categories(out):
+    if "categories" not in out or not isinstance(out["categories"], list):
+        return
+    simplified = []
+    for c in out["categories"]:
+        cat = c.get("category", {})
+        cat_id = cat.get("id", "") if isinstance(cat, dict) else cat
+        simplified.append({"category": cat_id})
+    out["categories"] = simplified
+
+def _simplify_variants(out):
+    if "variants" not in out or not isinstance(out["variants"], list):
+        return
+    simplified = []
+    for v in out["variants"]:
+        v_out = dict(v)
+        v_out.pop("id", None)
+        v_out.pop("product", None)
+        v_out.pop("fulfillment_locations", None)
+        if "resources" in v_out and isinstance(v_out["resources"], list):
+            v_out["resources"] = [r.get("id", "") if isinstance(r, dict) else r for r in v_out["resources"]]
+        simplified.append(v_out)
+    out["variants"] = simplified
+
+def _simplify_brand(out):
+    if "brand" not in out or not isinstance(out["brand"], dict):
+        return
+    out["brand"] = out["brand"].get("id", "")
+
+def _simplify_quantity_unit(out):
+    if "quantity_unit" not in out or not isinstance(out["quantity_unit"], dict):
+        return
+    out["quantity_unit"] = out["quantity_unit"].get("id", "")
+
+def _simplify_id_lists(out):
     for key in ["collections", "resources", "sections", "catalogs"]:
         if key in out and isinstance(out[key], list):
             try:
                 out[key] = [item.get("id", "") if isinstance(item, dict) else item for item in out[key]]
             except (TypeError, AttributeError):
                 pass
-    return out
 
 
 def osimart_api_view(methods):
