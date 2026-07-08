@@ -1,5 +1,17 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUser } from '../../composables/useUser'
+
+const router = useRouter()
+const { user, refresh } = useUser()
+
+onMounted(async () => {
+  if (!user.value) await refresh()
+  if (!user.value?.is_staff) {
+    router.replace('/login')
+  }
+})
 import OsimartProducts from './OsimartProducts.vue'
 import OsimartCategories from './OsimartCategories.vue'
 import OsimartBrands from './OsimartBrands.vue'

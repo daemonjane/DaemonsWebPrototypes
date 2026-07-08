@@ -23,16 +23,17 @@ const Profile = () => import(/* webpackChunkName: "profile" */ '../views/Profile
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
 const Analytics = () => import(/* webpackChunkName: "analytics" */ '../views/Analytics.vue')
 const OsimartAdmin = () => import(/* webpackChunkName: "admin" */ '../views/admin/OsimartAdmin.vue')
+const AdminDashboard = () => import(/* webpackChunkName: "admin" */ '../views/AdminDashboard.vue')
 
 const routes = [
   { path: '/', component: Home },
   { path: '/shop', component: Shop },
   { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
   { path: '/admin', redirect: '/admin/osimart' },
-  { path: '/admin/dashboard', redirect: '/admin/osimart' },
-  { path: '/admin/analytics', component: Analytics, meta: { requiresAuth: true } },
-  { path: '/admin/osimart', component: OsimartAdmin, meta: { requiresAuth: true } },
-  { path: '/analytics', component: Analytics },
+  { path: '/admin/dashboard', component: AdminDashboard, meta: { requiresAuth: true, requiresStaff: true } },
+  { path: '/admin/analytics', component: Analytics, meta: { requiresAuth: true, requiresStaff: true } },
+  { path: '/admin/osimart', component: OsimartAdmin, meta: { requiresAuth: true, requiresStaff: true } },
+  { path: '/analytics', component: Analytics, meta: { requiresAuth: true } },
   { path: '/profile', component: Profile, meta: { requiresAuth: true } },
   { path: '/orders', component: OrderHistory, meta: { requiresAuth: true } },
   { path: '/product/:id', component: ProductDetail },
@@ -71,6 +72,7 @@ router.beforeEach(async (to) => {
       const { user, refresh } = useUser()
       if (!user.value) await refresh()
       if (!user.value) return '/login'
+      if (to.meta?.requiresStaff && !user.value?.is_staff) return '/'
     } catch {
       return '/login'
     }

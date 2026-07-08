@@ -9,7 +9,8 @@ onMounted(fetchOrders)
 async function fetchOrders() {
   loading.value = true
   try {
-    const data = await request('GET', '/api/admin/orders/')
+    const { api } = await import('../../utils/api')
+    const data = await api.osimart.orders()
     orders.value = Array.isArray(data) ? data : []
   } catch (e) {
     console.error('Failed to load orders', e)
@@ -19,22 +20,10 @@ async function fetchOrders() {
   }
 }
 
-async function request(method, path, body) {
-  const token = document.cookie.split('; ').find(r => r.startsWith('csrftoken='))?.split('=')[1] || ''
-  const res = await fetch(path, {
-    method,
-    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': token },
-    credentials: 'same-origin',
-    body: body ? JSON.stringify(body) : undefined,
-  })
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.error || data.detail || 'Request failed')
-  return data
-}
-
 async function updateStatus(orderId, status) {
   try {
-    await request('PATCH', `/api/admin/orders/${orderId}/status/`, { status })
+    const { api } = await import('../../utils/api')
+    await api.osimart.updateOrderStatus(orderId, status)
     orders.value = orders.value.map(o => o.id === orderId ? { ...o, status } : o)
   } catch (e) {
     alert(e.message)

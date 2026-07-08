@@ -50,8 +50,6 @@ export function useUser() {
       await api.logout()
     } catch { /* ignore */ }
     state.user = null
-    localStorage.removeItem('osimart_token')
-    localStorage.removeItem('osimart_refresh_token')
   }
 
   return {

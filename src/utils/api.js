@@ -125,6 +125,7 @@ export const api = {
     updateOrderStatusChoice: (id, data) => request('PUT', `/api/osimart/order-status-choices/${id}/`, data),
     deleteOrderStatusChoice: (id) => request('DELETE', `/api/osimart/order-status-choices/${id}/`),
     orders: () => request('GET', '/api/admin/orders/'),
+    updateOrderStatus: (id, status) => request('PATCH', `/api/admin/orders/${id}/status/`, { status }),
   },
   passwordReset: {
     request: (email) => request('POST', '/api/auth/password-reset/', { email }),
