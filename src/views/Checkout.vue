@@ -48,12 +48,18 @@ const membershipTotal = computed(() =>
   cart.value.filter(item => item.type === 'membership').reduce((sum, item) => sum + item.price, 0)
 )
 
-const discountAmount = computed(() => totalPrice.value * (giftCardDiscount.value / 100))
-const finalTotal = computed(() => totalPrice.value - discountAmount.value)
+const discountAmount = computed(() => (totalPrice?.value ?? 0) * (giftCardDiscount.value / 100))
+const finalTotal = computed(() => (totalPrice?.value ?? 0) - discountAmount.value)
 
 const placing = ref(false)
 
-const { api } = await import('../utils/api')
+let api
+try {
+  const mod = await import('../utils/api')
+  api = mod.api
+} catch {
+  api = null
+}
 
 onMounted(async () => {
   try {
@@ -167,7 +173,9 @@ async function placeOrder() {
     })
     await clearCart()
     addToast('Order placed successfully!', 3000, 'success')
-    router.push(`/confirmation?id=${result.id}`)
+    const orderId = result?.id
+    if (!orderId) throw new Error('No order ID returned')
+    router.push(`/confirmation?id=${orderId}`)
   } catch (e) {
     addToast(e.message || 'Failed to place order', 3000, 'error')
   } finally {

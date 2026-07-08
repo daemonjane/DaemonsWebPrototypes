@@ -250,7 +250,15 @@ export function useCart() {
       return
     }
     let hasErrors = false
-    const { api } = await import('../utils/api')
+    let api
+    try {
+      const mod = await import('../utils/api')
+      api = mod.api
+    } catch {
+      useServer = true
+      addToast('Cart sync failed', 4000, 'warning')
+      return
+    }
     for (const item of items) {
       try {
         await api.osimartCart.updateItem({
