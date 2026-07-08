@@ -304,6 +304,9 @@ class OsimartClient:
     def create_media(self, image_url):
         return self._post("medias/", {"path": image_url})
 
+    def delete_media(self, media_id):
+        return self._delete(f"medias/{media_id}/")
+
     def create_product(self, data):
         return self._post("products/", data)
 
