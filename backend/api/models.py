@@ -69,6 +69,14 @@ class Order(models.Model):
         "status", max_length=20, choices=Status.choices, default=Status.PLACED,
         help_text="Current order status in the fulfillment lifecycle",
     )
+    payment_intent_id = models.CharField(
+        "Stripe PaymentIntent ID", max_length=100, blank=True,
+        help_text="Stripe PaymentIntent ID for tracking payment",
+    )
+    payment_status = models.CharField(
+        "payment status", max_length=20, default="pending",
+        help_text="Payment status: pending, paid, failed, refunded",
+    )
     created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the order was placed")
 
     class Meta:
@@ -157,10 +165,8 @@ class Subscription(models.Model):
 class BackInStockRequest(models.Model):
     """Notification request for when a product is back in stock."""
 
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="back_in_stock_requests", verbose_name="product",
-        help_text="The product to be notified about",
-    )
+    product_slug = models.CharField("product slug", max_length=200, default="", help_text="The product slug to be notified about")
+    product_name = models.CharField("product name", max_length=200, blank=True, default="", help_text="Product name (for display)")
     email = models.EmailField("email", help_text="Email address for the notification")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the notification request was created")
 
@@ -170,7 +176,7 @@ class BackInStockRequest(models.Model):
         verbose_name_plural = "Back-in-Stock Requests"
 
     def __str__(self):
-        return f"{self.email} - {self.product.name}"
+        return f"{self.email} - {self.product_slug}"
 
 
 class ContactMessage(models.Model):
