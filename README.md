@@ -124,6 +124,52 @@ CONTACT_TO_EMAIL=mail.charbelelias05@gmail.com
 
 ---
 
+## Customer Flow (Auth)
+
+### Registration → Login Flow
+
+```
+Register.vue                     Login.vue
+    │                                │
+    ▼                                ▼
+POST /api/auth/register/       POST /api/auth/osimart-login/
+    │                                │
+    ├── Create Django User           ├── Try Osimart API auth first
+    ├── Create Osimart Customer      │   (customer_login → POST {OSIMART_API}/auth/login/)
+    │   (if Osimart API available)   │
+    └── Auto-login (session)         ├── Fallback → local Django auth if Osimart fails
+                                     │
+                                     └── Find/Create local user → login → return session
+```
+
+### How Customers Work
+
+1. **Registration**: Creates a local Django user + profile. Also attempts to create a matching customer in the Osimart API via `OsimartClient.create_customer()` so the user can authenticate through either system.
+
+2. **Login**: First tries Osimart API authentication (for external customer accounts). If Osimart is unreachable or the credentials don't match an Osimart customer, falls back to local Django `authenticate()`. This means users who registered locally can still log in even when Osimart is down.
+
+3. **Session**: After successful auth (either path), Django's `login()` creates a session. The frontend stores Osimart tokens (`osimart_token`, `osimart_refresh_token`) in `localStorage` for future Osimart API calls.
+
+4. **Cart Sync**: On login, the frontend calls `mergeLocalIntoServer()` which transfers any localStorage cart items to the server/Osimart cart.
+
+## Osimart API Integration
+
+The storefront proxies all product, category, brand, collection, banner, customer, and order data through an external Osimart API:
+
+```
+Frontend ──→ Django Proxy ──→ Osimart API (api.osimart.com)
+```
+
+The `OsimartClient` in `backend/services/osimart.py` handles authentication with Osimart, caching the auth token to `~/.cache/osimart/token.json` so auto-reloads don't re-authenticate.
+
+Required `.env` variables:
+```
+OSIMART_API_BASE_URL=https://api.osimart.com
+OSIMART_STORE_ID=your-store-uuid
+OSIMART_EMAIL=admin-email
+OSIMART_PASSWORD=admin-password
+```
+
 ## How the SPA Connects to Django
 
 The Vue SPA communicates with Django via a REST API at `/api/`. Authentication uses **session cookies** (same-origin).
@@ -144,16 +190,22 @@ All unsafe HTTP methods (POST, PUT, PATCH, DELETE) send the `X-CSRFToken` header
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/api/auth/register/` | Create account + auto-login |
-| `POST` | `/api/auth/login/` | Authenticate, get session |
+| `POST` | `/api/auth/register/` | Create account + auto-login + create Osimart customer |
+| `POST` | `/api/auth/login/` | Local Django auth (username + password) |
+| `POST` | `/api/auth/osimart-login/` | Osimart-first auth with local fallback (email + password) |
 | `POST` | `/api/auth/logout/` | Destroy session |
 | `GET` | `/api/auth/profile/` | Current user data |
 | `PATCH` | `/api/auth/profile/` | Update email, username, bio, etc. |
 | `GET` | `/api/auth/csrf/` | Get CSRF token (sets cookie) |
 
-**Login request:**
+**Local login:**
 ```json
 { "username": "admin", "password": "admin123" }
+```
+
+**Osimart login:**
+```json
+{ "email": "user@example.com", "password": "userpass" }
 ```
 
 **Login response:**
@@ -220,18 +272,26 @@ All unsafe HTTP methods (POST, PUT, PATCH, DELETE) send the `X-CSRFToken` header
 
 ## Frontend Login Flow
 
-From `Login.vue`:
+From `Login.vue` (uses Osimart-first auth):
 
 ```
-POST /api/auth/login/  ───►  authenticate + login()
+POST /api/auth/osimart-login/  ───►  Osimart API auth → fallback local auth
         │
         ▼
-refresh() — GET /api/auth/profile/  ───►  returns user data
+refresh() — GET /api/auth/profile/  ───►  returns user data (session)
         │
-        ├── syncCart()     — mergeLocalIntoServer() → POST /api/cart/merge/
-        │                     then init() → GET /api/cart/
+        ├── Osimart tokens stored in localStorage
+        ├── mergeLocalIntoServer() → merge cart items to Osimart cart
+        └── Redirect to /
+```
+
+From `Register.vue`:
+
+```
+POST /api/auth/register/  ───►  create Django user + Osimart customer
         │
-        └── syncWishlist() — init() → GET /api/wishlist/
+        ▼
+auto-login → refresh() → redirect to /
 ```
 
 ---
