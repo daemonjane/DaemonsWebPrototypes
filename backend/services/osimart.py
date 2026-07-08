@@ -92,10 +92,33 @@ class OsimartClient:
     def _api_url(self, path):
         return f"{self.BASE_URL}/dashboard/apis/{path.lstrip('/')}"
 
-    def _get(self, path, params=None):
-        url = self._api_url(path)
+    def _ensure_store(self, payload=None, params=None):
+        payload = dict(payload or {})
+        payload.setdefault("store", self.store_id)
         params = dict(params or {})
         params.setdefault("store", self.store_id)
+        return payload, params
+
+    def _request(self, method, path, **kwargs):
+        url = self._api_url(path)
+        try:
+            resp = method(url, headers=self._get_headers(), timeout=self.timeout, **kwargs)
+            if resp.status_code == 401:
+                self._access_token = None
+                resp = method(url, headers=self._get_headers(), timeout=self.timeout, **kwargs)
+            resp.raise_for_status()
+            return resp.json()
+        except Exception as e:
+            code = 502
+            body = None
+            if hasattr(e, 'response') and e.response is not None:
+                code = e.response.status_code
+                body = e.response.text[:500]
+            raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
+
+    def _get(self, path, params=None):
+        url = self._api_url(path)
+        params, _ = self._ensure_store(params=params)
         try:
             resp = requests.get(url, params=params, headers=self._get_headers(), timeout=self.timeout)
             if resp.status_code == 401:
