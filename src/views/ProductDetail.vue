@@ -119,6 +119,22 @@ const selectedVariant = ref(null)
 
 function selectVariant(v) { selectedVariant.value = v }
 
+function variantStock(v) {
+  if (!v) return 0
+  let s = Number(v.tracked_stock ?? v.stock ?? v.quantity ?? 0)
+  if (s <= 0 && Array.isArray(v.locations_stock)) {
+    for (const loc of v.locations_stock) {
+      s += Number(loc.stock ?? 0)
+    }
+  }
+  return s
+}
+
+const stockDisplay = computed(() => {
+  if (selectedVariant.value) return variantStock(selectedVariant.value)
+  return product.value?.stock ?? 0
+})
+
 function shareProduct() {
   if (!product.value) return
   const url = `${window.location.origin}/product/${product.value.uuid || product.value.id}`
@@ -193,12 +209,12 @@ onMounted(async () => {
         <p class="text-3xl text-cyan-400 mt-4 font-mono font-bold">${{ Number(totalPrice || 0).toFixed(2) }}</p>
 
         <!-- Stock status -->
-        <div v-if="product.stock !== undefined" class="mt-3" aria-live="polite">
-          <span v-if="product.stock === 0" class="inline-flex items-center gap-1.5 bg-red-950/30 text-red-400 text-xs font-mono px-3 py-1.5 rounded-full border border-red-800/50">
+        <div v-if="stockDisplay >= 0" class="mt-3" aria-live="polite">
+          <span v-if="stockDisplay === 0" class="inline-flex items-center gap-1.5 bg-red-950/30 text-red-400 text-xs font-mono px-3 py-1.5 rounded-full border border-red-800/50">
             <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Out of Stock
           </span>
-          <span v-else-if="product.stock <= 5" class="inline-flex items-center gap-1.5 bg-amber-950/30 text-amber-400 text-xs font-mono px-3 py-1.5 rounded-full border border-amber-800/50">
-            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Only {{ product.stock }} left
+          <span v-else-if="stockDisplay <= 5" class="inline-flex items-center gap-1.5 bg-amber-950/30 text-amber-400 text-xs font-mono px-3 py-1.5 rounded-full border border-amber-800/50">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Only {{ stockDisplay }} left
           </span>
           <span v-else class="inline-flex items-center gap-1.5 bg-emerald-950/30 text-emerald-400 text-xs font-mono px-3 py-1.5 rounded-full border border-emerald-800/50">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> In Stock
@@ -213,6 +229,7 @@ onMounted(async () => {
                     @click="selectVariant(v)"
                     :class="['px-4 py-2 rounded-lg text-sm border transition-all', selectedVariant?.id === v.id || selectedVariant?.name === v.name ? 'bg-cyan-950/30 border-cyan-600 text-cyan-300' : 'bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500']">
               {{ v.name || v.value }}
+              <span class="ml-1 text-[10px]" :class="variantStock(v) === 0 ? 'text-red-400' : 'text-emerald-400'">({{ variantStock(v) }})</span>
             </button>
           </div>
         </div>
@@ -223,12 +240,12 @@ onMounted(async () => {
           <div class="flex items-center border border-slate-700 rounded-lg overflow-hidden">
             <button @click="quantity = Math.max(1, quantity - 1)" class="px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors text-lg" :disabled="quantity <= 1" :aria-label="'Decrease quantity'">−</button>
             <span class="px-4 py-2 text-white font-mono text-sm min-w-[3rem] text-center border-x border-slate-700">{{ quantity }}</span>
-            <button @click="quantity = Math.min(product.stock || 99, quantity + 1)" class="px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors text-lg" :disabled="quantity >= (product.stock || 99)" :aria-label="'Increase quantity'">+</button>
+            <button @click="quantity = Math.min(stockDisplay || 99, quantity + 1)" class="px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors text-lg" :disabled="quantity >= (stockDisplay || 99)" :aria-label="'Increase quantity'">+</button>
           </div>
         </div>
 
         <!-- Back-in-stock (API) -->
-        <div v-if="product.stock === 0 && !bisSubscribed" class="mt-4 p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
+        <div v-if="stockDisplay === 0 && !bisSubscribed" class="mt-4 p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
           <p class="text-sm text-slate-300 font-medium mb-2">Notify me when back in stock</p>
           <div class="flex gap-2">
             <input v-model="bisEmail" type="email" placeholder="your@email.com" class="flex-1 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" :disabled="bisPending" />
