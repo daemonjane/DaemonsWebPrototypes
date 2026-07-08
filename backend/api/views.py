@@ -142,7 +142,13 @@ def auth_register(request):
         logger = logging.getLogger(__name__)
         client = OsimartClient()
         logger.info("Creating Osimart customer for %s", email)
-        osimart_resp = client.create_customer({"email": email, "name": username})
+        osimart_resp = client.create_customer({
+            "email": email,
+            "first_name": username,
+            "last_name": username,
+            "is_guest": True,
+            "mobile_number": "0000000000",
+        })
         logger.info("Osimart customer created: %s", osimart_resp)
     except OsimartError as e:
         logger.error("Osimart customer creation failed: %s", e)

@@ -49,7 +49,13 @@ class Command(BaseCommand):
                 pass
 
             try:
-                client.create_customer({"email": email, "name": name})
+                client.create_customer({
+                    "email": email,
+                    "first_name": name,
+                    "last_name": name,
+                    "is_guest": True,
+                    "mobile_number": "0000000000",
+                })
                 self.stdout.write(f"  OK   {email}")
                 created += 1
             except OsimartError as e:
