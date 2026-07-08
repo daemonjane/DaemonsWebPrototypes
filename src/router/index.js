@@ -66,10 +66,14 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
   if (to.meta?.requiresAuth) {
-    const { useUser } = await import('../composables/useUser')
-    const { user, refresh } = useUser()
-    if (!user.value) await refresh()
-    if (!user.value) return '/login'
+    try {
+      const { useUser } = await import('../composables/useUser')
+      const { user, refresh } = useUser()
+      if (!user.value) await refresh()
+      if (!user.value) return '/login'
+    } catch {
+      return '/login'
+    }
   }
 })
 

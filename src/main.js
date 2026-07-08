@@ -5,7 +5,7 @@ import { useLoadingBar } from './composables/useLoadingBar'
 import { ensureCSRF } from './utils/api'
 import './style.css'
 
-ensureCSRF()
+ensureCSRF().catch(() => {})
 
 router.beforeEach(() => {
   const { start } = useLoadingBar()
