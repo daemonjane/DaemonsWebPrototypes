@@ -54,6 +54,20 @@ class OsimartClient:
         self._refresh_token = data.get("refresh_token")
         self._token_expires_at = time.time() + 3600
 
+    def customer_login(self, email, password, device_name="web", device_id=""):
+        """Authenticate a customer via the Osimart API and return user data + tokens."""
+        url = f"{self.BASE_URL}/auth/login/"
+        resp = requests.post(url, json={
+            "login_as": "customer",
+            "email": email,
+            "password": password,
+            "device_name": device_name,
+            "device_id": device_id,
+        }, timeout=self.timeout)
+        if resp.status_code != 200:
+            raise OsimartError(f"Customer login failed: {resp.status_code} {resp.text[:200]}")
+        return resp.json()
+
     def _refresh(self):
         url = f"{self.BASE_URL}/auth/refresh/"
         resp = requests.post(url, json={

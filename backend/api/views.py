@@ -17,6 +17,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 from rest_framework.response import Response
 
+from services.osimart import OsimartClient, OsimartError
+
 
 class IsStaffOrAdminOnly(BasePermission):
     def has_permission(self, request, view):
@@ -166,6 +168,51 @@ def auth_login(request):
     cache.delete(cache_key)
     login(request, user)
     return Response(_user_data(user))
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def osimart_login(request):
+    """Authenticate via Osimart API, create/find local user, and log in."""
+    data = request.data
+    email = data.get("email", "")
+    password = data.get("password", "")
+    if not email or not password:
+        return Response({"error": "Email and password are required."}, status=400)
+
+    try:
+        client = OsimartClient()
+        osimart_data = client.customer_login(
+            email=email,
+            password=password,
+            device_name=data.get("device_name", "web"),
+            device_id=data.get("device_id", ""),
+        )
+    except OsimartError as e:
+        return Response({"error": str(e)}, status=401)
+
+    access_token = osimart_data.get("access_token")
+    if not access_token:
+        return Response({"error": "Osimart login did not return a token."}, status=502)
+
+    # Find or create a local Django user matching this email
+    user, created = User.objects.get_or_create(
+        username=email,
+        defaults={
+            "email": email,
+            "is_active": True,
+        },
+    )
+    if not created and user.email != email:
+        user.email = email
+        user.save(update_fields=["email"])
+
+    login(request, user)
+    resp_data = _user_data(user)
+    resp_data["osimart_token"] = access_token
+    resp_data["osimart_refresh_token"] = osimart_data.get("refresh_token", "")
+    return Response(resp_data)
 
 
 @api_view(['POST'])

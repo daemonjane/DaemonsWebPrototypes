@@ -6,22 +6,30 @@ import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const router = useRouter()
 const { refresh } = useUser()
-const username = ref('')
+const email = ref('')
 const password = ref('')
 const errors = reactive({})
 const pending = ref(false)
 
 async function login() {
   Object.keys(errors).forEach(key => delete errors[key])
-  if (!username.value || !password.value) {
-    if (!username.value) errors.username = 'Username is required.'
+  if (!email.value || !password.value) {
+    if (!email.value) errors.email = 'Email is required.'
     if (!password.value) errors.password = 'Password is required.'
     return
   }
   pending.value = true
   try {
     const { api, ensureCSRF } = await import('../utils/api')
-    await api.login(username.value, password.value)
+    const deviceId = localStorage.getItem('device_id') || crypto.randomUUID()
+    localStorage.setItem('device_id', deviceId)
+    const result = await api.osimartLogin(email.value, password.value, 'web', deviceId)
+    if (result.osimart_token) {
+      localStorage.setItem('osimart_token', result.osimart_token)
+      if (result.osimart_refresh_token) {
+        localStorage.setItem('osimart_refresh_token', result.osimart_refresh_token)
+      }
+    }
     await ensureCSRF()
     await refresh()
     router.push('/')
@@ -47,16 +55,16 @@ async function login() {
 
         <div class="mb-4">
           <input
-            v-model="username"
-            type="text"
-            placeholder="Username"
+            v-model="email"
+            type="email"
+            placeholder="Email address"
             class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
-            :class="{ 'border-pink-500': errors.username }"
+            :class="{ 'border-pink-500': errors.email }"
             aria-required="true"
-            autocomplete="username"
-            :aria-describedby="errors.username ? 'login-username-error' : undefined"
+            autocomplete="email"
+            :aria-describedby="errors.email ? 'login-email-error' : undefined"
           >
-          <p v-if="errors.username" id="login-username-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.username }}</p>
+          <p v-if="errors.email" id="login-email-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
         </div>
 
         <div class="mb-4">
