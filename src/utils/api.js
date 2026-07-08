@@ -89,6 +89,7 @@ export const api = {
     home: () => request('GET', '/api/osimart/home/'),
     brands: () => request('GET', '/api/osimart/brands/'),
     createBrand: (data) => request('POST', '/api/osimart/brands/', data),
+    brand: (id) => request('GET', `/api/osimart/brands/${id}/`),
     updateBrand: (id, data) => request('PUT', `/api/osimart/brands/${id}/`, data),
     deleteBrand: (id) => request('DELETE', `/api/osimart/brands/${id}/`),
     collections: () => request('GET', '/api/osimart/collections/'),
