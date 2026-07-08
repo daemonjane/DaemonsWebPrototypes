@@ -364,6 +364,13 @@ def osimart_medias(request):
     return _proxy_write("create_media", request.data)
 
 
+@osimart_api_view(["GET", "DELETE"])
+def osimart_media_detail(request, media_id):
+    if request.method == "GET":
+        return _proxy_get("get_media", request, 0, media_id)
+    return _proxy_write("delete_media", media_id)
+
+
 # ---------------------------------------------------------------------------
 # Shipping zones
 # ---------------------------------------------------------------------------
