@@ -44,8 +44,10 @@ export function normalizeProduct(p) {
     rating: 4.5,
     stock: calcStock(p),
     specs: (p.sections || []).flatMap(s => (s.items || []).map(i => `${i.name}: ${i.value}`)),
-    badge: null,
-    badgeColor: null,
+    status: p.status || 'active',
+    comingSoon: (p.status === 'draft' || p.status === 'coming_soon'),
+    badge: p.badge || null,
+    badgeColor: p.badge_color || null,
   }
 }
 

@@ -179,7 +179,7 @@ const featuredProducts = computed(() => products.value.slice(0, 3))
 const newArrivals = computed(() => {
   return [...products.value].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).slice(0, 6)
 })
-const comingSoonProducts = computed(() => products.value.filter(p => !p.price || p.price <= 0))
+const comingSoonProducts = computed(() => products.value.filter(p => p.comingSoon))
 const otherProducts = computed(() => {
   const featuredIds = new Set(featuredProducts.value.map(p => p.id))
   const newIds = new Set(newArrivals.value.map(p => p.id))
