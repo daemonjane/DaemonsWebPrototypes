@@ -16,6 +16,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 from rest_framework.response import Response
 
 from services.osimart import OsimartClient, OsimartError
+from website.models import NewsletterSubscription
+import re
+import stripe
 
 
 class IsStaffOrAdminOnly(BasePermission):
@@ -137,6 +140,12 @@ def auth_register(request):
     user = User.objects.create_user(username=username, email=email, password=password)
     UserProfile.objects.create(user=user)
 
+    try:
+        client = OsimartClient()
+        client.create_customer({"email": email, "password": password, "name": username, "store": client.store_id})
+    except OsimartError:
+        pass
+
     login(request, user)
     return Response(_user_data(user), status=201)
 
@@ -179,6 +188,7 @@ def osimart_login(request):
     if not email or not password:
         return Response({"error": "Email and password are required."}, status=400)
 
+    osimart_data = None
     try:
         client = OsimartClient()
         osimart_data = client.customer_login(
@@ -187,30 +197,29 @@ def osimart_login(request):
             device_name=data.get("device_name", "web"),
             device_id=data.get("device_id", ""),
         )
-    except OsimartError as e:
-        return Response({"error": str(e)}, status=401)
+    except OsimartError:
+        pass
 
-    access_token = osimart_data.get("access_token")
-    if not access_token:
-        return Response({"error": "Osimart login did not return a token."}, status=502)
+    if osimart_data and osimart_data.get("access_token"):
+        access_token = osimart_data["access_token"]
+        user, created = User.objects.get_or_create(
+            username=email,
+            defaults={"email": email, "is_active": True},
+        )
+        if not created and user.email != email:
+            user.email = email
+            user.save(update_fields=["email"])
+        login(request, user)
+        resp_data = _user_data(user)
+        resp_data["osimart_token"] = access_token
+        resp_data["osimart_refresh_token"] = osimart_data.get("refresh_token", "")
+        return Response(resp_data)
 
-    # Find or create a local Django user matching this email
-    user, created = User.objects.get_or_create(
-        username=email,
-        defaults={
-            "email": email,
-            "is_active": True,
-        },
-    )
-    if not created and user.email != email:
-        user.email = email
-        user.save(update_fields=["email"])
-
+    user = authenticate(request, username=data.get("username", email), password=password)
+    if user is None:
+        return Response({"error": "Invalid email or password."}, status=401)
     login(request, user)
-    resp_data = _user_data(user)
-    resp_data["osimart_token"] = access_token
-    resp_data["osimart_refresh_token"] = osimart_data.get("refresh_token", "")
-    return Response(resp_data)
+    return Response(_user_data(user))
 
 
 @api_view(['POST'])
@@ -500,7 +509,6 @@ def order_checkout(request):
     if settings.STRIPE_SECRET_KEY:
         if not payment_intent_id:
             return Response({"error": "Payment is required."}, status=400)
-        import stripe
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
             intent = stripe.PaymentIntent.retrieve(payment_intent_id)
@@ -635,8 +643,6 @@ def api_version(request):
 @permission_classes([AllowAny])
 @csrf_exempt
 def newsletter_subscribe(request):
-    import re
-    from website.models import NewsletterSubscription
     email = request.data.get("email", "").strip()
     if not email:
         return Response({"error": "Email is required."}, status=400)
@@ -682,7 +688,6 @@ def create_payment_intent(request):
             "message": "Demo mode — no real payment will be processed.",
         })
 
-    import stripe
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
     try:
@@ -713,7 +718,6 @@ def confirm_payment(request):
             "mode": "demo",
         })
 
-    import stripe
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
     try:
