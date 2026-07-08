@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
+import SkeletonLoader from '../components/SkeletonLoader.vue'
 
 const orders = ref([])
 const loading = ref(true)
@@ -40,7 +41,7 @@ function statusColor(status) {
     <Breadcrumbs :crumbs="[{ label: 'Order History' }]" />
     <h1 class="text-3xl font-bold mb-6">Order History</h1>
 
-    <div v-if="loading" class="text-center py-12 text-slate-400">Loading orders...</div>
+    <SkeletonLoader v-if="loading" type="list" />
 
     <div v-else-if="error" class="bg-pink-950/30 border border-pink-700/50 rounded-xl p-6 text-center">
       <p class="text-pink-300 mb-3">{{ error }}</p>
