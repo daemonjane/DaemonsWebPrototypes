@@ -64,7 +64,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ["id", "email", "name", "address", "status", "items", "total", "gift_card_code", "gift_card_discount", "has_tracking", "created_at"]
+        fields = ["id", "email", "name", "address", "status", "items", "total", "gift_card_code", "gift_card_discount", "has_tracking", "payment_intent_id", "payment_status", "created_at"]
 
     def get_total(self, obj):
         total = sum(float(item.price) * item.quantity for item in obj.items.all())
@@ -76,6 +76,7 @@ class OrderSerializer(serializers.ModelSerializer):
         return hasattr(obj, "tracking") and bool(obj.tracking.tracking_number)
 
 
-class BackInStockSerializer(serializers.Serializer):
-    product_slug = serializers.CharField()
-    email = serializers.EmailField()
+class BackInStockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BackInStockRequest
+        fields = ["product_slug", "product_name", "email"]
