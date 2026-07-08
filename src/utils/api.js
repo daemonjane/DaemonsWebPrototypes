@@ -68,6 +68,7 @@ export const api = {
   },
   osimart: {
     banners: () => request('GET', '/api/osimart/banners/'),
+    banner: (id) => request('GET', `/api/osimart/banners/${id}/`),
     updateBanner: (id, data) => request('PUT', `/api/osimart/banners/${id}/`, data),
     deleteBanner: (id) => request('DELETE', `/api/osimart/banners/${id}/`),
     products: (params = {}) => {
