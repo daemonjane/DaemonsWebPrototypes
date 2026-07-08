@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from django.contrib.auth import get_user_model
+
 from services.osimart import OsimartClient, OsimartError
 
 logger = logging.getLogger(__name__)
@@ -343,7 +345,18 @@ def osimart_customer_detail(request, customer_id):
     if request.method == "GET":
         return _proxy_get("get_customer", request, 0, customer_id)
     if request.method == "DELETE":
-        return _proxy_write("delete_customer", customer_id)
+        email = None
+        try:
+            client = _get_client()
+            customer = client.get_customer(customer_id)
+            email = customer.get("email", "")
+        except Exception:
+            pass
+        resp = _proxy_write("delete_customer", customer_id)
+        if email:
+            User = get_user_model()
+            User.objects.filter(email=email, is_staff=False).delete()
+        return resp
     return _proxy_write("update_customer", customer_id, request.data)
 
 
