@@ -105,15 +105,6 @@ def _get_client():
     return OsimartClient()
 
 
-def _validate_uuid(value):
-    """Return True if value is a valid UUID string."""
-    try:
-        uuid.UUID(str(value))
-        return True
-    except (ValueError, TypeError, AttributeError):
-        return False
-
-
 def _resolve_product_id(client, product_id):
     """If product_id is not a UUID, look it up by slugified_name."""
     if _validate_uuid(product_id):
@@ -350,7 +341,6 @@ def osimart_customer_detail(request, customer_id):
         return _proxy_get("get_customer", request, 0, customer_id)
     if request.method == "DELETE":
         return _proxy_write("delete_customer", customer_id)
-    client = _get_client()
     return _proxy_write("update_customer", customer_id, request.data)
 
 
@@ -445,7 +435,7 @@ def osimart_cart_update_item(request):
 def _validate_uuid(value):
     """Return True if value is a valid UUID string."""
     try:
-        uuid.UUID(value)
+        uuid.UUID(str(value))
         return True
-    except (ValueError, TypeError):
+    except (ValueError, TypeError, AttributeError):
         return False

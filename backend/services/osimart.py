@@ -125,23 +125,6 @@ class OsimartClient:
         params.setdefault("store", self.store_id)
         return payload, params
 
-    def _request(self, method, path, **kwargs):
-        url = self._api_url(path)
-        try:
-            resp = method(url, headers=self._get_headers(), timeout=self.timeout, **kwargs)
-            if resp.status_code == 401:
-                self._access_token = None
-                resp = method(url, headers=self._get_headers(), timeout=self.timeout, **kwargs)
-            resp.raise_for_status()
-            return resp.json()
-        except Exception as e:
-            code = 502
-            body = None
-            if hasattr(e, 'response') and e.response is not None:
-                code = e.response.status_code
-                body = e.response.text[:500]
-            raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
-
     def _get(self, path, params=None):
         url = self._api_url(path)
         params, _ = self._ensure_store(params=params)
@@ -281,23 +264,13 @@ class OsimartClient:
             raise OsimartError(f"Osimart cart error: {e}", status_code=code, response_body=body) from e
 
     # ------------------------------------------------------------------
-    # Image helpers
-    # ------------------------------------------------------------------
-    def image_url(self, path):
-        if not path:
-            return None
-        if path.startswith("http"):
-            return path
-        return f"{self.BASE_URL}/{path.lstrip('/')}"
-
-    # ------------------------------------------------------------------
     # Resource methods
     # ------------------------------------------------------------------
     def get_banners(self, params=None):
         return self._get("banners/", params)
 
-    def get_banner(self, banner_id):
-        return self._get(f"banners/{banner_id}/")
+    def get_banner(self, banner_id, params=None):
+        return self._get(f"banners/{banner_id}/", params)
 
     def get_products(self, params=None):
         return self._get("products/", params)
@@ -308,20 +281,20 @@ class OsimartClient:
     def get_categories(self, params=None):
         return self._get("categories/", params)
 
-    def get_category(self, category_id):
-        return self._get(f"categories/{category_id}/")
+    def get_category(self, category_id, params=None):
+        return self._get(f"categories/{category_id}/", params)
 
     def get_brands(self, params=None):
         return self._get("brands/", params)
 
-    def get_brand(self, brand_id):
-        return self._get(f"brands/{brand_id}/")
+    def get_brand(self, brand_id, params=None):
+        return self._get(f"brands/{brand_id}/", params)
 
     def get_collections(self, params=None):
         return self._get("collections/", params)
 
-    def get_collection(self, collection_id):
-        return self._get(f"collections/{collection_id}/")
+    def get_collection(self, collection_id, params=None):
+        return self._get(f"collections/{collection_id}/", params)
 
     def get_store(self, store_id=None, params=None):
         sid = store_id or self.store_id
@@ -362,8 +335,8 @@ class OsimartClient:
     def get_variant_types(self, params=None):
         return self._get("variant-types/", params)
 
-    def get_variant_type(self, variant_type_id):
-        return self._get(f"variant-types/{variant_type_id}/")
+    def get_variant_type(self, variant_type_id, params=None):
+        return self._get(f"variant-types/{variant_type_id}/", params)
 
     def create_category(self, data):
         return self._post("categories/", data)
@@ -413,14 +386,14 @@ class OsimartClient:
     def delete_announcement_bar(self, ann_id):
         return self._delete(f"announcement-bars/{ann_id}/")
 
-    def get_announcement_bar(self, ann_id):
-        return self._get(f"announcement-bars/{ann_id}/")
+    def get_announcement_bar(self, ann_id, params=None):
+        return self._get(f"announcement-bars/{ann_id}/", params)
 
     def get_customers(self, params=None):
         return self._get("customers/", params)
 
-    def get_customer(self, customer_id):
-        return self._get(f"customers/{customer_id}/")
+    def get_customer(self, customer_id, params=None):
+        return self._get(f"customers/{customer_id}/", params)
 
     def create_customer(self, data):
         return self._post("customers/", data)

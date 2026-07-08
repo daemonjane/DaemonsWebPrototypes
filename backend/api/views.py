@@ -462,8 +462,8 @@ def admin_order_update_status(request, pk):
     except Order.DoesNotExist:
         return Response({"error": "Order not found."}, status=404)
     new_status = request.data.get("status")
-    if new_status not in dict(Order.STATUS_CHOICES):
-        return Response({"error": f"Invalid status. Choices: {dict(Order.STATUS_CHOICES)}"}, status=400)
+    if new_status not in dict(Order.Status.choices):
+        return Response({"error": f"Invalid status. Choices: {dict(Order.Status.choices)}"}, status=400)
     order.status = new_status
     order.save(update_fields=["status"])
     serializer = OrderSerializer(order)
@@ -474,15 +474,6 @@ def admin_order_update_status(request, pk):
 def order_list(request):
     orders = Order.objects.filter(user=request.user).prefetch_related("items")
     serializer = OrderSerializer(orders, many=True)
-    return Response(serializer.data)
-
-
-def _order_detail(request, pk):
-    try:
-        order = Order.objects.get(pk=pk)
-    except Order.DoesNotExist:
-        return Response({"error": "Order not found."}, status=404)
-    serializer = OrderSerializer(order)
     return Response(serializer.data)
 
 
