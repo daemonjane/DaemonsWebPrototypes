@@ -396,6 +396,9 @@ class OsimartClient:
     def get_medias(self, params=None):
         return self._get("medias/", params)
 
+    def get_media(self, media_id):
+        return self._get(f"medias/{media_id}/")
+
     def create_variant_type(self, data):
         payload = {k: v for k, v in data.items() if k != "values"}
         if "values" in data and data["values"]:
