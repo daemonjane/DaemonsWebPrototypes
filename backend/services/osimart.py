@@ -104,8 +104,11 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except Exception as e:
-            code = getattr(e, 'response', None) and e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
-            body = getattr(e, 'response', None) and e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            code = 502
+            body = None
+            if hasattr(e, 'response') and e.response is not None:
+                code = e.response.status_code
+                body = e.response.text[:500]
             raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     def _post(self, path, data=None):
@@ -120,8 +123,11 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except Exception as e:
-            code = getattr(e, 'response', None) and e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
-            body = getattr(e, 'response', None) and e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            code = 502
+            body = None
+            if hasattr(e, 'response') and e.response is not None:
+                code = e.response.status_code
+                body = e.response.text[:500]
             raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     def _put(self, path, data=None):
@@ -136,8 +142,11 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except Exception as e:
-            code = getattr(e, 'response', None) and e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
-            body = getattr(e, 'response', None) and e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            code = 502
+            body = None
+            if hasattr(e, 'response') and e.response is not None:
+                code = e.response.status_code
+                body = e.response.text[:500]
             raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     def _patch(self, path, data=None):
@@ -152,8 +161,11 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except Exception as e:
-            code = getattr(e, 'response', None) and e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
-            body = getattr(e, 'response', None) and e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            code = 502
+            body = None
+            if hasattr(e, 'response') and e.response is not None:
+                code = e.response.status_code
+                body = e.response.text[:500]
             raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     def _delete(self, path):
@@ -166,8 +178,11 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.status_code == 204
         except Exception as e:
-            code = getattr(e, 'response', None) and e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
-            body = getattr(e, 'response', None) and e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            code = 502
+            body = None
+            if hasattr(e, 'response') and e.response is not None:
+                code = e.response.status_code
+                body = e.response.text[:500]
             raise OsimartError(f"Osimart API error: {e}", status_code=code, response_body=body) from e
 
     # ------------------------------------------------------------------
@@ -188,8 +203,11 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except Exception as e:
-            code = getattr(e, 'response', None) and e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
-            body = getattr(e, 'response', None) and e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            code = 502
+            body = None
+            if hasattr(e, 'response') and e.response is not None:
+                code = e.response.status_code
+                body = e.response.text[:500]
             raise OsimartError(f"Osimart cart error: {e}", status_code=code, response_body=body) from e
 
     def update_cart_item(self, item_id, action, data=None):
@@ -206,8 +224,11 @@ class OsimartClient:
             resp.raise_for_status()
             return resp.json()
         except Exception as e:
-            code = getattr(e, 'response', None) and e.response.status_code if hasattr(e, 'response') and e.response is not None else 502
-            body = getattr(e, 'response', None) and e.response.text[:500] if hasattr(e, 'response') and e.response is not None else None
+            code = 502
+            body = None
+            if hasattr(e, 'response') and e.response is not None:
+                code = e.response.status_code
+                body = e.response.text[:500]
             raise OsimartError(f"Osimart cart error: {e}", status_code=code, response_body=body) from e
 
     # ------------------------------------------------------------------
