@@ -91,7 +91,7 @@ onMounted(async () => {
       }
     }
     if (catRes.status === 'fulfilled') {
-      categories.value = pick(catRes.value)
+      categories.value = pick(catRes.value).filter(c => c.featured || c.slugified_name).slice(0, 8)
     }
     const counts = {}
     for (const p of products.value) {
@@ -179,6 +179,7 @@ const featuredProducts = computed(() => products.value.slice(0, 3))
 const newArrivals = computed(() => {
   return [...products.value].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).slice(0, 6)
 })
+const comingSoonProducts = computed(() => products.value.filter(p => !p.price || p.price <= 0))
 const otherProducts = computed(() => {
   const featuredIds = new Set(featuredProducts.value.map(p => p.id))
   const newIds = new Set(newArrivals.value.map(p => p.id))
@@ -625,6 +626,18 @@ function onMagneticLeave(e) {
       </div>
       <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 reveal" data-reveal-stagger="100">
         <ProductCard v-for="product in featuredProducts" :key="product.uuid || product.id" :product="product" />
+      </div>
+    </section>
+
+    <!-- ───── Coming Soon ───── -->
+    <section v-if="comingSoonProducts.length" id="coming-soon" class="max-w-5xl mx-auto mb-20 sm:mb-28" role="region" aria-labelledby="coming-soon-heading">
+      <div class="text-center space-y-3 mb-10 sm:mb-12 reveal" data-reveal-delay="0">
+        <span class="inline-block text-amber-400 text-xs font-mono px-4 py-1.5 rounded-full uppercase tracking-wider bg-amber-900/20 border border-amber-800/30">Coming Soon</span>
+        <h2 id="coming-soon-heading" class="text-3xl sm:text-4xl font-bold text-gradient-cyan">Pre‑Release Hardware</h2>
+        <p class="text-slate-400 max-w-lg mx-auto">Reserve your spot for the next drop. Early backers get priority pricing.</p>
+      </div>
+      <div :ref="(el) => el && observe(el)" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 reveal" data-reveal-stagger="100">
+        <ProductCard v-for="product in comingSoonProducts" :key="product.uuid || product.id" :product="product" />
       </div>
     </section>
 
