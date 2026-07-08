@@ -279,11 +279,7 @@ def osimart_login(request):
         resp_data["osimart_refresh_token"] = osimart_data.get("refresh_token", "")
         return Response(resp_data)
 
-    user = authenticate(request, username=login_field, password=password)
-    if user is None:
-        return Response({"error": "Invalid email or password."}, status=401)
-    login(request, user)
-    return Response(_user_data(user))
+    return Response({"error": "Invalid email or password."}, status=401)
 
 
 @api_view(['POST'])
