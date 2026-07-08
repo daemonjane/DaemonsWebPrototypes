@@ -100,6 +100,7 @@ export const api = {
     quantityUnits: () => request('GET', '/api/osimart/quantity-units/'),
     variantTypes: () => request('GET', '/api/osimart/variant-types/'),
     createVariantType: (data) => request('POST', '/api/osimart/variant-types/', data),
+    variantType: (id) => request('GET', `/api/osimart/variant-types/${id}/`),
     updateVariantType: (id, data) => request('PUT', `/api/osimart/variant-types/${id}/`, data),
     deleteVariantType: (id) => request('DELETE', `/api/osimart/variant-types/${id}/`),
     announcementBars: () => request('GET', '/api/osimart/announcement-bars/'),
