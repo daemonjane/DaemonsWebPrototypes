@@ -372,6 +372,12 @@ class OsimartClient:
     def get_customers(self, params=None):
         return self._get("customers/", params)
 
+    def create_customer(self, data):
+        return self._post("customers/", data)
+
+    def update_customer(self, customer_id, data):
+        return self._put(f"customers/{customer_id}/", data)
+
     def get_medias(self, params=None):
         return self._get("medias/", params)
 
