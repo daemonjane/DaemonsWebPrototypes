@@ -8,6 +8,7 @@
  * @prop {boolean} [showFull=false] - If true, shows specs + quantity selector on hover
  */
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useFavorites } from '../composables/useFavorites'
 import { useToast } from '../composables/useToast'
