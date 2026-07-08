@@ -32,6 +32,9 @@ onMounted(async () => {
     if (route.query.collection) {
       currentCollection.value = route.query.collection
     }
+    if (route.query.q) {
+      searchQuery.value = route.query.q
+    }
   } catch (e) {
     console.error('Failed to load Osimart data', e)
   } finally {

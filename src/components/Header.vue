@@ -148,6 +148,7 @@ function closeSearch() {
               class="w-40 lg:w-56 bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
               @focus="searchFocused = true"
               @blur="closeSearch"
+              @keydown.enter="searchQuery.trim() && (router.push('/shop?q=' + encodeURIComponent(searchQuery.trim())), searchQuery = '', searchFocused = false)"
               aria-label="Search products"
               autocomplete="off"
             >
@@ -278,6 +279,7 @@ function closeSearch() {
               type="text"
               placeholder="Search products..."
               class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              @keydown.enter="searchQuery.trim() && (router.push('/shop?q=' + encodeURIComponent(searchQuery.trim())), searchQuery = '', mobileMenuOpen = false)"
               aria-label="Search products"
               autocomplete="off"
             >
