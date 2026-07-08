@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useCart } from '../composables/useCart'
 import { useRouter } from 'vue-router'
 import { validateForm } from '../utils/validation'
@@ -31,6 +31,11 @@ const giftCardDiscount = ref(0)
 const giftCardApplied = ref(false)
 const giftCardError = ref('')
 
+const pubKey = ref('')
+const paymentMode = ref('demo')
+const stripeLoaded = ref(false)
+const cardElement = ref(null)
+
 const cartSubtotal = computed(() =>
   cart.value
     .filter(item => item.type !== 'upgrade' && item.type !== 'membership')
@@ -48,6 +53,25 @@ const finalTotal = computed(() => totalPrice.value - discountAmount.value)
 
 const placing = ref(false)
 
+const { api } = await import('../utils/api')
+
+onMounted(async () => {
+  try {
+    const cfg = await api.payments.config()
+    pubKey.value = cfg.publishable_key || ''
+    paymentMode.value = cfg.mode || 'demo'
+    if (pubKey.value) {
+      const stripe = await import('@stripe/stripe-js')
+      const stripeInstance = await stripe.loadStripe(pubKey.value)
+      if (stripeInstance) {
+        stripeLoaded.value = true
+      }
+    }
+  } catch {
+    paymentMode.value = 'demo'
+  }
+})
+
 function applyGiftCard() {
   giftCardError.value = ''
   if (!giftCardCode.value.trim()) {
@@ -63,7 +87,20 @@ function applyGiftCard() {
   addToast('Gift card applied! 10% discount.', 3000, 'success')
 }
 
-function nextStep() {
+function isValidCardNumber(n) {
+  const digits = n.replace(/\D/g, '')
+  if (digits.length < 13 || digits.length > 19) return false
+  let sum = 0
+  let alt = false
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let d = parseInt(digits[i], 10)
+    if (alt) { d *= 2; if (d > 9) d -= 9 }
+    sum += d; alt = !alt
+  }
+  return sum % 10 === 0
+}
+
+async function nextStep() {
   Object.keys(errors).forEach(key => delete errors[key])
   if (currentStep.value === 0) {
     const validationErrors = validateForm(form, {
@@ -86,6 +123,10 @@ function nextStep() {
       Object.assign(errors, validationErrors)
       return
     }
+    if (!isValidCardNumber(form.cardNumber)) {
+      errors.cardNumber = 'Invalid card number'
+      return
+    }
   }
   currentStep.value++
 }
@@ -98,13 +139,25 @@ async function placeOrder() {
   placing.value = true
   try
   {
-    const { api } = await import('../utils/api')
+    let paymentIntentId = ''
+    if (paymentMode.value === 'live' && stripeLoaded.value) {
+      const { createPaymentIntent, confirmCardPayment } = await import('../utils/payment')
+      const clientSecret = await createPaymentIntent(api, finalTotal.value)
+      paymentIntentId = await confirmCardPayment(clientSecret, cardElement.value, {
+        name: form.name,
+        email: form.email,
+      })
+    } else {
+      paymentIntentId = `demo_pi_${Date.now()}`
+    }
+
     const result = await api.orders.checkout({
       name: form.name,
       email: form.email,
       address: form.address,
       gift_card_code: giftCardApplied.value ? giftCardCode.value : '',
       gift_card_discount: giftCardApplied.value ? giftCardDiscount.value : null,
+      payment_intent_id: paymentIntentId,
       items: cart.value.map(i => ({
         name: i.name,
         price: i.price,
@@ -166,6 +219,15 @@ async function placeOrder() {
           <div class="border-t border-slate-700 mt-4 pt-4 text-right">
             <span class="text-lg">Total: </span>
             <span class="text-2xl font-bold text-cyan-400" aria-live="polite">${{ Number(finalTotal || 0).toFixed(2) }}</span>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-slate-700 text-xs text-slate-500">
+            <p v-if="paymentMode === 'demo'">
+              Payment is simulated. No real charge will be made.
+            </p>
+            <p v-else-if="stripeLoaded">
+              Secured by Stripe
+            </p>
           </div>
         </div>
 
@@ -244,6 +306,11 @@ async function placeOrder() {
                 <p v-if="errors.cvv" id="cvv-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.cvv }}</p>
               </div>
 
+              <div v-if="paymentMode === 'demo'" class="bg-slate-800/50 rounded p-3 mb-3 text-xs text-slate-400">
+                Demo mode — enter any valid-looking card number (e.g. 4242 4242 4242 4242).
+                No real charge will be made.
+              </div>
+
               <!-- Gift Card Checker -->
               <div class="mt-6 pt-4 border-t border-slate-700">
                 <h3 class="text-sm font-semibold text-slate-300 mb-2">Gift Card</h3>
@@ -286,6 +353,7 @@ async function placeOrder() {
               <div class="bg-slate-800 rounded-lg p-3">
                 <p class="text-slate-500 text-xs uppercase tracking-wider mb-1">Payment</p>
                 <p class="text-slate-400 font-mono">**** **** **** {{ form.cardNumber.slice(-4) }}</p>
+                <p v-if="paymentMode === 'demo'" class="text-amber-400 text-xs mt-1">Demo payment — no charge</p>
               </div>
               <div class="bg-slate-800 rounded-lg p-3">
                 <p class="text-slate-500 text-xs uppercase tracking-wider mb-1">Items</p>
