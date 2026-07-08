@@ -1,4 +1,5 @@
 """Osimart API client for product and order integration."""
+import json
 import os
 import time
 
@@ -18,14 +19,37 @@ class OsimartClient:
     EMAIL = os.environ.get("OSIMART_EMAIL", "")
     PASSWORD = os.environ.get("OSIMART_PASSWORD", "")
 
-    _access_token = None
-    _refresh_token = None
-    _token_expires_at = 0
+    _TOKEN_CACHE = os.path.expanduser("~/.cache/osimart/token.json")
 
     def __init__(self, store_id=None, timeout=15):
         """Initialize Osimart API client with optional store override and request timeout."""
         self.store_id = store_id or self.STORE_ID
         self.timeout = timeout
+        self._load_token_cache()
+
+    def _load_token_cache(self):
+        try:
+            with open(self._TOKEN_CACHE) as f:
+                data = json.load(f)
+            self._access_token = data.get("access_token")
+            self._refresh_token = data.get("refresh_token")
+            self._token_expires_at = data.get("expires_at", 0)
+        except (FileNotFoundError, json.JSONDecodeError, OSError):
+            self._access_token = None
+            self._refresh_token = None
+            self._token_expires_at = 0
+
+    def _save_token_cache(self):
+        try:
+            os.makedirs(os.path.dirname(self._TOKEN_CACHE), exist_ok=True)
+            with open(self._TOKEN_CACHE, "w") as f:
+                json.dump({
+                    "access_token": self._access_token,
+                    "refresh_token": self._refresh_token,
+                    "expires_at": self._token_expires_at,
+                }, f)
+        except OSError:
+            pass
 
     # ------------------------------------------------------------------
     # Auth
@@ -53,6 +77,7 @@ class OsimartClient:
         self._access_token = data["access_token"]
         self._refresh_token = data.get("refresh_token")
         self._token_expires_at = time.time() + 3600
+        self._save_token_cache()
 
     def customer_login(self, email, password, device_name="web", device_id=""):
         """Authenticate a customer via the Osimart API and return user data + tokens."""
@@ -78,6 +103,7 @@ class OsimartClient:
         data = resp.json()
         self._access_token = data.get("access_token", data.get("token"))
         self._token_expires_at = time.time() + 3600
+        self._save_token_cache()
 
     def _get_headers(self):
         self._ensure_token()
