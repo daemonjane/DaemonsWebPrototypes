@@ -105,6 +105,7 @@ export const api = {
     deleteVariantType: (id) => request('DELETE', `/api/osimart/variant-types/${id}/`),
     announcementBars: () => request('GET', '/api/osimart/announcement-bars/'),
     createAnnouncementBar: (data) => request('POST', '/api/osimart/announcement-bars/', data),
+    announcementBar: (id) => request('GET', `/api/osimart/announcement-bars/${id}/`),
     updateAnnouncementBar: (id, data) => request('PUT', `/api/osimart/announcement-bars/${id}/`, data),
     deleteAnnouncementBar: (id) => request('DELETE', `/api/osimart/announcement-bars/${id}/`),
     customers: () => request('GET', '/api/osimart/customers/'),
