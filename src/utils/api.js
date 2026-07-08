@@ -39,7 +39,7 @@ export const api = {
  register: (username, email, password, first_name, last_name) => request('POST', '/api/auth/register/', { username, email, password, first_name, last_name }),
  guestLogin: (email, first_name, last_name) => request('POST', '/api/auth/guest-login/', { email, first_name, last_name }),
   login: (username, password) => request('POST', '/api/auth/login/', { username, password }),
-  osimartLogin: (email, password, deviceName, deviceId) => request('POST', '/api/auth/osimart-login/', { email, password, device_name: deviceName, device_id: deviceId }),
+  osimartLogin: (loginField, password, deviceName, deviceId) => request('POST', '/api/auth/osimart-login/', { login_field: loginField, password, device_name: deviceName, device_id: deviceId }),
   logout: () => request('POST', '/api/auth/logout/'),
   profile: {
     get: () => request('GET', '/api/auth/profile/'),

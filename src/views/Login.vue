@@ -6,7 +6,7 @@ import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const router = useRouter()
 const { refresh } = useUser()
-const email = ref('')
+const loginField = ref('')
 const password = ref('')
 const errors = reactive({})
 const pending = ref(false)
@@ -22,15 +22,15 @@ async function login() {
     await staffLogin()
     return
   }
-  if (!email.value || !password.value) {
-    if (!email.value) errors.email = 'Email is required.'
+  if (!loginField.value || !password.value) {
+    if (!loginField.value) errors.loginField = 'Email or username is required.'
     if (!password.value) errors.password = 'Password is required.'
     return
   }
   pending.value = true
   try {
     const { api, ensureCSRF } = await import('../utils/api')
-    const result = await api.osimartLogin(email.value, password.value, 'web')
+    const result = await api.osimartLogin(loginField.value, password.value, 'web')
     await ensureCSRF()
     await refresh()
     router.push('/')
@@ -91,16 +91,16 @@ async function staffLogin() {
         <template v-if="!staffMode">
           <div class="mb-4">
             <input
-              v-model="email"
-              type="email"
-              placeholder="Email address"
+              v-model="loginField"
+              type="text"
+              placeholder="Email or username"
               class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
-              :class="{ 'border-pink-500': errors.email }"
+              :class="{ 'border-pink-500': errors.loginField }"
               aria-required="true"
-              autocomplete="email"
-              :aria-describedby="errors.email ? 'login-email-error' : undefined"
+              autocomplete="username"
+              :aria-describedby="errors.loginField ? 'login-field-error' : undefined"
             >
-            <p v-if="errors.email" id="login-email-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
+            <p v-if="errors.loginField" id="login-field-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.loginField }}</p>
           </div>
 
           <div class="mb-4">

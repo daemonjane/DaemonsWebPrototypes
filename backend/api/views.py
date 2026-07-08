@@ -244,16 +244,16 @@ def auth_login(request):
 def osimart_login(request):
     """Authenticate via Osimart API, create/find local user, and log in."""
     data = request.data
-    email = data.get("email", "")
+    login_field = data.get("login_field") or data.get("email") or data.get("username", "")
     password = data.get("password", "")
-    if not email or not password:
-        return Response({"error": "Email and password are required."}, status=400)
+    if not login_field or not password:
+        return Response({"error": "Email or username and password are required."}, status=400)
 
     osimart_data = None
     try:
         client = OsimartClient()
         osimart_data = client.customer_login(
-            email=email,
+            email=login_field,
             password=password,
             device_name=data.get("device_name", "web"),
             device_id=data.get("device_id", ""),
@@ -263,11 +263,14 @@ def osimart_login(request):
 
     if osimart_data and osimart_data.get("access_token"):
         access_token = osimart_data["access_token"]
-        user, created = User.objects.get_or_create(
-            username=email,
-            defaults={"email": email, "is_active": True},
-        )
-        if not created and user.email != email:
+        email = login_field if "@" in login_field else ""
+        user = User.objects.filter(email=email).first() if email else None
+        if not user:
+            user, _ = User.objects.get_or_create(
+                username=login_field,
+                defaults={"email": email, "is_active": True},
+            )
+        if email and user.email != email:
             user.email = email
             user.save(update_fields=["email"])
         login(request, user)
@@ -276,7 +279,7 @@ def osimart_login(request):
         resp_data["osimart_refresh_token"] = osimart_data.get("refresh_token", "")
         return Response(resp_data)
 
-    user = authenticate(request, username=data.get("username", email), password=password)
+    user = authenticate(request, username=login_field, password=password)
     if user is None:
         return Response({"error": "Invalid email or password."}, status=401)
     login(request, user)
