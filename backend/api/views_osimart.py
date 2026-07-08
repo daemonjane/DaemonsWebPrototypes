@@ -105,17 +105,18 @@ def _get_client():
     return OsimartClient()
 
 
-def _is_uuid(value):
+def _validate_uuid(value):
+    """Return True if value is a valid UUID string."""
     try:
-        uuid.UUID(value)
+        uuid.UUID(str(value))
         return True
-    except (ValueError, AttributeError):
+    except (ValueError, TypeError, AttributeError):
         return False
 
 
 def _resolve_product_id(client, product_id):
     """If product_id is not a UUID, look it up by slugified_name."""
-    if _is_uuid(product_id):
+    if _validate_uuid(product_id):
         return product_id
     try:
         products = client.get_products(params={"limit": 100})
@@ -409,3 +410,11 @@ def osimart_cart_update_item(request):
         return JsonResponse(data, safe=False)
     except OsimartError as e:
         return JsonResponse({"error": str(e)}, status=502)
+
+def _validate_uuid(value):
+    """Return True if value is a valid UUID string."""
+    try:
+        uuid.UUID(value)
+        return True
+    except (ValueError, TypeError):
+        return False
