@@ -60,6 +60,7 @@ urlpatterns = [
     path('osimart/customers/', views_osimart.osimart_customers, name='osimart-customers'),
     path('osimart/customers/<uuid:customer_id>/', views_osimart.osimart_customer_detail, name='osimart-customer-detail'),
     path('osimart/medias/', views_osimart.osimart_medias, name='osimart-medias'),
+    path('osimart/medias/<uuid:media_id>/', views_osimart.osimart_media_detail, name='osimart-media-detail'),
     path('osimart/shipping-zones/', views_osimart.osimart_shipping_zones, name='osimart-shipping-zones'),
     path('osimart/shipping-zones/<str:zone_id>/', views_osimart.osimart_shipping_zone_detail, name='osimart-shipping-zone-detail'),
     path('osimart/order-status-choices/', views_osimart.osimart_order_status_choices, name='osimart-order-status-choices'),
