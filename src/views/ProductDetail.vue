@@ -24,6 +24,36 @@ const selectedImage = ref(0)
 const relatedProducts = ref([])
 const { addItem } = useCart()
 
+const bisEmail = ref('')
+const bisPending = ref(false)
+const bisMsg = ref('')
+const bisMsgClass = ref('')
+const bisSubscribed = ref(false)
+
+async function subscribeBIS() {
+  if (!bisEmail.value) return
+  bisPending.value = true
+  bisMsg.value = ''
+  try {
+    const { api } = await import('../utils/api')
+    const res = await fetch('/api/back-in-stock/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ product_slug: productId, email: bisEmail.value }),
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error || 'Request failed')
+    bisMsg.value = data.message
+    bisMsgClass.value = 'text-emerald-400'
+    bisSubscribed.value = true
+  } catch (e) {
+    bisMsg.value = e.message
+    bisMsgClass.value = 'text-pink-400'
+  } finally {
+    bisPending.value = false
+  }
+}
+
 async function fetchProduct() {
   try {
     const { api } = await import('../utils/api')
@@ -32,7 +62,7 @@ async function fetchProduct() {
       product.value = normalizeProductDetail(data)
     }
   } catch (e) {
-    console.warn('Osimart product fetch failed', e)
+    console.warn('Product fetch failed', e)
   }
 }
 
@@ -82,23 +112,12 @@ const totalPrice = computed(() => {
   if (!product.value) return 0
   return (product.value.price + selectedAddons.value.reduce((s, a) => s + a.price, 0)) * quantity.value
 })
-
 const { visit } = useRecentlyViewed()
 const { toggle: toggleFavorite, isFavorite } = useFavorites()
 
-const notifyEmail = ref('')
-const notifySubmitted = ref(false)
-const BACK_IN_STOCK_KEY = 'back_in_stock_requests'
+const selectedVariant = ref(null)
 
-function submitNotifyRequest() {
-  if (!notifyEmail.value.trim() || !product.value) return
-  let requests = []
-  try { requests = JSON.parse(localStorage.getItem(BACK_IN_STOCK_KEY) || '[]') } catch { requests = [] }
-  requests.push({ productId: product.value.uuid || product.value.id, email: notifyEmail.value.trim(), timestamp: Date.now() })
-  localStorage.setItem(BACK_IN_STOCK_KEY, JSON.stringify(requests))
-  notifySubmitted.value = true
-  notifyEmail.value = ''
-}
+function selectVariant(v) { selectedVariant.value = v }
 
 function shareProduct() {
   if (!product.value) return
@@ -107,8 +126,6 @@ function shareProduct() {
   else { navigator.clipboard.writeText(url).then(() => alert('Link copied!')).catch(() => prompt('Copy this link:', url)) }
 }
 
-const selectedVariant = ref(null)
-function selectVariant(v) { selectedVariant.value = v }
 
 onMounted(async () => {
   await fetchProduct()
@@ -210,15 +227,16 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Back-in-stock -->
-        <div v-if="product.stock === 0 && !notifySubmitted" class="mt-4 p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
+        <!-- Back-in-stock (API) -->
+        <div v-if="product.stock === 0 && !bisSubscribed" class="mt-4 p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
           <p class="text-sm text-slate-300 font-medium mb-2">Notify me when back in stock</p>
           <div class="flex gap-2">
-            <input v-model="notifyEmail" type="email" placeholder="your@email.com" class="flex-1 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-            <button @click="submitNotifyRequest" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold px-4 py-2 rounded-md transition-all active:scale-95">Notify</button>
+            <input v-model="bisEmail" type="email" placeholder="your@email.com" class="flex-1 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400" :disabled="bisPending" />
+            <button @click="subscribeBIS" :disabled="bisPending || !bisEmail" class="bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2 rounded-md transition-all active:scale-95">Notify</button>
           </div>
         </div>
-        <div v-else-if="notifySubmitted" class="mt-4 text-sm text-emerald-400 font-medium" aria-live="polite">✓ We'll email you when back in stock.</div>
+        <p v-if="bisMsg" class="mt-2 text-sm" :class="bisMsgClass" aria-live="polite">{{ bisMsg }}</p>
+        <div v-else-if="bisSubscribed" class="mt-4 text-sm text-emerald-400 font-medium" aria-live="polite">✓ We'll email you when back in stock.</div>
 
         <!-- Action buttons -->
         <div class="flex flex-wrap items-center gap-3 mt-4">

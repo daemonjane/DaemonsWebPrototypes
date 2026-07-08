@@ -586,9 +586,30 @@ def product_addons(request, slug):
             "price": float(a.price),
             "image": a.image,
         }
-        for a in addons
+    for a in addons
     ]
-    return Response({"addons": data})
+return Response({"addons": data})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def back_in_stock_subscribe(request):
+    from .serializers import BackInStockSerializer
+    from .models import Product, BackInStockRequest
+    serializer = BackInStockSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response({"error": "Invalid request.", "details": serializer.errors}, status=400)
+    slug = serializer.validated_data["product_slug"]
+    email = serializer.validated_data["email"]
+    try:
+        product = Product.objects.get(slug=slug)
+    except Product.DoesNotExist:
+        return Response({"error": "Product not found."}, status=404)
+    _, created = BackInStockRequest.objects.get_or_create(product=product, email=email)
+    if created:
+        return Response({"message": "We'll notify you when this product is back in stock!"}, status=201)
+    return Response({"message": "You're already subscribed for this product."})
 
 @api_view(['GET'])
 @permission_classes([AllowAny])

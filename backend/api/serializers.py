@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Cart, CartItem, Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
+from .models import BackInStockRequest, Cart, CartItem, Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -74,3 +74,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_has_tracking(self, obj):
         return hasattr(obj, "tracking") and bool(obj.tracking.tracking_number)
+
+
+class BackInStockSerializer(serializers.Serializer):
+    product_slug = serializers.CharField()
+    email = serializers.EmailField()

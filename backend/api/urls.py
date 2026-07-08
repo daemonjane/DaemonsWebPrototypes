@@ -35,6 +35,7 @@ urlpatterns = [
     path('products/<slug:slug>/addons/', views.product_addons, name='product-addons'),
     path('version/', views.api_version, name='api-version'),
     path('newsletter/subscribe/', views.newsletter_subscribe, name='api-newsletter-subscribe'),
+    path('back-in-stock/', views.back_in_stock_subscribe, name='api-back-in-stock'),
 
     path('osimart/banners/', views_osimart.osimart_banners, name='osimart-banners'),
     path('osimart/banners/<str:banner_id>/', views_osimart.osimart_banner_detail, name='osimart-banner-detail'),
