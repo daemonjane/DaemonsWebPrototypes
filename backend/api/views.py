@@ -137,6 +137,21 @@ def auth_register(request):
     if User.objects.filter(email=email).exists():
         return Response({"error": "Email already registered."}, status=409)
 
+    try:
+        import logging
+        logger = logging.getLogger(__name__)
+        client = OsimartClient()
+        logger.info("Creating Osimart customer for %s", email)
+        osimart_resp = client.create_customer({"email": email, "name": username})
+        logger.info("Osimart customer created: %s", osimart_resp)
+    except OsimartError as e:
+        logger.error("Osimart customer creation failed: %s", e)
+        detail = e.response_body or str(e)
+        return Response({"error": f"Registration failed — Osimart error: {detail}"}, status=502)
+    except Exception as e:
+        logger.exception("Unexpected error creating Osimart customer")
+        return Response({"error": f"Registration failed: {e}"}, status=502)
+
     user = User.objects.create_user(username=username, email=email, password=password)
     UserProfile.objects.create(user=user)
     login(request, user)
