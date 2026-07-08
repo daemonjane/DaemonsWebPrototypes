@@ -94,6 +94,7 @@ export const api = {
     deleteBrand: (id) => request('DELETE', `/api/osimart/brands/${id}/`),
     collections: () => request('GET', '/api/osimart/collections/'),
     createCollection: (data) => request('POST', '/api/osimart/collections/', data),
+    collection: (id) => request('GET', `/api/osimart/collections/${id}/`),
     updateCollection: (id, data) => request('PUT', `/api/osimart/collections/${id}/`, data),
     deleteCollection: (id) => request('DELETE', `/api/osimart/collections/${id}/`),
     quantityUnits: () => request('GET', '/api/osimart/quantity-units/'),
