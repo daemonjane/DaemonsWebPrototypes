@@ -98,11 +98,11 @@ function statusColor(status) {
         <div v-if="order.items?.length" class="mt-3 pt-3 border-t border-slate-700">
           <div v-for="item in order.items" :key="item.id" class="flex justify-between text-sm text-slate-400 py-0.5">
             <span>{{ item.name }} <span class="text-slate-600">x{{ item.quantity }}</span></span>
-            <span class="font-mono">${{ (item.price * item.quantity).toFixed(2) }}</span>
+            <span class="font-mono">${{ (Number(item.price || 0) * (item.quantity || 0)).toFixed(2) }}</span>
           </div>
           <div class="flex justify-between text-sm font-bold text-white pt-2 mt-2 border-t border-slate-700">
             <span>Total</span>
-            <span class="text-cyan-400 font-mono">${{ order.total?.toFixed(2) || '0.00' }}</span>
+            <span class="text-cyan-400 font-mono">${{ Number(order.total || 0).toFixed(2) }}</span>
           </div>
         </div>
       </div>

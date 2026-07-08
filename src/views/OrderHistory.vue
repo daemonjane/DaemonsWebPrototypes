@@ -70,12 +70,12 @@ function statusColor(status) {
           <ul class="space-y-1 text-sm">
             <li v-for="item in order.items" :key="item.id" class="flex justify-between text-slate-400">
               <span>{{ item.name }} x{{ item.quantity }}</span>
-              <span>${{ (item.price * item.quantity).toFixed(2) }}</span>
+              <span>${{ (Number(item.price || 0) * (item.quantity || 0)).toFixed(2) }}</span>
             </li>
           </ul>
           <div class="flex justify-between mt-3 pt-3 border-t border-slate-800">
             <span class="font-semibold text-white">Total</span>
-            <span class="font-bold text-cyan-400">${{ order.total.toFixed(2) }}</span>
+            <span class="font-bold text-cyan-400">${{ Number(order.total || 0).toFixed(2) }}</span>
           </div>
         </div>
         <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-800">

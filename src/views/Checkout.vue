@@ -140,32 +140,32 @@ async function placeOrder() {
           <ul class="space-y-2">
             <li v-for="item in cart" :key="item.id" class="flex justify-between">
               <span>{{ item.name }} (x{{ item.quantity }})</span>
-              <span>${{ (item.price * item.quantity).toFixed(2) }}</span>
+              <span>${{ (Number(item.price || 0) * (item.quantity || 0)).toFixed(2) }}</span>
             </li>
           </ul>
 
           <div class="border-t border-slate-700 mt-4 pt-4 space-y-2 text-sm">
             <div class="flex justify-between text-slate-400">
               <span>Subtotal</span>
-              <span>${{ cartSubtotal.toFixed(2) }}</span>
+              <span>${{ Number(cartSubtotal || 0).toFixed(2) }}</span>
             </div>
             <div v-if="upgradesTotal > 0" class="flex justify-between text-slate-400">
               <span>Upgrades</span>
-              <span>${{ upgradesTotal.toFixed(2) }}</span>
+              <span>${{ Number(upgradesTotal || 0).toFixed(2) }}</span>
             </div>
             <div v-if="membershipTotal > 0" class="flex justify-between text-slate-400">
               <span>Membership</span>
-              <span>${{ membershipTotal.toFixed(2) }}</span>
+              <span>${{ Number(membershipTotal || 0).toFixed(2) }}</span>
             </div>
             <div v-if="giftCardApplied" class="flex justify-between text-emerald-400">
               <span>Gift Card (10% off)</span>
-              <span>-${{ discountAmount.toFixed(2) }}</span>
+              <span>-${{ Number(discountAmount || 0).toFixed(2) }}</span>
             </div>
           </div>
 
           <div class="border-t border-slate-700 mt-4 pt-4 text-right">
             <span class="text-lg">Total: </span>
-            <span class="text-2xl font-bold text-cyan-400" aria-live="polite">${{ finalTotal.toFixed(2) }}</span>
+            <span class="text-2xl font-bold text-cyan-400" aria-live="polite">${{ Number(finalTotal || 0).toFixed(2) }}</span>
           </div>
         </div>
 
@@ -292,7 +292,7 @@ async function placeOrder() {
                 <ul class="space-y-1">
                   <li v-for="item in cart" :key="item.id" class="flex justify-between text-slate-300">
                     <span>{{ item.name }} x{{ item.quantity }}</span>
-                    <span>${{ (item.price * item.quantity).toFixed(2) }}</span>
+                    <span>${{ (Number(item.price || 0) * (item.quantity || 0)).toFixed(2) }}</span>
                   </li>
                 </ul>
                 <div v-if="giftCardApplied" class="border-t border-slate-700 mt-2 pt-2 text-emerald-400 flex justify-between">

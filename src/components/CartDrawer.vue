@@ -48,7 +48,7 @@ function close() { emit('update:open', false) }
               </div>
               <div class="flex-1 min-w-0 space-y-1">
                 <p class="text-sm text-slate-200 font-medium truncate">{{ item.name }}</p>
-                <p class="text-cyan-400 text-sm font-mono">${{ (item.price * item.quantity).toFixed(2) }}</p>
+                <p class="text-cyan-400 text-sm font-mono">${{ (Number(item.price || 0) * (item.quantity || 0)).toFixed(2) }}</p>
                 <div class="flex items-center gap-2 pt-1">
                   <button @click="updateQuantity(item.id, -1)" class="w-7 h-7 flex items-center justify-center rounded bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors text-sm font-medium focus-visible:outline-2 focus-visible:outline-cyan-400" aria-label="Decrease quantity">−</button>
                   <span class="text-sm text-white font-mono min-w-[1.5rem] text-center" aria-live="polite">{{ item.quantity }}</span>
@@ -65,7 +65,7 @@ function close() { emit('update:open', false) }
           <div v-if="cart.length > 0" class="border-t border-slate-800 px-5 py-4 space-y-3">
             <div class="flex items-center justify-between text-sm">
               <span class="text-slate-400">Subtotal</span>
-              <span class="text-white font-semibold font-mono">${{ totalPrice.toFixed(2) }}</span>
+              <span class="text-white font-semibold font-mono">${{ Number(totalPrice || 0).toFixed(2) }}</span>
             </div>
             <router-link
               to="/checkout"

@@ -169,7 +169,7 @@ function closeSearch() {
                   </div>
                   <div class="min-w-0">
                     <p class="text-slate-200 truncate">{{ result.name }}</p>
-                    <p class="text-cyan-400 text-xs">${{ result.price.toFixed(2) }}</p>
+                    <p class="text-cyan-400 text-xs">${{ Number(result.price || 0).toFixed(2) }}</p>
                   </div>
                 </router-link>
               </div>

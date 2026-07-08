@@ -12,7 +12,7 @@ const { remaining, progress, qualifies } = useFreeShipping()
         Free Shipping Applied!
       </span>
       <span v-else class="text-slate-400">
-        Add <span class="text-cyan-400 font-semibold">${{ remaining.toFixed(2) }}</span> for free shipping
+        Add <span class="text-cyan-400 font-semibold">${{ Number(remaining || 0).toFixed(2) }}</span> for free shipping
       </span>
     </div>
     <div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100" :aria-label="qualifies ? 'Free shipping achieved' : `Free shipping progress: ${progress}%`">

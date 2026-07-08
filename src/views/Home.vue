@@ -602,7 +602,7 @@ function onMagneticLeave(e) {
             </div>
             <div class="p-2.5 space-y-1">
               <p class="text-xs text-slate-200 truncate font-medium">{{ item.name }}</p>
-              <p class="text-cyan-400 text-xs font-mono">${{ item.price.toFixed(2) }}</p>
+              <p class="text-cyan-400 text-xs font-mono">${{ Number(item.price || 0).toFixed(2) }}</p>
             </div>
           </router-link>
         </div>
@@ -694,7 +694,7 @@ function onMagneticLeave(e) {
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-slate-300 text-sm font-bold">${{ product.price.toFixed(2) }}</span>
+              <span class="text-slate-300 text-sm font-bold">${{ Number(product.price || 0).toFixed(2) }}</span>
               <button @mousemove="onMagneticMove" @mouseleave="onMagneticLeave" @click="onRipple($event); quickAdd(product)" class="magnetic-btn ripple-btn bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-md group-hover:bg-cyan-500 group-hover:shadow-md group-hover:shadow-cyan-500/30 active:scale-95 active:shadow-inner transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">Quick Add</button>
             </div>
           </div>
@@ -805,7 +805,7 @@ function onMagneticLeave(e) {
                 <OptimizedImage :src="currentShowcase.image" :alt="currentShowcase.name" wrapperClass="h-10 sm:h-14" imgClass="w-auto h-full object-contain rounded" />
                 <div class="text-left">
                   <p class="text-white text-sm sm:text-base font-medium truncate max-w-[200px] sm:max-w-xs">{{ currentShowcase.name }}</p>
-                  <p class="text-cyan-400 text-xs font-mono">${{ currentShowcase.price?.toFixed(2) }}</p>
+                  <p class="text-cyan-400 text-xs font-mono">${{ Number(currentShowcase.price || 0).toFixed(2) }}</p>
                 </div>
               </template>
             </div>

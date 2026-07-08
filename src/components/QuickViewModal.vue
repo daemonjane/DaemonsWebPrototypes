@@ -138,7 +138,7 @@ function handleAddToCart() {
               </div>
 
               <div class="mt-auto pt-4 border-t border-slate-800">
-                <div class="text-2xl font-bold text-cyan-400 font-mono">${{ product.price.toFixed(2) }}</div>
+                <div class="text-2xl font-bold text-cyan-400 font-mono">${{ Number(product.price || 0).toFixed(2) }}</div>
 
                 <div class="flex items-center gap-3 mt-3">
                   <div class="flex items-center gap-2">
