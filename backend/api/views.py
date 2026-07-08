@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -279,6 +280,17 @@ def osimart_login(request):
         resp_data["osimart_refresh_token"] = osimart_data.get("refresh_token", "")
         return Response(resp_data)
 
+    # Osimart auth failed — clean up orphaned local user if one exists
+    try:
+        orphan = User.objects.filter(
+            Q(username=login_field) | Q(email=login_field),
+            is_staff=False,
+        ).first()
+        if orphan:
+            logger.info("Deleting orphaned local user %s (%s) — no longer on Osimart", orphan.username, orphan.email)
+            orphan.delete()
+    except Exception:
+        pass
     return Response({"error": "Invalid email or password."}, status=401)
 
 
