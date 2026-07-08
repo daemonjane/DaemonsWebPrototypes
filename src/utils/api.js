@@ -108,6 +108,7 @@ export const api = {
     deleteCustomer: (id) => request('DELETE', `/api/osimart/customers/${id}/`),
     medias: () => request('GET', '/api/osimart/medias/'),
     createMedia: (data) => request('POST', '/api/osimart/medias/', data),
+    deleteMedia: (id) => request('DELETE', `/api/osimart/medias/${id}/`),
     shippingZones: () => request('GET', '/api/osimart/shipping-zones/'),
     createShippingZone: (data) => request('POST', '/api/osimart/shipping-zones/', data),
     updateShippingZone: (id, data) => request('PUT', `/api/osimart/shipping-zones/${id}/`, data),
