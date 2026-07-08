@@ -242,8 +242,10 @@ def osimart_brands(request):
     return _proxy_write("create_brand", request.data)
 
 
-@osimart_api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_brand_detail(request, brand_id):
+    if request.method == "GET":
+        return _proxy_get("get_brand", request, 0, brand_id)
     if request.method == "DELETE":
         return _proxy_write("delete_brand", brand_id)
     return _proxy_write("update_brand", brand_id, request.data)
