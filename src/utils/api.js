@@ -123,4 +123,9 @@ export const api = {
     if (category) params.category = category
     return request('GET', `/api/osimart/products/?${new URLSearchParams(params)}`)
   },
+  payments: {
+    config: () => request('GET', '/api/payments/config/'),
+    createIntent: (amount) => request('POST', '/api/payments/create-intent/', { amount }),
+    confirm: (paymentIntentId) => request('POST', '/api/payments/confirm/', { payment_intent_id: paymentIntentId }),
+  },
 }
