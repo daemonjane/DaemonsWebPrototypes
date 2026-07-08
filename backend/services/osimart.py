@@ -158,10 +158,10 @@ class OsimartClient:
         payload = dict(data or {})
         payload.setdefault("store", self.store_id)
         try:
-            resp = requests.put(url, json=payload, params={"store": self.store_id}, headers=self._get_headers(), timeout=self.timeout)
+            resp = requests.put(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
             if resp.status_code == 401:
                 self._access_token = None
-                resp = requests.put(url, json=payload, params={"store": self.store_id}, headers=self._get_headers(), timeout=self.timeout)
+                resp = requests.put(url, json=payload, headers=self._get_headers(), timeout=self.timeout)
             resp.raise_for_status()
             return resp.json()
         except Exception as e:
