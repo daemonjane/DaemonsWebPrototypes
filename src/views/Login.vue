@@ -79,8 +79,8 @@ async function staffLogin() {
 
         <!-- Mode toggle -->
         <div class="flex justify-center mb-6">
-          <button @click="staffMode = !staffMode" class="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
-            {{ staffMode ? 'Switch to customer login' : 'Admin / Staff login' }}
+          <button @click="staffMode = !staffMode" class="px-4 py-2 text-sm rounded-lg font-medium transition-all" :class="staffMode ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-600'">
+            {{ staffMode ? 'Customer login' : 'Admin / Staff login' }}
           </button>
         </div>
 

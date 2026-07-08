@@ -198,7 +198,7 @@ function closeSearch() {
           <button
             v-if="isAuthenticated()"
             @click="handleLogout"
-            class="hidden md:inline-flex text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer"
+            class="hidden md:inline-flex text-sm font-medium text-pink-400 hover:text-pink-300 hover:bg-pink-950/30 px-3 py-1.5 rounded-md transition-colors cursor-pointer"
           >
             Logout
           </button>
@@ -324,7 +324,7 @@ function closeSearch() {
             </router-link>
             <button
               @click="handleLogout; mobileMenuOpen = false"
-              class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors cursor-pointer"
+              class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-pink-400 hover:text-pink-300 hover:bg-pink-950/30 transition-colors cursor-pointer"
               aria-label="Logout"
             >
               Logout

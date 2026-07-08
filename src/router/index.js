@@ -39,7 +39,7 @@ const routes = [
   { path: '/product/:id', component: ProductDetail },
   { path: '/favorites', component: FavoritesVue },
   { path: '/checkout', component: Checkout },
-  { path: '/login', component: Login },
+  { path: '/login', component: Login, meta: { guestOnly: true } },
   { path: '/forgot-password', component: () => import(/* webpackChunkName: "auth" */ '../views/ForgotPassword.vue') },
   { path: '/reset-password/:uidb64/:token/', component: () => import(/* webpackChunkName: "auth" */ '../views/ResetPassword.vue') },
   { path: '/register', component: Register },
@@ -66,16 +66,17 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  if (to.meta?.requiresAuth) {
-    try {
-      const { useUser } = await import('../composables/useUser')
-      const { user, refresh } = useUser()
-      if (!user.value) await refresh()
+  try {
+    const { useUser } = await import('../composables/useUser')
+    const { user, refresh } = useUser()
+    if (!user.value) await refresh()
+    if (to.meta?.requiresAuth) {
       if (!user.value) return '/login'
       if (to.meta?.requiresStaff && !user.value?.is_staff) return '/'
-    } catch {
-      return '/login'
     }
+    if (to.meta?.guestOnly && user.value) return '/'
+  } catch {
+    if (to.meta?.requiresAuth) return '/login'
   }
 })
 
