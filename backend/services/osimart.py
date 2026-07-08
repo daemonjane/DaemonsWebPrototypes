@@ -270,6 +270,9 @@ class OsimartClient:
     def get_banners(self, params=None):
         return self._get("banners/", params)
 
+    def get_banner(self, banner_id):
+        return self._get(f"banners/{banner_id}/")
+
     def get_products(self, params=None):
         return self._get("products/", params)
 
