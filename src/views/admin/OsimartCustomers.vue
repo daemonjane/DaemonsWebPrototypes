@@ -21,6 +21,12 @@ async function load() {
   }
 }
 
+async function remove(id) {
+  const api = await getApi()
+  await api.osimart.deleteCustomer(id)
+  items.value = items.value.filter(c => c.id !== id)
+}
+
 onMounted(load)
 </script>
 
@@ -37,14 +43,16 @@ onMounted(load)
             <th class="pb-3 pr-4 font-medium">Email</th>
             <th class="pb-3 pr-4 font-medium">Orders</th>
             <th class="pb-3 font-medium">Joined</th>
+            <th class="pb-3 font-medium">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="c in items" :key="c.id" class="border-b border-slate-800/50 text-slate-300">
-            <td class="py-3 pr-4">{{ c.name || c.username || '—' }}</td>
-            <td class="py-3 pr-4 text-cyan-600">{{ c.email || '—' }}</td>
+            <td class="py-3 pr-4">{{ c.name || c.username || '\u2014' }}</td>
+            <td class="py-3 pr-4 text-cyan-600">{{ c.email || '\u2014' }}</td>
             <td class="py-3 pr-4">{{ c.orders_count || c.order_count || 0 }}</td>
-            <td class="py-3">{{ c.created_at ? new Date(c.created_at).toLocaleDateString() : '—' }}</td>
+            <td class="py-3 pr-4">{{ c.created_at ? new Date(c.created_at).toLocaleDateString() : '\u2014' }}</td>
+            <td class="py-3"><button @click="remove(c.id)" class="text-xs text-red-400 hover:text-red-300">Delete</button></td>
           </tr>
         </tbody>
       </table>
