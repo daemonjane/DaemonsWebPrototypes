@@ -22,9 +22,14 @@ async function load() {
 }
 
 async function remove(id) {
-  const api = await getApi()
-  await api.osimart.deleteCustomer(id)
-  items.value = items.value.filter(c => c.id !== id)
+  if (!confirm('Delete this customer?')) return
+  try {
+    const api = await getApi()
+    await api.osimart.deleteCustomer(id)
+    items.value = items.value.filter(c => c.id !== id)
+  } catch (e) {
+    alert('Delete failed: ' + e.message)
+  }
 }
 
 onMounted(load)
