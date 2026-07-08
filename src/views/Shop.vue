@@ -12,17 +12,59 @@ const route = useRoute()
 const products = ref([])
 const categories = ref([])
 const loading = ref(true)
+const totalCount = ref(0)
+const currentPage = ref(1)
+const pageSize = 12
+
+async function loadProducts(page = 1) {
+  loading.value = true
+  try {
+    const { api } = await import('../utils/api')
+    const prodRes = await api.osimart.products({ limit: pageSize, page })
+    const items = pick(prodRes)
+    products.value = items.map(normalizeProduct).filter(p => p.price > 0)
+    totalCount.value = prodRes.count || 0
+    currentPage.value = page
+  } catch (e) {
+    console.error('Failed to load products', e)
+  } finally {
+    loading.value = false
+  }
+}
+
+const totalPages = computed(() => Math.ceil(totalCount.value / pageSize))
+
+const paginatedPages = computed(() => {
+  const total = totalPages.value
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+  const pages = []
+  const cur = currentPage.value
+  if (cur <= 4) {
+    for (let i = 1; i <= Math.min(5, total); i++) pages.push(i)
+    pages.push('...', total)
+  } else if (cur >= total - 3) {
+    pages.push(1, '...')
+    for (let i = total - 4; i <= total; i++) pages.push(i)
+  } else {
+    pages.push(1, '...')
+    for (let i = cur - 1; i <= cur + 1; i++) pages.push(i)
+    pages.push('...', total)
+  }
+  return pages
+})
+
+function goToPage(page) {
+  if (page < 1 || page > totalPages.value || page === currentPage.value) return
+  loadProducts(page)
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 onMounted(async () => {
   try {
     const { api } = await import('../utils/api')
-    const [prodRes, catRes] = await Promise.all([
-      api.osimart.products({ limit: 50 }),
-      api.osimart.categories(),
-    ])
-    const items = pick(prodRes)
-    products.value = items.map(normalizeProduct)
+    const catRes = await api.osimart.categories()
     categories.value = Array.isArray(catRes) ? catRes : (catRes.results || [])
+    await loadProducts(1)
     if (route.query.category) {
       currentFilter.value = route.query.category
     }
@@ -105,7 +147,7 @@ function countInCategory(catSlug) {
         <div>
           <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ categoryMeta[currentFilter]?.label || 'All Products' }}</h1>
           <p class="text-slate-400 mt-1 text-sm">{{ categoryMeta[currentFilter]?.desc }}</p>
-          <p class="text-xs text-slate-500 mt-1 font-mono" aria-live="polite">{{ filteredProducts.length }} of {{ products.length }} products</p>
+          <p class="text-xs text-slate-500 mt-1 font-mono" aria-live="polite">{{ filteredProducts.length }} of {{ totalCount }} products</p>
         </div>
       </div>
 
@@ -198,10 +240,31 @@ function countInCategory(catSlug) {
       </transition>
 
       <!-- Products grid -->
-      <div v-if="filteredProducts.length > 0" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <div v-for="(product, i) in filteredProducts" :key="product.uuid" class="reveal-card" :style="{ animationDelay: i * 0.06 + 's' }">
-          <ProductCard :product="product" :show-full="true" />
+      <div v-if="filteredProducts.length > 0">
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div v-for="(product, i) in filteredProducts" :key="product.uuid" class="reveal-card" :style="{ animationDelay: i * 0.06 + 's' }">
+            <ProductCard :product="product" :show-full="true" />
+          </div>
         </div>
+
+        <!-- Pagination -->
+        <nav v-if="totalPages > 1" class="mt-10 flex items-center justify-center gap-1.5" aria-label="Product pagination">
+          <button @click="goToPage(currentPage - 1)" :disabled="currentPage <= 1"
+            class="px-3 py-1.5 rounded text-sm font-medium transition disabled:opacity-30 disabled:cursor-not-allowed bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white">
+            Prev
+          </button>
+          <template v-for="(p, i) in paginatedPages" :key="i">
+            <span v-if="p === '...'" class="px-2 text-slate-600 select-none">…</span>
+            <button v-else @click="goToPage(p)"
+              :class="['px-3 py-1.5 rounded text-sm font-medium transition', p === currentPage ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white']">
+              {{ p }}
+            </button>
+          </template>
+          <button @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages"
+            class="px-3 py-1.5 rounded text-sm font-medium transition disabled:opacity-30 disabled:cursor-not-allowed bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white">
+            Next
+          </button>
+        </nav>
       </div>
       <EmptyState v-else icon="search" title="No products found" message="Try adjusting your search or filters." action-label="Clear Filters" @action="resetFilters" />
     </template>
