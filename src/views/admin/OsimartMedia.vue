@@ -23,6 +23,17 @@ async function load() {
   }
 }
 
+async function remove(id) {
+  if (!confirm('Delete this media?')) return
+  try {
+    const api = await getApi()
+    await api.osimart.deleteMedia(id)
+    await load()
+  } catch (e) {
+    alert('Delete failed: ' + e.message)
+  }
+}
+
 async function upload() {
   if (!uploadUrl.value.trim()) return
   try {
@@ -55,6 +66,9 @@ onMounted(load)
         <div class="p-2">
           <p class="text-[10px] text-slate-500 truncate">{{ item.path?.split('/').pop() || '—' }}</p>
           <p class="text-[10px] text-slate-600">{{ item.size?.kb ? item.size.kb.toFixed(0) + ' KB' : '' }}</p>
+          <div class="mt-1">
+            <button @click="remove(item.id)" class="text-[10px] text-red-400 hover:text-red-300">Delete</button>
+          </div>
         </div>
       </div>
     </div>
