@@ -469,7 +469,7 @@ function onMagneticLeave(e) {
         <router-link
           v-for="c in categories" :key="c.id || c.slugified_name"
           :to="'/shop?category=' + (c.slugified_name || c.name)"
-          @mousemove="onTilt; onSpotglowMove(e)" @mouseleave="onTiltLeave"
+          @mousemove="onTilt; onSpotglowMove($event)" @mouseleave="onTiltLeave"
           class="tilt-card spotglow bg-slate-900/70 rounded-xl p-5 border border-slate-800/80 hover:border-cyan-700 hover:bg-slate-800/80 transition-all duration-200 text-center group"
         >
           <div class="w-10 h-10 mx-auto bg-cyan-900/20 rounded-xl flex items-center justify-center text-cyan-400 text-xl mb-3 group-hover:scale-110 transition-transform duration-200">{{ c.icon || '📦' }}</div>
