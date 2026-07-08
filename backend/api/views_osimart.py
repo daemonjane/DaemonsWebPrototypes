@@ -223,8 +223,10 @@ def osimart_categories(request):
     return _proxy_write("create_category", request.data)
 
 
-@osimart_api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_category_detail(request, category_id):
+    if request.method == "GET":
+        return _proxy_get("get_category", request, 0, category_id)
     if request.method == "DELETE":
         return _proxy_write("delete_category", category_id)
     return _proxy_write("update_category", category_id, request.data)
