@@ -325,8 +325,10 @@ def osimart_announcement_bars(request):
     return _proxy_write("create_announcement_bar", request.data)
 
 
-@osimart_api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_announcement_bar_detail(request, ann_id):
+    if request.method == "GET":
+        return _proxy_get("get_announcement_bar", request, 0, ann_id)
     if request.method == "DELETE":
         return _proxy_write("delete_announcement_bar", ann_id)
     return _proxy_write("update_announcement_bar", ann_id, request.data)
