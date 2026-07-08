@@ -432,3 +432,72 @@ html:not(.dark) html { scrollbar-color: #0891b2 #f1f5f9; }
   opacity: 0;
   transform: translateY(1rem);
 }
+
+/* ===== Cart Drawer Slide ===== */
+.drawer-enter-active,
+.drawer-leave-active {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.drawer-enter-active > div:first-child,
+.drawer-leave-active > div:first-child {
+  transition: opacity 0.3s ease;
+}
+.drawer-enter-from > div:last-child,
+.drawer-leave-to > div:last-child {
+  transform: translateX(100%);
+}
+.drawer-enter-from > div:first-child,
+.drawer-leave-to > div:first-child {
+  opacity: 0;
+}
+
+/* ===== Staggered Card Reveal ===== */
+.reveal-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: revealUp 0.5s ease forwards;
+}
+@keyframes revealUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Card Hover Lift ===== */
+.lift-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.lift-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Button Press ===== */
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* ===== Skeleton Shimmer ===== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.5) 25%, rgba(51, 65, 85, 0.5) 50%, rgba(30, 41, 59, 0.5) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ===== Fade In Up for sections ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Smooth scroll ===== */
+html {
+  scroll-behavior: smooth;
+}
