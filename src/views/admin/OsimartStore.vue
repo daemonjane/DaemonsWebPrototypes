@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-const store = ref(null)
 const loading = ref(true)
 const saved = ref(false)
 const form = ref({ name: '', primary_color: '', secondary_color: '', website: '', google_analytics_id: '' })
@@ -15,7 +14,6 @@ async function load() {
   try {
     const api = await getApi()
     const data = await api.osimart.store()
-    store.value = data
     form.value = {
       name: data.name || '',
       primary_color: data.primary_color || '',
