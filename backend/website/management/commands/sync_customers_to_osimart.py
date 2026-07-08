@@ -31,7 +31,8 @@ class Command(BaseCommand):
         errors = []
 
         for user in users:
-            name = user.username or user.email.split("@")[0]
+            first_name = user.first_name or user.username.split()[0] if user.username else ""
+            last_name = user.last_name or ""
             email = user.email
             if not email:
                 self.stdout.write(f"  SKIP user #{user.id}: no email")
@@ -55,8 +56,8 @@ class Command(BaseCommand):
             try:
                 client.create_customer({
                     "email": email,
-                    "first_name": name,
-                    "last_name": name,
+                    "first_name": first_name,
+                    "last_name": last_name,
                     "is_guest": True,
                     "mobile_number": "0000000000",
                 })

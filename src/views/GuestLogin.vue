@@ -4,21 +4,22 @@ import { useRouter } from 'vue-router'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const router = useRouter()
+const firstName = ref('')
+const lastName = ref('')
 const email = ref('')
-const name = ref('')
 const errors = reactive({})
 const pending = ref(false)
 
 async function guestLogin() {
   Object.keys(errors).forEach(key => delete errors[key])
-  if (!email.value) {
-    errors.email = 'Email is required.'
+  if (!firstName.value) {
+    errors.firstName = 'First name is required.'
     return
   }
   pending.value = true
   try {
     const { api, ensureCSRF } = await import('../utils/api')
-    await api.guestLogin(email.value, name.value)
+    await api.guestLogin(email.value, firstName.value, lastName.value)
     await ensureCSRF()
     router.push('/checkout')
   } catch (e) {
@@ -42,26 +43,37 @@ async function guestLogin() {
       <form @submit.prevent="guestLogin" novalidate>
         <p v-if="errors.form" class="mb-4 p-3 rounded-lg bg-pink-950/30 border border-pink-700/50 text-pink-300 text-sm" role="alert">{{ errors.form }}</p>
 
-        <div class="mb-4">
-          <input
-            v-model="email"
-            type="email"
-            placeholder="Email address"
-            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
-            :class="{ 'border-pink-500': errors.email }"
-            aria-required="true"
-            autocomplete="email"
-          >
-          <p v-if="errors.email" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
+        <div class="flex gap-3 mb-4">
+          <div class="flex-1">
+            <input
+              v-model="firstName"
+              type="text"
+              placeholder="First name"
+              class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+              :class="{ 'border-pink-500': errors.firstName }"
+              aria-required="true"
+              autocomplete="given-name"
+            >
+            <p v-if="errors.firstName" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.firstName }}</p>
+          </div>
+          <div class="flex-1">
+            <input
+              v-model="lastName"
+              type="text"
+              placeholder="Last name"
+              class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+              autocomplete="family-name"
+            >
+          </div>
         </div>
 
         <div class="mb-4">
           <input
-            v-model="name"
-            type="text"
-            placeholder="Name (optional)"
+            v-model="email"
+            type="email"
+            placeholder="Email (optional)"
             class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
-            autocomplete="name"
+            autocomplete="email"
           >
         </div>
 

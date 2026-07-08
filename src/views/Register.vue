@@ -6,6 +6,8 @@ import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const router = useRouter()
 const { refresh } = useUser()
+const firstName = ref('')
+const lastName = ref('')
 const username = ref('')
 const email = ref('')
 const password = ref('')
@@ -23,7 +25,7 @@ async function register() {
   pending.value = true
   try {
     const { api, ensureCSRF } = await import('../utils/api')
-    await api.register(username.value, email.value, password.value)
+    await api.register(username.value, email.value, password.value, firstName.value, lastName.value)
     await ensureCSRF()
     await refresh()
     router.push('/')
@@ -46,6 +48,27 @@ async function register() {
 
       <form @submit.prevent="register" novalidate>
         <p v-if="errors.form" class="mb-4 p-3 rounded-lg bg-pink-950/30 border border-pink-700/50 text-pink-300 text-sm" role="alert">{{ errors.form }}</p>
+
+        <div class="flex gap-3 mb-4">
+          <div class="flex-1">
+            <input
+              v-model="firstName"
+              type="text"
+              placeholder="First name"
+              class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+              autocomplete="given-name"
+            >
+          </div>
+          <div class="flex-1">
+            <input
+              v-model="lastName"
+              type="text"
+              placeholder="Last name"
+              class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+              autocomplete="family-name"
+            >
+          </div>
+        </div>
 
         <div class="mb-4">
           <input

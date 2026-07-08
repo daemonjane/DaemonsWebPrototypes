@@ -17,8 +17,11 @@ from rest_framework.response import Response
 
 from services.osimart import OsimartClient, OsimartError
 from website.models import NewsletterSubscription
+import logging
 import re
 import stripe
+
+logger = logging.getLogger(__name__)
 
 
 class IsStaffOrAdminOnly(BasePermission):
@@ -127,6 +130,8 @@ def auth_register(request):
     username = data.get("username", "").strip()
     email = data.get("email", "").strip()
     password = data.get("password", "")
+    first_name = data.get("first_name", "").strip() or username
+    last_name = data.get("last_name", "").strip() or ""
 
     if not username or not email or not password:
         return Response({"error": "Username, email, and password are required."}, status=400)
@@ -138,22 +143,20 @@ def auth_register(request):
         return Response({"error": "Email already registered."}, status=409)
 
     try:
-        import logging
-        logger = logging.getLogger(__name__)
         client = OsimartClient()
         logger.info("Creating registered Osimart customer for %s", email)
         osimart_resp = client.create_customer({
             "email": email,
-            "first_name": username,
-            "last_name": username,
+            "first_name": first_name,
+            "last_name": last_name,
             "is_guest": False,
             "mobile_number": "0000000000",
             "password": password,
             "user": {
                 "email": email,
                 "password": password,
-                "first_name": username,
-                "last_name": username,
+                "first_name": first_name,
+                "last_name": last_name,
                 "username": username,
             },
         })
@@ -177,20 +180,20 @@ def auth_register(request):
 @csrf_exempt
 def auth_guest_login(request):
     """Create a guest session (no password, no local User)."""
+    first_name = request.data.get("first_name", "").strip()
+    last_name = request.data.get("last_name", "").strip()
     email = request.data.get("email", "").strip()
-    name = request.data.get("name", "").strip() or email.split("@")[0]
 
-    if not email:
-        return Response({"error": "Email is required for guest login."}, status=400)
+    if not first_name:
+        return Response({"error": "First name is required for guest login."}, status=400)
 
     try:
-        logger = logging.getLogger(__name__)
         client = OsimartClient()
         logger.info("Creating guest Osimart customer for %s", email)
         client.create_customer({
             "email": email,
-            "first_name": name,
-            "last_name": name,
+            "first_name": first_name,
+            "last_name": last_name,
             "is_guest": True,
             "mobile_number": "0000000000",
         })
@@ -203,8 +206,9 @@ def auth_guest_login(request):
         return Response({"error": f"Guest login failed: {e}"}, status=502)
 
     request.session["guest_email"] = email
-    request.session["guest_name"] = name
-    return Response({"email": email, "name": name})
+    request.session["guest_first_name"] = first_name
+    request.session["guest_last_name"] = last_name
+    return Response({"email": email, "first_name": first_name, "last_name": last_name})
 
 
 @api_view(['POST'])
