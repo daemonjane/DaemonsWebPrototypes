@@ -141,13 +141,21 @@ def auth_register(request):
         import logging
         logger = logging.getLogger(__name__)
         client = OsimartClient()
-        logger.info("Creating Osimart customer for %s", email)
+        logger.info("Creating registered Osimart customer for %s", email)
         osimart_resp = client.create_customer({
             "email": email,
             "first_name": username,
             "last_name": username,
-            "is_guest": True,
+            "is_guest": False,
             "mobile_number": "0000000000",
+            "password": password,
+            "user": {
+                "email": email,
+                "password": password,
+                "first_name": username,
+                "last_name": username,
+                "username": username,
+            },
         })
         logger.info("Osimart customer created: %s", osimart_resp)
     except OsimartError as e:
@@ -162,6 +170,41 @@ def auth_register(request):
     UserProfile.objects.create(user=user)
     login(request, user)
     return Response(_user_data(user), status=201)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def auth_guest_login(request):
+    """Create a guest session (no password, no local User)."""
+    email = request.data.get("email", "").strip()
+    name = request.data.get("name", "").strip() or email.split("@")[0]
+
+    if not email:
+        return Response({"error": "Email is required for guest login."}, status=400)
+
+    try:
+        logger = logging.getLogger(__name__)
+        client = OsimartClient()
+        logger.info("Creating guest Osimart customer for %s", email)
+        client.create_customer({
+            "email": email,
+            "first_name": name,
+            "last_name": name,
+            "is_guest": True,
+            "mobile_number": "0000000000",
+        })
+    except OsimartError as e:
+        logger.error("Guest customer creation failed: %s", e)
+        detail = e.response_body or str(e)
+        return Response({"error": f"Guest login failed — Osimart error: {detail}"}, status=502)
+    except Exception as e:
+        logger.exception("Unexpected error creating guest customer")
+        return Response({"error": f"Guest login failed: {e}"}, status=502)
+
+    request.session["guest_email"] = email
+    request.session["guest_name"] = name
+    return Response({"email": email, "name": name})
 
 
 @api_view(['POST'])

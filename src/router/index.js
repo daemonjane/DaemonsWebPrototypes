@@ -6,6 +6,7 @@ const ProductDetail = () => import(/* webpackChunkName: "product" */ '../views/P
 const FavoritesVue = () => import(/* webpackChunkName: "favorites" */ '../views/Favorites.vue')
 const Checkout = () => import(/* webpackChunkName: "checkout" */ '../views/Checkout.vue')
 const Login = () => import(/* webpackChunkName: "auth" */ '../views/Login.vue')
+const GuestLogin = () => import(/* webpackChunkName: "auth" */ '../views/GuestLogin.vue')
 const Register = () => import(/* webpackChunkName: "auth" */ '../views/Register.vue')
 const Contact = () => import(/* webpackChunkName: "contact" */ '../views/Contact.vue')
 const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
@@ -39,6 +40,7 @@ const routes = [
   { path: '/product/:id', component: ProductDetail },
   { path: '/favorites', component: FavoritesVue },
   { path: '/checkout', component: Checkout },
+  { path: '/guest-login', component: GuestLogin },
   { path: '/login', component: Login, meta: { guestOnly: true } },
   { path: '/forgot-password', component: () => import(/* webpackChunkName: "auth" */ '../views/ForgotPassword.vue') },
   { path: '/reset-password/:uidb64/:token/', component: () => import(/* webpackChunkName: "auth" */ '../views/ResetPassword.vue') },

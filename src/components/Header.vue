@@ -202,13 +202,20 @@ function closeSearch() {
           >
             Logout
           </button>
-          <router-link
-            v-else
-            to="/login"
-            class="hidden md:inline-flex text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
-          >
-            Sign In
-          </router-link>
+          <template v-if="!isAuthenticated()">
+            <router-link
+              to="/guest-login"
+              class="hidden md:inline-flex text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors"
+            >
+              Guest
+            </router-link>
+            <router-link
+              to="/login"
+              class="hidden md:inline-flex text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+            >
+              Sign In
+            </router-link>
+          </template>
 
           <!-- Theme toggle -->
           <button
@@ -330,14 +337,22 @@ function closeSearch() {
               Logout
             </button>
           </template>
-          <router-link
-            v-else
-            to="/login"
-            class="block px-3 py-2 rounded-md text-sm font-medium text-cyan-400 hover:text-white hover:bg-slate-800/50 transition-colors"
-            @click="mobileMenuOpen = false"
-          >
-            Sign In
-          </router-link>
+          <template v-if="!isAuthenticated()">
+            <router-link
+              to="/guest-login"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              @click="mobileMenuOpen = false"
+            >
+              Guest
+            </router-link>
+            <router-link
+              to="/login"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-cyan-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              @click="mobileMenuOpen = false"
+            >
+              Sign In
+            </router-link>
+          </template>
         </div>
       </nav>
     </transition>
