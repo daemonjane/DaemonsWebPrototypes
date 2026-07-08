@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue'
 const items = ref([])
 const loading = ref(true)
+const page = ref(1)
+const totalPages = ref(1)
 
 async function getApi() {
   const m = await import('../../utils/api')
@@ -12,13 +14,22 @@ async function load() {
   loading.value = true
   try {
     const api = await getApi()
-    const data = await api.osimart.customers()
+    const data = await api.osimart.customers(page.value)
     items.value = data.results || data || []
+    totalPages.value = data.total_pages || Math.ceil((data.count || 0) / 20) || 1
   } catch (e) {
     console.error('Failed to load customers', e)
   } finally {
     loading.value = false
   }
+}
+
+function prevPage() {
+  if (page.value > 1) { page.value--; load() }
+}
+
+function nextPage() {
+  if (page.value < totalPages.value) { page.value++; load() }
 }
 
 async function remove(id) {
@@ -37,7 +48,14 @@ onMounted(load)
 
 <template>
   <div>
-    <h2 class="text-lg font-semibold text-white mb-4">Customers</h2>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-white">Customers</h2>
+      <div v-if="!loading && items.length" class="flex items-center gap-2 text-sm">
+        <button @click="prevPage" :disabled="page <= 1" class="px-3 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Prev</button>
+        <span class="text-slate-500">Page {{ page }} / {{ totalPages }}</span>
+        <button @click="nextPage" :disabled="page >= totalPages" class="px-3 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Next</button>
+      </div>
+    </div>
     <div v-if="loading" class="text-slate-500 text-sm py-8 text-center">Loading...</div>
     <div v-else-if="!items.length" class="text-slate-500 text-sm py-8 text-center">No customers yet.</div>
     <div v-else class="overflow-x-auto">

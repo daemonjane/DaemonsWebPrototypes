@@ -39,9 +39,13 @@ class Command(BaseCommand):
                 continue
 
             try:
-                existing = client.get_customers(params={"search": email, "limit": 1})
+                existing = client.get_customers(params={"search": email, "limit": 10})
                 results = existing.get("results") if isinstance(existing, dict) else existing
-                if results and len(results) > 0:
+                already_exists = any(
+                    r.get("email", "").strip().lower() == email.strip().lower()
+                    for r in (results or [])
+                )
+                if already_exists:
                     self.stdout.write(f"  SKIP {email}: already exists in Osimart")
                     skipped += 1
                     continue

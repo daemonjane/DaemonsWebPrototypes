@@ -109,7 +109,7 @@ export const api = {
     announcementBar: (id) => request('GET', `/api/osimart/announcement-bars/${id}/`),
     updateAnnouncementBar: (id, data) => request('PUT', `/api/osimart/announcement-bars/${id}/`, data),
     deleteAnnouncementBar: (id) => request('DELETE', `/api/osimart/announcement-bars/${id}/`),
-    customers: () => request('GET', '/api/osimart/customers/'),
+    customers: (page) => request('GET', page ? `/api/osimart/customers/?page=${page}` : '/api/osimart/customers/'),
     createCustomer: (data) => request('POST', '/api/osimart/customers/', data),
     updateCustomer: (id, data) => request('PUT', `/api/osimart/customers/${id}/`, data),
     deleteCustomer: (id) => request('DELETE', `/api/osimart/customers/${id}/`),
