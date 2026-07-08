@@ -261,8 +261,10 @@ def osimart_collections(request):
     return _proxy_write("create_collection", request.data)
 
 
-@osimart_api_view(["PUT", "PATCH", "DELETE"])
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
 def osimart_collection_detail(request, collection_id):
+    if request.method == "GET":
+        return _proxy_get("get_collection", request, 0, collection_id)
     if request.method == "DELETE":
         return _proxy_write("delete_collection", collection_id)
     return _proxy_write("update_collection", collection_id, request.data)
