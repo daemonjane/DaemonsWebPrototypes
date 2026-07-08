@@ -325,9 +325,11 @@ def osimart_announcement_bar_detail(request, ann_id):
 # ---------------------------------------------------------------------------
 # Customers
 # ---------------------------------------------------------------------------
-@osimart_api_view(["GET"])
+@osimart_api_view(["GET", "POST"])
 def osimart_customers(request):
-    return _proxy_get("get_customers", request)
+    if request.method == "GET":
+        return _proxy_get("get_customers", request)
+    return _proxy_write("create_customer", request.data)
 
 
 # ---------------------------------------------------------------------------
