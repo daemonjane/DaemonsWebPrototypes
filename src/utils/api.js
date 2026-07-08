@@ -81,6 +81,7 @@ export const api = {
     deleteProduct: (id) => request('DELETE', `/api/osimart/products/${id}/`),
     categories: () => request('GET', '/api/osimart/categories/'),
     createCategory: (data) => request('POST', '/api/osimart/categories/', data),
+    category: (id) => request('GET', `/api/osimart/categories/${id}/`),
     updateCategory: (id, data) => request('PUT', `/api/osimart/categories/${id}/`, data),
     deleteCategory: (id) => request('DELETE', `/api/osimart/categories/${id}/`),
     store: () => request('GET', '/api/osimart/store/'),
