@@ -11,6 +11,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../composables/useCart'
 import { useFavorites } from '../composables/useFavorites'
+import { useToast } from '../composables/useToast'
 import QuickViewModal from './QuickViewModal.vue'
 import OptimizedImage from './OptimizedImage.vue'
 
@@ -20,6 +21,7 @@ const props = defineProps({
 })
 
 const { addItem } = useCart()
+const { addToast } = useToast()
 
 const badge = computed(() => {
   const newIds = ['stream-deck', 'gaming-chair', 'cpu-cooler', 'nvme-ssd', 'sleeved-cables', 'microphone']
@@ -62,6 +64,7 @@ function decrement() { if (quantity.value > 1) quantity.value-- }
 function handleAddToCart() {
   addingToCart.value = true
   addItem({ id: props.product.id, uuid: props.product.uuid, variantId: props.product.variantId, name: props.product.name, price: props.product.price }, quantity.value)
+  addToast(`${props.product.name} added to cart`, 2000, 'success')
   setTimeout(() => { addingToCart.value = false }, 600)
   quantity.value = 1
 }
