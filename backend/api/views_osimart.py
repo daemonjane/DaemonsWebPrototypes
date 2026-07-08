@@ -332,6 +332,18 @@ def osimart_customers(request):
     return _proxy_write("create_customer", request.data)
 
 
+@osimart_api_view(["GET", "PUT", "PATCH", "DELETE"])
+def osimart_customer_detail(request, customer_id):
+    if request.method == "GET":
+        pass
+    if request.method == "DELETE":
+        return _proxy_write("delete_customer", customer_id)
+    if request.method in ("PUT", "PATCH"):
+        client = _get_client()
+        return _proxy_write("update_customer", customer_id, request.data)
+    return _proxy_write("get_customer", customer_id)
+
+
 # ---------------------------------------------------------------------------
 # Media
 # ---------------------------------------------------------------------------
