@@ -47,6 +47,7 @@ const priceCompare = computed(() => {
 })
 
 const stockLevel = computed(() => {
+  if (!props.product) return { level: 'out', label: '', dot: 'bg-red-500', bar: 'w-0 bg-red-500' }
   const s = Number(props.product.stock ?? 0)
   if (s === 0) return { level: 'out', label: 'Out of Stock', dot: 'bg-red-500', bar: 'w-0 bg-red-500' }
   if (s <= 5) return { level: 'low', label: `Only ${s} left`, dot: 'bg-amber-400', bar: 'w-1/3 bg-amber-400' }
