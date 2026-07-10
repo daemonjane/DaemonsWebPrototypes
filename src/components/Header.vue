@@ -1,12 +1,7 @@
 <script setup>
-/**
- * Site-wide navigation header.
- * Includes: logo, desktop + mobile nav, global search with dropdown, cart badge with count.
- * @component
- */
 import { ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useCart } from '../composables/useCart'
+import { useOsimartCart } from '../composables/useOsimartCart'
 import { useFavorites } from '../composables/useFavorites'
 import { useTheme } from '../composables/useTheme'
 import { useUser } from '../composables/useUser'
@@ -16,7 +11,7 @@ import OptimizedImage from './OptimizedImage.vue'
 
 const route = useRoute()
 const router = useRouter()
-const { totalItems, init: initCart } = useCart()
+const { totalItems, init: initCart } = useOsimartCart()
 const { init: initFavs } = useFavorites()
 const { isDark, toggle: toggleTheme } = useTheme()
 const { user, isAuthenticated, isStaff, refresh, logout } = useUser()
@@ -96,7 +91,7 @@ function closeSearch() {
 <template>
   <header
     id="main-header"
-    class="sticky top-0 z-40 bg-slate-950/80 border-b border-slate-800"
+    class="sticky top-0 z-40 bg-dark-bg/80 border-b border-charcoal-700"
     role="banner"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -105,10 +100,10 @@ function closeSearch() {
         <!-- Logo -->
         <router-link
           to="/"
-          class="text-lg sm:text-xl font-bold text-white tracking-tight hover:text-cyan-400 transition-colors shrink-0"
-          aria-label="TechStore Home"
+          class="font-display text-xl font-bold text-gold-400 tracking-wide shrink-0 hover:text-gold-300 transition-colors"
+          aria-label="Golden Glow Home"
         >
-          <span class="text-cyan-400">&lt;</span>TECH<span class="text-cyan-400">/</span>STORE<span class="text-cyan-400">&gt;</span>
+          Golden Glow
         </router-link>
 
         <!-- Desktop Nav -->
@@ -118,10 +113,10 @@ function closeSearch() {
             :key="link.path"
             :to="link.path"
             :class="[
-              'px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400',
+              'px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-gold-400',
               route.path === link.path
-                ? 'text-cyan-400 bg-cyan-950/30'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                ? 'text-gold-400 bg-gold-500/15'
+                : 'text-charcoal-600 hover:text-dark-text hover:bg-charcoal-700/50'
             ]"
           >
             {{ link.label }}
@@ -129,7 +124,7 @@ function closeSearch() {
           <router-link
             v-if="isAuthenticated()"
             to="/dashboard"
-            class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1"
+            class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-charcoal-600 hover:text-dark-text hover:bg-charcoal-700/50 flex items-center gap-1"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
             Dashboard
@@ -145,7 +140,7 @@ function closeSearch() {
               v-model="searchQuery"
               type="text"
               placeholder="Search products..."
-              class="w-40 lg:w-56 bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
+              class="w-40 lg:w-56 bg-charcoal-700 border border-charcoal-600 rounded-md px-3 py-1.5 text-sm text-dark-text placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all"
               @focus="searchFocused = true"
               @blur="closeSearch"
               @keydown.enter="searchQuery.trim() && (router.push('/shop?q=' + encodeURIComponent(searchQuery.trim())), searchQuery = '', searchFocused = false)"
@@ -154,27 +149,27 @@ function closeSearch() {
             >
             <div
               v-if="searchFocused && searchResults.total > 0"
-              class="absolute top-full mt-1 left-0 right-0 bg-slate-900 border border-slate-700 rounded-md shadow-xl overflow-y-auto max-h-96 z-50"
+              class="absolute top-full mt-1 left-0 right-0 bg-dark-card border border-charcoal-600 rounded-md shadow-xl overflow-y-auto max-h-96 z-50"
             >
               <div v-for="(items, category) in searchResults.grouped" :key="category">
-                <p class="px-3 pt-2 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ category }}</p>
+                <p class="px-3 pt-2 pb-1 text-[10px] font-bold text-charcoal-500 uppercase tracking-widest">{{ category }}</p>
                 <router-link
                   v-for="result in items"
                   :key="result.id"
                   :to="`/product/${result.id}`"
-                  class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 transition-colors text-sm"
+                  class="flex items-center gap-3 px-3 py-2 hover:bg-charcoal-700 transition-colors text-sm"
                   @click="searchQuery = ''; searchFocused = false"
                 >
                   <div class="w-8 h-8 rounded shrink-0 overflow-hidden">
                     <OptimizedImage :src="result.image" :alt="result.name" wrapperClass="h-full w-full rounded" />
                   </div>
                   <div class="min-w-0">
-                    <p class="text-slate-200 truncate">{{ result.name }}</p>
-                    <p class="text-cyan-400 text-xs">${{ Number(result.price || 0).toFixed(2) }}</p>
+                    <p class="text-dark-text truncate">{{ result.name }}</p>
+                    <p class="text-gold-400 text-xs">${{ Number(result.price || 0).toFixed(2) }}</p>
                   </div>
                 </router-link>
               </div>
-              <p class="px-3 py-2 text-xs text-slate-500 border-t border-slate-800">{{ searchResults.total }} result{{ searchResults.total !== 1 ? 's' : '' }} — press Enter to search all</p>
+              <p class="px-3 py-2 text-xs text-charcoal-500 border-t border-charcoal-700">{{ searchResults.total }} result{{ searchResults.total !== 1 ? 's' : '' }} — press Enter to search all</p>
             </div>
           </div>
 
@@ -182,7 +177,7 @@ function closeSearch() {
           <router-link
             v-if="isAuthenticated()"
             to="/profile"
-            class="hidden md:inline-flex text-sm font-medium items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors"
+            class="hidden md:inline-flex text-sm font-medium items-center gap-1 text-charcoal-600 hover:text-gold-400 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             Profile
@@ -190,7 +185,7 @@ function closeSearch() {
           <router-link
             v-if="isAuthenticated()"
             to="/orders"
-            class="hidden md:inline-flex text-sm font-medium items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors"
+            class="hidden md:inline-flex text-sm font-medium items-center gap-1 text-charcoal-600 hover:text-gold-400 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             Orders
@@ -198,29 +193,35 @@ function closeSearch() {
           <button
             v-if="isAuthenticated()"
             @click="handleLogout"
-            class="hidden md:inline-flex text-sm font-medium text-pink-400 hover:text-pink-300 hover:bg-pink-950/30 px-3 py-1.5 rounded-md transition-colors cursor-pointer"
+            class="hidden md:inline-flex text-sm font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/15 px-3 py-1.5 rounded-md transition-colors cursor-pointer"
           >
             Logout
           </button>
           <template v-if="!isAuthenticated()">
             <router-link
               to="/guest-login"
-              class="hidden md:inline-flex text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors"
+              class="hidden md:inline-flex text-sm font-medium text-charcoal-500 hover:text-gold-400 transition-colors"
             >
               Guest
             </router-link>
             <router-link
               to="/login"
-              class="hidden md:inline-flex text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+              class="hidden md:inline-flex text-sm font-medium text-gold-400 hover:text-gold-300 transition-colors"
             >
               Sign In
+            </router-link>
+            <router-link
+              to="/staff-login"
+              class="hidden md:inline-flex text-sm font-medium text-charcoal-500 hover:text-gold-400 transition-colors"
+            >
+              Staff
             </router-link>
           </template>
 
           <!-- Theme toggle -->
           <button
             @click="themedToggle"
-            class="p-2 text-slate-400 hover:text-cyan-400 transition-colors"
+            class="p-2 text-charcoal-600 hover:text-gold-400 transition-colors"
             :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
             :title="isDark ? 'Light mode' : 'Dark mode'"
           >
@@ -235,7 +236,7 @@ function closeSearch() {
           <!-- Cart -->
           <button
             @click="cartOpen = true"
-            class="relative p-2 text-slate-400 hover:text-cyan-400 transition-colors"
+            class="relative p-2 text-charcoal-600 hover:text-gold-400 transition-colors"
             aria-label="Open cart"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -243,7 +244,7 @@ function closeSearch() {
             </svg>
             <span
               v-if="totalItems > 0"
-              class="absolute -top-0.5 -right-0.5 bg-cyan-500 text-black text-[10px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1"
+              class="absolute -top-0.5 -right-0.5 bg-emerald-500 text-dark-bg text-[10px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1 badge-bounce"
               aria-live="polite"
             >
               {{ totalItems }}
@@ -252,7 +253,7 @@ function closeSearch() {
 
           <!-- Mobile menu toggle -->
           <button
-            class="md:hidden p-2 text-slate-400 hover:text-white transition-colors"
+            class="md:hidden p-2 text-charcoal-600 hover:text-dark-text transition-colors"
             @click="mobileMenuOpen = !mobileMenuOpen"
             :aria-label="mobileMenuOpen ? 'Close menu' : 'Open menu'"
             :aria-expanded="mobileMenuOpen"
@@ -277,7 +278,7 @@ function closeSearch() {
       leave-from-class="opacity-100 max-h-96"
       leave-to-class="opacity-0 max-h-0"
     >
-      <nav v-if="mobileMenuOpen" class="md:hidden border-t border-slate-800 bg-slate-950 overflow-hidden" aria-label="Mobile navigation">
+      <nav v-if="mobileMenuOpen" class="md:hidden border-t border-charcoal-700 bg-dark-bg overflow-hidden" aria-label="Mobile navigation">
         <div class="px-4 py-3 space-y-1">
           <!-- Mobile search -->
           <div class="sm:hidden mb-2">
@@ -285,7 +286,7 @@ function closeSearch() {
               v-model="searchQuery"
               type="text"
               placeholder="Search products..."
-              class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              class="w-full bg-charcoal-700 border border-charcoal-600 rounded-md px-3 py-2 text-sm text-dark-text placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400"
               @keydown.enter="searchQuery.trim() && (router.push('/shop?q=' + encodeURIComponent(searchQuery.trim())), searchQuery = '', mobileMenuOpen = false)"
               aria-label="Search products"
               autocomplete="off"
@@ -296,20 +297,20 @@ function closeSearch() {
             :key="link.path"
             :to="link.path"
             :class="[
-              'block px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400',
+              'block px-3 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-gold-400',
               route.path === link.path
-                ? 'text-cyan-400 bg-cyan-950/30'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                ? 'text-gold-400 bg-gold-500/15'
+                : 'text-charcoal-600 hover:text-dark-text hover:bg-charcoal-700/50'
             ]"
             @click="mobileMenuOpen = false"
           >
             {{ link.label }}
           </router-link>
-          <hr class="border-slate-800 my-2">
+          <hr class="border-charcoal-700 my-2">
           <router-link
             v-if="isAuthenticated()"
             to="/dashboard"
-            class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+            class="block px-3 py-2 rounded-md text-sm font-medium text-charcoal-600 hover:text-dark-text hover:bg-charcoal-700/50 transition-colors"
             @click="mobileMenuOpen = false"
           >
             Dashboard
@@ -317,21 +318,21 @@ function closeSearch() {
           <template v-if="isAuthenticated()">
             <router-link
               to="/profile"
-              class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-charcoal-600 hover:text-dark-text hover:bg-charcoal-700/50 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Profile
             </router-link>
             <router-link
               to="/orders"
-              class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-charcoal-600 hover:text-dark-text hover:bg-charcoal-700/50 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Orders
             </router-link>
             <button
               @click="handleLogout; mobileMenuOpen = false"
-              class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-pink-400 hover:text-pink-300 hover:bg-pink-950/30 transition-colors cursor-pointer"
+              class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/15 transition-colors cursor-pointer"
               aria-label="Logout"
             >
               Logout
@@ -340,17 +341,24 @@ function closeSearch() {
           <template v-if="!isAuthenticated()">
             <router-link
               to="/guest-login"
-              class="block px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-charcoal-600 hover:text-dark-text hover:bg-charcoal-700/50 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Guest
             </router-link>
             <router-link
               to="/login"
-              class="block px-3 py-2 rounded-md text-sm font-medium text-cyan-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-gold-400 hover:text-gold-300 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Sign In
+            </router-link>
+            <router-link
+              to="/staff-login"
+              class="block px-3 py-2 rounded-md text-sm font-medium text-charcoal-500 hover:text-gold-400 transition-colors"
+              @click="mobileMenuOpen = false"
+            >
+              Staff Login
             </router-link>
           </template>
         </div>
