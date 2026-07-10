@@ -1,36 +1,33 @@
 import { reactive, toRefs } from 'vue'
+import { getAuthToken, logoutAuth } from '../services/login.js'
 
 const state = reactive({
   user: null,
   loaded: false,
 })
 
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem('gg-user')
+    if (raw) state.user = JSON.parse(raw)
+  } catch { state.user = null }
+}
+
 export function useUser() {
   async function refresh() {
-    try {
-      const { api } = await import('../utils/api')
-      state.user = await api.profile.get()
-    } catch {
-      state.user = null
-    } finally {
-      state.loaded = true
-    }
+    loadFromStorage()
+    state.loaded = true
     if (state.user) {
-      await Promise.allSettled([
-        syncCart(),
-        syncWishlist(),
-      ])
+      await syncWishlist()
     }
   }
 
-  async function syncCart() {
-    try {
-      const { useCart } = await import('./useCart')
-      const cart = useCart()
-      await cart.mergeLocalIntoServer()
-      await cart.init()
-    } catch {
-      // ignore
+  function setAuth(userData) {
+    state.user = userData
+    if (userData) {
+      localStorage.setItem('gg-user', JSON.stringify(userData))
+    } else {
+      localStorage.removeItem('gg-user')
     }
   }
 
@@ -45,17 +42,16 @@ export function useUser() {
   }
 
   async function logout() {
-    try {
-      const { api } = await import('../utils/api')
-      await api.logout()
-    } catch { /* ignore */ }
     state.user = null
+    localStorage.removeItem('gg-user')
+    logoutAuth()
   }
 
   return {
     ...toRefs(state),
     refresh,
     logout,
+    setAuth,
     isAuthenticated: () => !!state.user?.id,
     isStaff: () => !!state.user?.is_staff,
   }
