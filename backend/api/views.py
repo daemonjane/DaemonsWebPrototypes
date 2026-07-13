@@ -10,7 +10,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.cache import cache
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
@@ -29,27 +29,129 @@ class IsStaffOrAdminOnly(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_authenticated and request.user.is_staff)
 
-from .models import Cart, CartItem, Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
-from .serializers import CartSerializer, OrderSerializer
+from .models import Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
+from .serializers import OrderSerializer
 from website.models import UserProfile
 
 
 def _user_data(user):
     """Build a user data dict safe for API responses."""
+    profile, _ = UserProfile.objects.get_or_create(user=user)
     return {
         "id": user.id,
         "username": user.username,
         "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
         "is_staff": user.is_staff,
         "is_superuser": user.is_superuser,
         "profile": {
-            "bio": user.profile.bio if hasattr(user, "profile") else "",
-            "location": user.profile.location if hasattr(user, "profile") else "",
-            "phone": user.profile.phone if hasattr(user, "profile") else "",
-            "avatar_url": user.profile.avatar_url if hasattr(user, "profile") else "",
-        } if hasattr(user, "profile") else {},
+            "bio": profile.bio,
+            "location": profile.location,
+            "phone": profile.phone,
+            "avatar_url": profile.avatar_url,
+            "osimart_customer_id": profile.osimart_customer_id or "",
+        },
     }
 
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def change_password(request):
+    user = request.user
+    if not user.is_authenticated:
+        return Response({"error": "Not authenticated."}, status=401)
+    old = request.data.get("old_password", "")
+    new = request.data.get("new_password", "")
+    if not old or not new:
+        return Response({"error": "old_password and new_password are required."}, status=400)
+    if not user.check_password(old):
+        return Response({"error": "Old password is incorrect."}, status=403)
+    user.set_password(new)
+    user.save()
+    return Response({"detail": "Password changed successfully."})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def reset_password(request):
+    email = (request.data.get("email") or "").strip()
+    code = (request.data.get("code") or "").strip()
+    new_password = request.data.get("new_password", "")
+    if not email or not code or not new_password:
+        return Response({"error": "email, code, and new_password are required."}, status=400)
+    cache_key = f"password_reset_code:{email}"
+    stored = cache.get(cache_key)
+    if not stored or str(stored) != str(code):
+        return Response({"error": "Invalid or expired code."}, status=400)
+    user = User.objects.filter(email=email).first()
+    if not user:
+        return Response({"error": "No user with that email."}, status=404)
+    user.set_password(new_password)
+    user.save()
+    cache.delete(cache_key)
+    return Response({"detail": "Password reset successfully."})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def osimart_sync(request):
+    """Create/find local Django user after successful Osimart authentication."""
+    data = request.data
+    email = (data.get("email") or "").strip()
+    osimart_customer_id = (data.get("osimart_customer_id") or "").strip()
+    name = (data.get("name") or "").strip()
+    first_name = data.get("first_name", "")
+    last_name = data.get("last_name", "")
+    if not first_name and name:
+        parts = name.split()
+        first_name = parts[0]
+        last_name = " ".join(parts[1:]) if len(parts) > 1 else ""
+
+    if not email:
+        return Response({"error": "Email is required."}, status=400)
+
+    user = User.objects.filter(email=email).first()
+    if not user:
+        username = email.split("@")[0]
+        base = username
+        counter = 1
+        while User.objects.filter(username=username).exists():
+            username = f"{base}_{counter}"
+            counter += 1
+        user = User.objects.create_user(
+            username=username, email=email,
+            first_name=first_name, last_name=last_name,
+        )
+
+    profile, _ = UserProfile.objects.get_or_create(user=user)
+    if osimart_customer_id:
+        profile.osimart_customer_id = osimart_customer_id
+        profile.save(update_fields=["osimart_customer_id"])
+
+    login(request, user)
+
+    return Response({
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "is_staff": user.is_staff,
+        "is_superuser": user.is_superuser,
+        "profile": {
+            "bio": profile.bio,
+            "location": profile.location,
+            "phone": profile.phone,
+            "avatar_url": profile.avatar_url,
+            "osimart_customer_id": profile.osimart_customer_id,
+        },
+    })
+
+
+@api_view(['GET'])
+def auth_csrf(request):
+    return Response({'csrfToken': get_token(request)})
 
 @api_view(['GET'])
 def health_check(request):
@@ -63,7 +165,6 @@ def health_check(request):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-@csrf_exempt
 def auth_password_reset_request(request):
     """Send a password reset email with a token + uidb64 link."""
     email = request.data.get("email", "").strip()
@@ -102,7 +203,6 @@ def auth_password_reset_request(request):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-@csrf_exempt
 def auth_password_reset_confirm(request, uidb64, token):
     """Confirm a password reset using uidb64 + token from the email link."""
     try:
@@ -122,20 +222,35 @@ def auth_password_reset_confirm(request, uidb64, token):
     user.save()
     return Response({"message": "Password has been reset successfully."})
 
+def _rate_limit_check(request, cache_key_prefix, max_attempts=3, cooldown=300):
+    ip = request.META.get("REMOTE_ADDR", "unknown")
+    cache_key = f"{cache_key_prefix}:{ip}"
+    attempts = cache.get(cache_key, 0)
+    if attempts >= max_attempts:
+        return Response({"error": "Too many attempts. Try again later."}, status=429, headers={"Retry-After": str(cooldown)})
+    cache.set(cache_key, attempts + 1, cooldown)
+    return None
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
-@csrf_exempt
 def auth_register(request):
-    """Register a new user account."""
+    """Register a new user — sends OTP via Osimart, does NOT create local user yet."""
+    rate = _rate_limit_check(request, "register_rate")
+    if rate:
+        return rate
     data = request.data
     username = data.get("username", "").strip()
     email = data.get("email", "").strip()
     password = data.get("password", "")
     first_name = data.get("first_name", "").strip() or username
-    last_name = data.get("last_name", "").strip() or ""
+    last_name = data.get("last_name", "").strip() or first_name.split()[-1] if first_name.split() else "_"
 
     if not username or not email or not password:
         return Response({"error": "Username, email, and password are required."}, status=400)
+
+    if len(password) < 8:
+        return Response({"error": "Password must be at least 8 characters."}, status=400)
 
     if User.objects.filter(username=username).exists():
         return Response({"error": "Username already taken."}, status=409)
@@ -145,40 +260,139 @@ def auth_register(request):
 
     try:
         client = OsimartClient()
-        logger.info("Creating registered Osimart customer for %s", email)
-        osimart_resp = client.create_customer({
-            "email": email,
-            "first_name": first_name,
-            "last_name": last_name,
-            "is_guest": False,
-            "mobile_number": "0000000000",
-            "password": password,
-            "user": {
-                "email": email,
-                "password": password,
-                "first_name": first_name,
-                "last_name": last_name,
-                "username": username,
-            },
-        })
-        logger.info("Osimart customer created: %s", osimart_resp)
+        logger.info("Registering customer on Osimart for %s", email)
+        osimart_resp = client.register_customer(
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+        )
+        logger.info("Osimart registration pending: %s", osimart_resp)
     except OsimartError as e:
-        logger.error("Osimart customer creation failed: %s", e)
+        logger.error("Osimart registration failed: %s", e)
         detail = e.response_body or str(e)
-        return Response({"error": f"Registration failed — Osimart error: {detail}"}, status=502)
+        return Response({"error": f"Registration failed — {detail}"}, status=e.status_code if isinstance(e.status_code, int) else 502)
     except Exception as e:
-        logger.exception("Unexpected error creating Osimart customer")
+        logger.exception("Unexpected error during Osimart registration")
         return Response({"error": f"Registration failed: {e}"}, status=502)
 
-    user = User.objects.create_user(username=username, email=email, password=password)
-    UserProfile.objects.create(user=user)
-    login(request, user)
-    return Response(_user_data(user), status=201)
+    request.session['pending_registration'] = {
+        'username': username,
+        'email': email,
+        'password': password,
+        'first_name': first_name,
+        'last_name': last_name,
+    }
+    request.session.modified = True
+
+    return Response({"status": "pending", "email": email, "message": "OTP sent to email."}, status=201)
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-@csrf_exempt
+def auth_verify(request):
+    """Verify OTP and complete registration — creates local user + Osimart customer."""
+    rate = _rate_limit_check(request, "verify_rate", max_attempts=5)
+    if rate:
+        return rate
+    email = request.data.get("email", "").strip()
+    code = request.data.get("code", "").strip()
+
+    if not email or not code:
+        return Response({"error": "Email and code are required."}, status=400)
+
+    pending = request.session.get('pending_registration')
+    if not pending or pending.get('email') != email:
+        return Response({"error": "No pending registration found for this email. Please register again."}, status=400)
+
+    try:
+        client = OsimartClient()
+        verify_resp = client.verify_otp(email=email, code=code)
+    except OsimartError as e:
+        logger.error("OTP verify failed: %s", e)
+        detail = e.response_body or str(e)
+        return Response({"error": f"Verification failed — {detail}"}, status=e.status_code if isinstance(e.status_code, int) else 400)
+    except Exception as e:
+        logger.exception("Unexpected error during OTP verification")
+        return Response({"error": f"Verification failed: {e}"}, status=502)
+
+    username = pending['username']
+    password = pending['password']
+    first_name = pending.get('first_name', username)
+    last_name = pending.get('last_name', '')
+
+    try:
+        user = User.objects.create_user(
+            username=username, email=email, password=password,
+            first_name=first_name, last_name=last_name,
+        )
+        profile = UserProfile.objects.create(user=user)
+        osimart_customer_id = verify_resp.get("customer", {}).get("id") if isinstance(verify_resp, dict) else None
+        if osimart_customer_id:
+            profile.osimart_customer_id = str(osimart_customer_id)
+            profile.save(update_fields=["osimart_customer_id"])
+        else:
+            customer_id = verify_resp.get("id") if isinstance(verify_resp, dict) else None
+            if customer_id:
+                profile.osimart_customer_id = str(customer_id)
+                profile.save(update_fields=["osimart_customer_id"])
+    except Exception as e:
+        logger.exception("Local user creation failed after OTP verify")
+        return Response({"error": "Verification succeeded but account creation failed. Please contact support."}, status=502)
+
+    login(request, user)
+
+    access_token = None
+    refresh_token = None
+    try:
+        client = OsimartClient()
+        osimart_data = client.customer_login(email=email, password=password, device_name="web")
+        access_token = osimart_data.get("access_token")
+        refresh_token = osimart_data.get("refresh_token")
+    except Exception:
+        pass
+
+    del request.session['pending_registration']
+    request.session.modified = True
+
+    resp_data = _user_data(user)
+    if access_token:
+        resp_data["osimart_token"] = access_token
+        resp_data["osimart_refresh_token"] = refresh_token
+
+    return Response(resp_data, status=201)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def auth_resend_otp(request):
+    """Resend OTP for a pending registration."""
+    rate = _rate_limit_check(request, "resend_rate", max_attempts=3, cooldown=120)
+    if rate:
+        return rate
+    email = request.data.get("email", "").strip()
+    if not email:
+        return Response({"error": "Email is required."}, status=400)
+
+    pending = request.session.get('pending_registration')
+    if not pending or pending.get('email') != email:
+        return Response({"error": "No pending registration found for this email."}, status=400)
+
+    try:
+        client = OsimartClient()
+        client.resend_otp(email=email)
+        return Response({"message": "OTP resent to email."})
+    except OsimartError as e:
+        logger.error("OTP resend failed: %s", e)
+        detail = e.response_body or str(e)
+        return Response({"error": f"Failed to resend OTP — {detail}"}, status=e.status_code if isinstance(e.status_code, int) else 502)
+    except Exception as e:
+        logger.exception("Unexpected error resending OTP")
+        return Response({"error": f"Failed to resend OTP: {e}"}, status=502)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
 def auth_guest_login(request):
     """Create a guest session (no password, no local User)."""
     first_name = request.data.get("first_name", "").strip()
@@ -214,34 +428,25 @@ def auth_guest_login(request):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-@csrf_exempt
-def auth_login(request):
-    """Authenticate and log in a user."""
-    ip = request.META.get("REMOTE_ADDR", "unknown")
-    cache_key = f"login_rate:{ip}"
-    attempts = cache.get(cache_key, 0)
-    if attempts >= 5:
-        return Response({"error": "Too many login attempts. Try again later."}, status=429, headers={"Retry-After": "300", "X-RateLimit-Reset": "300"})
-
-    data = request.data
-
-    username = data.get("username", "")
-    password = data.get("password", "")
+def auth_staff_login(request):
+    """Authenticate and log in a staff user (Django session-based)."""
+    username = request.data.get("username", "")
+    password = request.data.get("password", "")
     user = authenticate(request, username=username, password=password)
-
-    if user is None:
-        cache.set(cache_key, attempts + 1, 300)
-        remaining = 4 - attempts
-        return Response({"error": "Invalid username or password."}, status=401, headers={"X-RateLimit-Remaining": str(remaining)})
-
-    cache.delete(cache_key)
+    if user is None or not user.is_staff:
+        return Response({"error": "Invalid credentials or not a staff user."}, status=401)
     login(request, user)
-    return Response(_user_data(user))
+    return Response({
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "is_staff": user.is_staff,
+        "is_superuser": user.is_superuser,
+    })
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-@csrf_exempt
 def osimart_login(request):
     """Authenticate via Osimart API, create/find local user, and log in."""
     data = request.data
@@ -274,6 +479,11 @@ def osimart_login(request):
         if email and user.email != email:
             user.email = email
             user.save(update_fields=["email"])
+        osimart_customer_id = osimart_data.get("customer", {}).get("id") or osimart_data.get("id")
+        if osimart_customer_id:
+            profile, _ = UserProfile.objects.get_or_create(user=user)
+            profile.osimart_customer_id = str(osimart_customer_id)
+            profile.save(update_fields=["osimart_customer_id"])
         login(request, user)
         resp_data = _user_data(user)
         resp_data["osimart_token"] = access_token
@@ -295,6 +505,7 @@ def osimart_login(request):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def auth_logout(request):
     """Log out the current user."""
     logout(request)
@@ -337,140 +548,7 @@ def auth_profile(request):
     return Response(_user_data(user))
 
 
-@api_view(['GET'])
-@ensure_csrf_cookie
-def csrf_token(request):
-    """Return a CSRF token for the client."""
-    return Response({"csrfToken": get_token(request)})
 
-
-# ---------------------------------------------------------------------------
-# Cart
-# ---------------------------------------------------------------------------
-
-def _get_cart(user):
-    cart, _ = Cart.objects.get_or_create(user=user)
-    return cart
-
-
-def _cart_json(cart):
-    """Serialize cart with a fresh DB hit to avoid stale prefetch caches."""
-    fresh = Cart.objects.get(pk=cart.pk)
-    return CartSerializer(fresh).data
-
-
-@api_view(['GET'])
-def cart_get(request):
-    if not request.user.is_authenticated:
-        return Response({"error": "Not authenticated."}, status=401)
-    return Response(_cart_json(_get_cart(request.user)))
-
-
-@api_view(['POST'])
-def cart_add(request):
-    if not request.user.is_authenticated:
-        return Response({"error": "Not authenticated."}, status=401)
-
-    data = request.data
-    cart = _get_cart(request.user)
-    item_type = data.get("item_type", "product")
-    name = data.get("name", "")
-    price = data.get("price", 0)
-    quantity = int(data.get("quantity", 1))
-    image = data.get("image", "")
-
-    existing = cart.items.filter(
-        item_type=item_type,
-        name=name,
-    ).first()
-
-    if existing and item_type == "addon":
-        return Response({"error": "Add-on already in cart."}, status=409)
-
-    if existing:
-        existing.quantity += quantity
-        existing.save()
-    else:
-        CartItem.objects.create(
-            cart=cart,
-            name=name,
-            price=price,
-            quantity=quantity,
-            image=image,
-            item_type=item_type,
-        )
-
-    return Response(_cart_json(cart))
-
-
-@api_view(['PATCH', 'DELETE'])
-def cart_item_detail(request, item_id):
-    """Update or remove a specific cart item."""
-    if not request.user.is_authenticated:
-        return Response({"error": "Not authenticated."}, status=401)
-
-    try:
-        item = CartItem.objects.get(id=item_id, cart__user=request.user)
-    except CartItem.DoesNotExist:
-        return Response({"error": "Item not found."}, status=404)
-
-    if request.method == 'DELETE':
-        item.delete()
-        return Response(_cart_json(_get_cart(request.user)))
-
-    data = request.data
-    if "quantity" in data:
-        item.quantity = max(0, int(data["quantity"]))
-    if "price" in data:
-        item.price = data["price"]
-    if "name" in data:
-        item.name = data["name"]
-    item.save()
-
-    if item.quantity <= 0:
-        item.delete()
-
-    return Response(_cart_json(_get_cart(request.user)))
-
-
-@api_view(['POST'])
-def cart_clear(request):
-    """Remove all items from the cart."""
-    if not request.user.is_authenticated:
-        return Response({"error": "Not authenticated."}, status=401)
-    cart = _get_cart(request.user)
-    cart.items.all().delete()
-    return Response(_cart_json(_get_cart(request.user)))
-
-
-@api_view(['POST'])
-def cart_merge(request):
-    """Merge localStorage cart items into server cart after login."""
-    if not request.user.is_authenticated:
-        return Response({"error": "Not authenticated."}, status=401)
-
-    data = request.data
-    cart = _get_cart(request.user)
-    local_items = data.get("items", [])
-
-    for local in local_items:
-        item_type = local.get("item_type") or local.get("type", "product")
-        name = local.get("name", "")
-        price = local.get("price", 0)
-        quantity = int(local.get("quantity", 1))
-        image = local.get("image", "")
-
-        existing = cart.items.filter(item_type=item_type, name=name).first()
-        if existing:
-            existing.quantity += quantity
-            existing.save()
-        else:
-            CartItem.objects.create(
-                cart=cart, name=name, price=price,
-                quantity=quantity, image=image, item_type=item_type,
-            )
-
-    return Response(_cart_json(cart))
 
 
 # ---------------------------------------------------------------------------

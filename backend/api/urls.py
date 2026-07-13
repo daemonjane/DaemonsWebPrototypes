@@ -7,23 +7,22 @@ from . import views_osimart
 
 app_name = "api"
 
-# urlpatterns: API URL patterns.
 urlpatterns = [
     path('health/', views.health_check, name='health-check'),
+    path('auth/csrf/', views.auth_csrf, name='auth-csrf'),
     path('auth/register/', views.auth_register, name='auth-register'),
     path('auth/guest-login/', views.auth_guest_login, name='auth-guest-login'),
-    path('auth/login/', views.auth_login, name='auth-login'),
     path('auth/osimart-login/', views.osimart_login, name='auth-osimart-login'),
+    path('auth/verify/', views.auth_verify, name='auth-verify'),
+    path('auth/resend-otp/', views.auth_resend_otp, name='auth-resend-otp'),
+    path('auth/staff-login/', views.auth_staff_login, name='auth-staff-login'),
     path('auth/logout/', views.auth_logout, name='auth-logout'),
+    path('auth/osimart-sync/', views.osimart_sync, name='auth-osimart-sync'),
     path('auth/profile/', views.auth_profile, name='auth-profile'),
+    path('auth/change-password/', views.change_password, name='auth-change-password'),
+    path('auth/reset-password/', views.reset_password, name='auth-reset-password'),
     path('auth/password-reset/', views.auth_password_reset_request, name='auth-password-reset-request'),
     path('auth/password-reset/<uidb64>/<token>/', views.auth_password_reset_confirm, name='auth-password-reset-confirm'),
-    path('auth/csrf/', views.csrf_token, name='auth-csrf'),
-    path('cart/', views.cart_get, name='cart-get'),
-    path('cart/add/', views.cart_add, name='cart-add'),
-    path('cart/item/<int:item_id>/', views.cart_item_detail, name='cart-item-detail'),
-    path('cart/clear/', views.cart_clear, name='cart-clear'),
-    path('cart/merge/', views.cart_merge, name='cart-merge'),
     path('wishlist/', views.wishlist_get, name='wishlist-get'),
     path('wishlist/toggle/', views.wishlist_toggle, name='wishlist-toggle'),
     path('wishlist/check/<slug:slug>/', views.wishlist_check, name='wishlist-check'),
