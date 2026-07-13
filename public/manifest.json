@@ -1,11 +1,11 @@
 {
-  "name": "TechStore — Premium Hardware & Verified Components",
-  "short_name": "TechStore",
-  "description": "Build the ultimate workspace with verified high-performance hardware.",
+  "name": "Vertex — High-Tier Hardware & Precision Components",
+  "short_name": "Vertex",
+  "description": "High-tier hardware, precision-sourced. Direct vendor supply chains, real-time market intelligence.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#0891b2",
+  "background_color": "#14141F",
+  "theme_color": "#D4AF37",
   "orientation": "portrait-primary",
   "icons": [
     {
