@@ -23,25 +23,25 @@ function toggle(i) {
 <template>
   <div class="max-w-3xl mx-auto px-4 py-12">
     <Breadcrumbs :crumbs="[{ label: 'Home', to: '/' }, { label: 'FAQ' }]" />
-    <h1 class="text-3xl font-bold text-white mb-2">Frequently Asked Questions</h1>
-    <p class="text-slate-400 mb-8">Everything you need to know about Vertex, orders, and membership.</p>
+    <h1 class="text-3xl font-bold font-display text-surface-50 mb-2">Frequently Asked Questions</h1>
+    <p class="text-surface-400 mb-8">Everything you need to know about Vertex, orders, and membership.</p>
 
     <div class="space-y-3">
       <div
         v-for="(faq, i) in faqs"
         :key="i"
-        class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden transition-all duration-200"
-        :class="{ 'border-cyan-800/50': openIndex === i }"
+        class="bg-surface-900 rounded-xl border border-surface-700 overflow-hidden transition-all duration-200"
+        :class="{ 'border-gold-500/30': openIndex === i }"
       >
         <button
           @click="toggle(i)"
-          class="w-full flex items-center justify-between p-4 sm:p-5 text-left transition-colors hover:bg-slate-800/50"
+          class="w-full flex items-center justify-between p-4 sm:p-5 text-left transition-colors hover:bg-surface-800/60"
           :aria-expanded="openIndex === i"
           :aria-controls="`faq-answer-${i}`"
         >
-          <span class="text-sm sm:text-base font-medium text-white pr-4">{{ faq.q }}</span>
+          <span class="text-sm sm:text-base font-medium text-surface-50 pr-4">{{ faq.q }}</span>
           <svg
-            class="w-4 h-4 shrink-0 text-slate-500 transition-transform duration-200"
+            class="w-4 h-4 shrink-0 text-surface-500 transition-transform duration-200"
             :class="{ 'rotate-180': openIndex === i }"
             fill="none"
             stroke="currentColor"
@@ -60,16 +60,16 @@ function toggle(i) {
           leave-to-class="max-h-0 opacity-0"
         >
           <div v-if="openIndex === i" :id="`faq-answer-${i}`" class="overflow-hidden" role="region">
-            <p class="px-4 sm:px-5 pb-4 sm:pb-5 text-sm text-slate-400 leading-relaxed border-t border-slate-800 pt-4">{{ faq.a }}</p>
+            <p class="px-4 sm:px-5 pb-4 sm:pb-5 text-sm text-surface-400 leading-relaxed border-t border-surface-700 pt-4">{{ faq.a }}</p>
           </div>
         </transition>
       </div>
     </div>
 
-    <div class="mt-10 text-center bg-slate-900 rounded-xl border border-slate-800 p-6 sm:p-8">
-      <h2 class="text-lg font-semibold text-white mb-2">Still have questions?</h2>
-      <p class="text-sm text-slate-400 mb-4">Our team is ready to help with any inquiries.</p>
-      <router-link to="/contact" class="inline-block bg-cyan-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-cyan-500 transition-colors">
+    <div class="mt-10 text-center bg-surface-900 rounded-xl border border-surface-700 p-6 sm:p-8">
+      <h2 class="text-lg font-semibold font-display text-surface-50 mb-2">Still have questions?</h2>
+      <p class="text-sm text-surface-400 mb-4">Our team is ready to help with any inquiries.</p>
+      <router-link to="/contact" class="inline-block bg-gold-500 text-surface-50 px-6 py-2.5 rounded-lg font-medium hover:bg-gold-400 transition-colors">
         Contact Support
       </router-link>
     </div>

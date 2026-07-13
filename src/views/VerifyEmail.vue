@@ -73,17 +73,17 @@ async function resend() {
       <Breadcrumbs :crumbs="[{ label: 'Verify Email' }]" />
     </div>
     <div class="flex items-center justify-center min-h-[60vh]">
-      <div class="bg-slate-900 p-8 rounded-2xl border border-slate-700 w-full max-w-md">
-        <h1 class="text-2xl font-bold text-center mb-2">Verify Your Email</h1>
-        <p class="text-slate-400 text-sm text-center mb-6">
-          Enter the verification code sent to <strong class="text-slate-200">{{ email }}</strong>
+      <div class="bg-surface-900 p-8 rounded-2xl border border-surface-700 w-full max-w-md">
+        <h1 class="text-2xl font-bold font-display text-center mb-2">Verify Your Email</h1>
+        <p class="text-surface-400 text-sm text-center mb-6">
+          Enter the verification code sent to <strong class="text-surface-100">{{ email }}</strong>
         </p>
 
         <template v-if="sessionExpired">
           <div class="mb-4 p-4 rounded-lg bg-amber-950/30 border border-amber-700/50 text-amber-300 text-sm">
             Your verification session has expired. Please register again to receive a new code.
           </div>
-          <router-link to="/register" class="block w-full text-center bg-cyan-600 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all">
+          <router-link to="/register" class="block w-full text-center bg-gold-500 py-3 rounded-lg font-semibold hover:bg-gold-400 active:scale-95 transition-all">
             Register Again
           </router-link>
         </template>
@@ -100,12 +100,12 @@ async function resend() {
                 inputmode="numeric"
                 placeholder="Enter verification code"
                 maxlength="8"
-                class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-center text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+                class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-center text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-transparent"
                 autocomplete="one-time-code"
               >
             </div>
 
-            <button type="submit" :disabled="pending" class="w-full bg-cyan-600 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-cyan-400 disabled:opacity-50">
+            <button type="submit" :disabled="pending" class="w-full bg-gold-500 py-3 rounded-lg font-semibold hover:bg-gold-400 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-gold-500 disabled:opacity-50">
               {{ pending ? 'Verifying...' : 'Verify Email' }}
             </button>
           </form>
@@ -114,14 +114,14 @@ async function resend() {
             <button
               @click="resend"
               :disabled="resending"
-              class="text-sm text-cyan-400 hover:underline disabled:opacity-50 disabled:no-underline"
+              class="text-sm text-gold-500 hover:underline disabled:opacity-50 disabled:no-underline"
             >
               {{ resending ? 'Sending...' : 'Resend verification code' }}
             </button>
           </div>
 
           <p class="text-center text-sm mt-4">
-            <router-link to="/login" class="text-cyan-400 hover:underline">Back to Login</router-link>
+            <router-link to="/login" class="text-gold-500 hover:underline">Back to Login</router-link>
           </p>
         </template>
       </div>

@@ -32,16 +32,16 @@ async function requestReset() {
       <Breadcrumbs :crumbs="[{ label: 'Forgot Password' }]" />
     </div>
     <div class="flex items-center justify-center min-h-[60vh]">
-      <div class="bg-slate-900 p-8 rounded-2xl border border-slate-700 w-full max-w-md">
-        <h1 class="text-2xl font-bold text-center mb-2">Forgot Password</h1>
-      <p class="text-slate-400 text-sm text-center mb-6">Enter your email and we'll send you a reset link.</p>
+      <div class="bg-surface-900 p-8 rounded-2xl border border-surface-700 w-full max-w-md">
+        <h1 class="text-2xl font-bold font-display text-center mb-2">Forgot Password</h1>
+      <p class="text-surface-400 text-sm text-center mb-6">Enter your email and we'll send you a reset link.</p>
 
       <template v-if="sent">
         <div class="p-4 rounded-lg bg-emerald-950/30 border border-emerald-700/50 text-emerald-300 text-sm text-center">
           If that email is registered, a reset link has been sent.
         </div>
         <div class="text-center mt-4">
-          <router-link to="/login" class="text-cyan-400 hover:underline text-sm">Back to sign in</router-link>
+          <router-link to="/login" class="text-gold-500 hover:underline text-sm">Back to sign in</router-link>
         </div>
       </template>
 
@@ -53,7 +53,7 @@ async function requestReset() {
             v-model="email"
             type="email"
             placeholder="Email address"
-            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+            class="w-full bg-surface-800 border border-surface-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-transparent"
             :class="{ 'border-pink-500': errors.email }"
             aria-required="true"
             autocomplete="email"
@@ -61,12 +61,12 @@ async function requestReset() {
           <p v-if="errors.email" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
         </div>
 
-        <button type="submit" :disabled="pending" class="w-full bg-cyan-600 py-3 rounded-md font-semibold hover:bg-cyan-500 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-cyan-400 disabled:opacity-50">
+        <button type="submit" :disabled="pending" class="w-full bg-gold-500 py-3 rounded-lg font-semibold hover:bg-gold-400 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-gold-500 disabled:opacity-50">
           {{ pending ? 'Sending...' : 'Send Reset Link' }}
         </button>
 
         <div class="text-center mt-4">
-          <router-link to="/login" class="text-cyan-400 hover:underline text-sm">Back to sign in</router-link>
+          <router-link to="/login" class="text-gold-500 hover:underline text-sm">Back to sign in</router-link>
         </div>
       </form>
     </div>

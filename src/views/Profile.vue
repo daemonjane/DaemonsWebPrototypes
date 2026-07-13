@@ -61,10 +61,10 @@ function cancel() {
 <template>
   <div class="max-w-2xl mx-auto">
     <Breadcrumbs :crumbs="[{ label: 'Profile' }]" />
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 sm:p-8">
+    <div class="bg-surface-900 border border-surface-700 rounded-xl p-6 sm:p-8">
       <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-white">My Profile</h1>
-        <button v-if="!editing" @click="editing = true" class="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+        <h1 class="text-2xl font-bold font-display text-surface-50">My Profile</h1>
+        <button v-if="!editing" @click="editing = true" class="text-sm text-gold-500 hover:text-gold-400 flex items-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           Edit
         </button>
@@ -74,28 +74,28 @@ function cancel() {
       <p v-if="errors.save" class="mb-4 p-3 rounded-lg bg-pink-950/30 border border-pink-700/50 text-pink-300 text-sm" role="alert">{{ errors.save }}</p>
 
       <div v-if="!editing" class="space-y-4">
-        <div class="pb-4 border-b border-slate-800">
-          <p class="text-xs text-slate-500 uppercase tracking-wider">Username</p>
-          <p class="text-slate-200 mt-1">{{ user?.username }}</p>
+        <div class="pb-4 border-b border-surface-700">
+          <p class="text-xs text-surface-500 uppercase tracking-wider">Username</p>
+          <p class="text-surface-100 mt-1">{{ user?.username }}</p>
         </div>
-        <div class="pb-4 border-b border-slate-800">
-          <p class="text-xs text-slate-500 uppercase tracking-wider">Email</p>
-          <p class="text-slate-200 mt-1">{{ user?.email }}</p>
+        <div class="pb-4 border-b border-surface-700">
+          <p class="text-xs text-surface-500 uppercase tracking-wider">Email</p>
+          <p class="text-surface-100 mt-1">{{ user?.email }}</p>
         </div>
-        <div class="pb-4 border-b border-slate-800">
-          <p class="text-xs text-slate-500 uppercase tracking-wider">Bio</p>
-          <p class="text-slate-200 mt-1">{{ user?.profile?.bio || '—' }}</p>
+        <div class="pb-4 border-b border-surface-700">
+          <p class="text-xs text-surface-500 uppercase tracking-wider">Bio</p>
+          <p class="text-surface-100 mt-1">{{ user?.profile?.bio || '—' }}</p>
         </div>
-        <div class="pb-4 border-b border-slate-800">
-          <p class="text-xs text-slate-500 uppercase tracking-wider">Location</p>
-          <p class="text-slate-200 mt-1">{{ user?.profile?.location || '—' }}</p>
+        <div class="pb-4 border-b border-surface-700">
+          <p class="text-xs text-surface-500 uppercase tracking-wider">Location</p>
+          <p class="text-surface-100 mt-1">{{ user?.profile?.location || '—' }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-500 uppercase tracking-wider">Phone</p>
-          <p class="text-slate-200 mt-1">{{ user?.profile?.phone || '—' }}</p>
+          <p class="text-xs text-surface-500 uppercase tracking-wider">Phone</p>
+          <p class="text-surface-100 mt-1">{{ user?.profile?.phone || '—' }}</p>
         </div>
-        <div v-if="user?.is_staff || user?.is_superuser" class="pt-4 border-t border-slate-800">
-          <router-link to="/dashboard/" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-semibold py-2 px-4 rounded-lg transition-colors">
+        <div v-if="user?.is_staff || user?.is_superuser" class="pt-4 border-t border-surface-700">
+          <router-link to="/dashboard/" class="inline-flex items-center gap-2 bg-surface-800 hover:bg-surface-600 border border-surface-700 text-surface-200 text-sm font-semibold py-2 px-4 rounded-lg transition-colors">
             Dashboard
           </router-link>
         </div>
@@ -103,30 +103,30 @@ function cancel() {
 
       <form v-else @submit.prevent="save" class="space-y-4">
         <div>
-          <label class="block text-sm text-slate-400 mb-1">Username</label>
-          <input v-model="form.username" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400">
+          <label class="block text-sm text-surface-400 mb-1">Username</label>
+          <input v-model="form.username" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50">
         </div>
         <div>
-          <label class="block text-sm text-slate-400 mb-1">Email</label>
-          <input v-model="form.email" type="email" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400">
+          <label class="block text-sm text-surface-400 mb-1">Email</label>
+          <input v-model="form.email" type="email" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50">
         </div>
         <div>
-          <label class="block text-sm text-slate-400 mb-1">Bio</label>
-          <textarea v-model="form.bio" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"></textarea>
+          <label class="block text-sm text-surface-400 mb-1">Bio</label>
+          <textarea v-model="form.bio" rows="3" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50"></textarea>
         </div>
         <div>
-          <label class="block text-sm text-slate-400 mb-1">Location</label>
-          <input v-model="form.location" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400">
+          <label class="block text-sm text-surface-400 mb-1">Location</label>
+          <input v-model="form.location" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50">
         </div>
         <div>
-          <label class="block text-sm text-slate-400 mb-1">Phone</label>
-          <input v-model="form.phone" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400">
+          <label class="block text-sm text-surface-400 mb-1">Phone</label>
+          <input v-model="form.phone" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50">
         </div>
         <div class="flex gap-3 pt-2">
-          <button type="submit" :disabled="pending" class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors disabled:opacity-50">
+          <button type="submit" :disabled="pending" class="bg-gold-500 hover:bg-gold-400 text-surface-50 font-semibold py-2 px-6 rounded-lg transition-colors disabled:opacity-50">
             {{ pending ? 'Saving...' : 'Save' }}
           </button>
-          <button type="button" @click="cancel" class="bg-slate-800 hover:bg-slate-700 text-slate-300 py-2 px-6 rounded-lg transition-colors">Cancel</button>
+          <button type="button" @click="cancel" class="bg-surface-800 hover:bg-surface-600 text-surface-200 py-2 px-6 rounded-lg transition-colors">Cancel</button>
         </div>
       </form>
     </div>
