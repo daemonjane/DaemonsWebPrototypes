@@ -196,54 +196,6 @@ class ContactMessage(models.Model):
         return f"{self.name} - {self.email}"
 
 
-class Cart(models.Model):
-    """A user's shopping cart (one per user)."""
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cart", verbose_name="user")
-    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the cart was created")
-    updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when the cart was last modified")
-
-    class Meta:
-        verbose_name = "Cart"
-        verbose_name_plural = "Carts"
-
-    def __str__(self):
-        return f"Cart of {self.user.username}"
-
-
-class CartItem(models.Model):
-    """An individual item within a shopping cart."""
-
-    class ItemType(models.TextChoices):
-        PRODUCT = "product", "Product"
-        UPGRADE = "upgrade", "Upgrade"
-        MEMBERSHIP = "membership", "Membership"
-        ADDON = "addon", "Add-on"
-
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items", verbose_name="cart")
-    product = models.ForeignKey(
-        Product, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="product",
-        help_text="The product (null for custom items like upgrades)",
-    )
-    name = models.CharField("name", max_length=200, help_text="Item display name")
-    price = models.DecimalField("price", max_digits=8, decimal_places=2, help_text="Unit price at time of adding")
-    quantity = models.PositiveIntegerField("quantity", default=1, help_text="Number of units")
-    image = models.CharField("image URL", max_length=500, blank=True, help_text="Image URL (auto-populated for products)")
-    item_type = models.CharField(
-        "item type", max_length=20, choices=ItemType.choices, default=ItemType.PRODUCT,
-        help_text="Product, upgrade, or membership",
-    )
-    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the item was added")
-
-    class Meta:
-        ordering = ["created_at"]
-        verbose_name = "Cart Item"
-        verbose_name_plural = "Cart Items"
-
-    def __str__(self):
-        return f"{self.name} x{self.quantity}"
-
-
 class Wishlist(models.Model):
     """A user's wishlist of favorite product slugs."""
 
