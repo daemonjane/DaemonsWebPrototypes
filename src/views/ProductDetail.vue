@@ -36,14 +36,8 @@ async function subscribeBIS() {
   bisMsg.value = ''
   try {
     const { api } = await import('../utils/api')
-    const res = await fetch('/api/back-in-stock/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ product_slug: productId, email: bisEmail.value, product_name: product.name }),
-    })
-    const data = await res.json()
-    if (!res.ok) throw new Error(data.error || 'Request failed')
-    bisMsg.value = data.message
+    const data = await api.backInStock.subscribe({ product_slug: productId, email: bisEmail.value, product_name: product.name })
+    bisMsg.value = data?.message || 'Subscribed!'
     bisMsgClass.value = 'text-emerald-400'
     bisSubscribed.value = true
   } catch (e) {
