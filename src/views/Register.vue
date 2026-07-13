@@ -1,31 +1,30 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUser } from '../composables/useUser'
+import { signup } from '../services/login'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const router = useRouter()
-const { refresh } = useUser()
 const firstName = ref('')
 const lastName = ref('')
-const username = ref('')
 const email = ref('')
 const password = ref('')
+const phone = ref('')
 const errors = reactive({})
 const pending = ref(false)
 
 async function register() {
   Object.keys(errors).forEach(key => delete errors[key])
-  if (!username.value || !email.value || !password.value) {
-    if (!username.value) errors.username = 'Username is required.'
+  if (!firstName.value || !email.value || !password.value) {
+    if (!firstName.value) errors.firstName = 'First name is required.'
     if (!email.value) errors.email = 'Email is required.'
     if (!password.value) errors.password = 'Password is required.'
     return
   }
   pending.value = true
   try {
-    const { api } = await import('../utils/api')
-    await api.register(username.value, email.value, password.value, firstName.value, lastName.value)
+    const name = `${firstName.value} ${lastName.value}`.trim()
+    await signup({ name, email: email.value, password: password.value, phone: phone.value })
     router.push(`/verify-email?email=${encodeURIComponent(email.value)}`)
   } catch (e) {
     errors.form = e.message || 'Registration failed'
@@ -54,8 +53,11 @@ async function register() {
               type="text"
               placeholder="First name"
               class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+              :class="{ 'border-pink-500': errors.firstName }"
+              aria-required="true"
               autocomplete="given-name"
             >
+            <p v-if="errors.firstName" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.firstName }}</p>
           </div>
           <div class="flex-1">
             <input
@@ -70,19 +72,6 @@ async function register() {
 
         <div class="mb-4">
           <input
-            v-model="username"
-            type="text"
-            placeholder="Username"
-            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
-            :class="{ 'border-pink-500': errors.username }"
-            aria-required="true"
-            autocomplete="username"
-          >
-          <p v-if="errors.username" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.username }}</p>
-        </div>
-
-        <div class="mb-4">
-          <input
             v-model="email"
             type="email"
             placeholder="Email"
@@ -92,6 +81,16 @@ async function register() {
             autocomplete="email"
           >
           <p v-if="errors.email" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
+        </div>
+
+        <div class="mb-4">
+          <input
+            v-model="phone"
+            type="tel"
+            placeholder="Phone (optional)"
+            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+            autocomplete="tel"
+          >
         </div>
 
         <div class="mb-4">
