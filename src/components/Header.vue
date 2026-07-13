@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useOsimartCart } from '../composables/useOsimartCart'
 import { useFavorites } from '../composables/useFavorites'
@@ -16,11 +16,14 @@ const { init: initFavs } = useFavorites()
 const { isDark, toggle: toggleTheme } = useTheme()
 const { user, isAuthenticated, isStaff, refresh, logout } = useUser()
 
+const scrolled = ref(false)
+
 onMounted(async () => {
   await refresh()
   if (user.value) {
     await Promise.allSettled([initCart(), initFavs()])
   }
+  window.addEventListener('scroll', () => { scrolled.value = window.scrollY > 10 }, { passive: true })
 })
 
 async function handleLogout() {
@@ -90,7 +93,8 @@ function closeSearch() {
 <template>
   <header
     id="main-header"
-    class="sticky top-0 z-40 bg-surface-900/80 border-b border-surface-750"
+    class="sticky top-0 z-40 transition-all duration-300"
+    :class="scrolled ? 'bg-surface-900/95 border-b border-surface-750 shadow-lg shadow-surface-950/30' : 'bg-surface-900/80 border-b border-surface-750/50'"
     role="banner"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -134,15 +138,15 @@ function closeSearch() {
         </nav>
 
         <!-- Search + Auth + Cart + Mobile -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5">
 
           <!-- Search -->
           <div class="hidden sm:relative sm:block" role="search">
             <input
               v-model="searchQuery"
               type="text"
-              placeholder="Search products..."
-              class="w-44 lg:w-64 bg-surface-800 border border-surface-700 rounded-lg px-3 py-1.5 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 transition-all"
+              placeholder="Search..."
+              class="w-36 lg:w-52 bg-surface-800/80 border border-surface-700/80 rounded-xl px-3 py-1.5 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500/40 focus:border-gold-500/40 focus:w-64 lg:focus:w-80 transition-all duration-300"
               @focus="searchFocused = true"
               @blur="closeSearch"
               @keydown.enter="searchQuery.trim() && (router.push('/shop?q=' + encodeURIComponent(searchQuery.trim())), searchQuery = '', searchFocused = false)"
@@ -150,30 +154,39 @@ function closeSearch() {
               autocomplete="off"
             >
             <!-- Search Results Dropdown -->
-            <div
-              v-if="searchFocused && searchResults.total > 0"
-              class="absolute top-full mt-2 left-0 right-0 bg-surface-800 border border-surface-700 rounded-xl shadow-elevated overflow-y-auto max-h-96 z-50"
+            <transition
+              enter-active-class="transition-all duration-200 ease-out"
+              leave-active-class="transition-all duration-150 ease-in"
+              enter-from-class="opacity-0 scale-95 translate-y-1"
+              enter-to-class="opacity-100 scale-100 translate-y-0"
+              leave-from-class="opacity-100 scale-100 translate-y-0"
+              leave-to-class="opacity-0 scale-95 translate-y-1"
             >
-              <div v-for="(items, category) in searchResults.grouped" :key="category">
-                <p class="px-4 pt-3 pb-1 text-[10px] font-bold text-surface-500 uppercase tracking-widest">{{ category }}</p>
-                <router-link
-                  v-for="result in items"
-                  :key="result.id"
-                  :to="`/product/${result.id}`"
-                  class="flex items-center gap-3 px-4 py-2.5 hover:bg-surface-750 transition-colors text-sm"
-                  @click="searchQuery = ''; searchFocused = false"
-                >
-                  <div class="w-10 h-10 rounded-lg shrink-0 overflow-hidden bg-surface-700">
-                    <OptimizedImage :src="result.image" :alt="result.name" wrapperClass="h-full w-full rounded-lg" />
-                  </div>
-                  <div class="min-w-0">
-                    <p class="text-surface-100 truncate font-medium">{{ result.name }}</p>
-                    <p class="text-gold-500 text-xs font-mono">${{ Number(result.price || 0).toFixed(2) }}</p>
-                  </div>
-                </router-link>
+              <div
+                v-if="searchFocused && searchResults.total > 0"
+                class="absolute top-full mt-2 left-0 right-0 bg-surface-800 border border-surface-700 rounded-xl shadow-elevated overflow-y-auto max-h-80 z-50"
+              >
+                <div v-for="(items, category) in searchResults.grouped" :key="category">
+                  <p class="px-4 pt-3 pb-1 text-[10px] font-bold text-surface-500 uppercase tracking-widest">{{ category }}</p>
+                  <router-link
+                    v-for="result in items"
+                    :key="result.id"
+                    :to="`/product/${result.id}`"
+                    class="flex items-center gap-3 px-4 py-2.5 hover:bg-surface-750 transition-colors text-sm"
+                    @click="searchQuery = ''; searchFocused = false"
+                  >
+                    <div class="w-9 h-9 rounded-lg shrink-0 overflow-hidden bg-surface-700">
+                      <OptimizedImage :src="result.image" :alt="result.name" wrapperClass="h-full w-full rounded-lg" />
+                    </div>
+                    <div class="min-w-0">
+                      <p class="text-surface-100 truncate font-medium text-sm">{{ result.name }}</p>
+                      <p class="text-gold-500 text-xs font-mono">${{ Number(result.price || 0).toFixed(2) }}</p>
+                    </div>
+                  </router-link>
+                </div>
+                <p class="px-4 py-2.5 text-[11px] text-surface-500 border-t border-surface-700/50">{{ searchResults.total }} result{{ searchResults.total !== 1 ? 's' : '' }} — press Enter to view all</p>
               </div>
-              <p class="px-4 py-2.5 text-xs text-surface-500 border-t border-surface-700">{{ searchResults.total }} result{{ searchResults.total !== 1 ? 's' : '' }} — press Enter to view all</p>
-            </div>
+            </transition>
           </div>
 
           <!-- Profile / Auth -->
@@ -203,19 +216,19 @@ function closeSearch() {
           <template v-if="!isAuthenticated()">
             <router-link
               to="/guest-login"
-              class="hidden md:inline-flex text-sm font-medium text-surface-500 hover:text-surface-200 transition-colors"
+              class="hidden md:inline-flex text-sm font-medium text-surface-500 hover:text-surface-200 transition-colors px-2 py-1.5"
             >
               Guest
             </router-link>
             <router-link
               to="/login"
-              class="hidden md:inline-flex text-sm font-semibold text-gold-500 hover:text-gold-400 bg-gold-500/10 px-3 py-1.5 rounded-lg transition-colors"
+              class="hidden md:inline-flex text-sm font-semibold text-surface-950 bg-gold-500 hover:bg-gold-400 px-3.5 py-1.5 rounded-lg transition-all shadow-glow-gold"
             >
               Sign In
             </router-link>
             <router-link
               to="/staff-login"
-              class="hidden md:inline-flex text-sm font-medium text-surface-500 hover:text-surface-200 transition-colors"
+              class="hidden md:inline-flex text-sm font-medium text-surface-500 hover:text-surface-200 transition-colors px-2 py-1.5"
             >
               Staff
             </router-link>
@@ -277,19 +290,19 @@ function closeSearch() {
       enter-active-class="transition-all duration-200 ease-out"
       leave-active-class="transition-all duration-150 ease-in"
       enter-from-class="opacity-0 max-h-0"
-      enter-to-class="opacity-100 max-h-96"
-      leave-from-class="opacity-100 max-h-96"
+      enter-to-class="opacity-100 max-h-[40rem]"
+      leave-from-class="opacity-100 max-h-[40rem]"
       leave-to-class="opacity-0 max-h-0"
     >
-      <nav v-if="mobileMenuOpen" class="md:hidden border-t border-surface-750 bg-surface-900 overflow-hidden" aria-label="Mobile navigation">
-        <div class="px-4 py-3 space-y-1">
+      <nav v-if="mobileMenuOpen" class="md:hidden border-t border-surface-750/50 bg-surface-900/95 backdrop-blur-xl overflow-hidden" aria-label="Mobile navigation">
+        <div class="px-4 py-4 space-y-1">
           <!-- Mobile search -->
-          <div class="sm:hidden mb-2">
+          <div class="sm:hidden mb-3">
             <input
               v-model="searchQuery"
               type="text"
               placeholder="Search products..."
-              class="w-full bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500/50"
+              class="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500/40"
               @keydown.enter="searchQuery.trim() && (router.push('/shop?q=' + encodeURIComponent(searchQuery.trim())), searchQuery = '', mobileMenuOpen = false)"
               aria-label="Search products"
               autocomplete="off"
@@ -300,7 +313,7 @@ function closeSearch() {
             :key="link.path"
             :to="link.path"
             :class="[
-              'block px-3 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-gold-500',
+              'block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-gold-500',
               route.path === link.path
                 ? 'text-gold-500 bg-gold-500/10'
                 : 'text-surface-400 hover:text-surface-50 hover:bg-surface-800'
@@ -309,11 +322,11 @@ function closeSearch() {
           >
             {{ link.label }}
           </router-link>
-          <hr class="border-surface-750 my-2">
+          <hr class="border-surface-750/50 my-2">
           <router-link
             v-if="isAuthenticated()"
             to="/dashboard"
-            class="block px-3 py-2 rounded-lg text-sm font-medium text-surface-400 hover:text-surface-50 hover:bg-surface-800 transition-colors"
+            class="block px-3 py-2.5 rounded-xl text-sm font-medium text-surface-400 hover:text-surface-50 hover:bg-surface-800 transition-colors"
             @click="mobileMenuOpen = false"
           >
             Dashboard
@@ -321,21 +334,21 @@ function closeSearch() {
           <template v-if="isAuthenticated()">
             <router-link
               to="/profile"
-              class="block px-3 py-2 rounded-lg text-sm font-medium text-surface-400 hover:text-surface-50 hover:bg-surface-800 transition-colors"
+              class="block px-3 py-2.5 rounded-xl text-sm font-medium text-surface-400 hover:text-surface-50 hover:bg-surface-800 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Profile
             </router-link>
             <router-link
               to="/orders"
-              class="block px-3 py-2 rounded-lg text-sm font-medium text-surface-400 hover:text-surface-50 hover:bg-surface-800 transition-colors"
+              class="block px-3 py-2.5 rounded-xl text-sm font-medium text-surface-400 hover:text-surface-50 hover:bg-surface-800 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Orders
             </router-link>
             <button
               @click="handleLogout; mobileMenuOpen = false"
-              class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-danger-400 hover:text-danger-300 hover:bg-danger-500/10 transition-colors cursor-pointer"
+              class="block w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-danger-400 hover:text-danger-300 hover:bg-danger-500/10 transition-colors cursor-pointer"
               aria-label="Logout"
             >
               Logout
@@ -344,21 +357,21 @@ function closeSearch() {
           <template v-if="!isAuthenticated()">
             <router-link
               to="/guest-login"
-              class="block px-3 py-2 rounded-lg text-sm font-medium text-surface-400 hover:text-surface-50 hover:bg-surface-800 transition-colors"
+              class="block px-3 py-2.5 rounded-xl text-sm font-medium text-surface-400 hover:text-surface-50 hover:bg-surface-800 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Guest
             </router-link>
             <router-link
               to="/login"
-              class="block px-3 py-2 rounded-lg text-sm font-semibold text-gold-500 hover:text-gold-400 transition-colors"
+              class="block px-3 py-2.5 rounded-xl text-sm font-semibold text-gold-500 hover:text-gold-400 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Sign In
             </router-link>
             <router-link
               to="/staff-login"
-              class="block px-3 py-2 rounded-lg text-sm font-medium text-surface-500 hover:text-surface-200 transition-colors"
+              class="block px-3 py-2.5 rounded-xl text-sm font-medium text-surface-500 hover:text-surface-200 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Staff Login
