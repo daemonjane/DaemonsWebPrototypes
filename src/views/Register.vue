@@ -24,11 +24,9 @@ async function register() {
   }
   pending.value = true
   try {
-    const { api, ensureCSRF } = await import('../utils/api')
+    const { api } = await import('../utils/api')
     await api.register(username.value, email.value, password.value, firstName.value, lastName.value)
-    await ensureCSRF()
-    await refresh()
-    router.push('/')
+    router.push(`/verify-email?email=${encodeURIComponent(email.value)}`)
   } catch (e) {
     errors.form = e.message || 'Registration failed'
   } finally {

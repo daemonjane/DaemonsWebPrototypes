@@ -18,9 +18,8 @@ async function guestLogin() {
   }
   pending.value = true
   try {
-    const { api, ensureCSRF } = await import('../utils/api')
+    const { api } = await import('../utils/api')
     await api.guestLogin(email.value, firstName.value, lastName.value)
-    await ensureCSRF()
     router.push('/checkout')
   } catch (e) {
     errors.form = e.message || 'Guest login failed'
