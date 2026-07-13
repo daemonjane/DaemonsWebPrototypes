@@ -4,12 +4,10 @@ import { useRouter } from "vue-router"
 import { login, signup, saveAuthSession, verifyEmail, resendVerificationCode } from "../services/login.js"
 import { useOsimartCart } from "../composables/useOsimartCart"
 import { useWishlistStore } from "../composables/useWishlistStore"
-import { useUser } from "../composables/useUser"
 
 const router = useRouter()
 const { setUser: setUserForCart } = useOsimartCart()
 const wishlistStore = useWishlistStore()
-const { setAuth } = useUser()
 
 const mode = ref("login") // "login" | "signup" | "verify"
 const name = ref("")
@@ -21,16 +19,6 @@ const error = ref("")
 const successMessage = ref("")
 const loading = ref(false)
 const resending = ref(false)
-
-async function osimartSync(cleanEmail, osimartCustomerId = '') {
-  try {
-    const { api } = await import('../utils/api')
-    const userData = await api.osimartSync(cleanEmail, osimartCustomerId, name.value)
-    setAuth(userData)
-  } catch {
-    // Django sync is best-effort for local user creation
-  }
-}
 
 function switchMode(next) {
   mode.value = next
@@ -52,7 +40,6 @@ async function handleSubmit() {
     if (mode.value === "login") {
       const data = await login({ email: cleanEmail, password: cleanPassword })
       saveAuthSession(data)
-      await osimartSync(cleanEmail, data?.customer?.id || data?.id || '')
       setUserForCart(cleanEmail)
       wishlistStore.setUser(cleanEmail)
       window.dispatchEvent(new Event("storage"))
@@ -95,16 +82,15 @@ async function handleVerify() {
   const cleanEmail = email.value.trim()
 
   try {
-    await verifyEmail({ email: cleanEmail, code: verificationCode.value.trim() })
+      await verifyEmail({ email: cleanEmail, code: verificationCode.value.trim() })
 
-    const data = await login({ email: cleanEmail, password: password.value })
+      const data = await login({ email: cleanEmail, password: password.value })
 
-    saveAuthSession(data)
-    await osimartSync(cleanEmail, data?.customer?.id || data?.id || '')
-    setUserForCart(cleanEmail)
-    wishlistStore.setUser(cleanEmail)
-    window.dispatchEvent(new Event("storage"))
-    router.push("/")
+      saveAuthSession(data)
+      setUserForCart(cleanEmail)
+      wishlistStore.setUser(cleanEmail)
+      window.dispatchEvent(new Event("storage"))
+      router.push("/")
   } catch (err) {
     console.error("[Login.vue] verification workflow failed:", err)
     error.value = err.message || "Verification code is incorrect or expired."
