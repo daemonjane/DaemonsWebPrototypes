@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
 from services.osimart import OsimartClient, OsimartError
+from website.models import UserProfile
 
 User = get_user_model()
 
@@ -53,14 +54,24 @@ class Command(BaseCommand):
             except OsimartError:
                 pass
 
+            safe_last = last_name or first_name.split()[-1] if first_name.split() else "_"
+            safe_first = first_name or email.split("@")[0]
+
             try:
-                client.create_customer({
+                resp = client.create_customer({
                     "email": email,
-                    "first_name": first_name,
-                    "last_name": last_name,
+                    "first_name": safe_first,
+                    "last_name": safe_last,
                     "is_guest": True,
                     "mobile_number": "0000000000",
                 })
+
+                if user.email:
+                    profile, _ = UserProfile.objects.get_or_create(user=user)
+                    customer_id = resp.get("id") if isinstance(resp, dict) else None
+                    if customer_id:
+                        profile.osimart_customer_id = str(customer_id)
+                        profile.save(update_fields=["osimart_customer_id"])
                 self.stdout.write(f"  OK   {email}")
                 created += 1
             except OsimartError as e:
