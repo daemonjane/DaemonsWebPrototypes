@@ -1,10 +1,10 @@
 import { computed } from 'vue'
-import { useCart } from './useCart'
+import { useOsimartCart } from './useOsimartCart'
 
 const FREE_SHIPPING_THRESHOLD = 150
 
 export function useFreeShipping() {
-  const { totalPrice } = useCart()
+  const { totalPrice } = useOsimartCart()
 
   const remaining = computed(() => Math.max(0, FREE_SHIPPING_THRESHOLD - totalPrice.value))
   const progress = computed(() => Math.min(100, (totalPrice.value / FREE_SHIPPING_THRESHOLD) * 100))
