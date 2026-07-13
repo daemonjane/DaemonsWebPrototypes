@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive } from 'vue'
+import { sendPasswordResetCode } from '../services/login'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const email = ref('')
@@ -15,8 +16,7 @@ async function requestReset() {
   }
   pending.value = true
   try {
-    const { api } = await import('../utils/api')
-    await api.passwordReset.request(email.value)
+    await sendPasswordResetCode({ email: email.value })
     sent.value = true
   } catch (e) {
     errors.form = e.message || 'Request failed'

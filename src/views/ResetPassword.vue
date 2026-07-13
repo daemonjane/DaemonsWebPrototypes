@@ -1,11 +1,13 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { resetPassword } from '../services/login'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const route = useRoute()
 const router = useRouter()
-const { uidb64, token } = route.params
+const email = ref(route.query.email || '')
+const code = ref(route.query.code || '')
 
 const password = ref('')
 const confirmPassword = ref('')
@@ -13,7 +15,7 @@ const errors = reactive({})
 const pending = ref(false)
 const done = ref(false)
 
-async function resetPassword() {
+async function handleReset() {
   Object.keys(errors).forEach(k => delete errors[k])
   if (!password.value) {
     errors.password = 'Password is required.'
@@ -29,8 +31,7 @@ async function resetPassword() {
   }
   pending.value = true
   try {
-    const { api } = await import('../utils/api')
-    await api.passwordReset.confirm(uidb64, token, password.value)
+    await resetPassword({ email: email.value, code: code.value, new_password: password.value })
     done.value = true
   } catch (e) {
     errors.form = e.message || 'Reset failed'
@@ -58,8 +59,29 @@ async function resetPassword() {
         </div>
       </template>
 
-      <form v-else @submit.prevent="resetPassword" novalidate>
+      <form v-else @submit.prevent="handleReset" novalidate>
         <p v-if="errors.form" class="mb-4 p-3 rounded-lg bg-pink-950/30 border border-pink-700/50 text-pink-300 text-sm" role="alert">{{ errors.form }}</p>
+
+        <div class="mb-4">
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Email address"
+            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+            aria-required="true"
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="mb-4">
+          <input
+            v-model="code"
+            type="text"
+            placeholder="Reset code from email"
+            class="w-full bg-slate-800 border border-slate-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+            aria-required="true"
+          >
+        </div>
 
         <div class="mb-4">
           <input
