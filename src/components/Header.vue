@@ -101,9 +101,9 @@ function closeSearch() {
         <router-link
           to="/"
           class="font-display text-xl font-bold text-gold-400 tracking-wide shrink-0 hover:text-gold-300 transition-colors"
-          aria-label="Golden Glow Home"
+          aria-label="Vertex Home"
         >
-          Golden Glow
+          VERTEX
         </router-link>
 
         <!-- Desktop Nav -->
