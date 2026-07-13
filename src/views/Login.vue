@@ -103,12 +103,12 @@ async function handleVerify() {
 <template>
   <div class="body-font bg-secondary flex items-center justify-center min-h-screen">
     <div class="w-full max-w-md bg-card shadow-theme-heavy rounded-3xl p-10 border border-theme">
-      <h1 class="heading-font text-4xl font-bold text-center text-[#D4AF37] mb-2">Golden Glow</h1>
+      <h1 class="heading-font text-4xl font-bold text-center text-[#D4AF37] mb-2">VERTEX</h1>
 
       <p class="text-center text-secondary mb-8">
         {{
-          mode === "login" ? "Login to your beauty account" :
-          mode === "signup" ? "Create your beauty account" :
+          mode === "login" ? "Sign in to your account" :
+          mode === "signup" ? "Create your account" :
           "Verify your email address"
         }}
       </p>
@@ -242,7 +242,7 @@ async function handleVerify() {
         </button>
       </form>
 
-      <p class="text-xs text-center text-muted mt-6">By continuing, you join Glow Rewards ✨</p>
+      <p class="text-xs text-center text-muted mt-6">By continuing, you agree to our Terms of Service</p>
     </div>
   </div>
 </template>
