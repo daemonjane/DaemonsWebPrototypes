@@ -8,6 +8,7 @@ const Checkout = () => import(/* webpackChunkName: "checkout" */ '../views/Check
 const Login = () => import(/* webpackChunkName: "auth" */ '../views/Login.vue')
 const GuestLogin = () => import(/* webpackChunkName: "auth" */ '../views/GuestLogin.vue')
 const Register = () => import(/* webpackChunkName: "auth" */ '../views/Register.vue')
+const VerifyEmail = () => import(/* webpackChunkName: "auth" */ '../views/VerifyEmail.vue')
 const Contact = () => import(/* webpackChunkName: "contact" */ '../views/Contact.vue')
 const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 const Insights = () => import(/* webpackChunkName: "insights" */ '../views/Insights.vue')
@@ -42,9 +43,11 @@ const routes = [
   { path: '/checkout', component: Checkout },
   { path: '/guest-login', component: GuestLogin },
   { path: '/login', component: Login, meta: { guestOnly: true } },
+  { path: '/staff-login', component: () => import(/* webpackChunkName: "auth" */ '../views/StaffLogin.vue'), meta: { guestOnly: true } },
   { path: '/forgot-password', component: () => import(/* webpackChunkName: "auth" */ '../views/ForgotPassword.vue') },
   { path: '/reset-password/:uidb64/:token/', component: () => import(/* webpackChunkName: "auth" */ '../views/ResetPassword.vue') },
   { path: '/register', component: Register },
+  { path: '/verify-email', component: VerifyEmail },
   { path: '/contact', component: Contact },
   { path: '/about', component: About },
   { path: '/insights', component: Insights },
@@ -73,7 +76,10 @@ router.beforeEach(async (to) => {
     const { user, refresh } = useUser()
     if (!user.value) await refresh()
     if (to.meta?.requiresAuth) {
-      if (!user.value) return '/login'
+      if (!user.value) {
+        if (to.meta?.requiresStaff) return '/staff-login'
+        return '/login'
+      }
       if (to.meta?.requiresStaff && !user.value?.is_staff) return '/'
     }
     if (to.meta?.guestOnly && user.value) return '/'
