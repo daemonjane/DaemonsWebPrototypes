@@ -2,39 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import BackInStockRequest, Cart, CartItem, Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
-
-
-class CartItemSerializer(serializers.ModelSerializer):
-    product_slug = serializers.SlugField(source="product.slug", read_only=True, allow_null=True)
-    product_image = serializers.SerializerMethodField()
-
-    class Meta:
-        model = CartItem
-        fields = ["id", "product_slug", "product_image", "name", "price", "quantity", "image", "item_type", "created_at"]
-
-    def get_product_image(self, obj):
-        if obj.image:
-            return obj.image
-        if obj.product and obj.product.image:
-            return obj.product.image
-        return ""
-
-
-class CartSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True, read_only=True)
-    total_price = serializers.SerializerMethodField()
-    total_items = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Cart
-        fields = ["id", "items", "total_price", "total_items", "created_at", "updated_at"]
-
-    def get_total_price(self, obj):
-        return round(sum(float(item.price) * item.quantity for item in obj.items.all()), 2)
-
-    def get_total_items(self, obj):
-        return sum(item.quantity for item in obj.items.all())
+from .models import BackInStockRequest, Order, OrderItem, OrderTracking, ProductAddon, TrackingHistory, Wishlist
 
 
 class ProductAddonSerializer(serializers.ModelSerializer):
