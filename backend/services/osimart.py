@@ -300,8 +300,8 @@ class OsimartClient:
         sid = store_id or self.store_id
         return self._get(f"stores/{sid}/", params)
 
-    def create_media(self, image_url):
-        return self._post("medias/", {"path": image_url})
+    def create_media(self, data):
+        return self._post("medias/", data)
 
     def delete_media(self, media_id):
         return self._delete(f"medias/{media_id}/")
@@ -388,6 +388,67 @@ class OsimartClient:
 
     def get_announcement_bar(self, ann_id, params=None):
         return self._get(f"announcement-bars/{ann_id}/", params)
+
+    # ------------------------------------------------------------------
+    # Auth (public API - register, verify OTP, resend OTP)
+    # ------------------------------------------------------------------
+    def register_customer(self, email, password, first_name, last_name):
+        """Register a new customer on Osimart via public auth API. Sends an OTP email."""
+        url = f"{self.BASE_URL}/auth/register/"
+        payload = {
+            "register_as": "customer",
+            "email": email,
+            "password": password,
+            "first_name": first_name,
+            "last_name": last_name,
+            "store_id": self.store_id,
+        }
+        resp = requests.post(url, json=payload, timeout=self.timeout)
+        if resp.status_code not in (200, 201):
+            detail = resp.json() if resp.text else {}
+            raise OsimartError(
+                f"Osimart register failed: {resp.status_code} {detail}",
+                status_code=resp.status_code,
+                response_body=resp.text[:500],
+            )
+        return resp.json()
+
+    def verify_otp(self, email, code):
+        """Verify an OTP code for a customer registration."""
+        url = f"{self.BASE_URL}/auth/verify/"
+        payload = {
+            "verify_as": "customer",
+            "email": email,
+            "code": code,
+            "store_id": self.store_id,
+        }
+        resp = requests.post(url, json=payload, timeout=self.timeout)
+        if resp.status_code not in (200, 201):
+            detail = resp.json() if resp.text else {}
+            raise OsimartError(
+                f"Osimart verify failed: {resp.status_code} {detail}",
+                status_code=resp.status_code,
+                response_body=resp.text[:500],
+            )
+        return resp.json()
+
+    def resend_otp(self, email):
+        """Resend the OTP for a pending customer registration."""
+        url = f"{self.BASE_URL}/auth/regen/"
+        payload = {
+            "register_as": "customer",
+            "email": email,
+            "store_id": self.store_id,
+        }
+        resp = requests.post(url, json=payload, timeout=self.timeout)
+        if resp.status_code not in (200, 201):
+            detail = resp.json() if resp.text else {}
+            raise OsimartError(
+                f"Osimart resend OTP failed: {resp.status_code} {detail}",
+                status_code=resp.status_code,
+                response_body=resp.text[:500],
+            )
+        return resp.json()
 
     def get_customers(self, params=None):
         return self._get("customers/", params)
