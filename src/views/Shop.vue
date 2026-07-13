@@ -146,7 +146,7 @@ function countInCategory(catSlug) {
       <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
         <button
           @click="showFilters = !showFilters"
-          class="text-xs text-surface-400 hover:text-gold-500 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-surface-700 hover:border-surface-600"
+          class="text-xs text-surface-400 hover:text-electric-500 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-surface-700 hover:border-surface-600"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
@@ -161,7 +161,7 @@ function countInCategory(catSlug) {
           v-for="[slug, meta] of Object.entries(categoryMeta)"
           :key="slug"
           @click="currentFilter = slug"
-          :class="['px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 border', currentFilter === slug ? 'bg-gold-500 text-surface-950 border-gold-500 shadow-glow-gold' : 'bg-surface-800 text-surface-400 border-surface-700 hover:border-surface-600 hover:text-surface-200']"
+          :class="['px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 border', currentFilter === slug ? 'bg-electric-500 text-surface-950 border-electric-500 shadow-glow-electric' : 'bg-surface-800 text-surface-400 border-surface-700 hover:border-surface-600 hover:text-surface-200']"
         >
           <span>{{ meta.icon }}</span> {{ meta.label }}
           <span class="ml-0.5 text-[10px] opacity-60">({{ countInCategory(slug) }})</span>
@@ -170,8 +170,8 @@ function countInCategory(catSlug) {
 
       <!-- Search + Sort -->
       <div class="flex flex-wrap gap-3 mb-6 items-center justify-between">
-        <input v-model="searchQuery" type="search" placeholder="Search by name..." class="bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 focus:outline-none w-48 sm:w-auto text-surface-200 placeholder-surface-500" aria-label="Search products by name">
-        <select v-model="currentSort" class="bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 focus:outline-none text-surface-200" aria-label="Sort products">
+        <input v-model="searchQuery" type="search" placeholder="Search by name..." class="bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50 focus:outline-none w-48 sm:w-auto text-surface-200 placeholder-surface-500" aria-label="Search products by name">
+        <select v-model="currentSort" class="bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50 focus:outline-none text-surface-200" aria-label="Sort products">
           <option value="default">Sort by</option>
           <option value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>
@@ -195,16 +195,16 @@ function countInCategory(catSlug) {
               <div class="flex items-center gap-3">
                 <span class="text-xs text-surface-400 font-mono w-16">${{ priceMin }}</span>
                 <input type="range" :min="0" :max="maxPrice" step="10" v-model.number="priceMin"
-                  class="flex-1 h-1.5 bg-surface-700 rounded-full appearance-none cursor-pointer accent-gold-500" aria-label="Minimum price" />
+                  class="flex-1 h-1.5 bg-surface-700 rounded-full appearance-none cursor-pointer accent-electric-500" aria-label="Minimum price" />
               </div>
               <div class="flex items-center gap-3 mt-2">
                 <span class="text-xs text-surface-400 font-mono w-16">${{ priceMax }}</span>
                 <input type="range" :min="0" :max="maxPrice" step="10" v-model.number="priceMax"
-                  class="flex-1 h-1.5 bg-surface-700 rounded-full appearance-none cursor-pointer accent-gold-500" aria-label="Maximum price" />
+                  class="flex-1 h-1.5 bg-surface-700 rounded-full appearance-none cursor-pointer accent-electric-500" aria-label="Maximum price" />
               </div>
             </div>
             <div class="text-center">
-              <div class="text-lg font-bold text-gold-500 font-mono">${{ priceMin }} – ${{ priceMax }}</div>
+              <div class="text-lg font-bold text-electric-500 font-mono">${{ priceMin }} – ${{ priceMax }}</div>
               <button @click="resetFilters" class="mt-1 text-[10px] text-surface-500 hover:text-surface-300 transition-colors underline">Reset filters</button>
             </div>
           </div>
@@ -228,7 +228,7 @@ function countInCategory(catSlug) {
           <template v-for="(p, i) in paginatedPages" :key="i">
             <span v-if="p === '...'" class="px-2 text-surface-600 select-none">…</span>
             <button v-else @click="goToPage(p)"
-              :class="['px-3 py-1.5 rounded-lg text-sm font-medium transition border', p === currentPage ? 'bg-gold-500 text-surface-950 border-gold-500' : 'bg-surface-800 text-surface-400 border-surface-700 hover:bg-surface-700 hover:text-surface-200']">
+              :class="['px-3 py-1.5 rounded-lg text-sm font-medium transition border', p === currentPage ? 'bg-electric-500 text-surface-950 border-electric-500' : 'bg-surface-800 text-surface-400 border-surface-700 hover:bg-surface-700 hover:text-surface-200']">
               {{ p }}
             </button>
           </template>

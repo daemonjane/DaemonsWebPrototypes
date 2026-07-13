@@ -27,20 +27,20 @@ async function subscribeNewsletter() {
         <!-- Brand -->
         <div class="col-span-2 md:col-span-1 space-y-4">
           <router-link to="/" class="inline-flex items-center gap-2 text-lg font-display font-bold text-surface-50 tracking-tight">
-            <svg class="w-5 h-5 text-gold-500" viewBox="0 0 24 24" fill="none">
+            <svg class="w-5 h-5 text-electric-500" viewBox="0 0 24 24" fill="none">
               <path d="M4 4L12 20L20 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span class="text-gold-500">VERTEX</span>
+            <span class="text-electric-500">VERTEX</span>
           </router-link>
           <p class="text-sm text-surface-400 leading-relaxed">High-tier hardware, precision-sourced. Built for peak performance.</p>
           <div class="flex gap-3 pt-1">
-            <a href="https://x.com/vertexhw" target="_blank" rel="noopener noreferrer" class="text-surface-600 hover:text-gold-500 transition-colors" aria-label="Twitter">
+            <a href="https://x.com/vertexhw" target="_blank" rel="noopener noreferrer" class="text-surface-600 hover:text-electric-500 transition-colors" aria-label="Twitter">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
             <a href="https://github.com/daemonjane" target="_blank" rel="noopener noreferrer" class="text-surface-600 hover:text-surface-200 transition-colors" aria-label="GitHub">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
             </a>
-            <a href="https://discord.gg/vertex" target="_blank" rel="noopener noreferrer" class="text-surface-600 hover:text-gold-500 transition-colors" aria-label="Discord">
+            <a href="https://discord.gg/vertex" target="_blank" rel="noopener noreferrer" class="text-surface-600 hover:text-electric-500 transition-colors" aria-label="Discord">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg>
             </a>
           </div>
@@ -50,10 +50,10 @@ async function subscribeNewsletter() {
         <div class="space-y-4">
           <h3 class="text-xs font-semibold text-surface-300 uppercase tracking-wider">Navigate</h3>
           <ul class="space-y-2.5">
-            <li><router-link to="/shop" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">Shop All</router-link></li>
-            <li><router-link to="/favorites" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">Favorites</router-link></li>
-            <li><router-link to="/insights" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">Market Pulse</router-link></li>
-            <li><router-link to="/about" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">About</router-link></li>
+            <li><router-link to="/shop" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">Shop All</router-link></li>
+            <li><router-link to="/favorites" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">Favorites</router-link></li>
+            <li><router-link to="/insights" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">Market Pulse</router-link></li>
+            <li><router-link to="/about" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">About</router-link></li>
           </ul>
         </div>
 
@@ -61,11 +61,11 @@ async function subscribeNewsletter() {
         <div class="space-y-4">
           <h3 class="text-xs font-semibold text-surface-300 uppercase tracking-wider">Support</h3>
           <ul class="space-y-2.5">
-            <li><router-link to="/contact" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">Contact</router-link></li>
-            <li><router-link to="/login" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">Account</router-link></li>
-            <li><router-link to="/register" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">Register</router-link></li>
-            <li><router-link to="/faq" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">FAQ</router-link></li>
-            <li><router-link to="/tracking" class="text-sm text-surface-400 hover:text-gold-500 transition-colors">Order Tracking</router-link></li>
+            <li><router-link to="/contact" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">Contact</router-link></li>
+            <li><router-link to="/login" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">Account</router-link></li>
+            <li><router-link to="/register" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">Register</router-link></li>
+            <li><router-link to="/faq" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">FAQ</router-link></li>
+            <li><router-link to="/tracking" class="text-sm text-surface-400 hover:text-electric-500 transition-colors">Order Tracking</router-link></li>
           </ul>
         </div>
 
@@ -74,8 +74,8 @@ async function subscribeNewsletter() {
           <h3 class="text-xs font-semibold text-surface-300 uppercase tracking-wider">Stay Updated</h3>
           <p class="text-sm text-surface-400">Get allocation drops and pricing alerts.</p>
           <form @submit.prevent="subscribeNewsletter" class="flex gap-2">
-            <input v-model="newsletterEmail" type="email" placeholder="Your email" class="flex-1 bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm text-surface-200 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50" aria-label="Newsletter email">
-            <button type="submit" class="bg-gold-500 text-surface-950 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gold-400 transition-colors" aria-label="Subscribe to newsletter">Subscribe</button>
+            <input v-model="newsletterEmail" type="email" placeholder="Your email" class="flex-1 bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm text-surface-200 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50" aria-label="Newsletter email">
+            <button type="submit" class="bg-electric-500 text-surface-950 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-electric-400 transition-colors" aria-label="Subscribe to newsletter">Subscribe</button>
           </form>
           <p v-if="newsletterMsg" class="text-xs text-surface-400 mt-1">{{ newsletterMsg }}</p>
         </div>

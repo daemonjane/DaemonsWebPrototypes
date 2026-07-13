@@ -41,7 +41,7 @@ async function requestReset() {
             If that email is registered, a reset link has been sent.
           </div>
           <div class="text-center mt-4">
-            <router-link to="/login" class="text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">Back to sign in</router-link>
+            <router-link to="/login" class="text-electric-500 hover:text-electric-400 text-sm font-medium transition-colors">Back to sign in</router-link>
           </div>
         </template>
 
@@ -55,7 +55,7 @@ async function requestReset() {
               v-model="email"
               type="email"
               placeholder="you@example.com"
-              class="w-full bg-surface-800 border border-surface-700 rounded-lg px-4 py-3 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 transition-all"
+              class="w-full bg-surface-800 border border-surface-700 rounded-lg px-4 py-3 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50 transition-all"
               :class="{ 'border-danger-500': errors.email }"
               aria-required="true"
               autocomplete="email"
@@ -63,12 +63,12 @@ async function requestReset() {
             <p v-if="errors.email" class="text-danger-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
           </div>
 
-          <button type="submit" :disabled="pending" class="w-full bg-gold-500 text-surface-950 py-3 rounded-lg font-semibold hover:bg-gold-400 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-gold-500 disabled:opacity-50">
+          <button type="submit" :disabled="pending" class="w-full bg-electric-500 text-surface-950 py-3 rounded-lg font-semibold hover:bg-electric-400 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-electric-500 disabled:opacity-50">
             {{ pending ? 'Sending...' : 'Send Reset Link' }}
           </button>
 
           <div class="text-center mt-4">
-            <router-link to="/login" class="text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">Back to sign in</router-link>
+            <router-link to="/login" class="text-electric-500 hover:text-electric-400 text-sm font-medium transition-colors">Back to sign in</router-link>
           </div>
         </form>
       </div>

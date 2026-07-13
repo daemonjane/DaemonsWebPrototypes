@@ -56,7 +56,7 @@ async function guestLogin() {
               v-model="firstName"
               type="text"
               placeholder="First name"
-              class="w-full bg-surface-800 border border-surface-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-transparent"
+              class="w-full bg-surface-800 border border-surface-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-electric-500/50 focus:border-transparent"
               :class="{ 'border-pink-500': errors.firstName }"
               aria-required="true"
               autocomplete="given-name"
@@ -68,7 +68,7 @@ async function guestLogin() {
               v-model="lastName"
               type="text"
               placeholder="Last name"
-              class="w-full bg-surface-800 border border-surface-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-transparent"
+              class="w-full bg-surface-800 border border-surface-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-electric-500/50 focus:border-transparent"
               autocomplete="family-name"
             >
           </div>
@@ -79,12 +79,12 @@ async function guestLogin() {
             v-model="email"
             type="email"
             placeholder="Email (optional)"
-            class="w-full bg-surface-800 border border-surface-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-transparent"
+            class="w-full bg-surface-800 border border-surface-700 rounded p-3 focus:outline-none focus:ring-2 focus:ring-electric-500/50 focus:border-transparent"
             autocomplete="email"
           >
         </div>
 
-        <button type="submit" :disabled="pending" class="w-full bg-gold-500 py-3 rounded-lg font-semibold hover:bg-gold-400 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-gold-500 disabled:opacity-50">
+        <button type="submit" :disabled="pending" class="w-full bg-electric-500 py-3 rounded-lg font-semibold hover:bg-electric-400 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-electric-500 disabled:opacity-50">
           {{ pending ? 'Continuing...' : 'Continue as Guest' }}
         </button>
       </form>
@@ -92,11 +92,11 @@ async function guestLogin() {
       <div class="text-center text-sm mt-4 space-y-2">
         <p>
           Want to create an account?
-          <router-link to="/register" class="text-gold-500 hover:underline">Register</router-link>
+          <router-link to="/register" class="text-electric-500 hover:underline">Register</router-link>
         </p>
         <p>
           Already have an account?
-          <router-link to="/login" class="text-gold-500 hover:underline">Sign In</router-link>
+          <router-link to="/login" class="text-electric-500 hover:underline">Sign In</router-link>
         </p>
       </div>
     </div>

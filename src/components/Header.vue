@@ -103,7 +103,7 @@ function closeSearch() {
         <!-- Logo -->
         <router-link
           to="/"
-          class="font-display text-xl font-bold text-gold-500 tracking-tight shrink-0 hover:text-gold-400 transition-colors flex items-center gap-2"
+          class="font-display text-xl font-bold text-electric-500 tracking-tight shrink-0 hover:text-electric-400 transition-colors flex items-center gap-2"
           aria-label="Vertex Home"
         >
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
@@ -119,9 +119,9 @@ function closeSearch() {
             :key="link.path"
             :to="link.path"
             :class="[
-              'px-3 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-gold-500',
+              'px-3 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-2               focus-visible:outline-electric-500',
               route.path === link.path
-                ? 'text-gold-500 bg-gold-500/10'
+                ? 'text-electric-500 bg-electric-500/10'
                 : 'text-surface-400 hover:text-surface-50 hover:bg-surface-800'
             ]"
           >
@@ -146,7 +146,7 @@ function closeSearch() {
               v-model="searchQuery"
               type="text"
               placeholder="Search..."
-              class="w-36 lg:w-52 bg-surface-800/80 border border-surface-700/80 rounded-xl px-3 py-1.5 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500/40 focus:border-gold-500/40 focus:w-64 lg:focus:w-80 transition-all duration-300"
+              class="w-36 lg:w-52 bg-surface-800/80 border border-surface-700/80 rounded-xl px-3 py-1.5 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-electric-500/40 focus:border-electric-500/40 focus:w-64 lg:focus:w-80 transition-all duration-300"
               @focus="searchFocused = true"
               @blur="closeSearch"
               @keydown.enter="searchQuery.trim() && (router.push('/shop?q=' + encodeURIComponent(searchQuery.trim())), searchQuery = '', searchFocused = false)"
@@ -180,7 +180,7 @@ function closeSearch() {
                     </div>
                     <div class="min-w-0">
                       <p class="text-surface-100 truncate font-medium text-sm">{{ result.name }}</p>
-                      <p class="text-gold-500 text-xs font-mono">${{ Number(result.price || 0).toFixed(2) }}</p>
+                      <p class="text-electric-500 text-xs font-mono">${{ Number(result.price || 0).toFixed(2) }}</p>
                     </div>
                   </router-link>
                 </div>
@@ -193,7 +193,7 @@ function closeSearch() {
           <router-link
             v-if="isAuthenticated()"
             to="/profile"
-            class="hidden lg:inline-flex text-sm font-medium items-center gap-1.5 text-surface-400 hover:text-gold-500 transition-colors px-2 py-1.5 rounded-lg"
+            class="hidden lg:inline-flex text-sm font-medium items-center gap-1.5 text-surface-400 hover:text-electric-500 transition-colors px-2 py-1.5 rounded-lg"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             Profile
@@ -201,7 +201,7 @@ function closeSearch() {
           <router-link
             v-if="isAuthenticated()"
             to="/orders"
-            class="hidden lg:inline-flex text-sm font-medium items-center gap-1.5 text-surface-400 hover:text-gold-500 transition-colors px-2 py-1.5 rounded-lg"
+            class="hidden lg:inline-flex text-sm font-medium items-center gap-1.5 text-surface-400 hover:text-electric-500 transition-colors px-2 py-1.5 rounded-lg"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             Orders
@@ -222,7 +222,7 @@ function closeSearch() {
             </router-link>
             <router-link
               to="/login"
-              class="hidden md:inline-flex text-sm font-semibold text-surface-950 bg-gold-500 hover:bg-gold-400 px-3.5 py-1.5 rounded-lg transition-all shadow-glow-gold"
+              class="hidden md:inline-flex text-sm font-semibold text-surface-950 bg-electric-500 hover:bg-electric-400 px-3.5 py-1.5 rounded-lg transition-all shadow-glow-electric"
             >
               Sign In
             </router-link>
@@ -237,7 +237,7 @@ function closeSearch() {
           <!-- Theme toggle -->
           <button
             @click="themedToggle"
-            class="p-2 text-surface-400 hover:text-gold-500 rounded-lg transition-colors"
+            class="p-2 text-surface-400 hover:text-electric-500 rounded-lg transition-colors"
             :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
             :title="isDark ? 'Light mode' : 'Dark mode'"
           >
@@ -252,7 +252,7 @@ function closeSearch() {
           <!-- Cart -->
           <button
             @click="cartOpen = true"
-            class="relative p-2 text-surface-400 hover:text-gold-500 rounded-lg transition-colors"
+            class="relative p-2 text-surface-400 hover:text-electric-500 rounded-lg transition-colors"
             aria-label="Open cart"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -260,7 +260,7 @@ function closeSearch() {
             </svg>
             <span
               v-if="totalItems > 0"
-              class="absolute -top-0.5 -right-0.5 bg-gold-500 text-surface-950 text-[10px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1 badge-bounce"
+              class="absolute -top-0.5 -right-0.5 bg-electric-500 text-surface-950 text-[10px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1 badge-bounce"
               aria-live="polite"
             >
               {{ totalItems }}
@@ -302,7 +302,7 @@ function closeSearch() {
               v-model="searchQuery"
               type="text"
               placeholder="Search products..."
-              class="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500/40"
+              class="w-full bg-surface-800 border border-surface-700 rounded-xl px-3 py-2.5 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-electric-500/40"
               @keydown.enter="searchQuery.trim() && (router.push('/shop?q=' + encodeURIComponent(searchQuery.trim())), searchQuery = '', mobileMenuOpen = false)"
               aria-label="Search products"
               autocomplete="off"
@@ -313,9 +313,9 @@ function closeSearch() {
             :key="link.path"
             :to="link.path"
             :class="[
-              'block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-gold-500',
+              'block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors focus-visible:outline-2               focus-visible:outline-electric-500',
               route.path === link.path
-                ? 'text-gold-500 bg-gold-500/10'
+                ? 'text-electric-500 bg-electric-500/10'
                 : 'text-surface-400 hover:text-surface-50 hover:bg-surface-800'
             ]"
             @click="mobileMenuOpen = false"
@@ -364,7 +364,7 @@ function closeSearch() {
             </router-link>
             <router-link
               to="/login"
-              class="block px-3 py-2.5 rounded-xl text-sm font-semibold text-gold-500 hover:text-gold-400 transition-colors"
+              class="block px-3 py-2.5 rounded-xl text-sm font-semibold text-electric-500 hover:text-electric-400 transition-colors"
               @click="mobileMenuOpen = false"
             >
               Sign In

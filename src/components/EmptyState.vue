@@ -27,14 +27,14 @@ const icons = {
     <router-link
       v-if="actionLabel && actionTo"
       :to="actionTo"
-      class="inline-block mt-2 bg-gold-500 hover:bg-gold-400 text-surface-950 font-semibold px-6 py-2.5 rounded-lg transition-all active:scale-95 shadow-glow-gold"
+      class="inline-block mt-2 bg-electric-500 hover:bg-electric-400 text-surface-950 font-semibold px-6 py-2.5 rounded-lg transition-all active:scale-95 shadow-glow-electric"
     >
       {{ actionLabel }}
     </router-link>
     <button
       v-else-if="actionLabel"
       @click="emit('action')"
-      class="inline-block mt-2 bg-gold-500 hover:bg-gold-400 text-surface-950 font-semibold px-6 py-2.5 rounded-lg transition-all active:scale-95 shadow-glow-gold"
+      class="inline-block mt-2 bg-electric-500 hover:bg-electric-400 text-surface-950 font-semibold px-6 py-2.5 rounded-lg transition-all active:scale-95 shadow-glow-electric"
     >
       {{ actionLabel }}
     </button>

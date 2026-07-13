@@ -85,13 +85,13 @@ const featured = computed(() => products.value.slice(0, 6))
     <section class="relative text-center py-20 sm:py-28 lg:py-36 overflow-hidden">
       <div class="hero-glow"></div>
       <div class="relative z-10 max-w-3xl mx-auto px-4 hero-reveal">
-        <div class="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/20 rounded-full px-4 py-1.5 mb-8 backdrop-blur-sm">
-          <span class="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse"></span>
-          <span class="text-xs font-medium text-gold-400 uppercase tracking-widest">High-Tier Hardware</span>
+        <div class="inline-flex items-center gap-2 bg-electric-500/10 border border-electric-500/20 rounded-full px-4 py-1.5 mb-8 backdrop-blur-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-electric-500 animate-pulse"></span>
+          <span class="text-xs font-medium text-electric-400 uppercase tracking-widest">High-Tier Hardware</span>
         </div>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-surface-50 leading-[1.1] tracking-tight">
           Peak Performance<br>
-          <span class="text-gradient-gold">Hardware</span>
+          <span class="text-gradient-electric">Hardware</span>
         </h1>
         <p class="text-surface-400 max-w-lg mx-auto mt-6 text-base sm:text-lg leading-relaxed">
           Precision-sourced components. Direct vendor supply chains. Custom-tuned systems built for silence and power.
@@ -100,14 +100,14 @@ const featured = computed(() => products.value.slice(0, 6))
           <router-link
             to="/shop"
             v-magnetic
-            class="bg-gold-500 text-surface-950 px-8 py-3.5 rounded-xl font-display font-semibold hover:bg-gold-400 transition-all active:scale-95 shadow-glow-gold text-sm sm:text-base"
+            class="bg-electric-500 text-surface-950 px-8 py-3.5 rounded-xl font-display font-semibold hover:bg-electric-400 transition-all active:scale-95 shadow-glow-electric text-sm sm:text-base"
           >
             Shop Now
           </router-link>
           <router-link
             to="/about"
             v-magnetic
-            class="border border-surface-600 text-surface-300 px-8 py-3.5 rounded-xl font-display font-semibold hover:border-gold-500/30 hover:text-surface-100 hover:bg-surface-800/50 transition-all text-sm sm:text-base"
+            class="border border-surface-600 text-surface-300 px-8 py-3.5 rounded-xl font-display font-semibold hover:border-electric-500/30 hover:text-surface-100 hover:bg-surface-800/50 transition-all text-sm sm:text-base"
           >
             Learn More
           </router-link>
@@ -119,7 +119,7 @@ const featured = computed(() => products.value.slice(0, 6))
     <section ref="statsEl" class="mb-16 sm:mb-20">
       <div class="bg-surface-800/40 border border-surface-700/50 rounded-2xl p-6 sm:p-8 flex justify-center gap-8 sm:gap-16">
         <div v-for="(stat, i) in stats" :key="stat.label" class="text-center">
-          <p class="text-2xl sm:text-3xl font-bold text-gold-500 font-mono counter-value">
+          <p class="text-2xl sm:text-3xl font-bold text-electric-500 font-mono counter-value">
             {{ stat.prefix || '' }}{{ counterValues[i] }}{{ stat.suffix }}
           </p>
           <p class="text-xs text-surface-500 mt-1">{{ stat.label }}</p>
@@ -134,7 +134,7 @@ const featured = computed(() => products.value.slice(0, 6))
         <router-link
           v-for="c in categories" :key="c.id || c.slugified_name"
           :to="'/shop?category=' + (c.slugified_name || c.name)"
-          class="bg-surface-800/60 border border-surface-700/80 rounded-2xl p-5 sm:p-6 text-center hover:border-gold-500/30 hover:bg-surface-800 transition-all duration-300 group"
+          class="bg-surface-800/60 border border-surface-700/80 rounded-2xl p-5 sm:p-6 text-center hover:border-electric-500/30 hover:bg-surface-800 transition-all duration-300 group"
         >
           <span class="text-3xl group-hover:scale-110 transition-transform duration-300 inline-block">{{ c.icon || '📦' }}</span>
           <p class="text-sm text-surface-200 mt-3 font-medium group-hover:text-surface-50 transition-colors">{{ c.name }}</p>
@@ -146,7 +146,7 @@ const featured = computed(() => products.value.slice(0, 6))
     <section class="mb-16 sm:mb-20">
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl sm:text-2xl font-display font-bold text-surface-50">{{ storeName || 'Featured' }} Picks</h2>
-        <router-link to="/shop" class="text-sm text-gold-500 hover:text-gold-400 font-medium transition-colors flex items-center gap-1">
+        <router-link to="/shop" class="text-sm text-electric-500 hover:text-electric-400 font-medium transition-colors flex items-center gap-1">
           View All
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </router-link>
@@ -166,7 +166,7 @@ const featured = computed(() => products.value.slice(0, 6))
         <router-link
           v-for="item in recentlyViewed" :key="item.id"
           :to="'/product/' + item.id"
-          class="bg-surface-800/60 border border-surface-700/80 rounded-2xl p-3 hover:border-gold-500/20 hover:-translate-y-0.5 transition-all duration-300"
+          class="bg-surface-800/60 border border-surface-700/80 rounded-2xl p-3 hover:border-electric-500/20 hover:-translate-y-0.5 transition-all duration-300"
         >
           <OptimizedImage v-if="item.image" :src="item.image" :alt="item.name" wrapperClass="h-28 mb-2.5 rounded-xl overflow-hidden" imgClass="w-full h-full object-cover" />
           <p class="text-sm text-surface-200 truncate font-medium">{{ item.name }}</p>
@@ -178,22 +178,22 @@ const featured = computed(() => products.value.slice(0, 6))
     <section class="mb-16 sm:mb-20">
       <div class="bg-surface-800/40 border border-surface-700/50 rounded-2xl p-8 sm:p-10 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center stagger-reveal revealed">
         <div class="space-y-3">
-          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
-            <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          <div class="w-12 h-12 rounded-xl bg-electric-500/10 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6 text-electric-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
           </div>
           <h3 class="font-display font-semibold text-surface-50">Verified Authentic</h3>
           <p class="text-xs text-surface-400 leading-relaxed">Direct from authorized distributors. No gray market.</p>
         </div>
         <div class="space-y-3">
-          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
-            <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div class="w-12 h-12 rounded-xl bg-electric-500/10 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6 text-electric-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <h3 class="font-display font-semibold text-surface-50">Fast Fulfillment</h3>
           <p class="text-xs text-surface-400 leading-relaxed">Same-day processing on in-stock items.</p>
         </div>
         <div class="space-y-3">
-          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
-            <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <div class="w-12 h-12 rounded-xl bg-electric-500/10 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6 text-electric-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           </div>
           <h3 class="font-display font-semibold text-surface-50">Buyer Protection</h3>
           <p class="text-xs text-surface-400 leading-relaxed">Secure checkout. Full refund guarantee.</p>

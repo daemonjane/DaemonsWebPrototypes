@@ -118,7 +118,7 @@ async function handleAddToCart() {
 
             <!-- Details -->
             <div class="p-6 flex flex-col">
-              <span class="text-xs font-mono text-gold-500 uppercase tracking-wider bg-gold-500/10 px-2.5 py-1 rounded-lg self-start">{{ product.category }}</span>
+              <span class="text-xs font-mono text-electric-500 uppercase tracking-wider bg-electric-500/10 px-2.5 py-1 rounded-lg self-start">{{ product.category }}</span>
               <h2 class="text-xl font-display font-bold text-surface-50 mt-3">{{ product.name }}</h2>
 
               <div class="flex items-center gap-2 mt-2">
@@ -132,14 +132,14 @@ async function handleAddToCart() {
                 <h3 class="text-sm font-semibold text-surface-300 mb-2">Specifications</h3>
                 <ul class="space-y-1.5">
                   <li v-for="spec in product.specs" :key="spec" class="text-xs text-surface-400 font-mono flex items-center gap-2">
-                    <span class="w-1 h-1 rounded-full bg-gold-500 shrink-0"></span>
+                    <span class="w-1 h-1 rounded-full bg-electric-500 shrink-0"></span>
                     {{ spec }}
                   </li>
                 </ul>
               </div>
 
               <div class="mt-auto pt-4 border-t border-surface-700">
-                <div class="text-2xl font-bold text-gold-500 font-mono">${{ Number(product.price || 0).toFixed(2) }}</div>
+                <div class="text-2xl font-bold text-electric-500 font-mono">${{ Number(product.price || 0).toFixed(2) }}</div>
 
                 <div class="flex items-center gap-3 mt-3">
                   <div class="flex items-center gap-2">
@@ -158,7 +158,7 @@ async function handleAddToCart() {
                   <button
                     v-if="!isInCart(product.uuid || product.id)"
                     @click="handleAddToCart"
-                    class="flex-1 bg-gold-500 hover:bg-gold-400 text-surface-950 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95"
+                    class="flex-1 bg-electric-500 hover:bg-electric-400 text-surface-950 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95"
                   >
                     Add to Cart
                   </button>

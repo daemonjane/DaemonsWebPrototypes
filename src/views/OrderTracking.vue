@@ -64,19 +64,19 @@ function currentIndex(history) {
         v-model="orderId"
         type="text"
         placeholder="e.g. 42"
-        class="flex-1 bg-surface-800 border border-surface-700 rounded-lg px-4 py-3 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500 font-mono"
+        class="flex-1 bg-surface-800 border border-surface-700 rounded-lg px-4 py-3 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-electric-500 font-mono"
         @keyup.enter="fetchTracking"
       >
       <button
         @click="fetchTracking"
-        class="bg-gold-500 hover:bg-gold-400 text-surface-50 font-semibold px-6 py-3 rounded-lg transition active:scale-95"
+        class="bg-electric-500 hover:bg-electric-400 text-surface-50 font-semibold px-6 py-3 rounded-lg transition active:scale-95"
       >
         Track
       </button>
     </div>
 
     <div v-if="loading" class="text-center py-12">
-      <div class="w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+      <div class="w-8 h-8 border-2 border-electric-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
       <p class="text-surface-400 text-sm mt-3">Loading tracking...</p>
     </div>
 
@@ -97,14 +97,14 @@ function currentIndex(history) {
             Est. delivery: {{ formatDate(tracking.estimated_delivery) }}
           </p>
         </div>
-        <span class="bg-gold-500/10 text-gold-500 text-xs font-mono px-3 py-1.5 rounded-full border border-gold-800/50">
+        <span class="bg-electric-500/10 text-electric-500 text-xs font-mono px-3 py-1.5 rounded-full border border-electric-800/50">
           {{ tracking.current_status }}
         </span>
       </div>
 
       <div v-if="tracking.tracking_url" class="mb-6">
         <a :href="tracking.tracking_url" target="_blank"
-           class="text-xs text-gold-500 hover:text-gold-400 underline underline-offset-2">
+           class="text-xs text-electric-500 hover:text-electric-400 underline underline-offset-2">
           View on carrier's website &rarr;
         </a>
       </div>
@@ -117,13 +117,13 @@ function currentIndex(history) {
               :class="isPast(i, tracking.history)
                 ? 'bg-success-600 border-success-600'
                 : i === currentIndex(tracking.history)
-                  ? 'bg-surface-900 border-gold-400'
+                  ? 'bg-surface-900 border-electric-400'
                   : 'bg-surface-900 border-surface-700'"
             >
               <svg v-if="isPast(i, tracking.history)" class="w-3 h-3 text-surface-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
               </svg>
-              <div v-else-if="i === currentIndex(tracking.history)" class="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></div>
+              <div v-else-if="i === currentIndex(tracking.history)" class="w-2 h-2 rounded-full bg-electric-400 animate-pulse"></div>
             </div>
             <div v-if="i < tracking.history.length - 1" class="w-0.5 flex-1 mt-1"
               :class="isPast(i, tracking.history) ? 'bg-success-600' : 'bg-surface-800'"></div>

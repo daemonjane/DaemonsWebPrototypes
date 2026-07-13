@@ -46,7 +46,7 @@ function acceptEssential() {
             <p class="text-sm text-surface-200 font-medium">This site uses cookies</p>
             <p class="text-xs text-surface-400 mt-1">
               We use essential cookies for cart and session functionality. Analytics and marketing cookies help us improve.
-              <router-link to="/cookies" class="text-gold-500 hover:text-gold-400 underline underline-offset-2" @click="show = false">
+              <router-link to="/cookies" class="text-electric-500 hover:text-electric-400 underline underline-offset-2" @click="show = false">
                 Learn more
               </router-link>
             </p>
@@ -60,7 +60,7 @@ function acceptEssential() {
             </button>
             <button
               @click="acceptAll"
-              class="text-xs font-semibold bg-gold-500 hover:bg-gold-400 text-surface-950 px-4 py-2 rounded-lg transition-all active:scale-95 shadow-glow-gold"
+              class="text-xs font-semibold bg-electric-500 hover:bg-electric-400 text-surface-950 px-4 py-2 rounded-lg transition-all active:scale-95 shadow-glow-electric"
             >
               Accept All
             </button>

@@ -64,7 +64,7 @@ function cancel() {
     <div class="bg-surface-900 border border-surface-700 rounded-xl p-6 sm:p-8">
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold font-display text-surface-50">My Profile</h1>
-        <button v-if="!editing" @click="editing = true" class="text-sm text-gold-500 hover:text-gold-400 flex items-center gap-1">
+        <button v-if="!editing" @click="editing = true" class="text-sm text-electric-500 hover:text-electric-400 flex items-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           Edit
         </button>
@@ -104,26 +104,26 @@ function cancel() {
       <form v-else @submit.prevent="save" class="space-y-4">
         <div>
           <label class="block text-sm text-surface-400 mb-1">Username</label>
-          <input v-model="form.username" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50">
+          <input v-model="form.username" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-electric-500/50">
         </div>
         <div>
           <label class="block text-sm text-surface-400 mb-1">Email</label>
-          <input v-model="form.email" type="email" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50">
+          <input v-model="form.email" type="email" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-electric-500/50">
         </div>
         <div>
           <label class="block text-sm text-surface-400 mb-1">Bio</label>
-          <textarea v-model="form.bio" rows="3" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50"></textarea>
+          <textarea v-model="form.bio" rows="3" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-electric-500/50"></textarea>
         </div>
         <div>
           <label class="block text-sm text-surface-400 mb-1">Location</label>
-          <input v-model="form.location" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50">
+          <input v-model="form.location" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-electric-500/50">
         </div>
         <div>
           <label class="block text-sm text-surface-400 mb-1">Phone</label>
-          <input v-model="form.phone" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50">
+          <input v-model="form.phone" class="w-full bg-surface-800 border border-surface-700 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-electric-500/50">
         </div>
         <div class="flex gap-3 pt-2">
-          <button type="submit" :disabled="pending" class="bg-gold-500 hover:bg-gold-400 text-surface-50 font-semibold py-2 px-6 rounded-lg transition-colors disabled:opacity-50">
+          <button type="submit" :disabled="pending" class="bg-electric-500 hover:bg-electric-400 text-surface-50 font-semibold py-2 px-6 rounded-lg transition-colors disabled:opacity-50">
             {{ pending ? 'Saving...' : 'Save' }}
           </button>
           <button type="button" @click="cancel" class="bg-surface-800 hover:bg-surface-600 text-surface-200 py-2 px-6 rounded-lg transition-colors">Cancel</button>

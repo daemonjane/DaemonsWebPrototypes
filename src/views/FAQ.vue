@@ -31,7 +31,7 @@ function toggle(i) {
         v-for="(faq, i) in faqs"
         :key="i"
         class="bg-surface-900 rounded-xl border border-surface-700 overflow-hidden transition-all duration-200"
-        :class="{ 'border-gold-500/30': openIndex === i }"
+        :class="{ 'border-electric-500/30': openIndex === i }"
       >
         <button
           @click="toggle(i)"
@@ -69,7 +69,7 @@ function toggle(i) {
     <div class="mt-10 text-center bg-surface-900 rounded-xl border border-surface-700 p-6 sm:p-8">
       <h2 class="text-lg font-semibold font-display text-surface-50 mb-2">Still have questions?</h2>
       <p class="text-sm text-surface-400 mb-4">Our team is ready to help with any inquiries.</p>
-      <router-link to="/contact" class="inline-block bg-gold-500 text-surface-50 px-6 py-2.5 rounded-lg font-medium hover:bg-gold-400 transition-colors">
+      <router-link to="/contact" class="inline-block bg-electric-500 text-surface-50 px-6 py-2.5 rounded-lg font-medium hover:bg-electric-400 transition-colors">
         Contact Support
       </router-link>
     </div>

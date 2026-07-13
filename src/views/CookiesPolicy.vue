@@ -34,7 +34,7 @@ function rejectAll() {
   <div class="max-w-3xl mx-auto px-4 py-12">
     <Breadcrumbs :crumbs="[{ label: 'Privacy' }, { label: 'Cookie Policy' }]" />
     <div class="mb-10">
-      <span class="text-xs font-mono text-gold-400 uppercase tracking-wider bg-gold-500/10 px-2 py-1 rounded">Legal</span>
+      <span class="text-xs font-mono text-electric-400 uppercase tracking-wider bg-electric-500/10 px-2 py-1 rounded">Legal</span>
       <h1 class="text-3xl sm:text-4xl font-bold text-surface-50 font-display mt-3">Cookie Policy</h1>
       <p class="text-surface-400 mt-2 text-sm">Last updated: {{ lastUpdated }}</p>
     </div>
@@ -63,7 +63,7 @@ function rejectAll() {
           </div>
           <input type="checkbox" v-model="preferences.analytics" class="sr-only">
           <div class="w-10 h-6 rounded-full flex items-center px-1 transition-colors duration-200"
-            :class="preferences.analytics ? 'bg-gold-500 justify-end' : 'bg-surface-700 justify-start'">
+            :class="preferences.analytics ? 'bg-electric-500 justify-end' : 'bg-surface-700 justify-start'">
             <div class="w-4 h-4 bg-surface-50 rounded-full shadow"></div>
           </div>
         </label>
@@ -76,7 +76,7 @@ function rejectAll() {
           </div>
           <input type="checkbox" v-model="preferences.marketing" class="sr-only">
           <div class="w-10 h-6 rounded-full flex items-center px-1 transition-colors duration-200"
-            :class="preferences.marketing ? 'bg-gold-500 justify-end' : 'bg-surface-700 justify-start'">
+            :class="preferences.marketing ? 'bg-electric-500 justify-end' : 'bg-surface-700 justify-start'">
             <div class="w-4 h-4 bg-surface-50 rounded-full shadow"></div>
           </div>
         </label>
@@ -84,7 +84,7 @@ function rejectAll() {
 
       <div class="flex flex-wrap gap-3 pt-2">
         <button @click="savePreferences"
-          class="bg-gold-500 hover:bg-gold-400 text-surface-50 text-sm font-semibold px-5 py-2 rounded-md transition active:scale-95">
+          class="bg-electric-500 hover:bg-electric-400 text-surface-50 text-sm font-semibold px-5 py-2 rounded-md transition active:scale-95">
           Save Preferences
         </button>
         <button @click="acceptAll"
@@ -122,7 +122,7 @@ function rejectAll() {
     </div>
 
     <div class="mt-10 pt-6 border-t border-surface-700 text-xs text-surface-600">
-      <p>See our <router-link to="/privacy" class="text-gold-500 hover:underline">Privacy Policy</router-link> for more information on how we handle your data.</p>
+      <p>See our <router-link to="/privacy" class="text-electric-500 hover:underline">Privacy Policy</router-link> for more information on how we handle your data.</p>
     </div>
   </div>
 </template>

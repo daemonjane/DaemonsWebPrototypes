@@ -12,7 +12,7 @@ onMounted(() => { setTimeout(() => { stackVisible.value = true }, 200) })
 
 const techStack = [
   { name: 'Vue 3 + Vite', level: 95, color: 'bg-success-500' },
-  { name: 'Python / Django', level: 88, color: 'bg-gold-500' },
+  { name: 'Python / Django', level: 88, color: 'bg-electric-500' },
   { name: 'Go (CLI tooling)', level: 82, color: 'bg-sky-500' },
   { name: 'Rust (experimental)', level: 65, color: 'bg-fuchsia-500' },
   { name: 'PostgreSQL / Redis', level: 90, color: 'bg-amber-500' },
@@ -39,7 +39,7 @@ const milestones = [
   <div class="max-w-4xl mx-auto px-4 py-12 relative">
     <AbstractArt variant="about" class="absolute inset-0 w-full h-full" />
     <Breadcrumbs :crumbs="[{ label: 'About' }]" />
-    <span class="text-xs font-mono text-gold-500 uppercase tracking-wider bg-gold-500/10 px-2 py-1 rounded relative">Company</span>
+    <span class="text-xs font-mono text-electric-500 uppercase tracking-wider bg-electric-500/10 px-2 py-1 rounded relative">Company</span>
     <h1 class="text-3xl sm:text-4xl font-bold font-display text-surface-50 mt-3 mb-2">About Vertex</h1>
     <p class="text-surface-400 mb-10">The infrastructure behind the infrastructure.</p>
 
@@ -71,7 +71,7 @@ const milestones = [
         @click="expandedValue = expandedValue === v.id ? null : v.id"
         :aria-label="(expandedValue === v.id ? 'Collapse' : 'Expand') + ' ' + v.title"
         class="bg-surface-900 p-5 rounded-xl border text-left transition-all duration-200"
-        :class="expandedValue === v.id ? 'border-gold-500/30 bg-gold-500/10' : 'border-surface-700 hover:border-surface-600'"
+        :class="expandedValue === v.id ? 'border-electric-500/30 bg-electric-500/10' : 'border-surface-700 hover:border-surface-600'"
       >
         <div class="flex items-center gap-3 mb-2">
           <span class="text-xl">{{ v.icon }}</span>
@@ -91,7 +91,7 @@ const milestones = [
         <div v-for="tech in techStack" :key="tech.name">
           <div class="flex justify-between text-sm mb-1">
             <span class="text-surface-200">{{ tech.name }}</span>
-            <span class="text-gold-500 font-mono text-xs">{{ tech.level }}%</span>
+            <span class="text-electric-500 font-mono text-xs">{{ tech.level }}%</span>
           </div>
           <div class="w-full h-2 bg-surface-800 rounded-full overflow-hidden">
             <div class="h-full rounded-full transition-all duration-1000 ease-out" :style="{ width: stackVisible ? tech.level + '%' : '0%' }" :class="tech.color" role="progressbar" :aria-valuenow="tech.level" aria-valuemin="0" aria-valuemax="100" :aria-label="tech.name + ' proficiency: ' + tech.level + '%'"></div>
@@ -115,11 +115,11 @@ const milestones = [
       <div v-if="timelineOpen" class="px-6 pb-6 space-y-0">
         <div v-for="(m, i) in milestones" :key="i" class="flex gap-4 pb-4 last:pb-0">
           <div class="flex flex-col items-center">
-            <div class="w-3 h-3 rounded-full bg-gold-500 mt-1.5"></div>
+            <div class="w-3 h-3 rounded-full bg-electric-500 mt-1.5"></div>
             <div v-if="i < milestones.length - 1" class="w-0.5 flex-1 bg-surface-800 mt-1"></div>
           </div>
           <div>
-            <p class="text-xs font-mono text-gold-500 font-bold">{{ m.year }}</p>
+            <p class="text-xs font-mono text-electric-500 font-bold">{{ m.year }}</p>
             <p class="text-sm text-surface-200">{{ m.event }}</p>
           </div>
         </div>
@@ -130,18 +130,18 @@ const milestones = [
     <div class="bg-surface-900 p-6 sm:p-8 rounded-xl border border-surface-700">
       <h2 class="text-xl font-semibold font-display text-surface-50 mb-4">Team</h2>
       <div class="grid sm:grid-cols-2 gap-4 text-sm">
-        <a href="https://github.com/daemonjane" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-surface-800/60 rounded-lg p-3 hover:bg-surface-700 hover:border-gold-500/30 border border-transparent transition-all duration-200 group">
-          <div class="w-10 h-10 rounded-full bg-gold-800/40 flex items-center justify-center text-gold-500 font-mono font-bold group-hover:scale-110 transition-transform">JD</div>
+        <a href="https://github.com/daemonjane" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-surface-800/60 rounded-lg p-3 hover:bg-surface-700 hover:border-electric-500/30 border border-transparent transition-all duration-200 group">
+          <div class="w-10 h-10 rounded-full bg-electric-800/40 flex items-center justify-center text-electric-500 font-mono font-bold group-hover:scale-110 transition-transform">JD</div>
           <div>
-            <p class="text-surface-50 font-medium group-hover:text-gold-500 transition-colors">Jane Daemon</p>
-            <p class="text-surface-500 group-hover:text-gold-500 transition-colors flex items-center gap-1">Founder & Lead Engineer <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></p>
+            <p class="text-surface-50 font-medium group-hover:text-electric-500 transition-colors">Jane Daemon</p>
+            <p class="text-surface-500 group-hover:text-electric-500 transition-colors flex items-center gap-1">Founder & Lead Engineer <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></p>
           </div>
         </a>
-        <a href="https://git.osinode.com/Ositcom/charbel_elias" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-surface-800/60 rounded-lg p-3 hover:bg-surface-700 hover:border-gold-500/30 border border-transparent transition-all duration-200 group">
+        <a href="https://git.osinode.com/Ositcom/charbel_elias" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-surface-800/60 rounded-lg p-3 hover:bg-surface-700 hover:border-electric-500/30 border border-transparent transition-all duration-200 group">
           <div class="w-10 h-10 rounded-full bg-fuchsia-900/40 flex items-center justify-center text-fuchsia-400 font-mono font-bold group-hover:scale-110 transition-transform">CE</div>
           <div>
-            <p class="text-surface-50 font-medium group-hover:text-gold-500 transition-colors">Charbel Elias</p>
-            <p class="text-surface-500 group-hover:text-gold-500 transition-colors flex items-center gap-1">Systems Architect <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></p>
+            <p class="text-surface-50 font-medium group-hover:text-electric-500 transition-colors">Charbel Elias</p>
+            <p class="text-surface-500 group-hover:text-electric-500 transition-colors flex items-center gap-1">Systems Architect <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></p>
           </div>
         </a>
       </div>

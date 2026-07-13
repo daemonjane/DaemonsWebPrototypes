@@ -51,7 +51,7 @@ function submitForm() {
                 v-model="form.name"
                 type="text"
                 placeholder="Full Name"
-                class="w-full bg-surface-800 border border-surface-700 rounded-lg p-3 text-sm text-surface-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-500/50 transition-all"
+                class="w-full bg-surface-800 border border-surface-700 rounded-lg p-3 text-sm text-surface-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-electric-500/50 transition-all"
                 :class="{ 'border-pink-500': errors.name }"
                 :aria-describedby="errors.name ? 'contact-name-error' : undefined"
                 aria-required="true"
@@ -63,7 +63,7 @@ function submitForm() {
                 v-model="form.email"
                 type="email"
                 placeholder="Email"
-                class="w-full bg-surface-800 border border-surface-700 rounded-lg p-3 text-sm text-surface-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-500/50 transition-all"
+                class="w-full bg-surface-800 border border-surface-700 rounded-lg p-3 text-sm text-surface-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-electric-500/50 transition-all"
                 :class="{ 'border-pink-500': errors.email }"
                 :aria-describedby="errors.email ? 'contact-email-error' : undefined"
                 aria-required="true"
@@ -75,14 +75,14 @@ function submitForm() {
                 v-model="form.message"
                 rows="4"
                 placeholder="Your message..."
-                class="w-full bg-surface-800 border border-surface-700 rounded-lg p-3 text-sm text-surface-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-500/50 transition-all resize-none"
+                class="w-full bg-surface-800 border border-surface-700 rounded-lg p-3 text-sm text-surface-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-electric-500/50 transition-all resize-none"
                 :class="{ 'border-pink-500': errors.message }"
                 :aria-describedby="errors.message ? 'contact-msg-error' : undefined"
                 aria-required="true"
               ></textarea>
               <p v-if="errors.message" id="contact-msg-error" class="text-pink-400 text-xs mt-1" role="alert">{{ errors.message }}</p>
             </div>
-            <button type="submit" class="w-full bg-gold-500 text-surface-50 py-3 rounded-lg font-semibold hover:bg-gold-400 active:scale-95 transition-all" aria-label="Send message">
+            <button type="submit" class="w-full bg-electric-500 text-surface-50 py-3 rounded-lg font-semibold hover:bg-electric-400 active:scale-95 transition-all" aria-label="Send message">
               Send Message
             </button>
           </form>
@@ -94,19 +94,19 @@ function submitForm() {
           <h2 class="text-xl font-semibold font-display text-surface-50">Contact Info</h2>
           <div class="space-y-3 text-sm">
             <div class="flex items-center gap-3 text-surface-400">
-              <svg class="w-4 h-4 text-gold-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="w-4 h-4 text-electric-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
               <span>support@vertexhw.com</span>
             </div>
             <div class="flex items-center gap-3 text-surface-400">
-              <svg class="w-4 h-4 text-gold-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="w-4 h-4 text-electric-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
               </svg>
               <span>+1 (555) 789-0123</span>
             </div>
             <div class="flex items-center gap-3 text-surface-400">
-              <svg class="w-4 h-4 text-gold-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="w-4 h-4 text-electric-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>

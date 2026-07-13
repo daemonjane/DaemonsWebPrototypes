@@ -145,44 +145,65 @@ function prevStep() {
 }
 
 async function placeOrder() {
-  if (!api) {
-    addToast('API not available. Please try again.', 3000, 'error')
-    return
-  }
   placing.value = true
-  try
-  {
-    let paymentIntentId = ''
-    if (paymentMode.value === 'live' && stripeLoaded.value) {
-      const { createPaymentIntent, confirmCardPayment } = await import('../utils/payment')
-      const clientSecret = await createPaymentIntent(api, finalTotal.value)
-      paymentIntentId = await confirmCardPayment(clientSecret, cardElement.value, {
+  try {
+    if (api) {
+      let paymentIntentId = ''
+      if (paymentMode.value === 'live' && stripeLoaded.value) {
+        const { createPaymentIntent, confirmCardPayment } = await import('../utils/payment')
+        const clientSecret = await createPaymentIntent(api, finalTotal.value)
+        paymentIntentId = await confirmCardPayment(clientSecret, cardElement.value, {
+          name: form.name,
+          email: form.email,
+        })
+      } else {
+        paymentIntentId = `demo_pi_${Date.now()}`
+      }
+
+      const result = await api.orders.checkout({
         name: form.name,
         email: form.email,
+        address: form.address,
+        gift_card_code: giftCardApplied.value ? giftCardCode.value : '',
+        gift_card_discount: giftCardApplied.value ? giftCardDiscount.value : null,
+        payment_intent_id: paymentIntentId,
+        items: cart.value.map(i => ({
+          name: i.name,
+          price: i.price,
+          quantity: i.quantity,
+          item_type: i.type || 'product',
+        })),
       })
+      await clearCart()
+      addToast('Order placed successfully!', 3000, 'success')
+      const orderId = result?.id
+      if (!orderId) throw new Error('No order ID returned')
+      router.push(`/confirmation?id=${orderId}`)
     } else {
-      paymentIntentId = `demo_pi_${Date.now()}`
+      const demoOrderId = `demo-${Date.now()}`
+      const demoOrder = {
+        id: demoOrderId,
+        name: form.name,
+        email: form.email,
+        address: form.address,
+        items: cart.value.map(i => ({
+          name: i.name,
+          price: i.price,
+          quantity: i.quantity,
+          item_type: i.type || 'product',
+        })),
+        total: finalTotal.value,
+        payment_mode: 'demo',
+        status: 'placed',
+        created_at: new Date().toISOString(),
+      }
+      const orders = JSON.parse(localStorage.getItem('vertex_orders') || '[]')
+      orders.push(demoOrder)
+      localStorage.setItem('vertex_orders', JSON.stringify(orders))
+      await clearCart()
+      addToast('Order placed (demo mode)!', 3000, 'success')
+      router.push(`/confirmation?id=${demoOrderId}`)
     }
-
-    const result = await api.orders.checkout({
-      name: form.name,
-      email: form.email,
-      address: form.address,
-      gift_card_code: giftCardApplied.value ? giftCardCode.value : '',
-      gift_card_discount: giftCardApplied.value ? giftCardDiscount.value : null,
-      payment_intent_id: paymentIntentId,
-      items: cart.value.map(i => ({
-        name: i.name,
-        price: i.price,
-        quantity: i.quantity,
-        item_type: i.type || 'product',
-      })),
-    })
-    await clearCart()
-    addToast('Order placed successfully!', 3000, 'success')
-    const orderId = result?.id
-    if (!orderId) throw new Error('No order ID returned')
-    router.push(`/confirmation?id=${orderId}`)
   } catch (e) {
     addToast(e.message || 'Failed to place order', 3000, 'error')
   } finally {
@@ -233,7 +254,7 @@ async function placeOrder() {
 
           <div class="border-t border-surface-600 mt-4 pt-4 text-right">
             <span class="text-lg">Total: </span>
-            <span class="text-2xl font-bold text-gold-500 price-glow" aria-live="polite">${{ Number(finalTotal || 0).toFixed(2) }}</span>
+            <span class="text-2xl font-bold text-electric-500 price-glow" aria-live="polite">${{ Number(finalTotal || 0).toFixed(2) }}</span>
           </div>
 
           <div class="mt-4 pt-4 border-t border-surface-600 text-xs text-surface-500">
@@ -255,34 +276,34 @@ async function placeOrder() {
               <div class="mb-3">
                 <div class="relative">
                   <input v-model="form.name" type="text" placeholder=" " id="ship-name"
-                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-gold-500 transition-colors"
+                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-electric-500 transition-colors"
                     :class="{ 'border-danger-500': errors.name }"
                     :aria-describedby="errors.name ? 'name-error' : undefined" aria-required="true">
-                  <label for="ship-name" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-gold-500 transition-all duration-200 pointer-events-none">Full Name</label>
+                  <label for="ship-name" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-electric-500 transition-all duration-200 pointer-events-none">Full Name</label>
                 </div>
                 <p v-if="errors.name" id="name-error" class="text-danger-400 text-xs mt-1" role="alert">{{ errors.name }}</p>
               </div>
               <div class="mb-3">
                 <div class="relative">
                   <input v-model="form.email" type="email" placeholder=" " id="ship-email"
-                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-gold-500 transition-colors"
+                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-electric-500 transition-colors"
                     :class="{ 'border-danger-500': errors.email }"
                     :aria-describedby="errors.email ? 'email-error' : undefined" aria-required="true">
-                  <label for="ship-email" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-gold-500 transition-all duration-200 pointer-events-none">Email</label>
+                  <label for="ship-email" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-electric-500 transition-all duration-200 pointer-events-none">Email</label>
                 </div>
                 <p v-if="errors.email" id="email-error" class="text-danger-400 text-xs mt-1" role="alert">{{ errors.email }}</p>
               </div>
               <div class="mb-3">
                 <div class="relative">
                   <input v-model="form.address" type="text" placeholder=" " id="ship-addr"
-                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-gold-500 transition-colors"
+                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-electric-500 transition-colors"
                     :class="{ 'border-danger-500': errors.address }"
                     :aria-describedby="errors.address ? 'address-error' : undefined" aria-required="true">
-                  <label for="ship-addr" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-gold-500 transition-all duration-200 pointer-events-none">Address</label>
+                  <label for="ship-addr" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-electric-500 transition-all duration-200 pointer-events-none">Address</label>
                 </div>
                 <p v-if="errors.address" id="address-error" class="text-danger-400 text-xs mt-1" role="alert">{{ errors.address }}</p>
               </div>
-              <button type="submit" class="mt-4 w-full bg-gold-500 py-3 rounded-md font-bold hover:bg-gold-400 transition active:scale-95">
+              <button type="submit" class="mt-4 w-full bg-electric-500 py-3 rounded-md font-bold hover:bg-electric-400 transition active:scale-95">
                 Continue to Payment
               </button>
             </form>
@@ -295,27 +316,27 @@ async function placeOrder() {
               <div class="mb-3">
                 <div class="relative">
                   <input v-model="form.cardNumber" type="text" placeholder=" " id="pay-card"
-                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-gold-500 transition-colors"
+                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-electric-500 transition-colors"
                     :class="{ 'border-danger-500': errors.cardNumber }"
                     :aria-describedby="errors.cardNumber ? 'card-error' : undefined" aria-required="true">
-                  <label for="pay-card" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-gold-500 transition-all duration-200 pointer-events-none">Card Number</label>
+                  <label for="pay-card" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-electric-500 transition-all duration-200 pointer-events-none">Card Number</label>
                 </div>
                 <p v-if="errors.cardNumber" id="card-error" class="text-danger-400 text-xs mt-1" role="alert">{{ errors.cardNumber }}</p>
               </div>
               <div class="grid grid-cols-2 gap-3 mb-3">
                 <div class="relative">
                   <input v-model="form.expDate" type="text" placeholder=" " id="pay-exp"
-                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-gold-500 transition-colors"
+                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-electric-500 transition-colors"
                     :class="{ 'border-danger-500': errors.expDate }" aria-required="true"
                     :aria-describedby="errors.expDate ? 'exp-error' : undefined">
-                  <label for="pay-exp" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-gold-500 transition-all duration-200 pointer-events-none">MM/YY</label>
+                  <label for="pay-exp" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-electric-500 transition-all duration-200 pointer-events-none">MM/YY</label>
                 </div>
                 <div class="relative">
                   <input v-model="form.cvv" type="text" placeholder=" " id="pay-cvv"
-                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-gold-500 transition-colors"
+                    class="peer w-full bg-surface-700 border border-surface-600 rounded p-2 pt-5 text-sm placeholder-transparent focus:outline-none focus:border-electric-500 transition-colors"
                     :class="{ 'border-danger-500': errors.cvv }" aria-required="true"
                     :aria-describedby="errors.cvv ? 'cvv-error' : undefined">
-                  <label for="pay-cvv" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-gold-500 transition-all duration-200 pointer-events-none">CVV</label>
+                  <label for="pay-cvv" class="absolute left-2 top-1 text-[10px] text-surface-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:text-surface-500 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-electric-500 transition-all duration-200 pointer-events-none">CVV</label>
                 </div>
                 <p v-if="errors.expDate" id="exp-error" class="text-danger-400 text-xs mt-1" role="alert">{{ errors.expDate }}</p>
                 <p v-if="errors.cvv" id="cvv-error" class="text-danger-400 text-xs mt-1" role="alert">{{ errors.cvv }}</p>
@@ -348,7 +369,7 @@ async function placeOrder() {
                   Back
                 </button>
                 <button type="submit"
-                  class="flex-1 bg-gold-500 py-3 rounded-md font-bold hover:bg-gold-400 transition active:scale-95">
+                  class="flex-1 bg-electric-500 py-3 rounded-md font-bold hover:bg-electric-400 transition active:scale-95">
                   Review Order
                 </button>
               </div>
@@ -368,7 +389,7 @@ async function placeOrder() {
               <div class="bg-surface-700 rounded-lg p-3">
                 <p class="text-surface-500 text-xs uppercase tracking-wider mb-1">Payment</p>
                 <p class="text-surface-400 font-mono">**** **** **** {{ form.cardNumber.slice(-4) }}</p>
-                <p v-if="paymentMode === 'demo'" class="text-gold-500 text-xs mt-1">Demo payment — no charge</p>
+                <p v-if="paymentMode === 'demo'" class="text-electric-500 text-xs mt-1">Demo payment — no charge</p>
               </div>
               <div class="bg-surface-700 rounded-lg p-3">
                 <p class="text-surface-500 text-xs uppercase tracking-wider mb-1">Items</p>

@@ -11,7 +11,7 @@ const tocOpen = ref(false)
     <Breadcrumbs :crumbs="[{ label: 'Privacy' }, { label: 'Privacy Policy' }]" />
     <!-- Header -->
     <div class="mb-10">
-      <span class="text-xs font-mono text-gold-400 uppercase tracking-wider bg-gold-500/10 px-2 py-1 rounded">Legal</span>
+      <span class="text-xs font-mono text-electric-400 uppercase tracking-wider bg-electric-500/10 px-2 py-1 rounded">Legal</span>
       <h1 class="text-3xl sm:text-4xl font-bold text-surface-50 font-display mt-3">Privacy Policy</h1>
       <p class="text-surface-400 mt-2 text-sm">Last updated: {{ lastUpdated }}</p>
     </div>
@@ -25,13 +25,13 @@ const tocOpen = ref(false)
         </svg>
       </button>
       <div v-if="tocOpen" class="mt-3 space-y-1.5">
-        <a href="#information" class="block text-sm text-surface-400 hover:text-gold-500 transition-colors">1. Information We Collect</a>
-        <a href="#use" class="block text-sm text-surface-400 hover:text-gold-500 transition-colors">2. How We Use Your Information</a>
-        <a href="#sharing" class="block text-sm text-surface-400 hover:text-gold-500 transition-colors">3. Data Sharing & Third Parties</a>
-        <a href="#security" class="block text-sm text-surface-400 hover:text-gold-500 transition-colors">4. Data Security</a>
-        <a href="#rights" class="block text-sm text-surface-400 hover:text-gold-500 transition-colors">5. Your Rights</a>
-        <a href="#cookies" class="block text-sm text-surface-400 hover:text-gold-500 transition-colors">6. Cookies</a>
-        <a href="#contact" class="block text-sm text-surface-400 hover:text-gold-500 transition-colors">7. Contact</a>
+        <a href="#information" class="block text-sm text-surface-400 hover:text-electric-500 transition-colors">1. Information We Collect</a>
+        <a href="#use" class="block text-sm text-surface-400 hover:text-electric-500 transition-colors">2. How We Use Your Information</a>
+        <a href="#sharing" class="block text-sm text-surface-400 hover:text-electric-500 transition-colors">3. Data Sharing & Third Parties</a>
+        <a href="#security" class="block text-sm text-surface-400 hover:text-electric-500 transition-colors">4. Data Security</a>
+        <a href="#rights" class="block text-sm text-surface-400 hover:text-electric-500 transition-colors">5. Your Rights</a>
+        <a href="#cookies" class="block text-sm text-surface-400 hover:text-electric-500 transition-colors">6. Cookies</a>
+        <a href="#contact" class="block text-sm text-surface-400 hover:text-electric-500 transition-colors">7. Contact</a>
       </div>
     </div>
 
@@ -59,17 +59,17 @@ const tocOpen = ref(false)
 
       <section id="rights">
         <h2 class="text-xl font-semibold text-surface-50 font-display mb-3">5. Your Rights</h2>
-        <p class="text-surface-400">You have the right to access, correct, or delete your personal data at any time. You may also request a copy of the data we hold about you. To exercise these rights, contact us at <a href="mailto:privacy@vertexhw.com" class="text-gold-500 hover:underline">privacy@vertexhw.com</a>.</p>
+        <p class="text-surface-400">You have the right to access, correct, or delete your personal data at any time. You may also request a copy of the data we hold about you. To exercise these rights, contact us at <a href="mailto:privacy@vertexhw.com" class="text-electric-500 hover:underline">privacy@vertexhw.com</a>.</p>
       </section>
 
       <section id="cookies">
         <h2 class="text-xl font-semibold text-surface-50 font-display mb-3">6. Cookies</h2>
-        <p class="text-surface-400">We use essential cookies for cart and session functionality, as well as analytics cookies to improve our store. You can manage cookie preferences in your browser settings. See our <router-link to="/cookies" class="text-gold-500 hover:underline">Cookie Policy</router-link> for details.</p>
+        <p class="text-surface-400">We use essential cookies for cart and session functionality, as well as analytics cookies to improve our store. You can manage cookie preferences in your browser settings. See our <router-link to="/cookies" class="text-electric-500 hover:underline">Cookie Policy</router-link> for details.</p>
       </section>
 
       <section id="contact">
         <h2 class="text-xl font-semibold text-surface-50 font-display mb-3">7. Contact</h2>
-        <p class="text-surface-400">For privacy-related inquiries, email <a href="mailto:privacy@vertexhw.com" class="text-gold-500 hover:underline">privacy@vertexhw.com</a> or write to: Vertex Privacy, 1000 Innovation Drive, San Francisco, CA 94105.</p>
+        <p class="text-surface-400">For privacy-related inquiries, email <a href="mailto:privacy@vertexhw.com" class="text-electric-500 hover:underline">privacy@vertexhw.com</a> or write to: Vertex Privacy, 1000 Innovation Drive, San Francisco, CA 94105.</p>
       </section>
     </div>
 

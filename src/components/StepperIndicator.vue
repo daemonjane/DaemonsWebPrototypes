@@ -22,7 +22,7 @@ defineProps({
           </svg>
           <span v-else>{{ i + 1 }}</span>
         </div>
-        <span class="hidden sm:inline text-xs ml-2 mr-2 font-medium" :class="i === current ? 'text-gold-400' : i < current ? 'text-emerald-400' : 'text-charcoal-500'">
+        <span class="hidden sm:inline text-xs ml-2 mr-2 font-medium" :class="i === current ? 'text-electric-400' : i < current ? 'text-emerald-400' : 'text-charcoal-500'">
           {{ step }}
         </span>
       </div>

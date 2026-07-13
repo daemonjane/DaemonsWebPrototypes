@@ -51,7 +51,7 @@ function closeQuickView() { quickViewProduct.value = null }
 </script>
 
 <template>
-  <div v-spotlight class="bg-surface-800/60 rounded-2xl overflow-hidden border border-surface-700/80 flex flex-col group transition-all duration-300 hover:border-gold-500/20 hover:-translate-y-1 hover:shadow-card-hover">
+  <div v-spotlight class="bg-surface-800/60 rounded-2xl overflow-hidden border border-surface-700/80 flex flex-col group transition-all duration-300 hover:border-electric-500/20 hover:-translate-y-1 hover:shadow-card-hover">
     <!-- Image -->
     <router-link :to="`/product/${product.uuid || product.id}`" class="block relative h-52 w-full overflow-hidden bg-surface-850">
       <OptimizedImage
@@ -83,7 +83,7 @@ function closeQuickView() { quickViewProduct.value = null }
     <div class="p-4 flex flex-col flex-1">
       <div class="flex justify-between items-start gap-2">
         <router-link :to="`/product/${product.uuid || product.id}`" class="min-w-0">
-          <h3 class="text-sm font-semibold text-surface-50 leading-snug line-clamp-2 group-hover:text-gold-400 transition-colors">{{ product.name }}</h3>
+          <h3 class="text-sm font-semibold text-surface-50 leading-snug line-clamp-2 group-hover:text-electric-400 transition-colors">{{ product.name }}</h3>
         </router-link>
         <button
           @click.stop="toggleFavorite(product.id)"
@@ -102,13 +102,13 @@ function closeQuickView() { quickViewProduct.value = null }
 
       <div class="mt-auto pt-3 border-t border-surface-700/50 flex items-center justify-between gap-2">
         <div class="flex items-baseline gap-1.5">
-          <span v-if="product.price > 0" class="text-lg font-bold text-gold-500 price-glow font-mono">${{ Number(product.price).toFixed(2) }}</span>
+          <span v-if="product.price > 0" class="text-lg font-bold text-electric-500 price-glow font-mono">${{ Number(product.price).toFixed(2) }}</span>
           <span v-else class="text-xs text-surface-500 font-mono">Price TBD</span>
         </div>
         <div class="flex gap-1.5">
           <button
             @click.stop="openQuickView"
-            class="p-2 rounded-lg text-surface-400 bg-surface-700/80 hover:bg-surface-600 hover:text-gold-500 transition-colors"
+            class="p-2 rounded-lg text-surface-400 bg-surface-700/80 hover:bg-surface-600 hover:text-electric-500 transition-colors"
             aria-label="Quick view"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -119,7 +119,7 @@ function closeQuickView() { quickViewProduct.value = null }
           <button
             v-if="!isInCart(product.uuid || product.id)"
             @click.stop="handleAddToCart"
-            class="bg-gold-500 text-surface-950 px-3.5 py-2 rounded-lg text-xs font-semibold hover:bg-gold-400 active:scale-95 transition-all flex items-center gap-1.5 shadow-glow-gold"
+            class="bg-electric-500 text-surface-950 px-3.5 py-2 rounded-lg text-xs font-semibold hover:bg-electric-400 active:scale-95 transition-all flex items-center gap-1.5 shadow-glow-electric"
           >
             <svg v-if="addingToCart" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
             <span aria-live="polite">{{ addingToCart ? 'Adding...' : 'Add' }}</span>

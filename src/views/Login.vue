@@ -4,10 +4,12 @@ import { useRouter } from "vue-router"
 import { login, signup, saveAuthSession, verifyEmail, resendVerificationCode } from "../services/login.js"
 import { useOsimartCart } from "../composables/useOsimartCart"
 import { useWishlistStore } from "../composables/useWishlistStore"
+import { useUser } from "../composables/useUser"
 
 const router = useRouter()
 const { setUser: setUserForCart } = useOsimartCart()
 const wishlistStore = useWishlistStore()
+const { setAuth } = useUser()
 
 const mode = ref("login")
 const name = ref("")
@@ -19,6 +21,36 @@ const error = ref("")
 const successMessage = ref("")
 const loading = ref(false)
 const resending = ref(false)
+
+const DJANGO_BASE = window.location.port === '5173'
+  ? 'http://localhost:8000'
+  : window.location.origin
+
+async function _syncWithDjango(osimartData) {
+  try {
+    const userObj = osimartData?.user || (osimartData?.id ? osimartData : null)
+    const res = await fetch(`${DJANGO_BASE}/api/auth/osimart-sync/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: userObj?.email || email.value.trim(),
+        name: userObj?.name || userObj?.first_name || '',
+        first_name: userObj?.first_name || '',
+        last_name: userObj?.last_name || '',
+        osimart_customer_id: userObj?.id || osimartData?.customer?.id || '',
+      }),
+    })
+    if (res.ok) {
+      const djangoData = await res.json()
+      saveAuthSession(osimartData)
+      setAuth(djangoData)
+      return true
+    }
+  } catch {
+    // Django unavailable — proceed with Osimart-only data
+  }
+  return false
+}
 
 function switchMode(next) {
   mode.value = next
@@ -39,7 +71,11 @@ async function handleSubmit() {
   try {
     if (mode.value === "login") {
       const data = await login({ email: cleanEmail, password: cleanPassword })
-      saveAuthSession(data)
+      const synced = await _syncWithDjango(data)
+      if (!synced) {
+        saveAuthSession(data)
+        setAuth(data?.user || (data?.id ? data : null))
+      }
       setUserForCart(cleanEmail)
       wishlistStore.setUser(cleanEmail)
       window.dispatchEvent(new Event("storage"))
@@ -80,7 +116,11 @@ async function handleVerify() {
   try {
     await verifyEmail({ email: cleanEmail, code: verificationCode.value.trim() })
     const data = await login({ email: cleanEmail, password: password.value })
-    saveAuthSession(data)
+    const synced = await _syncWithDjango(data)
+    if (!synced) {
+      saveAuthSession(data)
+      setAuth(data?.user || (data?.id ? data : null))
+    }
     setUserForCart(cleanEmail)
     wishlistStore.setUser(cleanEmail)
     window.dispatchEvent(new Event("storage"))
@@ -99,7 +139,7 @@ async function handleVerify() {
     <div class="w-full max-w-md bg-surface-800/60 shadow-elevated rounded-2xl p-8 sm:p-10 border border-surface-700">
       <!-- Logo -->
       <div class="text-center mb-8">
-        <h1 class="font-display text-3xl font-bold text-gold-500 tracking-tight">VERTEX</h1>
+        <h1 class="font-display text-3xl font-bold text-electric-500 tracking-tight">VERTEX</h1>
         <p class="text-surface-400 text-sm mt-2">
           {{
             mode === "login" ? "Sign in to your account" :
@@ -119,7 +159,7 @@ async function handleVerify() {
         <button
           type="button"
           class="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all"
-          :class="mode === 'login' ? 'bg-gold-500 text-surface-950' : 'text-surface-400 hover:text-surface-200'"
+          :class="mode === 'login' ? 'bg-electric-500 text-surface-950' : 'text-surface-400 hover:text-surface-200'"
           @click="switchMode('login')"
         >
           Login
@@ -127,7 +167,7 @@ async function handleVerify() {
         <button
           type="button"
           class="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all"
-          :class="mode === 'signup' ? 'bg-gold-500 text-surface-950' : 'text-surface-400 hover:text-surface-200'"
+          :class="mode === 'signup' ? 'bg-electric-500 text-surface-950' : 'text-surface-400 hover:text-surface-200'"
           @click="switchMode('signup')"
         >
           Sign Up
@@ -140,7 +180,7 @@ async function handleVerify() {
           <label class="text-sm font-medium text-surface-300">Full Name</label>
           <input
             v-model="name" type="text" required autocomplete="name"
-            class="w-full mt-1.5 px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
+            class="w-full mt-1.5 px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
             placeholder="Enter your name"
           />
         </div>
@@ -149,7 +189,7 @@ async function handleVerify() {
           <label class="text-sm font-medium text-surface-300">Email</label>
           <input
             v-model="email" type="email" required autocomplete="email"
-            class="w-full mt-1.5 px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
+            class="w-full mt-1.5 px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
             placeholder="Enter your email"
           />
         </div>
@@ -158,7 +198,7 @@ async function handleVerify() {
           <label class="text-sm font-medium text-surface-300">Mobile Number</label>
           <input
             v-model="phone" type="tel" autocomplete="tel"
-            class="w-full mt-1.5 px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
+            class="w-full mt-1.5 px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
             placeholder="e.g. +961 71 234 567"
           />
         </div>
@@ -166,12 +206,12 @@ async function handleVerify() {
         <div>
           <div class="flex items-center justify-between mb-1.5">
             <label class="text-sm font-medium text-surface-300">Password</label>
-            <router-link v-if="mode === 'login'" to="/forgot-password" class="text-xs text-gold-500 hover:text-gold-400 transition-colors">Forgot Password?</router-link>
+            <router-link v-if="mode === 'login'" to="/forgot-password" class="text-xs text-electric-500 hover:text-electric-400 transition-colors">Forgot Password?</router-link>
           </div>
           <input
             v-model="password" type="password" required
             :autocomplete="mode === 'login' ? 'current-password' : 'new-password'"
-            class="w-full px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
+            class="w-full px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
             placeholder="••••••••"
           />
         </div>
@@ -180,7 +220,7 @@ async function handleVerify() {
 
         <button
           type="submit" :disabled="loading"
-          class="w-full bg-gold-500 text-surface-950 py-3 rounded-xl font-display font-semibold hover:bg-gold-400 transition-all disabled:opacity-60 active:scale-[0.98] shadow-glow-gold"
+          class="w-full bg-electric-500 text-surface-950 py-3 rounded-xl font-display font-semibold hover:bg-electric-400 transition-all disabled:opacity-60 active:scale-[0.98] shadow-glow-electric"
         >
           {{ loading ? "Please wait..." : mode === "login" ? "Login" : "Sign Up" }}
         </button>
@@ -197,7 +237,7 @@ async function handleVerify() {
           <input
             v-model="verificationCode"
             type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" required placeholder="0000"
-            class="w-full max-w-[160px] mx-auto block mt-2 px-4 py-3 border border-surface-700 rounded-xl text-center text-2xl tracking-[0.5em] font-bold focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 outline-none bg-surface-900 text-surface-100 transition-all"
+            class="w-full max-w-[160px] mx-auto block mt-2 px-4 py-3 border border-surface-700 rounded-xl text-center text-2xl tracking-[0.5em] font-bold focus:ring-2 focus:ring-electric-500/50 focus:border-electric-500/50 outline-none bg-surface-900 text-surface-100 transition-all"
           />
         </div>
 
@@ -205,14 +245,14 @@ async function handleVerify() {
 
         <button
           type="submit" :disabled="loading || verificationCode.length !== 4"
-          class="w-full bg-gold-500 text-surface-950 py-3 rounded-xl font-display font-semibold hover:bg-gold-400 transition-all disabled:opacity-60 active:scale-[0.98] shadow-glow-gold"
+          class="w-full bg-electric-500 text-surface-950 py-3 rounded-xl font-display font-semibold hover:bg-electric-400 transition-all disabled:opacity-60 active:scale-[0.98] shadow-glow-electric"
         >
           {{ loading ? "Verifying..." : "Verify & Log In" }}
         </button>
 
         <button
           type="button" @click="handleResendCode" :disabled="resending"
-          class="w-full text-xs text-center text-gold-500 hover:text-gold-400 hover:underline block pt-2 disabled:opacity-60"
+          class="w-full text-xs text-center text-electric-500 hover:text-electric-400 hover:underline block pt-2 disabled:opacity-60"
         >
           {{ resending ? "Sending..." : "Resend Code" }}
         </button>

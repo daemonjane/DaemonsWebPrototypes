@@ -34,15 +34,15 @@ const router = useRouter()
 
     <div class="relative mb-6">
       <p class="text-[120px] sm:text-[180px] font-mono font-black text-surface-800 leading-none select-none" aria-hidden="true">404</p>
-      <p class="absolute inset-0 flex items-center justify-center text-[120px] sm:text-[180px] font-mono font-black text-gold-500 leading-none mix-blend-screen animate-pulse select-none" aria-hidden="true">404</p>
+      <p class="absolute inset-0 flex items-center justify-center text-[120px] sm:text-[180px] font-mono font-black text-electric-500 leading-none mix-blend-screen animate-pulse select-none" aria-hidden="true">404</p>
     </div>
     <h1 class="text-2xl sm:text-3xl font-bold font-display text-surface-50 mb-2">Signal Lost</h1>
     <p class="text-surface-400 max-w-md mb-8">This page doesn't exist or has been relocated. The system is still online.</p>
     <div class="flex gap-4">
-      <button @click="router.back()" class="border border-surface-600 text-surface-200 px-5 py-2.5 rounded-lg font-medium hover:border-gold-500 hover:text-gold-500 transition-all" aria-label="Go back to previous page">
+      <button @click="router.back()" class="border border-surface-600 text-surface-200 px-5 py-2.5 rounded-lg font-medium hover:border-electric-500 hover:text-electric-500 transition-all" aria-label="Go back to previous page">
         Go Back
       </button>
-      <router-link to="/" class="bg-gold-500 text-surface-50 px-5 py-2.5 rounded-lg font-medium hover:bg-gold-400 transition-all">
+      <router-link to="/" class="bg-electric-500 text-surface-50 px-5 py-2.5 rounded-lg font-medium hover:bg-electric-400 transition-all">
         Return to Command Station
       </router-link>
     </div>

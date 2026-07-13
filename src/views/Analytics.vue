@@ -71,7 +71,7 @@ const brandedProducts = computed(() => {
     </div>
 
     <div v-if="pending" class="text-center py-12">
-      <div class="animate-spin w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full mx-auto"></div>
+      <div class="animate-spin w-8 h-8 border-2 border-electric-500 border-t-transparent rounded-full mx-auto"></div>
       <p class="text-surface-500 text-sm mt-3">Loading analytics...</p>
     </div>
 
@@ -83,7 +83,7 @@ const brandedProducts = computed(() => {
         <div v-if="storeData.metrics" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
           <div v-for="(val, key) in storeData.metrics" :key="key" class="bg-surface-800/50 rounded-lg p-3 text-center">
             <p class="text-xs text-surface-500 uppercase tracking-wider">{{ key.replace(/_/g, ' ') }}</p>
-            <p class="text-lg font-bold text-gold-500 mt-0.5">{{ val }}</p>
+            <p class="text-lg font-bold text-electric-500 mt-0.5">{{ val }}</p>
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@ const brandedProducts = computed(() => {
         </div>
         <div class="bg-surface-900 rounded-xl p-4 border border-surface-700">
           <p class="text-xs text-surface-500 uppercase tracking-wider">Avg Price</p>
-          <p class="text-2xl font-bold text-gold-500 mt-1">${{ avgPrice }}</p>
+          <p class="text-2xl font-bold text-electric-500 mt-1">${{ avgPrice }}</p>
         </div>
         <div class="bg-surface-900 rounded-xl p-4 border border-surface-700">
           <p class="text-xs text-surface-500 uppercase tracking-wider">Price Range</p>
@@ -131,7 +131,7 @@ const brandedProducts = computed(() => {
           <div v-for="[cat, count] in categoryBreakdown" :key="cat" class="flex items-center gap-3">
             <span class="text-sm text-surface-200 w-32 sm:w-40 truncate">{{ cat }}</span>
             <div class="flex-1 h-4 bg-surface-800 rounded-full overflow-hidden">
-              <div class="h-full bg-gold-500 rounded-full transition-all duration-500" :style="{ width: (count / allProducts.length * 100) + '%' }"></div>
+              <div class="h-full bg-electric-500 rounded-full transition-all duration-500" :style="{ width: (count / allProducts.length * 100) + '%' }"></div>
             </div>
             <span class="text-xs text-surface-500 font-mono w-8 text-right">{{ count }}</span>
           </div>

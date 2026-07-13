@@ -19,7 +19,7 @@ function close() { emit('update:open', false) }
       <div v-if="open" class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-surface-900 border-l border-surface-750 shadow-elevated flex flex-col" role="dialog" aria-modal="true" aria-label="Shopping cart">
         <div class="flex items-center justify-between px-5 py-4 border-b border-surface-750">
           <h2 class="text-lg font-display font-semibold text-surface-50 flex items-center gap-2">
-            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-electric-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
             </svg>
             Cart <span class="text-surface-500 font-normal badge-bounce">({{ totalItems }})</span>
@@ -35,7 +35,7 @@ function close() { emit('update:open', false) }
           </svg>
           <p class="text-sm font-medium">Your cart is empty</p>
           <p class="text-xs mt-1">Add some gear to get started.</p>
-          <button @click="close" class="mt-4 text-sm text-gold-500 hover:text-gold-400 font-medium transition-colors">Continue Shopping →</button>
+          <button @click="close" class="mt-4 text-sm text-electric-500 hover:text-electric-400 font-medium transition-colors">Continue Shopping →</button>
         </div>
 
         <div v-else class="flex-1 overflow-y-auto px-5 py-4 space-y-3">
@@ -45,7 +45,7 @@ function close() { emit('update:open', false) }
             </div>
             <div class="flex-1 min-w-0 space-y-1">
               <p class="text-sm text-surface-100 font-medium truncate">{{ item.name }}</p>
-              <p class="text-gold-500 text-sm font-mono price-glow">${{ (Number(item.price || 0) * (item.quantity || 0)).toFixed(2) }}</p>
+              <p class="text-electric-500 text-sm font-mono price-glow">${{ (Number(item.price || 0) * (item.quantity || 0)).toFixed(2) }}</p>
               <div class="flex items-center gap-2 pt-1">
                 <button @click="updateQuantity(item.id, -1)" class="w-7 h-7 flex items-center justify-center rounded-lg bg-surface-700 text-surface-400 hover:text-surface-100 hover:bg-surface-600 transition-colors text-sm font-medium" aria-label="Decrease quantity">−</button>
                 <span class="text-sm text-surface-200 font-mono min-w-[1.5rem] text-center" aria-live="polite">{{ item.quantity }}</span>
@@ -63,7 +63,7 @@ function close() { emit('update:open', false) }
             <span class="text-surface-400">Subtotal</span>
             <span class="text-surface-100 font-semibold font-mono">${{ Number(totalPrice || 0).toFixed(2) }}</span>
           </div>
-          <router-link to="/checkout" @click="close" class="block w-full text-center bg-gold-500 text-surface-950 py-3 rounded-xl font-semibold hover:bg-gold-400 active:scale-[0.98] transition-all duration-150 shadow-glow-gold">
+          <router-link to="/checkout" @click="close" class="block w-full text-center bg-electric-500 text-surface-950 py-3 rounded-xl font-semibold hover:bg-electric-400 active:scale-[0.98] transition-all duration-150 shadow-glow-electric">
             View Cart & Checkout
           </router-link>
           <button @click="close" class="block w-full text-center text-sm text-surface-400 hover:text-surface-200 py-2 transition-colors">

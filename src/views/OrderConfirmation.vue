@@ -21,13 +21,13 @@ const orderNumber = route.query.id || Math.floor(100000 + Math.random() * 900000
     <p class="text-surface-400 mb-6">Thank you for your purchase. Your order is being processed.</p>
     <div class="bg-surface-800 border border-surface-700 rounded-xl p-6 inline-block mb-8">
       <p class="text-sm text-surface-500 mb-1">Order Number</p>
-      <p class="text-2xl font-mono font-bold text-gold-500">#{{ orderNumber }}</p>
+      <p class="text-2xl font-mono font-bold text-electric-500">#{{ orderNumber }}</p>
     </div>
     <div class="space-y-3">
-      <router-link to="/orders" class="block w-full sm:w-auto sm:inline-block bg-gold-500 text-surface-50 px-8 py-3 rounded-lg font-semibold hover:bg-gold-400 transition-all">
+      <router-link to="/orders" class="block w-full sm:w-auto sm:inline-block bg-electric-500 text-surface-50 px-8 py-3 rounded-lg font-semibold hover:bg-electric-400 transition-all">
         View Orders
       </router-link>
-      <router-link to="/shop" class="block w-full sm:w-auto sm:inline-block border border-surface-600 text-surface-200 px-8 py-3 rounded-lg font-semibold hover:border-gold-500 hover:text-gold-500 transition-all sm:ml-3">
+      <router-link to="/shop" class="block w-full sm:w-auto sm:inline-block border border-surface-600 text-surface-200 px-8 py-3 rounded-lg font-semibold hover:border-electric-500 hover:text-electric-500 transition-all sm:ml-3">
         Continue Shopping
       </router-link>
     </div>

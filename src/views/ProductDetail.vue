@@ -190,7 +190,7 @@ onMounted(async () => {
         </div>
         <div v-if="product.images.length > 1" class="flex gap-2 mt-3 overflow-x-auto pb-1">
           <button v-for="(img, i) in product.images" :key="i" @click="selectedImage = i"
-                  :class="['w-16 h-16 rounded-lg border-2 overflow-hidden shrink-0 transition-all', selectedImage === i ? 'border-gold-500' : 'border-surface-700 hover:border-surface-600']">
+                  :class="['w-16 h-16 rounded-lg border-2 overflow-hidden shrink-0 transition-all', selectedImage === i ? 'border-electric-500' : 'border-surface-700 hover:border-surface-600']">
             <OptimizedImage :src="resolveImage(img)" :alt="'View ' + (i + 1)" wrapperClass="h-full w-full" />
           </button>
         </div>
@@ -199,9 +199,9 @@ onMounted(async () => {
       <!-- Product info -->
       <div>
         <div class="flex flex-wrap items-center gap-2 mb-2">
-          <span class="text-xs font-mono text-gold-500 uppercase tracking-wider bg-gold-500/10 px-2 py-1 rounded">{{ product.categoryName || product.category }}</span>
+          <span class="text-xs font-mono text-electric-500 uppercase tracking-wider bg-electric-500/10 px-2 py-1 rounded">{{ product.categoryName || product.category }}</span>
           <router-link v-if="product.brand" :to="'/shop?brand=' + (product.brand.slugified_name || product.brand.name)"
-                       class="text-xs font-mono text-surface-400 hover:text-gold-500 bg-surface-800 px-2 py-1 rounded transition-colors">
+                       class="text-xs font-mono text-surface-400 hover:text-electric-500 bg-surface-800 px-2 py-1 rounded transition-colors">
             {{ product.brand.name }}
           </router-link>
           <router-link v-for="col in product.collections" :key="col.id || col.name"
@@ -219,7 +219,7 @@ onMounted(async () => {
           <span class="text-xs text-surface-500">{{ product.rating }}</span>
         </div>
 
-        <p class="text-3xl text-gold-500 mt-4 font-mono font-bold">${{ Number(totalPrice || 0).toFixed(2) }}</p>
+        <p class="text-3xl text-electric-500 mt-4 font-mono font-bold">${{ Number(totalPrice || 0).toFixed(2) }}</p>
 
         <!-- Stock status -->
         <div v-if="stockDisplay >= 0" class="mt-3" aria-live="polite">
@@ -240,7 +240,7 @@ onMounted(async () => {
           <div class="flex flex-wrap gap-2">
             <button v-for="v in product.variants" :key="v.id || v.name"
                     @click="selectVariant(v)"
-                    :class="['px-4 py-2 rounded-lg text-sm border transition-all', selectedVariant?.id === v.id || selectedVariant?.name === v.name ? 'bg-gold-500/10 border-gold-500 text-gold-400' : 'bg-surface-800 border-surface-700 text-surface-200 hover:border-surface-600']">
+                    :class="['px-4 py-2 rounded-lg text-sm border transition-all', selectedVariant?.id === v.id || selectedVariant?.name === v.name ? 'bg-electric-500/10 border-electric-500 text-electric-400' : 'bg-surface-800 border-surface-700 text-surface-200 hover:border-surface-600']">
               {{ v.name || v.value }}
               <span class="ml-1.5 inline-flex items-center gap-1">
                 <span class="w-1.5 h-1.5 rounded-full" :class="variantStock(v) === 0 ? 'bg-danger-500' : variantStock(v) <= 5 ? 'bg-warn-400' : 'bg-success-400'"></span>
@@ -264,8 +264,8 @@ onMounted(async () => {
         <div v-if="stockDisplay === 0 && !bisSubscribed" class="mt-4 p-4 bg-surface-800/60 border border-surface-700 rounded-lg">
           <p class="text-sm text-surface-200 font-medium mb-2">Notify me when back in stock</p>
           <div class="flex gap-2">
-            <input v-model="bisEmail" type="email" placeholder="your@email.com" class="flex-1 bg-surface-800 border border-surface-700 rounded-md px-3 py-2 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-gold-500" :disabled="bisPending" />
-            <button @click="subscribeBIS" :disabled="bisPending || !bisEmail" class="bg-gold-500 hover:bg-gold-400 disabled:opacity-50 text-surface-900 text-sm font-semibold px-4 py-2 rounded-md transition-all active:scale-95">Notify</button>
+            <input v-model="bisEmail" type="email" placeholder="your@email.com" class="flex-1 bg-surface-800 border border-surface-700 rounded-md px-3 py-2 text-sm text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-electric-500" :disabled="bisPending" />
+            <button @click="subscribeBIS" :disabled="bisPending || !bisEmail" class="bg-electric-500 hover:bg-electric-400 disabled:opacity-50 text-surface-900 text-sm font-semibold px-4 py-2 rounded-md transition-all active:scale-95">Notify</button>
           </div>
         </div>
         <p v-if="bisMsg" class="mt-2 text-sm" :class="bisMsgClass" aria-live="polite">{{ bisMsg }}</p>
@@ -277,7 +277,7 @@ onMounted(async () => {
             <svg class="w-4 h-4" :class="isFavorite(product.uuid || product.id) ? 'fill-danger-400' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
             {{ isFavorite(product.uuid || product.id) ? 'Favorited' : 'Favorite' }}
           </button>
-          <button @click="shareProduct" class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-surface-800 text-surface-400 border border-surface-700 hover:border-gold-500/30 hover:text-gold-500 transition-colors" aria-label="Share product">
+          <button @click="shareProduct" class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-surface-800 text-surface-400 border border-surface-700 hover:border-electric-500/30 hover:text-electric-500 transition-colors" aria-label="Share product">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
             Share
           </button>
@@ -289,7 +289,7 @@ onMounted(async () => {
         <!-- Specs by section -->
         <div v-if="product.sections.length" class="mt-6 space-y-4">
           <h3 class="text-surface-50 font-semibold flex items-center gap-2">
-            <svg class="w-4 h-4 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <svg class="w-4 h-4 text-electric-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             Technical Specs
           </h3>
           <div v-for="(section, si) in product.sections" :key="si">
@@ -306,24 +306,24 @@ onMounted(async () => {
         <!-- Add-ons -->
         <div v-if="addons.length" class="mt-6 p-4 bg-surface-800/60 border border-surface-700 rounded-lg">
           <h3 class="text-surface-50 font-semibold text-sm mb-3 flex items-center gap-2">
-            <svg class="w-4 h-4 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+            <svg class="w-4 h-4 text-electric-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
             Add-ons &amp; Extras
           </h3>
           <div class="space-y-2">
-            <label v-for="addon in addons" :key="addon.id" class="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors" :class="selectedAddons.find(a => a.id === addon.id) ? 'bg-gold-500/10 border border-gold-500/30' : 'bg-surface-800/60 border border-surface-700 hover:border-surface-600'">
-              <input type="checkbox" :checked="selectedAddons.find(a => a.id === addon.id)" @change="toggleAddon(addon)" class="w-4 h-4 rounded border-surface-600 bg-surface-800 text-gold-500 focus:ring-gold-500 focus:ring-offset-0" :aria-label="'Add ' + addon.name + ' for $' + parseFloat(addon.price || 0).toFixed(2)" />
+            <label v-for="addon in addons" :key="addon.id" class="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors" :class="selectedAddons.find(a => a.id === addon.id) ? 'bg-electric-500/10 border border-electric-500/30' : 'bg-surface-800/60 border border-surface-700 hover:border-surface-600'">
+              <input type="checkbox" :checked="selectedAddons.find(a => a.id === addon.id)" @change="toggleAddon(addon)" class="w-4 h-4 rounded border-surface-600 bg-surface-800 text-electric-500 focus:ring-electric-500 focus:ring-offset-0" :aria-label="'Add ' + addon.name + ' for $' + parseFloat(addon.price || 0).toFixed(2)" />
               <div class="flex-1 min-w-0">
                 <span class="text-sm text-surface-100 font-medium">{{ addon.name }}</span>
                 <p v-if="addon.description" class="text-xs text-surface-500 truncate">{{ addon.description }}</p>
               </div>
-              <span class="text-sm text-gold-500 font-mono font-medium shrink-0">+${{ parseFloat(addon.price || 0).toFixed(2) }}</span>
+              <span class="text-sm text-electric-500 font-mono font-medium shrink-0">+${{ parseFloat(addon.price || 0).toFixed(2) }}</span>
             </label>
           </div>
         </div>
 
         <!-- Add to cart -->
         <template v-if="product.stock !== 0">
-          <button v-if="!isInCart(product.uuid || product.id)" @click="handleAddItem" class="mt-8 w-full sm:w-auto bg-gold-500 hover:bg-gold-400 text-surface-900 font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+          <button v-if="!isInCart(product.uuid || product.id)" @click="handleAddItem" class="mt-8 w-full sm:w-auto bg-electric-500 hover:bg-electric-400 text-surface-900 font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
             <svg v-if="addingToCart" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
             <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
             {{ addingToCart ? 'Adding...' : 'Add to Cart' }}
@@ -353,9 +353,9 @@ onMounted(async () => {
       <div class="flex items-center justify-between gap-3">
         <div class="min-w-0">
           <p class="text-sm text-surface-50 truncate font-medium">{{ product.name }}</p>
-          <p class="text-gold-500 font-mono font-bold">${{ Number(totalPrice || 0).toFixed(2) }}</p>
+          <p class="text-electric-500 font-mono font-bold">${{ Number(totalPrice || 0).toFixed(2) }}</p>
         </div>
-        <button v-if="stockDisplay > 0" @click="handleAddItem" :disabled="addingToCart" class="bg-gold-500 hover:bg-gold-400 text-surface-900 font-semibold py-2.5 px-6 rounded-lg transition-all active:scale-95 shrink-0 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+        <button v-if="stockDisplay > 0" @click="handleAddItem" :disabled="addingToCart" class="bg-electric-500 hover:bg-electric-400 text-surface-900 font-semibold py-2.5 px-6 rounded-lg transition-all active:scale-95 shrink-0 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
           <svg v-if="addingToCart" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
           <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
           {{ addingToCart ? 'Adding...' : 'Add to Cart' }}
@@ -367,6 +367,6 @@ onMounted(async () => {
   <div v-else class="text-center py-20">
     <p class="text-4xl mb-4">🔍</p>
     <p class="text-surface-400 text-lg">Product not found.</p>
-    <router-link to="/shop" class="mt-4 inline-block text-gold-500 hover:underline">Browse all products</router-link>
+    <router-link to="/shop" class="mt-4 inline-block text-electric-500 hover:underline">Browse all products</router-link>
   </div>
 </template>
