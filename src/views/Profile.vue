@@ -33,7 +33,13 @@ async function save() {
   pending.value = true
   try {
     const { api } = await import('../utils/api')
-    await api.profile.update({ ...form })
+    const userData = JSON.parse(localStorage.getItem('gg-user') || '{}')
+    const customerId = userData?.id || userData?.customer_id
+    if (customerId) {
+      await api.osimart.updateCustomer(customerId, { ...form })
+    } else {
+      await api.osimart.updateProfile({ ...form })
+    }
     await refresh()
     saved.value = true
     editing.value = false
