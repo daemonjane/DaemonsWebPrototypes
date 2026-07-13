@@ -8,11 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gold: { 300: '#E8C84A', 400: '#D4AF37', 500: '#C5A028', 600: '#A8851E', 700: '#8B6B14 },
-        emerald: { 400: '#2DD4A0', 500: '#1B8A6B', 600: '#157A5E', 700: '#0F6A51 },
-        rose: { 300: '#F5C6D0', 400: '#E8A0B4', 500: '#D47A96', 600: '#B85A7A },
+        gold: { 300: '#E8C84A', 400: '#D4AF37', 500: '#C5A028', 600: '#A8851E', 700: '#8B6B14' },
+        emerald: { 400: '#2DD4A0', 500: '#1B8A6B', 600: '#157A5E', 700: '#0F6A51' },
+        rose: { 300: '#F5C6D0', 400: '#E8A0B4', 500: '#D47A96', 600: '#B85A7A' },
         cream: { 50: '#FEFCF9', 100: '#FAF8F5', 200: '#F5F0EB', 300: '#EDE5DC' },
-        charcoal: { 900: '#14141F', 800: '#1C1C2E', 700: '#262640', 600: '#32325A },
+        charcoal: { 900: '#14141F', 800: '#1C1C2E', 700: '#262640', 600: '#32325A' },
         dark: { bg: '#14141F', card: '#1C1C2E', border: '#262640', text: '#EDEDF0' },
         light: { bg: '#FAF8F5', card: '#FFFFFF', border: '#EDE5DC', text: '#1C1C2E' },
       },
