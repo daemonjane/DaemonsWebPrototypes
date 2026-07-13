@@ -59,10 +59,13 @@ module.exports = {
         'fade-in': 'fadeIn 0.5s ease-out',
         'fade-up': 'fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
         'slide-in-right': 'slideInRight 0.3s ease-out',
+        'slide-in-left': 'slideInLeft 0.3s ease-out',
+        'scale-in': 'scaleIn 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
         'float': 'float 6s ease-in-out infinite',
         'shimmer': 'shimmer 2s linear infinite',
         'marquee': 'marquee 30s linear infinite',
         'pulse-gold': 'pulseGold 3s ease-in-out infinite',
+        'counter': 'counterSpin 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
       },
       keyframes: {
         fadeIn: {
@@ -76,6 +79,14 @@ module.exports = {
         slideInRight: {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(0)' },
+        },
+        slideInLeft: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.9)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
         },
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
@@ -92,6 +103,10 @@ module.exports = {
         marquee: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
+        },
+        counterSpin: {
+          '0%': { opacity: '0', transform: 'translateY(8px) scale(0.95)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
         },
       },
     },

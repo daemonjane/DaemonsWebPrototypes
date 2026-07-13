@@ -51,7 +51,7 @@ function closeQuickView() { quickViewProduct.value = null }
 </script>
 
 <template>
-  <div class="bg-surface-800/60 rounded-2xl overflow-hidden border border-surface-700/80 flex flex-col group transition-all duration-300 hover:border-gold-500/20 hover:-translate-y-1 hover:shadow-card-hover">
+  <div v-spotlight class="bg-surface-800/60 rounded-2xl overflow-hidden border border-surface-700/80 flex flex-col group transition-all duration-300 hover:border-gold-500/20 hover:-translate-y-1 hover:shadow-card-hover">
     <!-- Image -->
     <router-link :to="`/product/${product.uuid || product.id}`" class="block relative h-52 w-full overflow-hidden bg-surface-850">
       <OptimizedImage

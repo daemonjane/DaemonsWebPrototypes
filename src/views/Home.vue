@@ -12,11 +12,32 @@ const storeName = ref('')
 const { items: recentlyViewed } = useRecentlyViewed()
 
 const stats = [
-  { value: '500+', label: 'Products' },
-  { value: '24h', label: 'Fast Shipping' },
-  { value: '99%', label: 'Satisfaction' },
-  { value: '24/7', label: 'Support' },
+  { value: '500', suffix: '+', label: 'Products' },
+  { value: '24', suffix: 'h', label: 'Fast Shipping' },
+  { value: '99', suffix: '%', label: 'Satisfaction' },
+  { value: '24', suffix: '/7', label: 'Support' },
 ]
+
+const counterValues = ref(stats.map(() => 0))
+const statsEl = ref(null)
+let statsObserver = null
+
+function animateCounters() {
+  const duration = 1200
+  const start = performance.now()
+  const targets = stats.map(s => parseInt(s.value, 10))
+
+  const step = (now) => {
+    const elapsed = now - start
+    const progress = Math.min(elapsed / duration, 1)
+    const eased = 1 - Math.pow(1 - progress, 3)
+    targets.forEach((t, i) => {
+      counterValues.value[i] = Math.round(eased * t)
+    })
+    if (progress < 1) requestAnimationFrame(step)
+  }
+  requestAnimationFrame(step)
+}
 
 onMounted(async () => {
   try {
@@ -37,6 +58,22 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+
+  if (statsEl.value) {
+    statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounters()
+          statsObserver.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.3 })
+    statsObserver.observe(statsEl.value)
+  }
+})
+
+onUnmounted(() => {
+  statsObserver?.disconnect()
 })
 
 const featured = computed(() => products.value.slice(0, 6))
@@ -47,7 +84,7 @@ const featured = computed(() => products.value.slice(0, 6))
     <!-- Hero Section -->
     <section class="relative text-center py-20 sm:py-28 lg:py-36 overflow-hidden">
       <div class="hero-glow"></div>
-      <div class="relative z-10 max-w-3xl mx-auto px-4">
+      <div class="relative z-10 max-w-3xl mx-auto px-4 hero-reveal">
         <div class="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/20 rounded-full px-4 py-1.5 mb-8 backdrop-blur-sm">
           <span class="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse"></span>
           <span class="text-xs font-medium text-gold-400 uppercase tracking-widest">High-Tier Hardware</span>
@@ -62,23 +99,30 @@ const featured = computed(() => products.value.slice(0, 6))
         <div class="flex justify-center gap-4 mt-10">
           <router-link
             to="/shop"
+            v-magnetic
             class="bg-gold-500 text-surface-950 px-8 py-3.5 rounded-xl font-display font-semibold hover:bg-gold-400 transition-all active:scale-95 shadow-glow-gold text-sm sm:text-base"
           >
             Shop Now
           </router-link>
           <router-link
             to="/about"
+            v-magnetic
             class="border border-surface-600 text-surface-300 px-8 py-3.5 rounded-xl font-display font-semibold hover:border-gold-500/30 hover:text-surface-100 hover:bg-surface-800/50 transition-all text-sm sm:text-base"
           >
             Learn More
           </router-link>
         </div>
-        <!-- Stats bar -->
-        <div class="flex justify-center gap-8 sm:gap-12 mt-14 pt-8 border-t border-surface-700/50">
-          <div v-for="stat in stats" :key="stat.label" class="text-center">
-            <p class="text-lg sm:text-xl font-bold text-gold-500 font-mono">{{ stat.value }}</p>
-            <p class="text-xs text-surface-500 mt-0.5">{{ stat.label }}</p>
-          </div>
+      </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section ref="statsEl" class="mb-16 sm:mb-20">
+      <div class="bg-surface-800/40 border border-surface-700/50 rounded-2xl p-6 sm:p-8 flex justify-center gap-8 sm:gap-16">
+        <div v-for="(stat, i) in stats" :key="stat.label" class="text-center">
+          <p class="text-2xl sm:text-3xl font-bold text-gold-500 font-mono counter-value">
+            {{ stat.prefix || '' }}{{ counterValues[i] }}{{ stat.suffix }}
+          </p>
+          <p class="text-xs text-surface-500 mt-1">{{ stat.label }}</p>
         </div>
       </div>
     </section>
@@ -86,7 +130,7 @@ const featured = computed(() => products.value.slice(0, 6))
     <!-- Categories -->
     <section v-if="categories.length" class="mb-16 sm:mb-20">
       <h2 class="text-xl sm:text-2xl font-display font-bold text-surface-50 mb-6">Shop by Category</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 stagger-reveal revealed">
         <router-link
           v-for="c in categories" :key="c.id || c.slugified_name"
           :to="'/shop?category=' + (c.slugified_name || c.name)"
@@ -110,7 +154,7 @@ const featured = computed(() => products.value.slice(0, 6))
       <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         <div v-for="i in 3" :key="i" class="skeleton h-80 rounded-2xl"></div>
       </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 stagger-reveal revealed">
         <ProductCard v-for="product in featured" :key="product.uuid || product.id" :product="product" />
       </div>
     </section>
@@ -118,7 +162,7 @@ const featured = computed(() => products.value.slice(0, 6))
     <!-- Recently Viewed -->
     <section v-if="recentlyViewed.length" class="mb-16 sm:mb-20">
       <h2 class="text-xl sm:text-2xl font-display font-bold text-surface-50 mb-6">Recently Viewed</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 stagger-reveal revealed">
         <router-link
           v-for="item in recentlyViewed" :key="item.id"
           :to="'/product/' + item.id"
@@ -132,27 +176,27 @@ const featured = computed(() => products.value.slice(0, 6))
 
     <!-- Trust Bar -->
     <section class="mb-16 sm:mb-20">
-      <div class="bg-surface-800/40 border border-surface-700/50 rounded-2xl p-8 sm:p-10 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
-        <div class="space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
-            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      <div class="bg-surface-800/40 border border-surface-700/50 rounded-2xl p-8 sm:p-10 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center stagger-reveal revealed">
+        <div class="space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
           </div>
           <h3 class="font-display font-semibold text-surface-50">Verified Authentic</h3>
-          <p class="text-xs text-surface-400">Direct from authorized distributors. No gray market.</p>
+          <p class="text-xs text-surface-400 leading-relaxed">Direct from authorized distributors. No gray market.</p>
         </div>
-        <div class="space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
-            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <h3 class="font-display font-semibold text-surface-50">Fast Fulfillment</h3>
-          <p class="text-xs text-surface-400">Same-day processing on in-stock items.</p>
+          <p class="text-xs text-surface-400 leading-relaxed">Same-day processing on in-stock items.</p>
         </div>
-        <div class="space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
-            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <div class="space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           </div>
           <h3 class="font-display font-semibold text-surface-50">Buyer Protection</h3>
-          <p class="text-xs text-surface-400">Secure checkout. Full refund guarantee.</p>
+          <p class="text-xs text-surface-400 leading-relaxed">Secure checkout. Full refund guarantee.</p>
         </div>
       </div>
     </section>

@@ -213,9 +213,9 @@ function countInCategory(catSlug) {
 
       <!-- Products grid -->
       <div v-if="filteredProducts.length > 0">
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <div v-for="(product, i) in filteredProducts" :key="product.uuid" class="reveal-card" :style="{ animationDelay: i * 0.06 + 's' }">
-            <ProductCard :product="product" :show-full="true" />
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 stagger-reveal revealed">
+          <div v-for="product in filteredProducts" :key="product.uuid">
+            <ProductCard :product="product" />
           </div>
         </div>
 
