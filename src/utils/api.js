@@ -1,51 +1,23 @@
-const BASE = ''
-
-function getCSRFToken() {
-  const name = 'csrftoken'
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
-  return match ? decodeURIComponent(match[2]) : ''
+function getAuthToken() {
+  return localStorage.getItem('gg-token')
 }
 
 async function request(method, path, body) {
   const headers = { 'Content-Type': 'application/json' }
-  const unsafe = ['POST', 'PUT', 'PATCH', 'DELETE']
-  if (unsafe.includes(method)) {
-    const token = getCSRFToken()
-    if (token) headers['X-CSRFToken'] = token
-  }
-  const opts = {
-    method,
-    headers,
-    credentials: 'same-origin',
-  }
+  const token = getAuthToken()
+  if (token) headers['Authorization'] = `Bearer ${token}`
+  const opts = { method, headers }
   if (body) opts.body = JSON.stringify(body)
-  const res = await fetch(`${BASE}${path}`, opts)
+  const res = await fetch(`${path}`, opts)
   const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new Error(data.detail || data.error || `Request failed (${res.status})`)
   return data
-}
-
-export async function ensureCSRF() {
-  if (!getCSRFToken()) {
-    await fetch(`${BASE}/api/auth/csrf/`, { credentials: 'same-origin' })
-  }
 }
 
 export const api = {
   osimartCart: {
     view: () => request('GET', '/api/osimart/cart/view/'),
     updateItem: (data) => request('POST', '/api/osimart/cart/update-item/', data),
-  },
-  osimartSync: (email, osimartCustomerId, name) => request('POST', '/api/auth/osimart-sync/', { email, osimart_customer_id: osimartCustomerId, name }),
-  changePassword: (old_password, new_password) => request('POST', '/api/auth/change-password/', { old_password, new_password }),
-  resetPassword: (email, code, new_password) => request('POST', '/api/auth/reset-password/', { email, code, new_password }),
-  register: (username, email, password, first_name, last_name) => request('POST', '/api/auth/register/', { username, email, password, first_name, last_name }),
-  guestLogin: (email, first_name, last_name) => request('POST', '/api/auth/guest-login/', { email, first_name, last_name }),
-  staffLogin: (username, password) => request('POST', '/api/auth/staff-login/', { username, password }),
-  logout: () => request('POST', '/api/auth/logout/'),
-  profile: {
-    get: () => request('GET', '/api/auth/profile/'),
-    update: (data) => request('PATCH', '/api/auth/profile/', data),
   },
   wishlist: {
     get: () => request('GET', '/api/wishlist/'),
@@ -124,10 +96,7 @@ export const api = {
     deleteOrderStatusChoice: (id) => request('DELETE', `/api/osimart/order-status-choices/${id}/`),
     orders: () => request('GET', '/api/admin/orders/'),
     updateOrderStatus: (id, status) => request('PATCH', `/api/admin/orders/${id}/status/`, { status }),
-  },
-  passwordReset: {
-    request: (email) => request('POST', '/api/auth/password-reset/', { email }),
-    confirm: (uidb64, token, password) => request('POST', `/api/auth/password-reset/${uidb64}/${token}/`, { password }),
+    updateProfile: (data) => request('PUT', '/api/osimart/customers/profile/', data),
   },
   search: (query, category = '') => {
     const params = { search: query, limit: 50 }
@@ -138,5 +107,8 @@ export const api = {
     config: () => request('GET', '/api/payments/config/'),
     createIntent: (amount) => request('POST', '/api/payments/create-intent/', { amount }),
     confirm: (paymentIntentId) => request('POST', '/api/payments/confirm/', { payment_intent_id: paymentIntentId }),
+  },
+  backInStock: {
+    subscribe: (data) => request('POST', '/api/back-in-stock/', data),
   },
 }
