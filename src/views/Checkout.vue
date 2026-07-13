@@ -53,25 +53,28 @@ const finalTotal = computed(() => (totalPrice?.value ?? 0) - discountAmount.valu
 
 const placing = ref(false)
 
-let api
+let api = null
 try {
   const mod = await import('../utils/api')
   api = mod.api
 } catch {
-  api = null
+  // api stays null, demo mode will be used
 }
 
 onMounted(async () => {
+  if (!api) { paymentMode.value = 'demo'; return }
   try {
     const cfg = await api.payments.config()
     pubKey.value = cfg.publishable_key || ''
     paymentMode.value = cfg.mode || 'demo'
     if (pubKey.value) {
-      const stripe = await import('@stripe/stripe-js')
-      const stripeInstance = await stripe.loadStripe(pubKey.value)
-      if (stripeInstance) {
-        stripeLoaded.value = true
-      }
+      try {
+        const stripe = await import('@stripe/stripe-js')
+        const stripeInstance = await stripe.loadStripe(pubKey.value)
+        if (stripeInstance) {
+          stripeLoaded.value = true
+        }
+      } catch { /* stripe not available */ }
     }
   } catch {
     paymentMode.value = 'demo'
@@ -142,6 +145,10 @@ function prevStep() {
 }
 
 async function placeOrder() {
+  if (!api) {
+    addToast('API not available. Please try again.', 3000, 'error')
+    return
+  }
   placing.value = true
   try
   {

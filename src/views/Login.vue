@@ -164,11 +164,14 @@ async function handleVerify() {
         </div>
 
         <div>
-          <label class="text-sm font-medium text-surface-300">Password</label>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-sm font-medium text-surface-300">Password</label>
+            <router-link v-if="mode === 'login'" to="/forgot-password" class="text-xs text-gold-500 hover:text-gold-400 transition-colors">Forgot Password?</router-link>
+          </div>
           <input
             v-model="password" type="password" required
             :autocomplete="mode === 'login' ? 'current-password' : 'new-password'"
-            class="w-full mt-1.5 px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
+            class="w-full px-4 py-3 border border-surface-700 rounded-xl focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50 outline-none bg-surface-900 text-surface-100 transition-all placeholder-surface-600"
             placeholder="••••••••"
           />
         </div>
