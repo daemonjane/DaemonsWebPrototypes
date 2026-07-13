@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCart } from '../composables/useCart'
+import { useOsimartCart } from '../composables/useOsimartCart'
 import { useRecentlyViewed } from '../composables/useRecentlyViewed'
 import { useFavorites } from '../composables/useFavorites'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
@@ -22,7 +22,7 @@ const selectedAddons = ref([])
 const quantity = ref(1)
 const selectedImage = ref(0)
 const relatedProducts = ref([])
-const { addItem } = useCart()
+const { addItem, isInCart } = useOsimartCart()
 
 const bisEmail = ref('')
 const bisPending = ref(false)
@@ -79,11 +79,22 @@ async function fetchAddons() {
 async function fetchRelated() {
   try {
     const { api } = await import('../utils/api')
-    const data = await api.osimart.products({ limit: 8, category: product.value?.category })
-      const items = data.results || data || []
-      if (product.value?.uuid) {
-        relatedProducts.value = items.filter(p => p.id !== product.value.uuid && p.slugified_name !== product.value.id).slice(0, 4).map(normalizeProductDetail)
-      }
+    const cat = product.value?.category
+    const data = await api.osimart.products({ limit: 20 })
+    const items = data.results || data || []
+    if (items.length > 0) {
+      const sameCategory = cat && cat !== 'uncategorized'
+        ? items.filter(p => {
+            const pcats = p.categories || []
+            return pcats.some(c => (c.category?.slugified_name || c.slugified_name || c.name) === cat)
+          })
+        : []
+      const pool = sameCategory.length >= 4 ? sameCategory : items
+      relatedProducts.value = pool
+        .filter(p => p.id !== product.value?.uuid && p.slugified_name !== product.value?.id)
+        .slice(0, 4)
+        .map(normalizeProductDetail)
+    }
   } catch {
     relatedProducts.value = []
   }
@@ -95,15 +106,15 @@ function toggleAddon(addon) {
   else { selectedAddons.value.push({ id: addon.id, name: addon.name, price: addon.price }) }
 }
 
-function handleAddItem() {
+async function handleAddItem() {
   if (!product.value) return
   addingToCart.value = true
-  addItem(
-    { id: product.value.uuid || product.value.id, uuid: product.value.uuid, variantId: product.value.variantId, name: product.value.name, price: product.value.price },
+  await addItem(
+    { id: product.value.uuid || product.value.id, uuid: product.value.uuid, variantId: product.value.variantId, name: product.value.name, price: product.value.price, image: product.value.image },
     quantity.value
   )
   for (const addon of selectedAddons.value) {
-    addItem({ id: `addon-${addon.id}`, name: addon.name, price: addon.price })
+    await addItem({ id: `addon-${addon.id}`, name: addon.name, price: addon.price })
   }
   selectedAddons.value = []
   addingToCart.value = false
@@ -167,7 +178,7 @@ onMounted(async () => {
     <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
       <!-- Image gallery -->
       <div>
-        <div class="overflow-hidden rounded-xl bg-slate-900 border border-slate-800">
+        <div class="overflow-hidden rounded-xl bg-slate-900 border border-slate-800 relative">
           <OptimizedImage
             :src="product.images.length ? resolveImage(product.images[selectedImage]) : product.image"
             :alt="product.name"
@@ -175,6 +186,13 @@ onMounted(async () => {
             imgClass="hover:scale-105 transition-transform duration-500"
             :priority="true"
           />
+          <div
+            v-if="isInCart(product.uuid || product.id)"
+            class="absolute top-3 right-3 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            In Cart
+          </div>
         </div>
         <div v-if="product.images.length > 1" class="flex gap-2 mt-3 overflow-x-auto pb-1">
           <button v-for="(img, i) in product.images" :key="i" @click="selectedImage = i"
@@ -310,11 +328,17 @@ onMounted(async () => {
         </div>
 
         <!-- Add to cart -->
-        <button v-if="product.stock !== 0" @click="handleAddItem" class="mt-8 w-full sm:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
-          <svg v-if="addingToCart" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-          <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
-          {{ addingToCart ? 'Adding...' : 'Add to Cart' }}
-        </button>
+        <template v-if="product.stock !== 0">
+          <button v-if="!isInCart(product.uuid || product.id)" @click="handleAddItem" class="mt-8 w-full sm:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-10 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+            <svg v-if="addingToCart" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+            {{ addingToCart ? 'Adding...' : 'Add to Cart' }}
+          </button>
+          <button v-else disabled class="mt-8 w-full sm:w-auto bg-emerald-600 text-white font-semibold py-3 px-10 rounded-lg cursor-default flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            In Cart
+          </button>
+        </template>
         <button v-else disabled class="mt-8 w-full sm:w-auto bg-slate-700 text-slate-500 font-semibold py-3 px-10 rounded-lg cursor-not-allowed flex items-center justify-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
           Out of Stock
