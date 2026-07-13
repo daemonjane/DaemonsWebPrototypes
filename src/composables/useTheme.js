@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 
-const THEME_KEY = 'techstore_theme'
+const THEME_KEY = 'vertex_theme'
 const stored = localStorage.getItem(THEME_KEY)
 const isDark = ref(stored !== null ? stored === 'dark' : true)
 

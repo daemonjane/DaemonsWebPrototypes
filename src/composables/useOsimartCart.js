@@ -1,7 +1,7 @@
 import { ref, computed, watch } from 'vue'
 import { useToast } from './useToast'
 
-const STORAGE_KEY = 'techstore_cart'
+const STORAGE_KEY = 'vertex_cart'
 let stored
 try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') } catch { stored = [] }
 const localCart = ref(stored)

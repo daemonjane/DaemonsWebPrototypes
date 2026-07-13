@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const VISITOR_KEY = 'techstore_visitor_count'
+const VISITOR_KEY = 'vertex_visitor_count'
 const base = parseInt(localStorage.getItem(VISITOR_KEY) || '142', 10)
 const count = ref(base)
 let interval = null

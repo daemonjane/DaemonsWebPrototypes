@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 
-const STORAGE_KEY = 'techstore_counter'
+const STORAGE_KEY = 'vertex_counter'
 
 function loadSaved() {
   try {

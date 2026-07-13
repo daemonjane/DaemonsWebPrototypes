@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-const STORAGE_KEY = 'techstore_recently_viewed'
+const STORAGE_KEY = 'vertex_recently_viewed'
 const MAX_ITEMS = 6
 
 let stored

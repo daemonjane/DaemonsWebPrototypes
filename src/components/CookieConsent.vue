@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-const COOKIE_CONSENT_KEY = 'techstore_cookie_consent'
+const COOKIE_CONSENT_KEY = 'vertex_cookie_consent'
 const show = ref(false)
 const router = useRouter()
 
