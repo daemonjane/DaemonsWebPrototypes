@@ -40,7 +40,6 @@ onMounted(async () => {
   }
 })
 
-const DJANGO_ADMIN = '/admin/'
 </script>
 
 <template>
@@ -55,10 +54,6 @@ const DJANGO_ADMIN = '/admin/'
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
           Osimart Admin
         </router-link>
-        <a :href="DJANGO_ADMIN" target="_blank" class="text-xs bg-slate-700 text-slate-300 px-4 py-2 rounded-md hover:bg-slate-600 transition-colors inline-flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          Django Admin
-        </a>
       </div>
     </div>
 
@@ -100,37 +95,37 @@ const DJANGO_ADMIN = '/admin/'
       <section class="space-y-4">
         <h2 class="text-lg font-semibold text-white">Quick Actions</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          <a :href="DJANGO_ADMIN + 'api/product/add/'" target="_blank" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
-            <span class="text-2xl block mb-1">➕</span>
-            <span class="text-xs text-slate-400 group-hover:text-white">Add Product</span>
-          </a>
-          <a :href="DJANGO_ADMIN + 'api/order/'" target="_blank" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
+          <router-link to="/admin/osimart/products" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
+            <span class="text-2xl block mb-1">📦</span>
+            <span class="text-xs text-slate-400 group-hover:text-white">Products</span>
+          </router-link>
+          <router-link to="/admin/osimart/orders" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
             <span class="text-2xl block mb-1">📋</span>
-            <span class="text-xs text-slate-400 group-hover:text-white">View Orders</span>
-          </a>
-          <a :href="DJANGO_ADMIN + 'api/category/add/'" target="_blank" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
+            <span class="text-xs text-slate-400 group-hover:text-white">Orders</span>
+          </router-link>
+          <router-link to="/admin/osimart/categories" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
             <span class="text-2xl block mb-1">🏷️</span>
-            <span class="text-xs text-slate-400 group-hover:text-white">Add Category</span>
-          </a>
-          <a :href="DJANGO_ADMIN + 'website/task/'" target="_blank" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
-            <span class="text-2xl block mb-1">✅</span>
-            <span class="text-xs text-slate-400 group-hover:text-white">Manage Tasks</span>
-          </a>
-          <a :href="DJANGO_ADMIN + 'api/subscription/'" target="_blank" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
-            <span class="text-2xl block mb-1">👑</span>
-            <span class="text-xs text-slate-400 group-hover:text-white">Subscriptions</span>
-          </a>
-          <a :href="DJANGO_ADMIN + 'api/cart/'" target="_blank" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
-            <span class="text-2xl block mb-1">🛒</span>
-            <span class="text-xs text-slate-400 group-hover:text-white">Carts</span>
-          </a>
-          <a :href="DJANGO_ADMIN + 'auth/user/'" target="_blank" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
+            <span class="text-xs text-slate-400 group-hover:text-white">Categories</span>
+          </router-link>
+          <router-link to="/admin/osimart/customers" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
             <span class="text-2xl block mb-1">👥</span>
-            <span class="text-xs text-slate-400 group-hover:text-white">Users</span>
-          </a>
+            <span class="text-xs text-slate-400 group-hover:text-white">Customers</span>
+          </router-link>
+          <router-link to="/admin/osimart/banners" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
+            <span class="text-2xl block mb-1">🖼️</span>
+            <span class="text-xs text-slate-400 group-hover:text-white">Banners</span>
+          </router-link>
+          <router-link to="/admin/osimart/brands" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
+            <span class="text-2xl block mb-1">🏢</span>
+            <span class="text-xs text-slate-400 group-hover:text-white">Brands</span>
+          </router-link>
           <router-link to="/admin/analytics" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
             <span class="text-2xl block mb-1">📊</span>
             <span class="text-xs text-slate-400 group-hover:text-white">Analytics</span>
+          </router-link>
+          <router-link to="/admin/osimart/store" class="bg-slate-900 rounded-xl p-4 border border-slate-800 hover:border-cyan-700 transition-all duration-200 text-center group">
+            <span class="text-2xl block mb-1">⚙️</span>
+            <span class="text-xs text-slate-400 group-hover:text-white">Store Settings</span>
           </router-link>
         </div>
       </section>
@@ -139,7 +134,7 @@ const DJANGO_ADMIN = '/admin/'
       <section v-if="recentOrders.length" class="space-y-4">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-semibold text-white">Recent Orders</h2>
-          <a :href="DJANGO_ADMIN + 'api/order/'" target="_blank" class="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">View all →</a>
+          <router-link to="/admin/osimart/orders" class="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">View all →</router-link>
         </div>
         <div class="space-y-2">
           <div v-for="o in recentOrders" :key="o.id" class="bg-slate-900 rounded-xl p-3.5 border border-slate-800 hover:border-slate-700 transition-all duration-200 flex items-center justify-between">
