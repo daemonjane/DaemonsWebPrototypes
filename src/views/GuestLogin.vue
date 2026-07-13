@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { saveAuthSession } from '../services/login'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 
 const router = useRouter()
@@ -18,8 +19,15 @@ async function guestLogin() {
   }
   pending.value = true
   try {
-    const { api } = await import('../utils/api')
-    await api.guestLogin(email.value, firstName.value, lastName.value)
+    const guestUser = {
+      id: 'guest_' + Date.now(),
+      email: email.value || '',
+      first_name: firstName.value,
+      last_name: lastName.value,
+      is_guest: true,
+    }
+    localStorage.setItem('gg-user', JSON.stringify(guestUser))
+    window.dispatchEvent(new Event('storage'))
     router.push('/checkout')
   } catch (e) {
     errors.form = e.message || 'Guest login failed'
