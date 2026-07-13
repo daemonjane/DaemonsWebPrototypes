@@ -27,7 +27,7 @@ const values = [
 ]
 
 const milestones = [
-  { year: '2024 Q1', event: 'TechStore founded in San Francisco' },
+  { year: '2024 Q1', event: 'Vertex founded in San Francisco' },
   { year: '2024 Q3', event: 'First 1,000 orders shipped' },
   { year: '2025 Q1', event: 'Launched real-time market insights platform' },
   { year: '2025 Q3', event: 'Opened second warehouse in Austin, TX' },
@@ -40,7 +40,7 @@ const milestones = [
     <AbstractArt variant="about" class="absolute inset-0 w-full h-full" />
     <Breadcrumbs :crumbs="[{ label: 'About' }]" />
     <span class="text-xs font-mono text-cyan-500 uppercase tracking-wider bg-cyan-950/30 px-2 py-1 rounded relative">Company</span>
-    <h1 class="text-3xl sm:text-4xl font-bold text-white mt-3 mb-2">About TechStore</h1>
+    <h1 class="text-3xl sm:text-4xl font-bold text-white mt-3 mb-2">About Vertex</h1>
     <p class="text-slate-400 mb-10">The infrastructure behind the infrastructure.</p>
 
     <!-- Stats row -->
@@ -55,8 +55,8 @@ const milestones = [
     <div class="bg-slate-900 p-6 sm:p-8 rounded-xl border border-slate-800 space-y-4 mb-8">
       <h2 class="text-xl font-semibold text-white">Our Mission</h2>
       <p class="text-slate-400 leading-relaxed">
-        Founded in 2024, TechStore delivers verified high-performance hardware with transparent pricing and real-time market insights.
-        We stress-test every component and offer direct vendor sourcing — no middlemen, no markup games.
+        Founded in 2024, Vertex delivers high-tier hardware with transparent pricing and real-time market intelligence.
+        We precision-source every component — no middlemen, no markup games.
       </p>
       <p class="text-slate-400 leading-relaxed">
         Our mission: empower builders, gamers, and creators with gear that outperforms expectations at every price point.

@@ -59,7 +59,7 @@ const tocOpen = ref(false)
 
       <section id="rights">
         <h2 class="text-xl font-semibold text-white mb-3">5. Your Rights</h2>
-        <p class="text-slate-400">You have the right to access, correct, or delete your personal data at any time. You may also request a copy of the data we hold about you. To exercise these rights, contact us at <a href="mailto:privacy@techstore.test" class="text-cyan-400 hover:underline">privacy@techstore.test</a>.</p>
+        <p class="text-slate-400">You have the right to access, correct, or delete your personal data at any time. You may also request a copy of the data we hold about you. To exercise these rights, contact us at <a href="mailto:privacy@vertexhw.com" class="text-cyan-400 hover:underline">privacy@vertexhw.com</a>.</p>
       </section>
 
       <section id="cookies">
@@ -69,7 +69,7 @@ const tocOpen = ref(false)
 
       <section id="contact">
         <h2 class="text-xl font-semibold text-white mb-3">7. Contact</h2>
-        <p class="text-slate-400">For privacy-related inquiries, email <a href="mailto:privacy@techstore.test" class="text-cyan-400 hover:underline">privacy@techstore.test</a> or write to: TechStore Privacy, 1000 Innovation Drive, San Francisco, CA 94105.</p>
+        <p class="text-slate-400">For privacy-related inquiries, email <a href="mailto:privacy@vertexhw.com" class="text-cyan-400 hover:underline">privacy@vertexhw.com</a> or write to: Vertex Privacy, 1000 Innovation Drive, San Francisco, CA 94105.</p>
       </section>
     </div>
 

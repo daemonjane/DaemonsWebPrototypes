@@ -32,7 +32,7 @@ function handleAccept() {
         </div>
         <div class="flex-1">
           <h2 class="text-white font-semibold mb-1">Acceptance of Terms</h2>
-          <p class="text-slate-400 text-sm mb-3">By using TechStore, you agree to these terms. Please read them carefully before making a purchase.</p>
+          <p class="text-slate-400 text-sm mb-3">By using Vertex, you agree to these terms. Please read them carefully before making a purchase.</p>
           <button v-if="!accepted" @click="handleAccept"
             class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold px-5 py-2 rounded-md transition active:scale-95">
             I Accept
@@ -51,7 +51,7 @@ function handleAccept() {
     <div class="space-y-8 text-sm leading-relaxed">
       <section>
         <h2 class="text-xl font-semibold text-white mb-3">1. General</h2>
-        <p class="text-slate-400">These Terms of Service govern your use of the TechStore website and services. By accessing or purchasing from TechStore, you agree to be bound by these terms. If you do not agree, please discontinue use immediately.</p>
+        <p class="text-slate-400">These Terms of Service govern your use of the Vertex website and services. By accessing or purchasing from Vertex, you agree to be bound by these terms. If you do not agree, please discontinue use immediately.</p>
       </section>
 
       <section>
@@ -71,7 +71,7 @@ function handleAccept() {
 
       <section>
         <h2 class="text-xl font-semibold text-white mb-3">5. Limitation of Liability</h2>
-        <p class="text-slate-400">TechStore shall not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use our products or services. Our total liability is limited to the amount you paid for the product in question.</p>
+        <p class="text-slate-400">Vertex shall not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use our products or services. Our total liability is limited to the amount you paid for the product in question.</p>
       </section>
 
       <section>
@@ -81,7 +81,7 @@ function handleAccept() {
     </div>
 
     <div class="mt-10 pt-6 border-t border-slate-800 text-xs text-slate-600">
-      <p>For questions about these terms, contact <a href="mailto:legal@techstore.test" class="text-cyan-400 hover:underline">legal@techstore.test</a>.</p>
+      <p>For questions about these terms, contact <a href="mailto:legal@vertexhw.com" class="text-cyan-400 hover:underline">legal@vertexhw.com</a>.</p>
     </div>
   </div>
 </template>
