@@ -11,6 +11,7 @@ class UserProfile(models.Model):
     location = models.CharField("location", max_length=100, blank=True, help_text="Your location")
     phone = models.CharField("phone", max_length=20, blank=True, help_text="Contact phone number")
     avatar_url = models.URLField("avatar URL", blank=True, help_text="URL to your avatar image")
+    osimart_customer_id = models.CharField("Osimart customer ID", max_length=255, blank=True, help_text="Corresponding customer ID on Osimart")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when the profile was created")
     updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when the profile was last updated")
 
