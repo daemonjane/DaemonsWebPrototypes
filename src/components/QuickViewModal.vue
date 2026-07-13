@@ -8,7 +8,7 @@
  * @emit {void} close - Emitted when modal is dismissed
  */
 import { ref, watch, nextTick } from 'vue'
-import { useCart } from '../composables/useCart'
+import { useOsimartCart } from '../composables/useOsimartCart'
 import OptimizedImage from './OptimizedImage.vue'
 
 const props = defineProps({
@@ -17,7 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const { addItem } = useCart()
+const { addItem, isInCart } = useOsimartCart()
 const quantity = ref(1)
 const modalRef = ref(null)
 const previousFocus = ref(null)
@@ -66,9 +66,9 @@ function handleBackdropClick(e) {
   if (e.target === e.currentTarget) onClose()
 }
 
-function handleAddToCart() {
+async function handleAddToCart() {
   if (!props.product) return
-  addItem({ id: props.product.id, uuid: props.product.uuid, variantId: props.product.variantId, name: props.product.name, price: props.product.price }, quantity.value)
+  await addItem({ id: props.product.id, uuid: props.product.uuid, variantId: props.product.variantId, name: props.product.name, price: props.product.price, image: props.product.image }, quantity.value)
   quantity.value = 1
 }
 </script>
@@ -111,8 +111,15 @@ function handleAddToCart() {
 
           <div class="grid md:grid-cols-2 gap-0">
             <!-- Image -->
-            <div class="bg-slate-800 flex items-center justify-center p-6 min-h-[250px]">
+            <div class="bg-slate-800 flex items-center justify-center p-6 min-h-[250px] relative">
               <OptimizedImage :src="product.image" :alt="product.name" wrapperClass="w-full h-full max-h-[300px]" imgClass="object-contain" />
+              <div
+                v-if="isInCart(product.uuid || product.id)"
+                class="absolute top-2 right-2 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1"
+              >
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                In Cart
+              </div>
             </div>
 
             <!-- Details -->
@@ -155,10 +162,19 @@ function handleAddToCart() {
                     >+</button>
                   </div>
                   <button
+                    v-if="!isInCart(product.uuid || product.id)"
                     @click="handleAddToCart"
                     class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white py-2.5 rounded-lg text-sm font-semibold transition-all active:scale-95"
                   >
                     Add to Cart
+                  </button>
+                  <button
+                    v-else
+                    disabled
+                    class="flex-1 bg-emerald-600 text-white py-2.5 rounded-lg text-sm font-semibold cursor-default flex items-center justify-center gap-2"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                    In Cart
                   </button>
                 </div>
               </div>

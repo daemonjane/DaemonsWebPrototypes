@@ -14,21 +14,13 @@ async function subscribeNewsletter() {
   newsletterMsg.value = ''
   if (!newsletterEmail.value) return
   try {
-    const resp = await fetch('/api/newsletter/subscribe/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRF() },
-      body: JSON.stringify({ email: newsletterEmail.value }),
-    })
-    const data = await resp.json()
-    newsletterMsg.value = data.message || data.error || 'Subscribed!'
-    if (resp.ok) newsletterEmail.value = ''
+    const { api } = await import('../utils/api')
+    const data = await api.newsletter.subscribe(newsletterEmail.value)
+    newsletterMsg.value = data.message || 'Subscribed!'
+    newsletterEmail.value = ''
   } catch {
     newsletterMsg.value = 'Subscription failed. Try again.'
   }
-}
-
-function getCSRF() {
-  return document.cookie.split('; ').find(r => r.startsWith('csrftoken='))?.split('=')[1] || ''
 }
 </script>
 
